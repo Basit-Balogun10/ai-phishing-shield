@@ -2,12 +2,12 @@
 // It is safe to delete this file as it does not affect the functionality of your application.
 {
   "cesVersion": "2.20.0",
-  "projectName": "my-expo-app",
+  "projectName": "ai-phishing-shield",
   "packages": [
     {
       "name": "nativewind",
-      "type": "styling"
-    }
+      "type": "styling",
+    },
   ],
   "flags": {
     "noGit": false,
@@ -16,16 +16,16 @@
     "importAlias": true,
     "packageManager": "pnpm",
     "eas": false,
-    "publish": false
+    "publish": false,
   },
   "packageManager": {
     "type": "pnpm",
-    "version": "9.15.4"
+    "version": "9.15.4",
   },
   "os": {
     "type": "Windows_NT",
     "platform": "win32",
     "arch": "x64",
-    "kernelVersion": "10.0.22621"
-  }
+    "kernelVersion": "10.0.22621",
+  },
 }

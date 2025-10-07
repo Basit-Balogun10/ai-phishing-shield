@@ -1,5 +1,5 @@
 {
-  "name": "my-expo-app",
+  "name": "ai-phishing-shield",
   "version": "1.0.0",
   "scripts": {
     "android": "expo start --android",
