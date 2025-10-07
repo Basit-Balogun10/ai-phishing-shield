@@ -1,0 +1,60 @@
+{
+  "common": {
+    "continue": "Continue",
+    "back": "Back"
+  },
+  "dashboard": {
+    "title": "AI Phishing Shield",
+    "subtitle": "Welcome! This is the dashboard placeholder. We’ll show protection status, recent alerts, and quick actions here soon.",
+    "navigateLabel": "Navigate",
+    "links": {
+      "onboarding": {
+        "title": "Go to Onboarding",
+        "description": "Review the welcome flow and required permissions copy."
+      },
+      "settings": {
+        "title": "Open Settings",
+        "description": "Manage localization, notification preferences, and diagnostics."
+      }
+    }
+  },
+  "onboarding": {
+    "badge": "Welcome",
+    "title": "Activate Your AI Phishing Shield",
+    "subtitle": "Breeze through these quick highlights so you know exactly what the app does and why permissions are needed.",
+    "cards": [
+      {
+        "title": "Stay Ahead of Phishing",
+        "description": "We analyze incoming SMS and notification content on your device to spot phishing attempts instantly."
+      },
+      {
+        "title": "Your Privacy Matters",
+        "description": "All detection happens offline. Messages never leave your device, and no data is stored in the cloud."
+      },
+      {
+        "title": "Grant the Right Access",
+        "description": "We will ask for SMS and notification permissions so we can keep watch quietly in the background."
+      }
+    ],
+    "continue": "Continue to Dashboard"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Configure localization, alerts, and diagnostics. This is a placeholder until we wire up real settings.",
+    "entries": {
+      "language": {
+        "title": "Language",
+        "description": "Switch between English, French, and Swahili."
+      },
+      "notifications": {
+        "title": "Notification Preferences",
+        "description": "Control alert sound, vibration, and quiet hours."
+      },
+      "diagnostics": {
+        "title": "Diagnostics",
+        "description": "Export anonymized logs to help improve detection accuracy."
+      }
+    },
+    "back": "\u2190 Back to dashboard"
+  }
+}

@@ -1,8 +1,9 @@
 {
   "expo": {
-    "name": "ai-phishing-shield",
+    "name": "AI Phishing Shield",
     "slug": "ai-phishing-shield",
     "version": "1.0.0",
+    "scheme": "aiphishingshield",
 
     "web": {
       "favicon": "./assets/favicon.png"
@@ -12,7 +13,16 @@
       "tsconfigPaths": true
     },
 
-    "plugins": [],
+    "plugins": [
+      "expo-router",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#ffffff"
+        }
+      ]
+    ],
 
     "orientation": "portrait",
     "icon": "./assets/icon.png",

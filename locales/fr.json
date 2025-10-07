@@ -1,0 +1,60 @@
+{
+  "common": {
+    "continue": "Continuer",
+    "back": "Retour"
+  },
+  "dashboard": {
+    "title": "Bouclier Anti-Hameçonnage IA",
+    "subtitle": "Bienvenue ! Voici l’écran d’accueil provisoire. Nous afficherons bientôt l’état de protection, les alertes récentes et des actions rapides.",
+    "navigateLabel": "Navigation",
+    "links": {
+      "onboarding": {
+        "title": "Aller à l’accueil",
+        "description": "Revoir l’introduction et les permissions nécessaires."
+      },
+      "settings": {
+        "title": "Ouvrir les paramètres",
+        "description": "Gérer la langue, les notifications et les diagnostics."
+      }
+    }
+  },
+  "onboarding": {
+    "badge": "Bienvenue",
+    "title": "Activez votre bouclier anti-hameçonnage IA",
+    "subtitle": "Parcourez ces points clés pour comprendre ce que fait l’application et pourquoi les permissions sont nécessaires.",
+    "cards": [
+      {
+        "title": "Restez en avance sur les arnaques",
+        "description": "Nous analysons les SMS et notifications reçus sur votre appareil pour détecter immédiatement les tentatives d’hameçonnage."
+      },
+      {
+        "title": "Votre vie privée compte",
+        "description": "Toute l’analyse se fait hors ligne. Les messages ne quittent jamais votre appareil et aucune donnée n’est stockée dans le cloud."
+      },
+      {
+        "title": "Autorisez les accès nécessaires",
+        "description": "Nous demanderons l’accès aux SMS et notifications afin de surveiller discrètement en arrière-plan."
+      }
+    ],
+    "continue": "Continuer vers le tableau de bord"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "subtitle": "Configurez la localisation, les alertes et les diagnostics. Il s’agit d’un écran temporaire en attendant les véritables options.",
+    "entries": {
+      "language": {
+        "title": "Langue",
+        "description": "Basculer entre l’anglais, le français et le swahili."
+      },
+      "notifications": {
+        "title": "Préférences de notification",
+        "description": "Contrôler le son des alertes, la vibration et les périodes de silence."
+      },
+      "diagnostics": {
+        "title": "Diagnostics",
+        "description": "Exporter des journaux anonymisés pour améliorer la précision de détection."
+      }
+    },
+    "back": "\u2190 Retour au tableau de bord"
+  }
+}
