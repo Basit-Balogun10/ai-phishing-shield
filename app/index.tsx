@@ -1,9 +1,10 @@
 import { Link } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Alert, Pressable, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, ScrollView, Text, View } from 'react-native';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useOnboardingGate } from '../lib/hooks/useOnboardingGate';
 
 const menuLinkStyles = `px-4 py-3 rounded-xl border border-blue-100 bg-white shadow-sm`;
 
@@ -20,6 +21,7 @@ type RecentAlert = {
 
 export default function DashboardScreen() {
   const { t } = useTranslation();
+  const { checking, allowed } = useOnboardingGate();
 
   const stats = useMemo<DashboardStat[]>(
     () => [
@@ -43,6 +45,19 @@ export default function DashboardScreen() {
     () => t('dashboard.recentAlerts.items', { returnObjects: true }) as RecentAlert[],
     [t]
   );
+
+  if (checking) {
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center bg-slate-50">
+        <ActivityIndicator size="large" color="#2563eb" />
+        <Text className="mt-4 text-sm text-slate-500">{t('common.loading')}</Text>
+      </SafeAreaView>
+    );
+  }
+
+  if (!allowed) {
+    return null;
+  }
 
   const timeframe = t('dashboard.stats.defaultTimeframe');
   const statsLength = stats.length;

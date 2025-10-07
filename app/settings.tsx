@@ -1,10 +1,25 @@
 import { Link } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Pressable, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useOnboardingGate } from '../lib/hooks/useOnboardingGate';
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
+  const { checking, allowed } = useOnboardingGate();
+
+  if (checking) {
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center bg-slate-50">
+        <ActivityIndicator size="large" color="#2563eb" />
+        <Text className="mt-4 text-sm text-slate-500">{t('common.loading')}</Text>
+      </SafeAreaView>
+    );
+  }
+
+  if (!allowed) {
+    return null;
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50">

@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
+  ActivityIndicator,
   FlatList,
   ListRenderItem,
   Pressable,
@@ -14,6 +15,7 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { markOnboardingComplete } from '../lib/storage';
 import { requestAllRequiredPermissions } from '../lib/permissions';
+import { useOnboardingGate } from '../lib/hooks/useOnboardingGate';
 
 type PermissionStep = {
   title: string;
@@ -31,6 +33,10 @@ export default function OnboardingScreen() {
   const router = useRouter();
   const { width } = useWindowDimensions();
   const { t } = useTranslation();
+  const { checking, allowed } = useOnboardingGate({
+    redirectIfIncomplete: null,
+    redirectIfComplete: '/',
+  });
 
   const slides = useMemo(
     () => t('onboarding.slides', { returnObjects: true }) as OnboardingSlide[],
@@ -118,8 +124,19 @@ export default function OnboardingScreen() {
     );
   };
 
+  const guardBlocked = checking && !allowed;
+
   const primaryCtaLabel =
     currentIndex === slides.length - 1 ? t('onboarding.start') : t('onboarding.next');
+
+  if (guardBlocked) {
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center bg-slate-950">
+        <ActivityIndicator size="large" color="#60a5fa" />
+        <Text className="mt-4 text-base text-slate-400">{t('common.loading')}</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-slate-950">

@@ -1,7 +1,8 @@
 {
   "common": {
     "continue": "Continuer",
-    "back": "Retour"
+    "back": "Retour",
+    "loading": "Chargement de l’état de protection..."
   },
   "dashboard": {
     "title": "Bouclier Anti-Hameçonnage IA",
