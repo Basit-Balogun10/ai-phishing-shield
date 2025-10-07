@@ -13,6 +13,7 @@ import {
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { markOnboardingComplete } from '../lib/storage';
+import { requestAllRequiredPermissions } from '../lib/permissions';
 
 type PermissionStep = {
   title: string;
@@ -52,6 +53,7 @@ export default function OnboardingScreen() {
     try {
       setIsCompleting(true);
       await markOnboardingComplete();
+      await requestAllRequiredPermissions();
       router.replace('/');
     } finally {
       setIsCompleting(false);
@@ -66,6 +68,7 @@ export default function OnboardingScreen() {
     try {
       setIsCompleting(true);
       await markOnboardingComplete();
+      await requestAllRequiredPermissions();
       router.replace('/');
     } finally {
       setIsCompleting(false);
