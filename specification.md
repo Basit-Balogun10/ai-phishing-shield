@@ -15,15 +15,19 @@ The application will be a lightweight, privacy-focused security utility for Andr
 
 #### **2. Architecture & Key Libraries**
 
-We will use an Expo "Custom Development Client" workflow. This gives us the flexibility of Expo's development experience while allowing us to add the native modules required for background processing and on-device AI.
+We will use the **Expo Managed Workflow (SDK 54+)** for maximum compatibility and ease of development. Expo's modern SDK provides native modules for most of our requirements. We will only consider a custom development client if TFLite integration absolutely requires it.
 
-*   **Framework:** React Native (via Expo SDK)
-*   **On-Device AI:** **TensorFlow Lite (TFLite)** via a native module. We will need to build a custom bridge to allow our JavaScript code to communicate with the native TFLite interpreter.
-*   **Background Processing:** **`react-native-background-fetch`** or a similar library (preferably one from Expo) to schedule periodic background tasks for message analysis, ensuring battery efficiency.
-*   **Localization:** **`i18next`** with **`react-i18next`**. We will manage translation files (`.json`) for English, French, Swahili, and other required languages. This covers all UI text, from button labels to alert messages.
-*   **UI/Components:** A simple component library like React Native Paper or just built-in React Native components to keep the app lightweight.
-*   **Navigation:** Expo built-in navigation.
-*   **Permissions Handling:** `expo-notifications` and potentially Android's Accessibility Service API for reading notifications from apps like WhatsApp (this requires explicit user consent and clear explanation).
+*   **Framework:** React Native (via Expo SDK 54)
+*   **On-Device AI:** **TensorFlow Lite (TFLite)** - We'll explore:
+    1. `@tensorflow/tfjs-react-native` for JavaScript-based inference (lightweight, no native code)
+    2. `react-native-tensorflow-lite` with Expo config plugin if native performance is critical
+*   **Background Processing:** **`expo-task-manager`** + **`expo-background-fetch`** - Built-in Expo APIs for efficient background tasks
+*   **Notifications:** **`expo-notifications`** - Handles local push notifications natively
+*   **SMS Access:** **`expo-sms`** for basic SMS reading (Android only)
+*   **Localization:** **`expo-localization`** + **`i18next`** with **`react-i18next`**. Translation files (`.json`) for English, French, Swahili, and other required languages.
+*   **UI/Components:** React Native built-in components + **NativeWind (TailwindCSS)** for styling (already configured)
+*   **Navigation:** **`expo-router`** (file-based routing) or **React Navigation**
+*   **Permissions:** `expo-permissions`, `expo-notifications`, and potentially Android's Notification Listener Service for WhatsApp message scanning
 
 #### **3. Core Features & User Journey**
 
@@ -78,9 +82,10 @@ We will use an Expo "Custom Development Client" workflow. This gives us the flex
 **Phase 1: The App Skeleton & UI (1-2 Days)**
 *   **Goal:** Create a visible, clickable app shell.
 *   **Tasks:**
-    *   Set up the Expo project with a custom dev client.
+    *   Set up the Expo project (managed workflow - already done ✓).
+    *   Install core dependencies: `expo-router`, `i18next`, `react-i18next`, `expo-localization`.
     *   Build the main screens: Onboarding, Dashboard, Settings.
-    *   Implement navigation with React Navigation.
+    *   Implement navigation with `expo-router` or React Navigation.
     *   Set up `i18next` with placeholder translation files for English and French. All UI text must use the translation function (`t('key')`) from the start.
 
 **Phase 2: Background Service & Mock Detection (2-3 Days)**
