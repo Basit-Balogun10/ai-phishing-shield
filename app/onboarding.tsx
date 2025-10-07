@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { markOnboardingComplete } from '../lib/storage';
 
 type PermissionStep = {
   title: string;
@@ -36,6 +37,7 @@ export default function OnboardingScreen() {
   );
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isCompleting, setIsCompleting] = useState(false);
   const flatListRef = useRef<FlatList<OnboardingSlide>>(null);
 
   const viewabilityConfig = useRef({ viewAreaCoveragePercentThreshold: 55 }).current;
@@ -46,16 +48,28 @@ export default function OnboardingScreen() {
     }
   }).current;
 
-  const handleSkip = useCallback(() => {
-    router.replace('/');
+  const handleSkip = useCallback(async () => {
+    try {
+      setIsCompleting(true);
+      await markOnboardingComplete();
+      router.replace('/');
+    } finally {
+      setIsCompleting(false);
+    }
   }, [router]);
 
-  const handleAdvance = useCallback(() => {
+  const handleAdvance = useCallback(async () => {
     if (currentIndex < slides.length - 1) {
       flatListRef.current?.scrollToIndex({ index: currentIndex + 1, animated: true });
       return;
     }
-    router.replace('/');
+    try {
+      setIsCompleting(true);
+      await markOnboardingComplete();
+      router.replace('/');
+    } finally {
+      setIsCompleting(false);
+    }
   }, [currentIndex, router, slides.length]);
 
   const renderSlide: ListRenderItem<OnboardingSlide> = ({ item }) => {
@@ -111,8 +125,11 @@ export default function OnboardingScreen() {
           <Text className="text-sm font-semibold uppercase tracking-widest text-blue-400">
             {t('onboarding.badge')}
           </Text>
-          <Pressable onPress={handleSkip} hitSlop={10}>
-            <Text className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+          <Pressable onPress={handleSkip} hitSlop={10} disabled={isCompleting}>
+            <Text
+              className={`text-sm font-semibold uppercase tracking-wide ${
+                isCompleting ? 'text-slate-600' : 'text-slate-400'
+              }`}>
               {t('onboarding.skip')}
             </Text>
           </Pressable>
@@ -152,7 +169,10 @@ export default function OnboardingScreen() {
 
           <Pressable
             onPress={handleAdvance}
-            className="mt-8 rounded-full bg-blue-500 px-5 py-4 active:bg-blue-400">
+            disabled={isCompleting}
+            className={`mt-8 rounded-full px-5 py-4 ${
+              isCompleting ? 'bg-blue-400/60' : 'bg-blue-500 active:bg-blue-400'
+            }`}>
             <Text className="text-center text-base font-semibold uppercase tracking-wide text-white">
               {primaryCtaLabel}
             </Text>
