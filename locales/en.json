@@ -5,7 +5,53 @@
   },
   "dashboard": {
     "title": "AI Phishing Shield",
-    "subtitle": "Welcome! This is the dashboard placeholder. We’ll show protection status, recent alerts, and quick actions here soon.",
+    "subtitle": "Here’s the latest snapshot of your mobile defenses.",
+    "statusCard": {
+      "title": "You're protected",
+      "description": "Real-time phishing detection is running silently in the background.",
+      "model": "Model: {{model}}",
+      "lastScan": "Last check {{time}}"
+    },
+    "stats": {
+      "title": "Your protection stats",
+      "messagesScanned": "Messages scanned",
+      "threatsBlocked": "Threats blocked",
+      "safeMessages": "Safe messages",
+      "since": "Since {{timeframe}}",
+      "defaultTimeframe": "the last 7 days"
+    },
+    "recentAlerts": {
+      "title": "Recent alerts",
+      "subtitle": "Latest suspicious messages flagged by the shield.",
+      "empty": "No alerts detected yet. Stay vigilant!",
+      "viewAll": "View full history",
+      "historyAlertTitle": "Coming soon",
+      "historyAlertBody": "You'll be able to review the full alert history in the next milestone.",
+      "items": [
+        {
+          "sender": "Unknown number",
+          "preview": "Claim your tax refund now. Click the link...",
+          "timestamp": "2h ago"
+        },
+        {
+          "sender": "Finance HQ",
+          "preview": "Urgent: Verify your payroll details to avoid suspension.",
+          "timestamp": "Yesterday"
+        },
+        {
+          "sender": "+234 900 123 4567",
+          "preview": "We've credited your account. Confirm login immediately!",
+          "timestamp": "Mon"
+        }
+      ]
+    },
+    "report": {
+      "title": "Report a message",
+      "subtitle": "Forward a suspicious SMS so we can learn faster.",
+      "cta": "Report message",
+      "alertTitle": "Coming soon",
+      "alertBody": "You'll be able to submit suspicious messages in the next milestone."
+    },
     "navigateLabel": "Navigate",
     "links": {
       "onboarding": {

@@ -5,7 +5,53 @@
   },
   "dashboard": {
     "title": "Bouclier Anti-Hameçonnage IA",
-    "subtitle": "Bienvenue ! Voici l’écran d’accueil provisoire. Nous afficherons bientôt l’état de protection, les alertes récentes et des actions rapides.",
+    "subtitle": "Voici un aperçu instantané de l’état de votre protection mobile.",
+    "statusCard": {
+      "title": "Vous êtes protégé",
+      "description": "La détection anti-hameçonnage fonctionne silencieusement en arrière-plan.",
+      "model": "Modèle : {{model}}",
+      "lastScan": "Dernier contrôle {{time}}"
+    },
+    "stats": {
+      "title": "Vos statistiques de protection",
+      "messagesScanned": "Messages analysés",
+      "threatsBlocked": "Menaces bloquées",
+      "safeMessages": "Messages sûrs",
+      "since": "Depuis {{timeframe}}",
+      "defaultTimeframe": "les 7 derniers jours"
+    },
+    "recentAlerts": {
+      "title": "Alertes récentes",
+      "subtitle": "Derniers messages suspects signalés par le bouclier.",
+      "empty": "Aucune alerte détectée pour le moment. Restez vigilant !",
+      "viewAll": "Voir tout l’historique",
+      "historyAlertTitle": "Bientôt disponible",
+      "historyAlertBody": "Vous pourrez consulter l’historique complet des alertes lors de la prochaine étape.",
+      "items": [
+        {
+          "sender": "Numéro inconnu",
+          "preview": "Réclamez votre remboursement d’impôts. Cliquez sur le lien...",
+          "timestamp": "Il y a 2 h"
+        },
+        {
+          "sender": "Siège Finance",
+          "preview": "Urgent : vérifiez vos informations de paie pour éviter une suspension.",
+          "timestamp": "Hier"
+        },
+        {
+          "sender": "+234 900 123 4567",
+          "preview": "Nous avons crédité votre compte. Confirmez la connexion immédiatement !",
+          "timestamp": "Lun"
+        }
+      ]
+    },
+    "report": {
+      "title": "Signaler un message",
+      "subtitle": "Transférez un SMS suspect pour accélérer notre apprentissage.",
+      "cta": "Signaler",
+      "alertTitle": "Bientôt disponible",
+      "alertBody": "Vous pourrez soumettre des messages suspects lors de la prochaine étape."
+    },
     "navigateLabel": "Navigation",
     "links": {
       "onboarding": {
