@@ -68,21 +68,39 @@
     "badge": "Welcome",
     "title": "Activate Your AI Phishing Shield",
     "subtitle": "Breeze through these quick highlights so you know exactly what the app does and why permissions are needed.",
-    "cards": [
+    "skip": "Skip",
+    "next": "Next",
+    "start": "Start protecting",
+    "permissionNoteTitle": "Before we launch the shield",
+    "permissionNoteBody": "You'll grant notification and SMS access right after this tour.",
+    "permissionStepsTitle": "You'll enable:",
+    "slides": [
       {
         "title": "Stay Ahead of Phishing",
-        "description": "We analyze incoming SMS and notification content on your device to spot phishing attempts instantly."
+        "description": "We analyze incoming SMS and notification content on your device to spot phishing attempts instantly.",
+        "icon": "shield-check"
       },
       {
         "title": "Your Privacy Matters",
-        "description": "All detection happens offline. Messages never leave your device, and no data is stored in the cloud."
+        "description": "All detection happens offline. Messages never leave your device, and no data is stored in the cloud.",
+        "icon": "lock-check"
       },
       {
         "title": "Grant the Right Access",
-        "description": "We will ask for SMS and notification permissions so we can keep watch quietly in the background."
+        "description": "We will ask for SMS and notification permissions so we can keep watch quietly in the background.",
+        "icon": "cellphone-message",
+        "permissions": [
+          {
+            "title": "Notification access",
+            "description": "So we can scan WhatsApp, Messenger, Gmail, and more instantly."
+          },
+          {
+            "title": "SMS read access",
+            "description": "Required to analyze suspicious text messages the moment they arrive."
+          }
+        ]
       }
-    ],
-    "continue": "Continue to Dashboard"
+    ]
   },
   "settings": {
     "title": "Settings",

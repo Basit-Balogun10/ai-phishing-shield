@@ -68,21 +68,39 @@
     "badge": "Bienvenue",
     "title": "Activez votre bouclier anti-hameçonnage IA",
     "subtitle": "Parcourez ces points clés pour comprendre ce que fait l’application et pourquoi les permissions sont nécessaires.",
-    "cards": [
+    "skip": "Passer",
+    "next": "Suivant",
+    "start": "Activer la protection",
+    "permissionNoteTitle": "Avant d’activer le bouclier",
+    "permissionNoteBody": "Vous accorderez l’accès aux notifications et aux SMS juste après cette introduction.",
+    "permissionStepsTitle": "Vous activerez :",
+    "slides": [
       {
         "title": "Restez en avance sur les arnaques",
-        "description": "Nous analysons les SMS et notifications reçus sur votre appareil pour détecter immédiatement les tentatives d’hameçonnage."
+        "description": "Nous analysons les SMS et notifications reçus sur votre appareil pour détecter immédiatement les tentatives d’hameçonnage.",
+        "icon": "shield-check"
       },
       {
         "title": "Votre vie privée compte",
-        "description": "Toute l’analyse se fait hors ligne. Les messages ne quittent jamais votre appareil et aucune donnée n’est stockée dans le cloud."
+        "description": "Toute l’analyse se fait hors ligne. Les messages ne quittent jamais votre appareil et aucune donnée n’est stockée dans le cloud.",
+        "icon": "lock-check"
       },
       {
         "title": "Autorisez les accès nécessaires",
-        "description": "Nous demanderons l’accès aux SMS et notifications afin de surveiller discrètement en arrière-plan."
+        "description": "Nous demanderons l’accès aux SMS et notifications afin de surveiller discrètement en arrière-plan.",
+        "icon": "cellphone-message",
+        "permissions": [
+          {
+            "title": "Accès aux notifications",
+            "description": "Pour analyser instantanément WhatsApp, Messenger, Gmail et bien plus encore."
+          },
+          {
+            "title": "Accès à la lecture des SMS",
+            "description": "Nécessaire pour analyser les SMS suspects dès leur arrivée."
+          }
+        ]
       }
-    ],
-    "continue": "Continuer vers le tableau de bord"
+    ]
   },
   "settings": {
     "title": "Paramètres",
