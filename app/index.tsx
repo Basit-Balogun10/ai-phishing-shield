@@ -2,9 +2,10 @@ import { Link } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ActivityIndicator, Alert, Pressable, ScrollView, Text, View } from 'react-native';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useOnboardingGate } from '../lib/hooks/useOnboardingGate';
+import { triggerMockDetectionNow } from '../lib/services/backgroundDetection';
 
 const menuLinkStyles = `px-4 py-3 rounded-xl border border-blue-100 bg-white shadow-sm`;
 
@@ -22,6 +23,7 @@ type RecentAlert = {
 export default function DashboardScreen() {
   const { t } = useTranslation();
   const { checking, allowed } = useOnboardingGate();
+  const [isTriggeringDetection, setIsTriggeringDetection] = useState(false);
 
   const stats = useMemo<DashboardStat[]>(
     () => [
@@ -71,6 +73,30 @@ export default function DashboardScreen() {
       t('dashboard.recentAlerts.historyAlertTitle'),
       t('dashboard.recentAlerts.historyAlertBody')
     );
+  };
+
+  const handleSimulateDetectionPress = async () => {
+    try {
+      setIsTriggeringDetection(true);
+      const outcome = await triggerMockDetectionNow();
+
+      if (outcome.triggered) {
+        Alert.alert(
+          t('dashboard.mockDetection.successTitle'),
+          t('dashboard.mockDetection.successBody')
+        );
+      } else {
+        Alert.alert(
+          t('dashboard.mockDetection.noThreatTitle'),
+          t('dashboard.mockDetection.noThreatBody')
+        );
+      }
+    } catch (error) {
+      console.warn('[dashboard] Failed to trigger mock detection', error);
+      Alert.alert(t('dashboard.mockDetection.errorTitle'), t('dashboard.mockDetection.errorBody'));
+    } finally {
+      setIsTriggeringDetection(false);
+    }
   };
 
   return (
@@ -217,6 +243,26 @@ export default function DashboardScreen() {
                 </Text>
               </Link>
             </View>
+          </View>
+
+          <View className="space-y-3 rounded-3xl border border-slate-200 bg-white p-6">
+            <Text className="text-lg font-semibold text-slate-900">
+              {t('dashboard.mockDetection.title')}
+            </Text>
+            <Text className="text-sm text-slate-600">{t('dashboard.mockDetection.subtitle')}</Text>
+            <Pressable
+              disabled={isTriggeringDetection}
+              onPress={handleSimulateDetectionPress}
+              className={`mt-2 flex-row items-center justify-center rounded-full px-5 py-3 ${
+                isTriggeringDetection ? 'bg-slate-400/60' : 'bg-slate-900'
+              }`}>
+              <Text className="text-base font-semibold text-white">
+                {isTriggeringDetection
+                  ? t('dashboard.mockDetection.runningLabel')
+                  : t('dashboard.mockDetection.cta')}
+              </Text>
+            </Pressable>
+            <Text className="text-xs text-slate-400">{t('dashboard.mockDetection.helper')}</Text>
           </View>
         </View>
       </ScrollView>

@@ -53,6 +53,19 @@
       "alertTitle": "Bientôt disponible",
       "alertBody": "Vous pourrez soumettre des messages suspects lors de la prochaine étape."
     },
+    "mockDetection": {
+      "title": "Lancer une analyse fictive",
+      "subtitle": "Déclenchez l’analyseur en arrière-plan avec des messages fictifs pour voir les alertes.",
+      "cta": "Simuler une détection",
+      "runningLabel": "Analyse fictive en cours...",
+      "helper": "Si une menace fictive est détectée, vous recevrez aussi une notification locale.",
+      "successTitle": "Alerte fictive envoyée",
+      "successBody": "Ouvrez vos notifications pour découvrir comment les alertes s’afficheront.",
+      "noThreatTitle": "Aucune menace trouvée",
+      "noThreatBody": "Tous les messages fictifs semblent sûrs cette fois. Réessayez plus tard !",
+      "errorTitle": "Analyse fictive indisponible",
+      "errorBody": "Impossible de lancer l’analyse fictive. Réessayez après avoir relancé l’application."
+    },
     "navigateLabel": "Navigation",
     "links": {
       "onboarding": {
