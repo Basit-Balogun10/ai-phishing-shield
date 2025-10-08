@@ -8,6 +8,7 @@
     "start": "expo start",
     "prebuild": "expo prebuild",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
+    "lint:locales": "node scripts/check-locales.js",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
     "web": "expo start --web"
   },
@@ -15,6 +16,7 @@
     "@react-native-async-storage/async-storage": "^2.2.0",
     "expo": "^54.0.0",
     "expo-background-fetch": "~14.0.7",
+    "expo-background-task": "~1.0.8",
     "expo-localization": "~17.0.7",
     "expo-notifications": "~0.32.12",
     "expo-router": "~6.0.10",

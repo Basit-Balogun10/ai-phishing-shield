@@ -1,11 +1,14 @@
-import * as BackgroundFetch from 'expo-background-fetch';
+import * as BackgroundTask from 'expo-background-task';
 import * as TaskManager from 'expo-task-manager';
+import Constants from 'expo-constants';
 
 import { explainDetection, runMockDetectionSweep } from '../detection/mockDetection';
 import {
   ensureAlertNotificationChannelAsync,
   scheduleDetectionNotificationAsync,
 } from '../notifications';
+
+const { BackgroundTaskResult, BackgroundTaskStatus } = BackgroundTask;
 
 const TASK_NAME = 'mock-background-detection';
 let taskDefined = false;
@@ -26,13 +29,13 @@ const defineDetectionTask = () => {
           '⚠️ Phishing alert detected',
           notificationBody || 'Check the latest message flagged by AI Phishing Shield.'
         );
-        return BackgroundFetch.BackgroundFetchResult.NewData;
+        return BackgroundTaskResult.Success;
       }
 
-      return BackgroundFetch.BackgroundFetchResult.NoData;
+      return BackgroundTaskResult.Success;
     } catch (error) {
       console.warn('[backgroundDetection] Task execution failed', error);
-      return BackgroundFetch.BackgroundFetchResult.Failed;
+      return BackgroundTaskResult.Failed;
     }
   });
 
@@ -43,18 +46,22 @@ export const initializeMockBackgroundDetectionAsync = async () => {
   defineDetectionTask();
 
   try {
-    const registration = await BackgroundFetch.getStatusAsync();
-    if (registration === BackgroundFetch.BackgroundFetchStatus.Restricted) {
-      console.warn('[backgroundDetection] Background fetch is restricted on this device.');
+    if (Constants.appOwnership === 'expo') {
+      console.warn(
+        '[backgroundDetection] Background tasks are unavailable in Expo Go. Skipping registration.'
+      );
       return;
     }
 
+    const status = await BackgroundTask.getStatusAsync();
+    if (status === BackgroundTaskStatus.Restricted) {
+      console.warn('[backgroundDetection] Background tasks are restricted on this device.');
+      return;
+    }
     const isRegistered = await TaskManager.isTaskRegisteredAsync(TASK_NAME);
     if (!isRegistered) {
-      await BackgroundFetch.registerTaskAsync(TASK_NAME, {
+      await BackgroundTask.registerTaskAsync(TASK_NAME, {
         minimumInterval: 60 * 15,
-        stopOnTerminate: false,
-        startOnBoot: true,
       });
     }
   } catch (error) {

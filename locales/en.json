@@ -53,18 +53,31 @@
       "alertTitle": "Coming soon",
       "alertBody": "You'll be able to submit suspicious messages in the next milestone."
     },
+    "expoGoNotice": {
+      "title": "Expo Go limitation",
+      "body": "Background scanning pauses in Expo Go. Build a development client or standalone app to keep the shield active when the app closes."
+    },
     "mockDetection": {
       "title": "Run a mock scan",
       "subtitle": "Trigger the background scanner with sample messages to preview alerts.",
       "cta": "Simulate detection",
       "runningLabel": "Running mock scan...",
-      "helper": "If a sample threat is detected you'll also receive a local notification.",
+      "helper": "If a sample threat is detected you'll see the details below and receive a local notification.",
       "successTitle": "Mock alert triggered",
       "successBody": "Check your notification shade to see how phishing alerts will appear.",
       "noThreatTitle": "No suspicious samples",
       "noThreatBody": "All sample messages looked safe this time. Try again in a bit!",
       "errorTitle": "Mock scan unavailable",
-      "errorBody": "We couldn't run the mock detector. Please try again after reopening the app."
+      "errorBody": "We couldn't run the mock detector. Please try again after reopening the app.",
+      "noResultPlaceholder": "Run the simulator to preview exactly how alerts will look in-app.",
+      "detectedAt": "Detected {{time}}",
+      "scoreLabel": "Risk score: {{score}}%",
+      "noMatches": "No specific phishing patterns matched, but the message still scored as risky.",
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Email"
+      }
     },
     "navigateLabel": "Navigate",
     "links": {
@@ -120,6 +133,15 @@
     "title": "Settings",
     "subtitle": "Configure localization, alerts, and diagnostics. This is a placeholder until we wire up real settings.",
     "entries": {
+      "theme": {
+        "title": "Appearance",
+        "description": "Choose how the app adapts its colors.",
+        "options": {
+          "dark": "Dark (default)",
+          "light": "Light",
+          "system": "Match system"
+        }
+      },
       "language": {
         "title": "Language",
         "description": "Switch between English, French, and Swahili."

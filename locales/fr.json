@@ -53,18 +53,31 @@
       "alertTitle": "Bientôt disponible",
       "alertBody": "Vous pourrez soumettre des messages suspects lors de la prochaine étape."
     },
+    "expoGoNotice": {
+      "title": "Limitation Expo Go",
+      "body": "La surveillance en arrière-plan s’interrompt dans Expo Go. Créez un client de développement ou une application autonome pour garder le bouclier actif lorsque l’app est fermée."
+    },
     "mockDetection": {
       "title": "Lancer une analyse fictive",
       "subtitle": "Déclenchez l’analyseur en arrière-plan avec des messages fictifs pour voir les alertes.",
       "cta": "Simuler une détection",
       "runningLabel": "Analyse fictive en cours...",
-      "helper": "Si une menace fictive est détectée, vous recevrez aussi une notification locale.",
+      "helper": "Si une menace fictive est détectée, les détails s’afficheront ci-dessous et vous recevrez une notification locale.",
       "successTitle": "Alerte fictive envoyée",
       "successBody": "Ouvrez vos notifications pour découvrir comment les alertes s’afficheront.",
       "noThreatTitle": "Aucune menace trouvée",
       "noThreatBody": "Tous les messages fictifs semblent sûrs cette fois. Réessayez plus tard !",
       "errorTitle": "Analyse fictive indisponible",
-      "errorBody": "Impossible de lancer l’analyse fictive. Réessayez après avoir relancé l’application."
+      "errorBody": "Impossible de lancer l’analyse fictive. Réessayez après avoir relancé l’application.",
+      "noResultPlaceholder": "Lancez le simulateur pour prévisualiser exactement l’apparence des alertes dans l’application.",
+      "detectedAt": "Détecté à {{time}}",
+      "scoreLabel": "Score de risque : {{score}}%",
+      "noMatches": "Aucun motif précis d’hameçonnage détecté, mais le message reste considéré comme risqué.",
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "E-mail"
+      }
     },
     "navigateLabel": "Navigation",
     "links": {
@@ -120,6 +133,15 @@
     "title": "Paramètres",
     "subtitle": "Configurez la localisation, les alertes et les diagnostics. Il s’agit d’un écran temporaire en attendant les véritables options.",
     "entries": {
+      "theme": {
+        "title": "Apparence",
+        "description": "Choisissez comment l’application adapte ses couleurs.",
+        "options": {
+          "dark": "Sombre (par défaut)",
+          "light": "Clair",
+          "system": "Selon le système"
+        }
+      },
       "language": {
         "title": "Langue",
         "description": "Basculer entre l’anglais, le français et le swahili."
