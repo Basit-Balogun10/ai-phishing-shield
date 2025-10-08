@@ -2,7 +2,7 @@ import { Link } from 'expo-router';
 import Constants from 'expo-constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { ActivityIndicator, Alert, Pressable, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useOnboardingGate } from '../lib/hooks/useOnboardingGate';
@@ -206,11 +206,15 @@ export default function DashboardScreen() {
                   {t('dashboard.recentAlerts.subtitle')}
                 </Text>
               </View>
-              <Pressable onPress={handleHistoryPress} className="px-3 py-2">
+              <TouchableOpacity
+                onPress={handleHistoryPress}
+                activeOpacity={0.7}
+                className="px-3 py-2"
+              >
                 <Text className="text-sm font-medium text-blue-600 dark:text-blue-400">
                   {t('dashboard.recentAlerts.viewAll')}
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
 
             <View className="space-y-3">
@@ -255,13 +259,15 @@ export default function DashboardScreen() {
             <Text className="text-sm text-slate-600 dark:text-slate-300">
               {t('dashboard.report.subtitle')}
             </Text>
-            <Pressable
+            <TouchableOpacity
               onPress={handleReportPress}
-              className="mt-2 flex-row items-center justify-center rounded-full bg-blue-600 px-5 py-3 active:bg-blue-500 dark:bg-blue-500 dark:active:bg-blue-400">
+              activeOpacity={0.85}
+              className="mt-2 flex-row items-center justify-center rounded-full bg-blue-600 px-5 py-3 dark:bg-blue-500"
+            >
               <Text className="text-base font-semibold text-white">
                 {t('dashboard.report.cta')}
               </Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
 
           <View className="space-y-4">
@@ -269,21 +275,25 @@ export default function DashboardScreen() {
               {t('dashboard.navigateLabel')}
             </Text>
             <View className="space-y-3">
-              <Link href="/onboarding" className={menuLinkStyles}>
-                <Text className="text-lg font-medium text-blue-700 dark:text-blue-400">
-                  {t('dashboard.links.onboarding.title')}
-                </Text>
-                <Text className="mt-1 text-sm text-slate-500 dark:text-slate-300">
-                  {t('dashboard.links.onboarding.description')}
-                </Text>
+              <Link href="/onboarding" asChild>
+                <TouchableOpacity activeOpacity={0.85} className={menuLinkStyles}>
+                  <Text className="text-lg font-medium text-blue-700 dark:text-blue-400">
+                    {t('dashboard.links.onboarding.title')}
+                  </Text>
+                  <Text className="mt-1 text-sm text-slate-500 dark:text-slate-300">
+                    {t('dashboard.links.onboarding.description')}
+                  </Text>
+                </TouchableOpacity>
               </Link>
-              <Link href="/settings" className={menuLinkStyles}>
-                <Text className="text-lg font-medium text-blue-700 dark:text-blue-400">
-                  {t('dashboard.links.settings.title')}
-                </Text>
-                <Text className="mt-1 text-sm text-slate-500 dark:text-slate-300">
-                  {t('dashboard.links.settings.description')}
-                </Text>
+              <Link href="/settings" asChild>
+                <TouchableOpacity activeOpacity={0.85} className={menuLinkStyles}>
+                  <Text className="text-lg font-medium text-blue-700 dark:text-blue-400">
+                    {t('dashboard.links.settings.title')}
+                  </Text>
+                  <Text className="mt-1 text-sm text-slate-500 dark:text-slate-300">
+                    {t('dashboard.links.settings.description')}
+                  </Text>
+                </TouchableOpacity>
               </Link>
             </View>
           </View>
@@ -295,20 +305,22 @@ export default function DashboardScreen() {
             <Text className="text-sm text-slate-600 dark:text-slate-300">
               {t('dashboard.mockDetection.subtitle')}
             </Text>
-            <Pressable
+            <TouchableOpacity
               disabled={isTriggeringDetection}
               onPress={handleSimulateDetectionPress}
+              activeOpacity={0.85}
               className={`mt-2 flex-row items-center justify-center rounded-full px-5 py-3 ${
                 isTriggeringDetection
                   ? 'bg-slate-400/60 dark:bg-slate-700'
-                  : 'bg-slate-900 active:bg-slate-800 dark:bg-blue-500'
-              }`}>
+                  : 'bg-slate-900 dark:bg-blue-500'
+              }`}
+            >
               <Text className="text-base font-semibold text-white">
                 {isTriggeringDetection
                   ? t('dashboard.mockDetection.runningLabel')
                   : t('dashboard.mockDetection.cta')}
               </Text>
-            </Pressable>
+            </TouchableOpacity>
             <Text className="text-xs text-slate-400 dark:text-slate-500">
               {t('dashboard.mockDetection.helper')}
             </Text>

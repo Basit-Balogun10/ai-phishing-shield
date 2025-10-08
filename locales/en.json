@@ -2,7 +2,9 @@
   "common": {
     "continue": "Continue",
     "back": "Back",
-    "loading": "Loading protection status..."
+    "loading": "Loading protection status...",
+    "comingSoonTitle": "Coming soon",
+    "comingSoonBody": "We’re finishing this option. Check back shortly."
   },
   "dashboard": {
     "title": "AI Phishing Shield",

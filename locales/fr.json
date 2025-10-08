@@ -2,7 +2,9 @@
   "common": {
     "continue": "Continuer",
     "back": "Retour",
-    "loading": "Chargement de l’état de protection..."
+    "loading": "Chargement de l’état de protection...",
+    "comingSoonTitle": "Bientôt disponible",
+    "comingSoonBody": "Cette option sera activée très bientôt. Revenez d’ici peu."
   },
   "dashboard": {
     "title": "Bouclier Anti-Hameçonnage IA",

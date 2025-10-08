@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Appearance } from 'react-native';
-import { NativeWindStyleSheet, useColorScheme } from 'nativewind';
+import { NativeWindStyleSheet } from 'nativewind';
 
 import { getThemePreference, setThemePreference, ThemePreference } from '../storage';
 
@@ -25,12 +25,16 @@ const resolveColorScheme = (
 };
 
 export function useThemePreference(): ThemePreferenceState {
-  const { setColorScheme } = useColorScheme();
   const [preference, setPreferenceState] = useState<ThemePreference>(DEFAULT_PREFERENCE);
   const [resolvedColorScheme, setResolvedColorScheme] = useState<'light' | 'dark'>(
     DEFAULT_PREFERENCE
   );
   const [ready, setReady] = useState(false);
+
+  const applyColorScheme = useCallback((scheme: 'light' | 'dark') => {
+    setResolvedColorScheme(scheme);
+    NativeWindStyleSheet.setColorScheme(scheme);
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -46,9 +50,7 @@ export function useThemePreference(): ThemePreferenceState {
       }
 
       setPreferenceState(effectivePreference);
-      setResolvedColorScheme(resolvedScheme);
-      setColorScheme(resolvedScheme);
-      NativeWindStyleSheet.setColorScheme(resolvedScheme);
+      applyColorScheme(resolvedScheme);
       setReady(true);
     };
 
@@ -57,7 +59,7 @@ export function useThemePreference(): ThemePreferenceState {
     return () => {
       isMounted = false;
     };
-  }, [setColorScheme]);
+  }, [applyColorScheme]);
 
   useEffect(() => {
     if (preference !== 'system') {
@@ -69,35 +71,29 @@ export function useThemePreference(): ThemePreferenceState {
         'system',
         (nextScheme ?? 'dark') as 'light' | 'dark'
       );
-      setResolvedColorScheme(resolvedScheme);
-      setColorScheme(resolvedScheme);
-      NativeWindStyleSheet.setColorScheme(resolvedScheme);
+      applyColorScheme(resolvedScheme);
     });
 
     return () => listener.remove();
-  }, [preference, setColorScheme]);
+  }, [applyColorScheme, preference]);
 
   useEffect(() => {
     if (ready) {
       const systemScheme = (Appearance.getColorScheme() ?? 'dark') as 'light' | 'dark';
       const resolvedScheme = resolveColorScheme(preference, systemScheme);
-      setResolvedColorScheme(resolvedScheme);
-      setColorScheme(resolvedScheme);
-      NativeWindStyleSheet.setColorScheme(resolvedScheme);
+      applyColorScheme(resolvedScheme);
     }
-  }, [preference, ready, setColorScheme]);
+  }, [applyColorScheme, preference, ready]);
 
   const persistPreference = useCallback(
     async (nextPreference: ThemePreference) => {
       setPreferenceState(nextPreference);
       const systemScheme = (Appearance.getColorScheme() ?? 'dark') as 'light' | 'dark';
       const resolvedScheme = resolveColorScheme(nextPreference, systemScheme);
-      setResolvedColorScheme(resolvedScheme);
-      setColorScheme(resolvedScheme);
-      NativeWindStyleSheet.setColorScheme(resolvedScheme);
+      applyColorScheme(resolvedScheme);
       await setThemePreference(nextPreference);
     },
-    [setColorScheme]
+    [applyColorScheme]
   );
 
   const togglePreference = useCallback(async () => {

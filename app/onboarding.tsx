@@ -5,8 +5,8 @@ import {
   ActivityIndicator,
   FlatList,
   ListRenderItem,
-  Pressable,
   Text,
+  TouchableOpacity,
   useWindowDimensions,
   View,
   ViewToken,
@@ -145,14 +145,19 @@ export default function OnboardingScreen() {
           <Text className="text-sm font-semibold uppercase tracking-widest text-blue-400">
             {t('onboarding.badge')}
           </Text>
-          <Pressable onPress={handleSkip} hitSlop={10} disabled={isCompleting}>
+          <TouchableOpacity
+            onPress={handleSkip}
+            hitSlop={10}
+            activeOpacity={0.7}
+            disabled={isCompleting}
+          >
             <Text
               className={`text-sm font-semibold uppercase tracking-wide ${
                 isCompleting ? 'text-slate-600' : 'text-slate-400'
               }`}>
               {t('onboarding.skip')}
             </Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
 
         <View className="px-6 pt-4">
@@ -187,16 +192,17 @@ export default function OnboardingScreen() {
             ))}
           </View>
 
-          <Pressable
+          <TouchableOpacity
             onPress={handleAdvance}
             disabled={isCompleting}
+            activeOpacity={0.9}
             className={`mt-8 rounded-full px-5 py-4 ${
               isCompleting ? 'bg-blue-400/60' : 'bg-blue-500 active:bg-blue-400'
             }`}>
             <Text className="text-center text-base font-semibold uppercase tracking-wide text-white">
               {primaryCtaLabel}
             </Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
