@@ -33,7 +33,10 @@ export function useThemePreference(): ThemePreferenceState {
 
   const applyColorScheme = useCallback((scheme: 'light' | 'dark') => {
     setResolvedColorScheme(scheme);
-    NativeWindStyleSheet.setColorScheme(scheme);
+
+    if (typeof NativeWindStyleSheet.setColorScheme === 'function') {
+      NativeWindStyleSheet.setColorScheme(scheme);
+    }
   }, []);
 
   useEffect(() => {
