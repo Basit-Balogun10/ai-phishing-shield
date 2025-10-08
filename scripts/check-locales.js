@@ -1,10 +1,25 @@
 #!/usr/bin/env node
 /* eslint-env node */
-const { readFile } = require('node:fs/promises');
+const { readFile, readdir } = require('node:fs/promises');
 const path = require('node:path');
 
 const LOCALES_DIR = path.resolve(process.cwd(), 'locales');
-const LOCALE_FILES = ['en.json', 'fr.json'];
+const REFERENCE_LOCALE = process.env.LOCALE_REFERENCE ?? 'en.json';
+
+async function getLocaleFiles() {
+  const entries = await readdir(LOCALES_DIR, { withFileTypes: true });
+  const localeFiles = entries
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.json'))
+    .map((entry) => entry.name)
+    .sort();
+
+  if (!localeFiles.includes(REFERENCE_LOCALE)) {
+    console.error(`❌ Reference locale ${REFERENCE_LOCALE} not found in locales directory.`);
+    process.exit(1);
+  }
+
+  return localeFiles;
+}
 
 function flatten(value, prefix = '', acc = new Set()) {
   if (Array.isArray(value)) {
@@ -50,18 +65,22 @@ async function loadLocale(fileName) {
 }
 
 async function main() {
-  const locales = await Promise.all(LOCALE_FILES.map(loadLocale));
+  const localeFiles = await getLocaleFiles();
+  const locales = await Promise.all(localeFiles.map(loadLocale));
   if (locales.includes(null)) {
     process.exit(process.exitCode ?? 1);
   }
 
-  const [referenceLocale, ...others] = locales;
+  const referenceIndex = localeFiles.indexOf(REFERENCE_LOCALE);
+  const referenceLocale = locales[referenceIndex];
+  const otherLocales = locales.filter((_, index) => index !== referenceIndex);
+  const otherLocaleNames = localeFiles.filter((_, index) => index !== referenceIndex);
   const referenceKeys = flatten(referenceLocale);
 
   let hasMismatch = false;
 
-  others.forEach((locale, index) => {
-    const localeName = LOCALE_FILES[index + 1];
+  otherLocales.forEach((locale, index) => {
+    const localeName = otherLocaleNames[index];
     const candidateKeys = flatten(locale);
 
     const missingFromCandidate = diffKeys(referenceKeys, candidateKeys);

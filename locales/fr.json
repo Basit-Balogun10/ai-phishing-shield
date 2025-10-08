@@ -59,6 +59,11 @@
       "title": "Limitation Expo Go",
       "body": "La surveillance en arrière-plan s’interrompt dans Expo Go. Créez un client de développement ou une application autonome pour garder le bouclier actif lorsque l’app est fermée."
     },
+    "permissionsReminder": {
+      "title": "Activez les accès requis",
+      "body": "Activez les notifications et les SMS pour que le bouclier analyse automatiquement.",
+      "cta": "Vérifier les autorisations"
+    },
     "mockDetection": {
       "title": "Lancer une analyse fictive",
       "subtitle": "Déclenchez l’analyseur en arrière-plan avec des messages fictifs pour voir les alertes.",
@@ -100,9 +105,45 @@
     "skip": "Passer",
     "next": "Suivant",
     "start": "Activer la protection",
+    "skipDialog": {
+      "title": "Ignorer les autorisations requises ?",
+      "body": "Sans l’accès aux notifications et aux SMS, le bouclier ne peut pas surveiller automatiquement les tentatives d’hameçonnage. Vous pourrez les activer plus tard depuis les paramètres.",
+      "cancel": "Rester ici",
+      "confirm": "Ignorer pour l’instant"
+    },
     "permissionNoteTitle": "Avant d’activer le bouclier",
     "permissionNoteBody": "Vous accorderez l’accès aux notifications et aux SMS juste après cette introduction.",
     "permissionStepsTitle": "Vous activerez :",
+    "permissions": {
+      "title": "Maintenez le bouclier actif",
+      "subtitle": "Activez ces autorisations pour que nous analysions les messages dès leur arrivée.",
+      "notifications": {
+        "title": "Accès aux notifications",
+        "description": "Autorisez-nous à analyser WhatsApp, Messenger, Gmail et d’autres services en temps réel.",
+        "cta": "Activer les notifications",
+        "grantedCta": "Notifications activées",
+        "openSettings": "Ouvrir les paramètres système"
+      },
+      "sms": {
+        "title": "Accès aux SMS",
+        "description": "Permettez-nous de lire localement les SMS entrants pour signaler immédiatement les messages suspects.",
+        "cta": "Activer l’accès SMS",
+        "grantedCta": "SMS activés",
+        "openSettings": "Ouvrir les paramètres système",
+        "unavailable": "L’accès aux SMS n’est pas nécessaire sur cet appareil."
+      },
+      "status": {
+        "requesting": "Demande…",
+        "granted": "Activé",
+        "blocked": "Activer dans les paramètres",
+        "required": "Toujours requis"
+      },
+      "finishCta": "Activer la protection",
+      "checking": "Vérification des autorisations en cours…",
+      "continueHelper": "Activez les accès requis pour continuer",
+      "incompleteTitle": "Terminez la configuration des accès",
+      "incompleteBody": "Activez les notifications et l’accès aux SMS pour que le bouclier fonctionne automatiquement."
+    },
     "slides": [
       {
         "title": "Restez en avance sur les arnaques",
@@ -146,7 +187,7 @@
       },
       "language": {
         "title": "Langue",
-        "description": "Basculer entre l’anglais, le français et le swahili."
+        "description": "Basculer entre l’anglais, le français, le swahili, le yoruba, l’igbo, le haoussa, le pidgin, l’arabe et l’amharique."
       },
       "notifications": {
         "title": "Préférences de notification",

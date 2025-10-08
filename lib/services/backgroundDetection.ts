@@ -7,6 +7,7 @@ import {
   ensureAlertNotificationChannelAsync,
   scheduleDetectionNotificationAsync,
 } from '../notifications';
+import { checkNotificationPermission, checkSmsPermission } from '../permissions';
 
 const { BackgroundTaskResult, BackgroundTaskStatus } = BackgroundTask;
 
@@ -46,6 +47,22 @@ export const initializeMockBackgroundDetectionAsync = async () => {
   defineDetectionTask();
 
   try {
+    const [notificationStatus, smsStatus] = await Promise.all([
+      checkNotificationPermission(),
+      checkSmsPermission(),
+    ]);
+
+    const smsRequired = !(smsStatus.unavailable ?? false);
+    const permissionsGranted =
+      notificationStatus.granted && (smsRequired ? smsStatus.granted : true);
+
+    if (!permissionsGranted) {
+      console.warn(
+        '[backgroundDetection] Skipping background registration because required permissions are missing.'
+      );
+      return;
+    }
+
     if (Constants.appOwnership === 'expo') {
       console.warn(
         '[backgroundDetection] Background tasks are unavailable in Expo Go. Skipping registration.'

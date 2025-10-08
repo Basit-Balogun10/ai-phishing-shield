@@ -1,37 +1,96 @@
-import { Platform, PermissionsAndroid } from 'react-native';
+import { Linking, PermissionsAndroid, Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 
+export type PermissionStatus = {
+  granted: boolean;
+  canAskAgain: boolean;
+  blocked: boolean;
+  unavailable?: boolean;
+};
+
 export type PermissionRequestResult = {
-  notificationsGranted: boolean;
-  smsGranted: boolean;
+  notifications: PermissionStatus;
+  sms: PermissionStatus;
 };
 
 const isNotificationGranted = (status: Notifications.NotificationPermissionsStatus): boolean => {
   return status.granted || status.status === Notifications.PermissionStatus.GRANTED;
 };
 
-export const requestNotificationPermission = async (): Promise<boolean> => {
+const mapNotificationStatus = (
+  status: Notifications.NotificationPermissionsStatus
+): PermissionStatus => ({
+  granted: isNotificationGranted(status),
+  canAskAgain: status.canAskAgain ?? false,
+  blocked: !isNotificationGranted(status) && !(status.canAskAgain ?? false),
+});
+
+export const checkNotificationPermission = async (): Promise<PermissionStatus> => {
   try {
     const existing = await Notifications.getPermissionsAsync();
-    if (isNotificationGranted(existing)) {
-      return true;
-    }
-
-    const updated = await Notifications.requestPermissionsAsync();
-    return isNotificationGranted(updated);
+    return mapNotificationStatus(existing);
   } catch (error) {
     console.warn('[permissions] Failed to request notification permission', error);
-    return false;
+    return { granted: false, blocked: false, canAskAgain: true };
   }
 };
 
-export const requestSmsPermission = async (): Promise<boolean> => {
+export const requestNotificationPermission = async (): Promise<PermissionStatus> => {
+  try {
+    const existing = await Notifications.getPermissionsAsync();
+    if (isNotificationGranted(existing)) {
+      return mapNotificationStatus(existing);
+    }
+
+    if (!(existing.canAskAgain ?? false)) {
+      return mapNotificationStatus(existing);
+    }
+
+    const updated = await Notifications.requestPermissionsAsync();
+    return mapNotificationStatus(updated);
+  } catch (error) {
+    console.warn('[permissions] Failed to request notification permission', error);
+    return { granted: false, blocked: false, canAskAgain: true };
+  }
+};
+
+const mapSmsStatus = (result: PermissionsAndroid.PermissionStatus): PermissionStatus => {
+  switch (result) {
+    case PermissionsAndroid.RESULTS.GRANTED:
+      return { granted: true, canAskAgain: true, blocked: false };
+    case PermissionsAndroid.RESULTS.DENIED:
+      return { granted: false, canAskAgain: true, blocked: false };
+    case PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN:
+      return { granted: false, canAskAgain: false, blocked: true };
+    default:
+      return { granted: false, canAskAgain: true, blocked: false };
+  }
+};
+
+export const checkSmsPermission = async (): Promise<PermissionStatus> => {
   if (Platform.OS !== 'android') {
-    return true;
+    return { granted: true, canAskAgain: false, blocked: false, unavailable: true };
   }
 
   try {
-    const status = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_SMS, {
+    const status = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_SMS);
+    if (status) {
+      return { granted: true, canAskAgain: true, blocked: false };
+    }
+    return { granted: false, canAskAgain: true, blocked: false };
+  } catch (error) {
+    console.warn('[permissions] Failed to request SMS permission', error);
+    return { granted: false, canAskAgain: true, blocked: false };
+  }
+};
+
+export const requestSmsPermission = async (): Promise<PermissionStatus> => {
+  if (Platform.OS !== 'android') {
+    return { granted: true, canAskAgain: false, blocked: false, unavailable: true };
+  }
+
+  try {
+    const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_SMS, {
       title: 'Allow AI Phishing Shield to read SMS messages',
       message: 'We analyze SMS content on-device to spot phishing attempts the moment they arrive.',
       buttonPositive: 'Allow',
@@ -39,16 +98,24 @@ export const requestSmsPermission = async (): Promise<boolean> => {
       buttonNeutral: 'Ask me later',
     });
 
-    return status === PermissionsAndroid.RESULTS.GRANTED;
+    return mapSmsStatus(result);
   } catch (error) {
     console.warn('[permissions] Failed to request SMS permission', error);
-    return false;
+    return { granted: false, canAskAgain: true, blocked: false };
+  }
+};
+
+export const openSystemSettings = async (): Promise<void> => {
+  try {
+    await Linking.openSettings();
+  } catch (error) {
+    console.warn('[permissions] Failed to open system settings', error);
   }
 };
 
 export const requestAllRequiredPermissions = async (): Promise<PermissionRequestResult> => {
-  const notificationsGranted = await requestNotificationPermission();
-  const smsGranted = await requestSmsPermission();
+  const notifications = await requestNotificationPermission();
+  const sms = await requestSmsPermission();
 
-  return { notificationsGranted, smsGranted };
+  return { notifications, sms };
 };

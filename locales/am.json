@@ -1,0 +1,203 @@
+{
+  "common": {
+    "continue": "ቀጥል",
+    "back": "ተመለስ",
+    "loading": "የጥበቃ ሁኔታን በመመርመር ላይ…",
+    "comingSoonTitle": "በቅርቡ",
+    "comingSoonBody": "ይህን አማራጭ እንሠራ እና እንጨርሰዋለን። በቅርቡ ይመለሱ።"
+  },
+  "dashboard": {
+    "title": "AI አንግት መከላከያ",
+    "subtitle": "የስልክዎ ጥበቃ ሁኔታን በፈጣን ያሳያችሁ።",
+    "statusCard": {
+      "title": "ተከላከላችሁ",
+      "description": "የፊሺንግ መለያየት በጀርባ በጸጥታ እየሰራ ነው።",
+      "model": "ሞዴል: {{model}}",
+      "lastScan": "መጨረሻ ግምገማ {{time}}"
+    },
+    "stats": {
+      "title": "የጥበቃ ስኬቶችዎ",
+      "messagesScanned": "የተመረመሩ መልዕክቶች",
+      "threatsBlocked": "የተከለከሉ አደጋዎች",
+      "safeMessages": "ደህና ያሉ መልዕክቶች",
+      "since": "ከ {{timeframe}} ጀምሮ",
+      "defaultTimeframe": "ያለፈው 7 ቀናት"
+    },
+    "recentAlerts": {
+      "title": "የቅርብ ማስጠንቀቂያዎች",
+      "subtitle": "ግንዛቤ የተነሳበት ተጠ suspect መልዕክቶች ይህ ነው።",
+      "empty": "አሁን ላይ ማስጠንቀቂያ የለም። ጥንቃቄ ይቀጥሉ!",
+      "viewAll": "ሙሉ ታሪክ ይመልከቱ",
+      "historyAlertTitle": "በቅርቡ",
+      "historyAlertBody": "ሙሉ ታሪኩን በሚቀጥለው ዙር ታያላችሁ።",
+      "items": [
+        {
+          "sender": "ያልታወቀ ቁጥር",
+          "preview": "የታክስ መመለሻዎን አሁን ይጠይቁ። አገናኝ ጠቅ ያድርጉ…",
+          "timestamp": "2 ሰዓታት በፊት"
+        },
+        {
+          "sender": "የፋይናንስ ማዕከል",
+          "preview": "አስቸኳይ፡ የደመወዝ መረጃዎን ያረጋግጡ ከተሰናከሉ በፊት።",
+          "timestamp": "ትናንትና"
+        },
+        {
+          "sender": "+234 900 123 4567",
+          "preview": "በመለያዎ ገንዘብ አኖርን። እባክዎን ወዲያውኑ ያረጋግጡ!",
+          "timestamp": "ሰኞ"
+        }
+      ]
+    },
+    "report": {
+      "title": "መልዕክት ያሳውቁ",
+      "subtitle": "ጠ suspect የሆነ SMS ያስገቡ እንድንማሩ ፈጣን።",
+      "cta": "ያሳውቁ",
+      "alertTitle": "በቅርቡ",
+      "alertBody": "ጠ suspect መልዕክቶችን ለመላክ በሚቀጥለው ዙር ይችላሉ።"
+    },
+    "expoGoNotice": {
+      "title": "የExpo Go ገደብ",
+      "body": "የጀርባ ሂደት በExpo Go ይቆማል። መተግበሪያ የልማት ወይም የተነጠለ ስራ ይገንቡ እንዲቀጥል ከመተግበሪያው በኋላም ይቆይ።"
+    },
+    "permissionsReminder": {
+      "title": "አስፈላጊ ፍቃዶችን አንቃ",
+      "body": "ማንቂያና SMS አንቃ እንዲሁም አንግቱ በራሱ ላይ እንዲሰራ.",
+      "cta": "ፍቃዶችን ይመረምሩ"
+    },
+    "mockDetection": {
+      "title": "ሞክር ምርመራ አድርጉ",
+      "subtitle": "በምሳሌ መልዕክቶች የጀርባ መመርመሪያውን አግብቱ እንዴት እንደሚታይ ይመልከቱ።",
+      "cta": "መመርመር ይጀምሩ",
+      "runningLabel": "ሞክር ምርመራ በሂደት ላይ…",
+      "helper": "አደጋ ከታየ ዝርዝሮቹ እዚህ ይታያሉ እና ማንቂያ ይቀበላሉ።",
+      "successTitle": "ሞክር ማንቂያ ተቀበለ",
+      "successBody": "እንዴት እንደሚታይ ለመመልከት የማንቂያ ቦታዎን ይመልከቱ።",
+      "noThreatTitle": "አደጋ አልተገኘም",
+      "noThreatBody": "ምሳሌ መልዕክቶቹ ጠባብ ናቸው። ኋላ ይሞክሩ!",
+      "errorTitle": "ሞክር ምርመራው አልተሳካም",
+      "errorBody": "የሞክር መመርመሪያውን መክፈት አልቻልንም። እባክዎን መተግበሪያውን እንደገና ይክፈቱ እና ይመለሱ።",
+      "noResultPlaceholder": "መመርመር ሞክሩ የማንቂያዎች እንዴት እንደሚታዩ ለመመልከት።",
+      "detectedAt": "ተገኘ በ {{time}}",
+      "scoreLabel": "የአደጋ እሴት: {{score}}%",
+      "noMatches": "የተለየ የፊሺንግ ዘዴ አልተገኘም፣ ነገር ግን መልዕክቱ ገና አደጋ ነው።",
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "ዋትሳፕ",
+        "email": "ኢሜይል"
+      }
+    },
+    "navigateLabel": "ተጓዝ",
+    "links": {
+      "onboarding": {
+        "title": "ወደ መጀመሪያ ጉዞ ይሂዱ",
+        "description": "የእንክብካቤ መመሪያዎችን እና የፈቃድ መረጃን ይመልከቱ।"
+      },
+      "settings": {
+        "title": "ማስተካከያ ክፈት",
+        "description": "ቋንቋ፣ ማንቂያ፣ ምርመራዎችን ይቆጣጠሩ።"
+      }
+    }
+  },
+  "onboarding": {
+    "badge": "እንኳን በደህና መጣችሁ",
+    "title": "AI አንግትን በስልክዎ ያግቡ",
+    "subtitle": "መተግበሪያው ምን እንደሚያደርግ እና ፈቃድ ለምን እንደሚያስፈልገን ያስተውሉ ለማድረግ ትንሽ ጉዞ ይውሰዱ።",
+    "skip": "ይዝለሉ",
+    "next": "ቀጥሉ",
+    "start": "ጥበቃን ይጀምሩ",
+    "skipDialog": {
+      "title": "አስፈላጊ ፍቃዶችን ልትዝሉ?",
+      "body": "ያለ የማንቂያና SMS ፍቃድ አንግቱ በራሱ ላይ የፊሺንግ ሙከራዎችን ማለት አይችልም። እነሱን በኋላ በማስተካከያ ማንበብ ይችላሉ።",
+      "cancel": "እዚህ ቆይ",
+      "confirm": "ለጊዜው ዝለል"
+    },
+    "permissionNoteTitle": "ከመጀመርዎ በፊት",
+    "permissionNoteBody": "ይህ አጭር መመሪያ ከተጠናቀቀ በኋላ የማንቂያና የSMS ፈቃድ ስለሚሰጡ ማስታወሻ ይደርሳችሁ።",
+    "permissionStepsTitle": "ፈቃድ ለመስጠት የሚያስፈልጉት:",
+    "permissions": {
+      "title": "አንግቱን በስራ ላይ ያድርጉ",
+      "subtitle": "መልዕክቶች ሲደርሱ በቅድሚያ እንድንመርመር እነዚህን ፍቃዶች አንቃ።",
+      "notifications": {
+        "title": "የማንቂያ ፍቃድ",
+        "description": "WhatsApp፣ Messenger፣ Gmail እና ሌሎችን በቅርቡ እንድንመርመር እንዲፈቅዱልን።",
+        "cta": "ማንቂያ አንቃ",
+        "grantedCta": "ማንቂያ ተከፍቷል",
+        "openSettings": "የስርዓት ቅንብር ክፈት"
+      },
+      "sms": {
+        "title": "የSMS ፍቃድ",
+        "description": "ጥ suspect መልዕክቶችን በወቅታቸው ለመለየት SMS በአካባቢ እንክብካቤ እንድንሰጥ።",
+        "cta": "የSMS ፍቃድ አንቃ",
+        "grantedCta": "SMS ተከፍቷል",
+        "openSettings": "የስርዓት ቅንብር ክፈት",
+        "unavailable": "በዚህ መሣሪያ ላይ የSMS ፍቃድ አያስፈልግም።"
+      },
+      "status": {
+        "requesting": "በመጠየቅ ላይ…",
+        "granted": "ተከፍቷል",
+        "blocked": "በቅንብር ውስጥ አንቃ",
+        "required": "እስካሁን ያስፈልጋል"
+      },
+      "finishCta": "ጥበቃን ጀምር",
+      "checking": "ያሉትን ፍቃዶች በመፈተሽ ላይ…",
+      "continueHelper": "ለመቀጠል አስፈላጊውን አንቃ",
+      "incompleteTitle": "የፍቃድ ማሰናጃን ያጠናቅቁ",
+      "incompleteBody": "ማንቂያና SMS አንቃ እንዲሁም አንግቱ በራሱ ላይ እንዲሰራ."
+    },
+    "slides": [
+      {
+        "title": "ከማስታለላ በፊት ይቅዱ",
+        "description": "ስልክዎ ላይ የሚደርሱ ሁሉንም SMS እና ማንቂያዎችን እንመርመራ የፊሺንግ ሙከራዎችን ወዲያውኑ እንድንገናኝ።",
+        "icon": "shield-check"
+      },
+      {
+        "title": "ግላዊነትዎ አስፈላጊ ነው",
+        "description": "ሁሉም መለያያት በመሣሪያዎ ላይ ነው የሚሰሩት። መልዕክቶች ከዚያ ቦታ አይወጡም፣ በክላውድም አይቀመጡም።",
+        "icon": "lock-check"
+      },
+      {
+        "title": "ትክክለኛውን ፈቃድ እንድንኖር",
+        "description": "የSMS እና ማንቂያ ፈቃድን እንጠይቃለን በጀርባ በጸጥታ እንድንሰራ።",
+        "icon": "cellphone-message",
+        "permissions": [
+          {
+            "title": "የማንቂያ ፈቃድ",
+            "description": "WhatsApp, Messenger, Gmail እና ሌሎችን በፈጣን እንድንመርመር።"
+          },
+          {
+            "title": "የSMS ንባብ ፈቃድ",
+            "description": "ጠ suspect መልዕክቶች በሚደርሱ ጊዜ ለመተንተን ያስፈልጋል።"
+          }
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "title": "ማስተካከያ",
+    "subtitle": "ቋንቋ፣ ማንቂያዎች እና ምርመራዎችን ይቆጣጠሩ። እርስዎ ሙሉ ማስተካከያ እስኪገናኝ ድረስ እርስዎ የሚያዩት ማብራሪያ ነው።",
+    "entries": {
+      "theme": {
+        "title": "የቅርጸ-ተሞክሮ",
+        "description": "መተግበሪያው እንዴት እንደሚታይ ይመርጡ።",
+        "options": {
+          "dark": "ግራር (ነባር)",
+          "light": "ብርሃን",
+          "system": "የስርዓቱን አከታትሉ"
+        }
+      },
+      "language": {
+        "title": "ቋንቋ",
+        "description": "በእንግሊዝኛ፣ ፈረንሳይኛ፣ ስዋሂሊ፣ ዮሩባ፣ ኢግቦ፣ ሃውሳ፣ ፒጅን፣ ዓረብኛ እና አማርኛ መካከል ይመርጡ።"
+      },
+      "notifications": {
+        "title": "ማንቂያዎች",
+        "description": "የማንቂያ ድምጽ፣ መንቀሳቀስ እና የእረፍት ሰአትን ያቀናብሩ።"
+      },
+      "diagnostics": {
+        "title": "ምርመራ",
+        "description": "ለአዲስ መረጃ በማድረግ ለመረጃ ትክክለኛነት ይረዱ።"
+      }
+    },
+    "back": "\u2190 ወደ ዳሽቦርድ ተመለስ"
+  }
+}

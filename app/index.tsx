@@ -28,7 +28,7 @@ type RecentAlert = {
 
 export default function DashboardScreen() {
   const { t } = useTranslation();
-  const { checking, allowed } = useOnboardingGate();
+  const { checking, allowed, permissions, permissionsSatisfied } = useOnboardingGate();
   const [isTriggeringDetection, setIsTriggeringDetection] = useState(false);
   const [lastDetection, setLastDetection] = useState<DetectionDisplay | null>(null);
   const isExpoGo = Constants.appOwnership === 'expo';
@@ -67,6 +67,17 @@ export default function DashboardScreen() {
 
   if (!allowed) {
     return null;
+  }
+
+  const smsRequired = permissions ? !(permissions.sms.unavailable ?? false) : true;
+  const missingPermissions: string[] = [];
+  if (permissions) {
+    if (!permissions.notifications.granted) {
+      missingPermissions.push(t('onboarding.permissions.notifications.title'));
+    }
+    if (smsRequired && !permissions.sms.granted) {
+      missingPermissions.push(t('onboarding.permissions.sms.title'));
+    }
   }
 
   const timeframe = t('dashboard.stats.defaultTimeframe');
@@ -116,6 +127,42 @@ export default function DashboardScreen() {
     <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-950">
       <ScrollView contentContainerStyle={{ paddingBottom: 32 }} className="flex-1">
         <View className="space-y-8 px-6 py-8">
+          {!permissionsSatisfied ? (
+            <View className="flex-row gap-3 rounded-2xl border border-rose-200 bg-rose-50 p-4 dark:border-rose-500/40 dark:bg-rose-500/10">
+              <View className="h-10 w-10 items-center justify-center rounded-full bg-rose-100 dark:bg-rose-500/30">
+                <MaterialCommunityIcons name="alert-circle" size={22} color="#be123c" />
+              </View>
+              <View className="flex-1">
+                <Text className="text-sm font-semibold text-rose-900 dark:text-rose-200">
+                  {t('dashboard.permissionsReminder.title')}
+                </Text>
+                <Text className="mt-1 text-sm text-rose-900/90 dark:text-rose-100/90">
+                  {t('dashboard.permissionsReminder.body')}
+                </Text>
+                {missingPermissions.length > 0 ? (
+                  <View className="mt-2 space-y-1">
+                    {missingPermissions.map((label) => (
+                      <Text
+                        key={label}
+                        className="text-xs font-medium uppercase tracking-wide text-rose-800 dark:text-rose-200">
+                        • {label}
+                      </Text>
+                    ))}
+                  </View>
+                ) : null}
+                <Link href="/onboarding" asChild>
+                  <TouchableOpacity
+                    activeOpacity={0.85}
+                    className="mt-3 w-full items-center justify-center rounded-full bg-rose-600 px-4 py-2 dark:bg-rose-500">
+                    <Text className="text-xs font-semibold uppercase tracking-wide text-white">
+                      {t('dashboard.permissionsReminder.cta')}
+                    </Text>
+                  </TouchableOpacity>
+                </Link>
+              </View>
+            </View>
+          ) : null}
+
           <View className="space-y-3">
             <Text className="text-3xl font-semibold text-slate-900 dark:text-slate-100">
               {t('dashboard.title')}
@@ -209,8 +256,7 @@ export default function DashboardScreen() {
               <TouchableOpacity
                 onPress={handleHistoryPress}
                 activeOpacity={0.7}
-                className="px-3 py-2"
-              >
+                className="px-3 py-2">
                 <Text className="text-sm font-medium text-blue-600 dark:text-blue-400">
                   {t('dashboard.recentAlerts.viewAll')}
                 </Text>
@@ -262,8 +308,7 @@ export default function DashboardScreen() {
             <TouchableOpacity
               onPress={handleReportPress}
               activeOpacity={0.85}
-              className="mt-2 flex-row items-center justify-center rounded-full bg-blue-600 px-5 py-3 dark:bg-blue-500"
-            >
+              className="mt-2 flex-row items-center justify-center rounded-full bg-blue-600 px-5 py-3 dark:bg-blue-500">
               <Text className="text-base font-semibold text-white">
                 {t('dashboard.report.cta')}
               </Text>
@@ -313,8 +358,7 @@ export default function DashboardScreen() {
                 isTriggeringDetection
                   ? 'bg-slate-400/60 dark:bg-slate-700'
                   : 'bg-slate-900 dark:bg-blue-500'
-              }`}
-            >
+              }`}>
               <Text className="text-base font-semibold text-white">
                 {isTriggeringDetection
                   ? t('dashboard.mockDetection.runningLabel')

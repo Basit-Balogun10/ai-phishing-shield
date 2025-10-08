@@ -1,0 +1,203 @@
+{
+  "common": {
+    "continue": "Ci gaba",
+    "back": "Koma baya",
+    "loading": "Ana duba matsayi na kariya…",
+    "comingSoonTitle": "Zai iso nan ba da jimawa ba",
+    "comingSoonBody": "Muna kammala wannan zaɓi. Don Allah ka dawo nan ba da jimawa ba."
+  },
+  "dashboard": {
+    "title": "Garkuwar Phishing ta AI",
+    "subtitle": "Ga sabuwar hoton tsaro na wayarka a yanzu haka.",
+    "statusCard": {
+      "title": "Kana cikin kariya",
+      "description": "Ganewar barazanar phishing na aiki a hankali a bayan fage.",
+      "model": "Samfuri: {{model}}",
+      "lastScan": "Bincike na ƙarshe {{time}}"
+    },
+    "stats": {
+      "title": "Kididdigar kariyarka",
+      "messagesScanned": "Saƙonnin da aka duba",
+      "threatsBlocked": "Barazanar da aka toshe",
+      "safeMessages": "Saƙonnin lafiya",
+      "since": "Tun {{timeframe}}",
+      "defaultTimeframe": "kwanaki 7 da suka wuce"
+    },
+    "recentAlerts": {
+      "title": "Gargadi na baya-bayan nan",
+      "subtitle": "Sabbin saƙonnin da aka yi zargin phishing da garkuwa ta gano.",
+      "empty": "Babu gargadi a yanzu. Ka ci gaba da lura!",
+      "viewAll": "Duba duk tarihin",
+      "historyAlertTitle": "Zai iso nan ba da jimawa ba",
+      "historyAlertBody": "Za ka iya ganin duk tarihin gargadi a mataki na gaba.",
+      "items": [
+        {
+          "sender": "Lamba mara sani",
+          "preview": "Fansa harajin ka yanzu. Danna haɗin nan…",
+          "timestamp": "Awanni 2 da suka wuce"
+        },
+        {
+          "sender": "Hedkwatar Kuɗi",
+          "preview": "Gaggawa: Tabbatar da bayanan kuɗin ka kafin a dakatar da kai.",
+          "timestamp": "Jiya"
+        },
+        {
+          "sender": "+234 900 123 4567",
+          "preview": "Mun saka kuɗi a asusunka. Don Allah ka tabbatar nan take!",
+          "timestamp": "Litinin"
+        }
+      ]
+    },
+    "report": {
+      "title": "Ba da rahoton saƙo",
+      "subtitle": "Tura SMS da kake zargi domin mu koyi yadda ake gano su cikin sauri.",
+      "cta": "Ba da rahoton saƙo",
+      "alertTitle": "Zai iso nan ba da jimawa ba",
+      "alertBody": "Za ka iya tura saƙonnin da ake zargi a mataki na gaba."
+    },
+    "expoGoNotice": {
+      "title": "Takaitaccen Expo Go",
+      "body": "Binciken bango yana tsaya wa a Expo Go. Gina app na ci gaba ko ƙaƙƙarfan app domin garkuwa ya ci gaba da aiki ko ka rufe app ɗin."
+    },
+    "permissionsReminder": {
+      "title": " kunna damar da ake buƙata",
+      "body": " kunna sanarwa da SMS domin garkuwa ta duba saƙonni ta atomatik.",
+      "cta": "Duba izini"
+    },
+    "mockDetection": {
+      "title": "Gudanar da gwajin kwaikwayo",
+      "subtitle": " kunna na’urar gano barazana da saƙonnin kwaikwayo domin ganin yadda gargadi ke bayyana.",
+      "cta": "Gwada gano barazana",
+      "runningLabel": "Ana gudanar da gwajin kwaikwayo…",
+      "helper": "Idan an gano barazana, za a nuna cikakkun bayanai a nan kuma za ka samu sanarwa a wayarka.",
+      "successTitle": "Gargadin kwaikwayo ya iso",
+      "successBody": "Duba sashen sanarwarka domin ganin yadda zai bayyana.",
+      "noThreatTitle": "Babu barazana",
+      "noThreatBody": "Saƙonnin kwaikwayo duk sun kasance lafiya. Gwada kuma daga baya!",
+      "errorTitle": "Ba a samun gwajin kwaikwayo",
+      "errorBody": "Ba za mu iya gudanar da gwajin yanzu ba. Sake kunna app ɗin ka gwada kuma.",
+      "noResultPlaceholder": "Gudanar da gwajin kwaikwayo domin ganin yadda gargadi zai bayyana a cikin app ɗin.",
+      "detectedAt": "An gano a {{time}}",
+      "scoreLabel": "Matsayin barazana: {{score}}%",
+      "noMatches": "Ba a gano wani sigar phishing ba amma saƙon yana nuna barazana har yanzu.",
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Imel"
+      }
+    },
+    "navigateLabel": "Kewayawa",
+    "links": {
+      "onboarding": {
+        "title": "Je zuwa farawa",
+        "description": "Duba darasin farko da bayanin dalilin neman izini."
+      },
+      "settings": {
+        "title": "Buɗe saituna",
+        "description": "Sarrafa harshe, sanarwa, da bincike."
+      }
+    }
+  },
+  "onboarding": {
+    "badge": "Barka",
+    "title": "Kunshi Garkuwar Phishing ta AI",
+    "subtitle": "Bi waɗannan matakai ka fahimci abin da app ɗin ke yi da kuma dalilin neman izini.",
+    "skip": "Tsallake",
+    "next": "Ci gaba",
+    "start": "Fara kariya",
+    "skipDialog": {
+      "title": "Kana son tsallake izinin da ake buƙata?",
+      "body": "Ba tare da izinin sanarwa da SMS ba, garkuwa ba zai iya lura da zamba ta atomatik ba. Kana iya kunna su daga baya a cikin saituna.",
+      "cancel": "Ci gaba a nan",
+      "confirm": "Tsallake yanzu"
+    },
+    "permissionNoteTitle": "Kafin mu fara",
+    "permissionNoteBody": "Za ka bayar da izinin sanarwa da SMS bayan wannan taƙaitaccen jagora.",
+    "permissionStepsTitle": "Za ka ba da izini ga:",
+    "permissions": {
+      "title": "Ka bar garkuwa tana aiki",
+      "subtitle": " kunna waɗannan izinonin domin mu binciki saƙonni da zarar sun iso.",
+      "notifications": {
+        "title": "Izinin sanarwa",
+        "description": "Ba mu izini mu bincika WhatsApp, Messenger, Gmail da sauran ainihi.",
+        "cta": " kunna sanarwa",
+        "grantedCta": "Sanarwa ta kunna",
+        "openSettings": "Buɗe saitin tsarin"
+      },
+      "sms": {
+        "title": "Izinin SMS",
+        "description": "Ba mu damar karanta SMS da ke shigowa domin gano saƙonnin da ake zargi nan take.",
+        "cta": " kunna izinin SMS",
+        "grantedCta": "SMS ta kunna",
+        "openSettings": "Buɗe saitin tsarin",
+        "unavailable": "Izinin SMS ba dole ba ne akan wannan na’ura."
+      },
+      "status": {
+        "requesting": "Ana nema…",
+        "granted": "An kunna",
+        "blocked": "Kunne ta cikin saituna",
+        "required": "Har yanzu ana buƙata"
+      },
+      "finishCta": "Fara kariya",
+      "checking": "Ana duba izinonin yanzu…",
+      "continueHelper": " kunna abin da ake buƙata domin cigaba",
+      "incompleteTitle": "Kammala saiti na izini",
+      "incompleteBody": " kunna sanarwa da SMS domin garkuwa ta yi aiki ta atomatik."
+    },
+    "slides": [
+      {
+        "title": "Kasance a gaba da masu zamba",
+        "description": "Mun duba SMS da sanarwa a kan wayarka domin gano masu zamba nan take.",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Sirrinka yana da muhimmanci",
+        "description": "Dukkan bincike yana faruwa ne a kan wayarka. Ba mu tura saƙonni zuwa girgije.",
+        "icon": "lock-check"
+      },
+      {
+        "title": "Ba mu izini mai kyau",
+        "description": "Za mu roƙi izinin SMS da sanarwa domin mu ci gaba da lura a bayan fage.",
+        "icon": "cellphone-message",
+        "permissions": [
+          {
+            "title": "Izinin sanarwa",
+            "description": "Domin mu duba WhatsApp, Messenger, Gmail da sauransu nan take."
+          },
+          {
+            "title": "Izinin karanta SMS",
+            "description": "Domin sanin saƙonnin da ake zargi da zarar sun iso."
+          }
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "title": "Saituna",
+    "subtitle": "Sarrafa harshe, sanarwa, da bincike. Wannan allon ɗin wucin gadi ne har sai an ƙara ainihin saituna.",
+    "entries": {
+      "theme": {
+        "title": "Jigon hoto",
+        "description": "Zaɓi yadda app ɗin zai bayyana.",
+        "options": {
+          "dark": "Duhu (tsoho)",
+          "light": "Haske",
+          "system": "Bi tsarin waya"
+        }
+      },
+      "language": {
+        "title": "Harshe",
+        "description": "Zaɓi daga Turanci, Faransanci, Swahili, Yarbanci, Ibo, Hausa, Pidgin, Larabci, da Amharic."
+      },
+      "notifications": {
+        "title": "Sanarwa",
+        "description": "Saita sauti, rawar jiki, da lokutan hutu."
+      },
+      "diagnostics": {
+        "title": "Bincike",
+        "description": "Tura bayanai marasa suna domin tallafa wa inganta gano barazana."
+      }
+    },
+    "back": "\u2190 Koma zuwa dashboard"
+  }
+}

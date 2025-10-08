@@ -1,0 +1,203 @@
+{
+  "common": {
+    "continue": "Continue",
+    "back": "Go back",
+    "loading": "We dey check your protection status…",
+    "comingSoonTitle": "E go land soon",
+    "comingSoonBody": "We dey finish this option. Abeg check back soon."
+  },
+  "dashboard": {
+    "title": "AI Phishing Shield",
+    "subtitle": "See as your phone protection be right now.",
+    "statusCard": {
+      "title": "You dey protected",
+      "description": "Phishing detection dey run quietly for background.",
+      "model": "Model: {{model}}",
+      "lastScan": "Last check {{time}}"
+    },
+    "stats": {
+      "title": "Your protection numbers",
+      "messagesScanned": "Messages we check",
+      "threatsBlocked": "Threats we block",
+      "safeMessages": "Messages wey safe",
+      "since": "Since {{timeframe}}",
+      "defaultTimeframe": "the last 7 days"
+    },
+    "recentAlerts": {
+      "title": "Recent alerts",
+      "subtitle": "Latest suspicious messages wey the shield catch.",
+      "empty": "No alert yet. Stay sharp!",
+      "viewAll": "See full history",
+      "historyAlertTitle": "E go land soon",
+      "historyAlertBody": "Full alert history go show for the next milestone.",
+      "items": [
+        {
+          "sender": "Unknown number",
+          "preview": "Claim your tax refund now. Click the link…",
+          "timestamp": "2h ago"
+        },
+        {
+          "sender": "Finance HQ",
+          "preview": "Urgent: Verify your payroll details make dem no suspend you.",
+          "timestamp": "Yesterday"
+        },
+        {
+          "sender": "+234 900 123 4567",
+          "preview": "We don credit your account. Confirm login sharp sharp!",
+          "timestamp": "Mon"
+        }
+      ]
+    },
+    "report": {
+      "title": "Report message",
+      "subtitle": "Forward any suspicious SMS make we fit learn faster.",
+      "cta": "Report am",
+      "alertTitle": "E go land soon",
+      "alertBody": "You go fit report messages for the next milestone."
+    },
+    "expoGoNotice": {
+      "title": "Expo Go limitation",
+      "body": "Background scanning dey pause for Expo Go. Build dev client or standalone app make the shield no sleep when you close am."
+    },
+    "permissionsReminder": {
+      "title": "Turn on the needed access",
+      "body": "On notifications and SMS make the shield fit scan by itself.",
+      "cta": "Check permissions"
+    },
+    "mockDetection": {
+      "title": "Run sample scan",
+      "subtitle": "Trigger the background scanner with sample messages see how alert go be.",
+      "cta": "Simulate detection",
+      "runningLabel": "Sample scan dey run…",
+      "helper": "If we see threat, we go show details here and you go get local notification.",
+      "successTitle": "Sample alert trigger",
+      "successBody": "Check your notification shade to see am live.",
+      "noThreatTitle": "No threat show",
+      "noThreatBody": "All sample messages look safe this time. Try am later!",
+      "errorTitle": "Sample scan no dey",
+      "errorBody": "We no fit run the mock detector now. Close app and open am again, then retry.",
+      "noResultPlaceholder": "Run the simulator make you see how alerts go look inside app.",
+      "detectedAt": "Detected {{time}}",
+      "scoreLabel": "Risk score: {{score}}%",
+      "noMatches": "No specific phishing pattern match, but the message still get risk.",
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Email"
+      }
+    },
+    "navigateLabel": "Move around",
+    "links": {
+      "onboarding": {
+        "title": "Go onboarding",
+        "description": "Check the welcome flow again and the permission info."
+      },
+      "settings": {
+        "title": "Open settings",
+        "description": "Manage language, notifications, and diagnostics."
+      }
+    }
+  },
+  "onboarding": {
+    "badge": "Welcome",
+    "title": "Activate your AI Phishing Shield",
+    "subtitle": "Small tour make you sabi wetin the app dey do and why we need permissions.",
+    "skip": "Skip",
+    "next": "Next",
+    "start": "Start protecting",
+    "skipDialog": {
+      "title": "You wan skip the important permissions?",
+      "body": "If notifications and SMS no dey on, the shield no fit watch for scammers by itself. You fit turn am on later for settings.",
+      "cancel": "Stay here",
+      "confirm": "Skip am for now"
+    },
+    "permissionNoteTitle": "Before we start",
+    "permissionNoteBody": "After this quick tour you go grant notification and SMS access.",
+    "permissionStepsTitle": "You go allow:",
+    "permissions": {
+      "title": "Keep the shield awake",
+      "subtitle": "On these permissions make we fit check message the moment e land.",
+      "notifications": {
+        "title": "Notification access",
+        "description": "Allow us scan WhatsApp, Messenger, Gmail and others sharp sharp.",
+        "cta": "Turn on notifications",
+        "grantedCta": "Notifications dey on",
+        "openSettings": "Open phone settings"
+      },
+      "sms": {
+        "title": "SMS access",
+        "description": "Let us read SMS for your phone so we fit flag any suspicious text quick.",
+        "cta": "Turn on SMS access",
+        "grantedCta": "SMS dey on",
+        "openSettings": "Open phone settings",
+        "unavailable": "SMS access no dey required for this device."
+      },
+      "status": {
+        "requesting": "Dey ask…",
+        "granted": "Don on",
+        "blocked": "Go turn am on for settings",
+        "required": "Still need am"
+      },
+      "finishCta": "Start protecting",
+      "checking": "We dey check permissions wey de already…",
+      "continueHelper": "On the required access before you continue",
+      "incompleteTitle": "Finish permission setup",
+      "incompleteBody": "Turn on notifications and SMS make the shield dey guard you on its own."
+    },
+    "slides": [
+      {
+        "title": "Stay ahead of scammers",
+        "description": "We dey analyze SMS and notifications for your device to catch phishing instantly.",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Your privacy matter",
+        "description": "Everything happen offline. Messages no dey leave your phone and we no store data.",
+        "icon": "lock-check"
+      },
+      {
+        "title": "Give the correct access",
+        "description": "We go ask for SMS and notification permission so we fit guard you quietly.",
+        "icon": "cellphone-message",
+        "permissions": [
+          {
+            "title": "Notification access",
+            "description": "Make we fit scan WhatsApp, Messenger, Gmail and others immediately."
+          },
+          {
+            "title": "SMS read access",
+            "description": "We need am to analyze suspicious text as dem land."
+          }
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage language, alerts and diagnostics. This screen still placeholder till we wire full settings.",
+    "entries": {
+      "theme": {
+        "title": "Appearance",
+        "description": "Choose how the app go look.",
+        "options": {
+          "dark": "Dark (default)",
+          "light": "Light",
+          "system": "Follow system"
+        }
+      },
+      "language": {
+        "title": "Language",
+        "description": "Switch between English, French, Swahili, Yoruba, Igbo, Hausa, Pidgin, Arabic and Amharic."
+      },
+      "notifications": {
+        "title": "Notification settings",
+        "description": "Control alert sound, vibration and quiet time."
+      },
+      "diagnostics": {
+        "title": "Diagnostics",
+        "description": "Send anonymous logs make we improve detection."
+      }
+    },
+    "back": "\u2190 Go back to dashboard"
+  }
+}

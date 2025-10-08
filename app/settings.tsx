@@ -41,8 +41,7 @@ export default function SettingsScreen() {
             accessibilityLabel={t('settings.back')}
             onPress={() => router.back()}
             activeOpacity={0.7}
-            className="absolute left-0 rounded-full bg-slate-200 p-2 dark:bg-slate-800"
-          >
+            className="absolute left-0 rounded-full bg-slate-200 p-2 dark:bg-slate-800">
             <MaterialCommunityIcons
               name="chevron-left"
               size={28}
@@ -80,13 +79,11 @@ export default function SettingsScreen() {
                       : 'border border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-900'
                   }`}
                   accessibilityRole="button"
-                  accessibilityState={{ selected: isActive }}
-                >
+                  accessibilityState={{ selected: isActive }}>
                   <Text
                     className={`text-center text-sm font-semibold ${
                       isActive ? 'text-white' : 'text-slate-700 dark:text-slate-200'
-                    }`}
-                  >
+                    }`}>
                     {t(`settings.entries.theme.options.${value}`)}
                   </Text>
                 </TouchableOpacity>
@@ -97,14 +94,8 @@ export default function SettingsScreen() {
 
         <TouchableOpacity
           activeOpacity={0.85}
-          onPress={() =>
-            Alert.alert(
-              t('common.comingSoonTitle'),
-              t('common.comingSoonBody')
-            )
-          }
-          className="rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900"
-        >
+          onPress={() => Alert.alert(t('common.comingSoonTitle'), t('common.comingSoonBody'))}
+          className="rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
           <Text className="text-lg font-medium text-slate-900 dark:text-slate-100">
             {t('settings.entries.language.title')}
           </Text>
@@ -115,14 +106,8 @@ export default function SettingsScreen() {
 
         <TouchableOpacity
           activeOpacity={0.85}
-          onPress={() =>
-            Alert.alert(
-              t('common.comingSoonTitle'),
-              t('common.comingSoonBody')
-            )
-          }
-          className="rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900"
-        >
+          onPress={() => Alert.alert(t('common.comingSoonTitle'), t('common.comingSoonBody'))}
+          className="rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
           <Text className="text-lg font-medium text-slate-900 dark:text-slate-100">
             {t('settings.entries.notifications.title')}
           </Text>
@@ -133,14 +118,8 @@ export default function SettingsScreen() {
 
         <TouchableOpacity
           activeOpacity={0.85}
-          onPress={() =>
-            Alert.alert(
-              t('common.comingSoonTitle'),
-              t('common.comingSoonBody')
-            )
-          }
-          className="rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900"
-        >
+          onPress={() => Alert.alert(t('common.comingSoonTitle'), t('common.comingSoonBody'))}
+          className="rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
           <Text className="text-lg font-medium text-slate-900 dark:text-slate-100">
             {t('settings.entries.diagnostics.title')}
           </Text>

@@ -59,6 +59,11 @@
       "title": "Expo Go limitation",
       "body": "Background scanning pauses in Expo Go. Build a development client or standalone app to keep the shield active when the app closes."
     },
+    "permissionsReminder": {
+      "title": "Turn on required access",
+      "body": "Enable notifications and SMS so the shield can scan automatically.",
+      "cta": "Review permissions"
+    },
     "mockDetection": {
       "title": "Run a mock scan",
       "subtitle": "Trigger the background scanner with sample messages to preview alerts.",
@@ -100,9 +105,45 @@
     "skip": "Skip",
     "next": "Next",
     "start": "Start protecting",
+    "skipDialog": {
+      "title": "Skip required permissions?",
+      "body": "Without notifications and SMS access the shield can’t watch for phishing automatically. You can turn them on later from settings.",
+      "cancel": "Stay here",
+      "confirm": "Skip for now"
+    },
     "permissionNoteTitle": "Before we launch the shield",
     "permissionNoteBody": "You'll grant notification and SMS access right after this tour.",
     "permissionStepsTitle": "You'll enable:",
+    "permissions": {
+      "title": "Keep the shield active",
+      "subtitle": "Enable these permissions so we can scan messages the moment they arrive.",
+      "notifications": {
+        "title": "Notification access",
+        "description": "Allow access so we can analyse WhatsApp, Messenger, Gmail, and more in real-time.",
+        "cta": "Enable notifications",
+        "grantedCta": "Notifications enabled",
+        "openSettings": "Open system settings"
+      },
+      "sms": {
+        "title": "SMS access",
+        "description": "Let us read incoming SMS locally to flag suspicious texts instantly.",
+        "cta": "Enable SMS access",
+        "grantedCta": "SMS enabled",
+        "openSettings": "Open system settings",
+        "unavailable": "SMS access isn’t required on this device."
+      },
+      "status": {
+        "requesting": "Requesting…",
+        "granted": "Enabled",
+        "blocked": "Turn on in settings",
+        "required": "Still required"
+      },
+      "finishCta": "Start protecting",
+      "checking": "Checking current permissions…",
+      "continueHelper": "Enable required access to continue",
+      "incompleteTitle": "Finish setting up access",
+      "incompleteBody": "Turn on notifications and SMS access to let the shield run automatically."
+    },
     "slides": [
       {
         "title": "Stay Ahead of Phishing",
@@ -146,7 +187,7 @@
       },
       "language": {
         "title": "Language",
-        "description": "Switch between English, French, and Swahili."
+        "description": "Switch between English, French, Swahili, Yoruba, Igbo, Hausa, Pidgin, Arabic, and Amharic."
       },
       "notifications": {
         "title": "Notification Preferences",

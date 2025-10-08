@@ -1,0 +1,203 @@
+{
+  "common": {
+    "continue": "Tẹsiwaju",
+    "back": "Pada",
+    "loading": "N ń ṣayẹwo ipo aabo…",
+    "comingSoonTitle": "N bọ laipẹ",
+    "comingSoonBody": "A ń pari aṣayan yii. Padà wá laipẹ."
+  },
+  "dashboard": {
+    "title": "Aṣọ́ Ààbò lòdì sí Í-meèlì Olè",
+    "subtitle": "Ìfẹ̀sẹ̀mulẹ̀ tuntun ti ààbò fónran rẹ wà níbí.",
+    "statusCard": {
+      "title": "O wa lábò",
+      "description": "Ètò ìmúlò ìmúlọ́nnà olè ń ṣiṣẹ́ ní kíkà ní abẹ́lẹ̀ láì fi ara hàn.",
+      "model": "Àwọ̀n: {{model}}",
+      "lastScan": "Ìbẹ̀wò to kẹ́yìn {{time}}"
+    },
+    "stats": {
+      "title": "Ìtàn ààbò rẹ",
+      "messagesScanned": "Ìrántí tí a ka",
+      "threatsBlocked": "Ìkìlọ̀ tí a dí",
+      "safeMessages": "Ìrántí aláìlera",
+      "since": "Látì {{timeframe}}",
+      "defaultTimeframe": "ọjọ́ meje to kọjá"
+    },
+    "recentAlerts": {
+      "title": "Ìkìlọ̀ tuntun",
+      "subtitle": "Ìrántí tí a mọ̀ pé ó lèwu tí aṣọ ààbò ti mú ṣẹ̀ṣẹ̀ yìí.",
+      "empty": "Kò sí ìkìlọ̀ kankan sibẹ̀. Ṣọ́ra ṣùgbọ́n kéèyàn!",
+      "viewAll": "Wo ìtàn gígùn",
+      "historyAlertTitle": "N bọ laipẹ",
+      "historyAlertBody": "Ìṣẹ̀lẹ̀ ìtàn gbogbo yóò wà ní ìpele tó kàn.",
+      "items": [
+        {
+          "sender": "Nọ́mbà tí a kò mọ̀",
+          "preview": "Gba owó-ori padà rẹ báyìí. Tẹ ìjápọ̀ náà…",
+          "timestamp": "Wákàtí méjì sẹ́yìn"
+        },
+        {
+          "sender": "Ile-iṣẹ́ owó",
+          "preview": "Pátá: Ṣàyẹ̀wò àlàyé owó-ọ́ya rẹ kí ìdádúró má bà ọ lórí.",
+          "timestamp": "Àná"
+        },
+        {
+          "sender": "+234 900 123 4567",
+          "preview": "A ti fi owó sí àkọọ́lẹ̀ rẹ. Jọ̀wọ́ jẹ́ kí o jẹrìí lẹ́sẹ̀kẹsẹ̀!",
+          "timestamp": "Òjọ́ Ajé"
+        }
+      ]
+    },
+    "report": {
+      "title": "Jẹ́ kí o ròyìn ìrántí kan",
+      "subtitle": "Fi SMS tí o fura sí ranṣẹ́ kí a lè kọ́ ẹ̀ kíákíá.",
+      "cta": "Ròyìn ìránṣẹ́",
+      "alertTitle": "N bọ laipẹ",
+      "alertBody": "Ìmúlò ríránṣẹ́ fún ìròyìn yóò wà ní ìpele tó kàn."
+    },
+    "expoGoNotice": {
+      "title": "Ìdìpọ̀ Expo Go",
+      "body": "Àyẹ̀wò abẹ́lẹ̀ máa dá dúró ní Expo Go. Kọ́ app àgbékalẹ̀ sílẹ̀ tàbí app alákọkọso kí aṣọ ààbò má bàjẹ́ nígbà tí o ba ti pa app náà."
+    },
+    "permissionsReminder": {
+      "title": "Tan ìwọlé ọjọ́gbọ́n sílẹ̀",
+      "body": "Tan ìkìlọ̀ àti SMS sílẹ̀ kí aṣọ ààbò lè ṣọ́ ọ laifọwọyi.",
+      "cta": "Ṣàyẹ̀wò ìyọ̀nda"
+    },
+    "mockDetection": {
+      "title": "Ṣe ìwádìí àpẹẹrẹ",
+      "subtitle": "Jẹ́ kí a ṣiṣẹ́ àlẹ́mọ́ pẹlu àwọn ìrántí àpẹẹrẹ láti rí bí ìkìlọ̀ ṣe máa hàn.",
+      "cta": "Ṣe àdánwò ìmúlò",
+      "runningLabel": "Ìwádìí àpẹẹrẹ ń lọ…",
+      "helper": "Tí a bá rí àmì ewu, ìtàn yóò hàn ní ìsàlẹ̀ yìí, ìrántí àgbépọ̀ yóò dé sí foonu rẹ.",
+      "successTitle": "Ìkìlọ̀ àpẹẹrẹ ti yọ",
+      "successBody": "Ṣàyẹwo bọ́ọ̀dì ìfìmọ̀lára rẹ láti rí bí ìrántí ìkìlọ̀ ṣe máa hàn.",
+      "noThreatTitle": "Kò sí ewu",
+      "noThreatBody": "Gbogbo ìrántí àpẹẹrẹ dà bí ẹni pé ó dájú. Gbìmọ̀ sí lẹ́ẹ̀kansi nígbà mìíràn!",
+      "errorTitle": "Ìwádìí àpẹẹrẹ kò sí lọ́wọ́",
+      "errorBody": "A kò lè ṣe ìmúlò yìí báyìí. Jọ̀wọ́ tún app náà bẹ̀rẹ̀ kí o tún gbìmọ̀.",
+      "noResultPlaceholder": "Ṣe àdánwò aṣáyẹ̀wò láti rí gẹ́gẹ́ bí ìkìlọ̀ ṣe máa hàn nínú app.",
+      "detectedAt": "Ìmúlẹ̀ ní {{time}}",
+      "scoreLabel": "Ìwọn ewu: {{score}}%",
+      "noMatches": "A kò rí àpẹẹrẹ ìmàlẹ̀ olè kankan, ṣùgbọ́n ìrántí náà ṣi ń fi ewu hàn.",
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Imeeli"
+      }
+    },
+    "navigateLabel": "Lọ kiri",
+    "links": {
+      "onboarding": {
+        "title": "Lọ sí ìkọ́kọ́",
+        "description": "Tun àkọsílẹ̀ ìbẹ̀rẹ̀ àti àsọyé ìyọrísí àwọn ìyọ̀nda wo."
+      },
+      "settings": {
+        "title": "Ṣí àtúnṣe",
+        "description": "Ṣàkóso èdè, ìkìlọ̀, àti àyẹ̀wò amóye."
+      }
+    }
+  },
+  "onboarding": {
+    "badge": "Ẹ kú àbọ",
+    "title": "Ṣíṣe Aṣọ Ààbò AI rẹ",
+    "subtitle": "Ṣe àyẹ̀wò àwọn ìlànà kí o mọ ohun tí app náà ṣe àti ìdí tí a fi nílò ìyọ̀nda.",
+    "skip": "Fọkàn tán",
+    "next": "Tẹ̀síwájú",
+    "start": "Bẹrẹ ààbò",
+    "skipDialog": {
+      "title": "Ṣe o fẹ fo ìyọ̀nda pataki sílẹ?",
+      "body": "Láìsí ìwọlé ìkìlọ̀ àti SMS, aṣọ ààbò kò lè tọ́ ọ ṣọ́ laifọwọyi. O lè tan wọn sílẹ̀ nigbamii lára àwọn àtúnṣe.",
+      "cancel": "Dúró níbí",
+      "confirm": "Foju kọ fún báyìí"
+    },
+    "permissionNoteTitle": "Kí a tó bẹ̀rẹ̀",
+    "permissionNoteBody": "Ìbòwọ̀n ìkìlọ̀ àti SMS yóò wá lẹ́yìn ìrìnàjò kéékèèké yìí.",
+    "permissionStepsTitle": "Ìwọ yóò fún ní ààyè sí:",
+    "permissions": {
+      "title": "Jẹ́ kí aṣọ ààbò máa ṣiṣẹ́",
+      "subtitle": "Tan àwọn ìyọ̀nda wọ̀nyí sílẹ̀ kí a lè ṣayẹwo ìránṣẹ́ nígbà tí wọ́n bá dé.",
+      "notifications": {
+        "title": "Ìwọlé ìkìlọ̀",
+        "description": "Fún wa ní ìwọlé kí a lè túpalẹ̀ WhatsApp, Messenger, Gmail àti ẹlòmíí lẹ́sẹ̀kẹsẹ̀.",
+        "cta": "Tan ìkìlọ̀ sílẹ̀",
+        "grantedCta": "Ìkìlọ̀ ti ṣiṣẹ́",
+        "openSettings": "Ṣí àtúnṣe foonu"
+      },
+      "sms": {
+        "title": "Ìwọlé SMS",
+        "description": "Jẹ́ kí a ka SMS tó ń wáyé ní abẹ́lẹ̀ kí a lè sọ̀rọ̀ ní kíákíá.",
+        "cta": "Tan ìwọlé SMS sílẹ̀",
+        "grantedCta": "Ìwọlé SMS ti ṣiṣẹ́",
+        "openSettings": "Ṣí àtúnṣe foonu",
+        "unavailable": "Ìwọlé SMS kò ṣe dandan lórí ẹ̀rọ yìí."
+      },
+      "status": {
+        "requesting": "A ń bẹbẹ…",
+        "granted": "Ti ṣiṣẹ́",
+        "blocked": "Tan án ní àtúnṣe",
+        "required": "Ṣì nílò rẹ"
+      },
+      "finishCta": "Bẹrẹ ìdábòbọ",
+      "checking": "A ń ṣàyẹ̀wò ìyọ̀nda lọwọlọwọ…",
+      "continueHelper": "Tan ìwọlé tó yẹ sílẹ̀ kí o tẹ̀síwájú",
+      "incompleteTitle": "Parí ìtọ́nisọ́nà ìwọlé",
+      "incompleteBody": "Tan ìkìlọ̀ àti ìwọlé SMS sílẹ̀ kí aṣọ ààbò lè ṣiṣẹ́ laifọwọyi."
+    },
+    "slides": [
+      {
+        "title": "Ṣáàbò sí ìmàlẹ̀ olè",
+        "description": "A ń túbọ̀ ṣàlàyé gbogbo SMS àti ìfìmọ̀lára tó wọlé lórí foonu rẹ láì fi wọn ránṣẹ́ síta.",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Àṣírí rẹ ṣe pàtàkì",
+        "description": "Gbogbo ìtúpalẹ̀ ń ṣẹlẹ̀ nílẹ̀. A kò fi data rẹ ránṣẹ́ sí orí àwọ̀n.",
+        "icon": "lock-check"
+      },
+      {
+        "title": "Fún wa ní ààyè tó pé",
+        "description": "A ó bẹ̀rẹ̀ ìbòwọ̀n SMS àti ìkìlọ̀ kí a lè wò ó ní abẹ́lẹ̀.",
+        "icon": "cellphone-message",
+        "permissions": [
+          {
+            "title": "Ìwọlé ìkìlọ̀",
+            "description": "Kí a lè ṣe àyẹ̀wò WhatsApp, Messenger, Gmail àti bẹ́ẹ̀ bẹ́ẹ̀ lọ ní kíákíá."
+          },
+          {
+            "title": "Ìwọlé kika SMS",
+            "description": "Pátá fún àyẹ̀wò ìrántí tí o lèwu nígbà tí wọ́n bá dé."
+          }
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "title": "Àtúnṣe",
+    "subtitle": "Ṣètò èdè, ìkìlọ̀, àti àyẹ̀wò. Aṣà yìí ṣi jẹ́ àfikún títí di àsìkò tí a ó dá àtúnṣe gidi sílẹ̀.",
+    "entries": {
+      "theme": {
+        "title": "Àwọ̀ ara",
+        "description": "Yan bí app ṣe yẹ kí ó farahàn.",
+        "options": {
+          "dark": "Okunkun (aṣàdá)",
+          "light": "Imọlẹ̀",
+          "system": "Bọ̀ọ̀lù ètò"
+        }
+      },
+      "language": {
+        "title": "Èdè",
+        "description": "Yan láàrín Gẹẹsi, Faranse, Suwahili, Pidgin, Yorùbá, Ìgbò, Hausa, Árábììkì àti Amaríkì."
+      },
+      "notifications": {
+        "title": "Ìkìlọ̀",
+        "description": "Ṣètò ohun ìkìlọ̀, gígùn, àti àsìkò ìsinmi."
+      },
+      "diagnostics": {
+        "title": "Ìtẹ̀síwájú",
+        "description": "Rán àwọn àkọọ́lẹ̀ tí a dá ní àfiyèsí ranṣẹ́ láti ran wá lọ́wọ́ láti mú àfọ̀mọ̀kan pọ̀ si."
+      }
+    },
+    "back": "\u2190 Pada sí dasibodu"
+  }
+}
