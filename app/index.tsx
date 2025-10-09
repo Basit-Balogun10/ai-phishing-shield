@@ -2,15 +2,27 @@ import { Link } from 'expo-router';
 import Constants from 'expo-constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Modal,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useOnboardingGate } from '../lib/hooks/useOnboardingGate';
 import { triggerMockDetectionNow } from '../lib/services/backgroundDetection';
 import type { DetectionResult } from '../lib/detection/mockDetection';
+import { analyzeMessage, getMockMessages } from '../lib/detection/mockDetection';
 
-type DetectionDisplay = DetectionResult & {
+type DetectionRecord = {
+  recordId: string;
+  result: DetectionResult;
   detectedAt: string;
+  source: 'historical' | 'simulated';
 };
 
 const menuLinkStyles = `px-4 py-3 rounded-xl border border-blue-100 bg-white shadow-sm dark:border-blue-900/60 dark:bg-slate-900 dark:shadow-none`;
@@ -20,17 +32,12 @@ type DashboardStat = {
   value: string;
 };
 
-type RecentAlert = {
-  sender: string;
-  preview: string;
-  timestamp: string;
-};
-
 export default function DashboardScreen() {
   const { t } = useTranslation();
   const { checking, allowed, permissions, permissionsSatisfied } = useOnboardingGate();
   const [isTriggeringDetection, setIsTriggeringDetection] = useState(false);
-  const [lastDetection, setLastDetection] = useState<DetectionDisplay | null>(null);
+  const [lastDetection, setLastDetection] = useState<DetectionRecord | null>(null);
+  const [selectedDetection, setSelectedDetection] = useState<DetectionRecord | null>(null);
   const isExpoGo = Constants.appOwnership === 'expo';
 
   const stats = useMemo<DashboardStat[]>(
@@ -51,10 +58,82 @@ export default function DashboardScreen() {
     [t]
   );
 
-  const alerts = useMemo<RecentAlert[]>(
-    () => t('dashboard.recentAlerts.items', { returnObjects: true }) as RecentAlert[],
-    [t]
-  );
+  const historicalDetections = useMemo<DetectionRecord[]>(() => {
+    return getMockMessages()
+      .map((message) => {
+        const result = analyzeMessage(message);
+        return {
+          recordId: message.id,
+          result,
+          detectedAt: message.receivedAt,
+          source: 'historical' as const,
+        };
+      })
+      .filter((record) => record.result.score >= 0.6)
+      .sort((a, b) => new Date(b.detectedAt).getTime() - new Date(a.detectedAt).getTime());
+  }, []);
+
+  const detectionEntries = useMemo<DetectionRecord[]>(() => {
+    if (!lastDetection) {
+      return historicalDetections;
+    }
+
+    const filteredHistorical = historicalDetections.filter((record) => {
+      if (record.result.message.id !== lastDetection.result.message.id) {
+        return true;
+      }
+
+      return record.detectedAt !== lastDetection.detectedAt;
+    });
+
+    return [lastDetection, ...filteredHistorical];
+  }, [historicalDetections, lastDetection]);
+
+  const formatDetectedAt = (value: string) => {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    const now = new Date();
+    const sameDay = date.toDateString() === now.toDateString();
+
+    const timePart = date.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    if (sameDay) {
+      return timePart;
+    }
+
+    const datePart = date.toLocaleDateString();
+    return `${datePart} • ${timePart}`;
+  };
+
+  const getSeverityColor = (score: number) => {
+    if (score >= 0.85) {
+      return {
+        badge: 'bg-rose-100 dark:bg-rose-500/20',
+        text: 'text-rose-700 dark:text-rose-200',
+        iconColor: '#dc2626',
+      };
+    }
+
+    if (score >= 0.7) {
+      return {
+        badge: 'bg-amber-100 dark:bg-amber-500/20',
+        text: 'text-amber-700 dark:text-amber-200',
+        iconColor: '#d97706',
+      };
+    }
+
+    return {
+      badge: 'bg-blue-100 dark:bg-blue-500/20',
+      text: 'text-blue-700 dark:text-blue-200',
+      iconColor: '#2563eb',
+    };
+  };
 
   if (checking) {
     return (
@@ -100,10 +179,15 @@ export default function DashboardScreen() {
       const outcome = await triggerMockDetectionNow();
 
       if (outcome.triggered) {
-        setLastDetection({
-          ...outcome.result,
+        const detection: DetectionRecord = {
+          recordId: `${outcome.result.message.id}:${Date.now()}`,
+          result: outcome.result,
           detectedAt: new Date().toISOString(),
-        });
+          source: 'simulated',
+        };
+
+        setLastDetection(detection);
+        setSelectedDetection(detection);
         Alert.alert(
           t('dashboard.mockDetection.successTitle'),
           t('dashboard.mockDetection.successBody')
@@ -264,7 +348,7 @@ export default function DashboardScreen() {
             </View>
 
             <View className="space-y-3">
-              {alerts.length === 0 ? (
+              {detectionEntries.length === 0 ? (
                 <View className="items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900">
                   <MaterialCommunityIcons name="check-circle" size={32} color="#22c55e" />
                   <Text className="mt-3 text-center text-sm text-slate-500 dark:text-slate-300">
@@ -272,28 +356,63 @@ export default function DashboardScreen() {
                   </Text>
                 </View>
               ) : (
-                alerts.map((alert) => (
-                  <View
-                    key={`${alert.sender}-${alert.timestamp}`}
-                    className="flex-row gap-4 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-                    <View className="h-12 w-12 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-500/20">
-                      <MaterialCommunityIcons name="alert" size={24} color="#fb923c" />
-                    </View>
-                    <View className="flex-1">
-                      <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                        {alert.sender}
-                      </Text>
-                      <Text
-                        className="mt-1 text-sm text-slate-500 dark:text-slate-300"
-                        numberOfLines={2}>
-                        {alert.preview}
-                      </Text>
-                      <Text className="mt-2 text-xs uppercase tracking-wide text-slate-400 dark:text-slate-500">
-                        {alert.timestamp}
-                      </Text>
-                    </View>
-                  </View>
-                ))
+                detectionEntries.map((entry) => {
+                  const {
+                    badge,
+                    text: severityText,
+                    iconColor,
+                  } = getSeverityColor(entry.result.score);
+                  const primaryMatch = entry.result.matches[0];
+
+                  return (
+                    <TouchableOpacity
+                      key={entry.recordId}
+                      onPress={() => setSelectedDetection(entry)}
+                      activeOpacity={0.85}
+                      className="flex-row gap-4 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                      <View className="h-12 w-12 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-500/20">
+                        <MaterialCommunityIcons name="alert" size={24} color={iconColor} />
+                      </View>
+                      <View className="flex-1">
+                        <View className="flex-row items-center justify-between">
+                          <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                            {entry.result.message.sender}
+                          </Text>
+                          <View className={`rounded-full px-3 py-1 ${badge}`}>
+                            <Text
+                              className={`text-xs font-semibold uppercase tracking-wide ${severityText}`}>
+                              {t('dashboard.mockDetection.scoreLabel', {
+                                score: Math.round(entry.result.score * 100),
+                              })}
+                            </Text>
+                          </View>
+                        </View>
+
+                        <Text
+                          className="mt-1 text-sm text-slate-500 dark:text-slate-300"
+                          numberOfLines={2}>
+                          {entry.result.message.body}
+                        </Text>
+
+                        <View className="mt-3 flex-row flex-wrap items-center gap-x-3 gap-y-1">
+                          <Text className="text-xs font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                            {formatDetectedAt(entry.detectedAt)}
+                          </Text>
+                          <Text className="text-xs font-medium uppercase tracking-wide text-blue-500 dark:text-blue-300">
+                            {t(`dashboard.mockDetection.channels.${entry.result.message.channel}`)}
+                          </Text>
+                          {primaryMatch ? (
+                            <Text
+                              className="text-xs text-slate-500 dark:text-slate-400"
+                              numberOfLines={1}>
+                              {primaryMatch.label}
+                            </Text>
+                          ) : null}
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })
               )}
             </View>
           </View>
@@ -368,27 +487,34 @@ export default function DashboardScreen() {
             <Text className="text-xs text-slate-400 dark:text-slate-500">
               {t('dashboard.mockDetection.helper')}
             </Text>
-
             {lastDetection ? (
-              <View className="space-y-3 rounded-2xl border border-slate-200/70 bg-slate-100/60 p-4 dark:border-slate-700 dark:bg-slate-800/70">
+              <TouchableOpacity
+                onPress={() => setSelectedDetection(lastDetection)}
+                activeOpacity={0.85}
+                className="space-y-3 rounded-2xl border border-slate-200/70 bg-slate-100/60 p-4 dark:border-slate-700 dark:bg-slate-800/70">
                 <View className="flex-row items-start justify-between">
                   <View className="flex-1 pr-4">
                     <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                      {lastDetection.message.sender}
+                      {lastDetection.result.message.sender}
                     </Text>
                     <Text className="mt-1 text-xs text-slate-500 dark:text-slate-300">
                       {t('dashboard.mockDetection.detectedAt', {
-                        time: new Date(lastDetection.detectedAt).toLocaleTimeString(),
+                        time: new Date(lastDetection.detectedAt).toLocaleTimeString([], {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        }),
                       })}
                     </Text>
                   </View>
                   <View className="items-end">
                     <Text className="text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400">
-                      {t(`dashboard.mockDetection.channels.${lastDetection.message.channel}`)}
+                      {t(
+                        `dashboard.mockDetection.channels.${lastDetection.result.message.channel}`
+                      )}
                     </Text>
                     <Text className="mt-1 text-xs text-slate-500 dark:text-slate-300">
                       {t('dashboard.mockDetection.scoreLabel', {
-                        score: Math.round(lastDetection.score * 100),
+                        score: Math.round(lastDetection.result.score * 100),
                       })}
                     </Text>
                   </View>
@@ -397,12 +523,75 @@ export default function DashboardScreen() {
                 <Text
                   className="text-sm italic text-slate-600 dark:text-slate-200"
                   numberOfLines={3}>
-                  “{lastDetection.message.body}”
+                  “{lastDetection.result.message.body}”
+                </Text>
+
+                <Text className="text-xs text-blue-600 dark:text-blue-300">
+                  {t('dashboard.mockDetection.successTitle')}
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <Text className="text-xs text-slate-500 dark:text-slate-400">
+                {t('dashboard.mockDetection.noResultPlaceholder')}
+              </Text>
+            )}
+          </View>
+        </View>
+      </ScrollView>
+
+      <Modal
+        visible={Boolean(selectedDetection)}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setSelectedDetection(null)}>
+        <View className="flex-1 justify-end bg-slate-900/40">
+          <View className="w-full rounded-t-3xl bg-white p-6 dark:bg-slate-900">
+            {selectedDetection ? (
+              <View className="space-y-4">
+                <View className="flex-row items-start justify-between">
+                  <View className="flex-1 pr-4">
+                    <Text className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                      {selectedDetection.result.message.sender}
+                    </Text>
+                    <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                      {formatDetectedAt(selectedDetection.detectedAt)}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => setSelectedDetection(null)}
+                    activeOpacity={0.7}
+                    className="rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800">
+                    <Text className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">
+                      {t('common.back')}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View className="flex-row flex-wrap items-center gap-3">
+                  <Text className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:bg-blue-500/20 dark:text-blue-200">
+                    {t(
+                      `dashboard.mockDetection.channels.${selectedDetection.result.message.channel}`
+                    )}
+                  </Text>
+                  <Text className="text-sm text-slate-500 dark:text-slate-300">
+                    {t('dashboard.mockDetection.scoreLabel', {
+                      score: Math.round(selectedDetection.result.score * 100),
+                    })}
+                  </Text>
+                  {selectedDetection.source === 'simulated' ? (
+                    <Text className="text-xs font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                      • {t('dashboard.mockDetection.successTitle')}
+                    </Text>
+                  ) : null}
+                </View>
+
+                <Text className="text-sm text-slate-700 dark:text-slate-200">
+                  “{selectedDetection.result.message.body}”
                 </Text>
 
                 <View className="space-y-2">
-                  {lastDetection.matches.length ? (
-                    lastDetection.matches.map((match, index) => (
+                  {selectedDetection.result.matches.length ? (
+                    selectedDetection.result.matches.map((match, index) => (
                       <View
                         key={`${match.label}-${index}`}
                         className="flex-row items-start gap-3 rounded-xl border border-slate-200 bg-white/80 p-3 dark:border-slate-700 dark:bg-slate-900/80">
@@ -412,7 +601,7 @@ export default function DashboardScreen() {
                             {match.label}
                           </Text>
                           <Text className="mt-1 text-sm text-slate-600 dark:text-slate-200">
-                            “{match.excerpt}”
+                            “{match.excerpt || match.label}”
                           </Text>
                         </View>
                       </View>
@@ -426,14 +615,10 @@ export default function DashboardScreen() {
                   )}
                 </View>
               </View>
-            ) : (
-              <Text className="text-xs text-slate-500 dark:text-slate-400">
-                {t('dashboard.mockDetection.noResultPlaceholder')}
-              </Text>
-            )}
+            ) : null}
           </View>
         </View>
-      </ScrollView>
+      </Modal>
     </SafeAreaView>
   );
 }
