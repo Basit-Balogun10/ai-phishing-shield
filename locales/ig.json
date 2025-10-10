@@ -3,33 +3,149 @@
     "continue": "Gaa n’ihu",
     "back": "Laghachi",
     "loading": "Na-enyocha ọnọdụ nche…",
+    "cancel": "Kagbuo",
+    "save": "Chekwaa",
+    "clear": "Hichapụ",
     "comingSoonTitle": "Na-abịa ngwa ngwa",
     "comingSoonBody": "Anyị na-emecha nhọrọ a. Bịa leta ọzọ n’oge nta."
   },
+  "navigation": {
+    "tabs": {
+      "home": "Ụlọ",
+      "alerts": "Nche",
+      "settings": "Ntọala"
+    }
+  },
   "dashboard": {
     "title": "Ihe Mgbochi Phishing AI",
-    "subtitle": "Lee anya n’otú nchebe ekwentị gị si dị ugbu a.",
+    "subtitle": "Lee otú nchebe ekwentị gị si dị ugbu a.",
     "statusCard": {
       "title": "Ị nọ n’aka nchekwa",
       "description": "Nchọpụta phishing na-agba ọsọ nwayọọ nwayọọ n’azụ azụ.",
-      "model": "Nlegharị anya: {{model}}",
+      "model": "Ụdị nlereanya: {{model}}",
       "lastScan": "Nyocha ikpeazụ {{time}}"
     },
+    "hero": {
+      "status": {
+        "active": "Nche na-arụ ọrụ",
+        "paused": "Achọrọ ime ihe"
+      },
+      "pausedDescription": "Kwekọrịta ikike furu efu ka nchọpụta phishing ghara ịkwụsị.",
+      "modelVersion": "Ụdị {{version}}",
+      "lastScan": "Nyocha ikpeazụ {{time}}",
+      "lastScanFallback": "Na-eche nyocha mbụ",
+      "permissions": {
+        "ok": "Nkwupụta na SMS dị njikere",
+        "missing": "Dozie ikike"
+      },
+      "goToDiagnostics": "Lelee nnyocha",
+      "modelStatus": {
+        "syncing": "Na-eme ka mmelite kwekọọ",
+        "downloading": "Na-ebudata {{version}}",
+        "activating": "Na-akpali {{version}}",
+        "removing": "Na-ewepu {{version}}"
+      }
+    },
     "stats": {
-      "title": "Otu nchebe gị si arụ ọrụ",
-      "messagesScanned": "Ozi a gụchara",
-      "threatsBlocked": "Ihe ize ndụ a kwụsịrị",
-      "safeMessages": "Ozi dị mma",
+      "title": "Nchịkọta nchebe gị",
+      "messagesScanned": "Ozi e nyochara",
+      "threatsBlocked": "Ihe ize ndụ e kwụsịrị",
+      "safeMessages": "Ozi ndị dị nchebe",
       "since": "Kemgbe {{timeframe}}",
-      "defaultTimeframe": "izu asaa gara aga"
+      "defaultTimeframe": "ụbọchị asaa gara aga",
+      "timeframes": {
+        "24h": "Awa 24 gara aga",
+        "7d": "Ụbọchị asaa gara aga",
+        "30d": "Ụbọchị 30 gara aga",
+        "all": "Oge niile"
+      },
+      "trend": {
+        "up": "{{value}}% tụnyere oge gara aga",
+        "down": "{{value}}% tụnyere oge gara aga",
+        "flat": "Agbanwebeghị ya tụnyere oge gara aga"
+      },
+      "trendBadges": {
+        "up": "{{value}}%",
+        "down": "{{value}}%",
+        "flat": "Kwụsie ike"
+      },
+      "comparison": "tụnyere oge gara aga"
+    },
+    "quickActions": {
+      "title": "Ọrụ ngwa ngwa",
+      "mockScan": {
+        "title": "Gbaa nyocha atụ",
+        "subtitle": "Gaa na igwe nyocha ka e bido nchọpụta atụ."
+      },
+      "alerts": {
+        "title": "Lelee nche",
+        "subtitle": "Meghee akụkọ nchọpụta gị niile."
+      },
+      "settings": {
+        "title": "Hazi ntọala",
+        "subtitle": "Hazie asụsụ, nkwupụta, na nnyocha."
+      },
+      "developer": {
+        "title": "Ngwaọrụ mmepe",
+        "subtitle": "Tọgharịa onboarding ma nyochaa ikike ọzọ."
+      },
+      "model": {
+        "title": "Mmelite nlereanya",
+        "subtitle": "Lelee ụdị ọhụụ nke ngwaọrụ nchọpụta ma jikwaa ụdị etinyere."
+      }
+    },
+    "activity": {
+      "title": "Ọrụ kacha ọhụrụ",
+      "empty": "Enweghị nchọpụta ugbu a. Gbaa nyocha atụ ka ị hụ ka ozi si pụta."
     },
     "recentAlerts": {
-      "title": "Nchekwa ọhụrụ",
-      "subtitle": "Ozi a chọpụtara na ọ nwere ike ịdị ize ndụ nke ngwa mgbochi ahụ gbagoro.",
-      "empty": "Enweghị nchebe ọbụla ugbu a. Nọgide na-ele anya!",
-      "viewAll": "Hụ akụkọ nile",
+      "title": "Nche ọhụrụ",
+      "subtitle": "Ozi ndị ihe mgbochi ahụ hụrụ dị ize ndụ kacha ọhụrụ.",
+      "empty": "Enweghị nche ugbu a. Nọgide na-ele anya!",
+      "emptyWithFilters": "Enweghị nche dabara na {{filters}}. Gbalịa gbanwee ntacha gị.",
+      "viewAll": "Lelee akụkọ zuru ezu",
+      "filters": {
+        "all": "Gosi nche niile",
+        "historical": "Ndekọ ndụ",
+        "simulated": "Nchọpụta atụ gị",
+        "trusted": "Ndị zipụrụ a tụkwasịrị obi"
+      },
+      "severity": {
+        "all": "Ọkwa ọ bụla",
+        "high": "Ihe ize ndụ dị elu",
+        "medium": "Ihe ize ndụ nkezi",
+        "low": "Ihe ize ndụ dị ala"
+      },
+      "channels": {
+        "all": "Ụzọ ọ bụla"
+      },
+      "trustedToggle": {
+        "label": "Gosi naanị ndị zipụrụ ị tụkwasịrị obi",
+        "description": "Họrọ naanị ndị ị debara dị ka ndị a tụkwasịrị obi na Ntọala."
+      },
+      "trustedOnlyBadge": "Ndị zipụrụ a tụkwasịrị obi naanị",
+      "feedback": {
+        "title": "Ọ bụ nche a ziri ezi?",
+        "subtitle": "Gwa anyị ma ọ bụ nnwale phishing n’ezie ma ọ bụ mgbagha efu.",
+        "actions": {
+          "confirm": "Kwado egwu",
+          "confirmHelper": "Ọ bụ phishing",
+          "dismiss": "Kpọọ ya ka ọ dị mma",
+          "dismissHelper": "Ozi ahụ bụ nke ziri ezi"
+        },
+        "status": {
+          "submitted": "Daalụ maka inyere anyị aka ime ka nche sie ike.",
+          "confirmed": "Edere ya dịka phishing",
+          "falsePositive": "Edere ya dịka nchekwa",
+          "pending": "Na-eziga nzaghachi..."
+        },
+        "error": "Anyị enweghị ike iziga nzaghachi a. Gbalịa ọzọ."
+      },
+      "searchPlaceholder": "Chọọ nche site n’aha onye zipụrụ, ọdịnaya, ma ọ bụ tag",
+      "trustedBadge": "Onye zipụrụ a tụkwasịrị obi",
+      "trustedDefault": "Ị debara onye zipụrụ a dị ka onye a tụkwasịrị obi na Ntọala.",
       "historyAlertTitle": "Na-abịa ngwa ngwa",
-      "historyAlertBody": "Ị ga-enwe ike ịhụ akụkọ zuru oke n’ihu.",
+      "historyAlertBody": "Ị ga-enwe ike ilele akụkọ zuru ezu n’ọgbọ na-abịa.",
       "items": [
         {
           "sender": "Nọmba amaghị",
@@ -38,95 +154,124 @@
         },
         {
           "sender": "Isi Ụlọ Ọrụ Ego",
-          "preview": "Ọtụtụ: Jide n’aka ozi ụgwọ gị ka e ghara ịkwụsị gị.",
+          "preview": "Ọsọ! Kwenye ozi ụgwọ gị ka a ghara ịkwụsị gị.",
           "timestamp": "Ụnyaahụ"
         },
         {
           "sender": "+234 900 123 4567",
-          "preview": "Anyị tinyere ego na akaụntụ gị. Biko gosipụta ozugbo!",
+          "preview": "Anyị tinyere ego n’akaụntụ gị. Biko gosi ya ozugbo!",
           "timestamp": "Mọnde"
         }
       ]
     },
+    "trustedSources": {
+      "title": "Ndị zipụrụ a tụkwasịrị obi",
+      "subtitle": "Jikwaa ndị kọntaktị ị kpọrọ dị nchebe.",
+      "cta": "Jikwaa ndị zipụrụ a tụkwasịrị obi",
+      "empty": "Ị ka na-enweghị onye zipụrụ a tụkwasịrị obi.",
+      "count": "{{count}} a tụkwasịrị obi",
+      "noteFallback": "E debara dị mma",
+      "more": "+{{remaining}} ọzọ"
+    },
     "report": {
-      "title": "Kọrọ ozi",
-      "subtitle": "Zipu SMS ị na-amaghị iji nyere anyị mụta ngwa ngwa.",
-      "cta": "Kọrọ ozi ahụ",
-      "alertTitle": "Na-abịa ngwa ngwa",
-      "alertBody": "Ike ịkpọrọ ozi ga-abịa na mmemme sochirinụ."
+      "title": "Kọpụta ozi",
+      "subtitle": "N’oge na-adịghị anya: kesaa ozi ị na-enyo enyo n’enweghị aha ka anyị nwee ike mee ka nlereanya sie ike.",
+      "cta": "Na-abịa ngwa ngwa",
+      "alertTitle": "Usoro n’ihu",
+      "alertBody": "Anyị ga-enye gị ohere iziga nche na ibudata ụdị ọhụrụ ozugbo sava echekwara dị njikere."
     },
     "expoGoNotice": {
-      "title": "Njedebe Expo Go",
-      "body": "Nchọpụta azụ anaghị arụ ọrụ nke ọma na Expo Go. Wuo ngwa mmepe ma ọ bụ ngwa onwe ya ka nche gị ghara ịkwụsị mgbe emechiri ya."
+      "title": "Oke Expo Go",
+      "body": "Nchọpụta azụ na-ejedebe mgbe ị na-eji Expo Go. Wuo ngwa mmepe ma ọ bụ ngwa onwe gị ka nche ghara ịkwụsị mgbe emechiri ya."
     },
     "permissionsReminder": {
       "title": "Gbanye ikike achọrọ",
-      "body": "Gbanye nkwupụta na SMS ka nche nwee ike ilekọta ozi n’onwe ya.",
-      "cta": "Lelee ikike"
+      "body": "Mee ka nkwupụta na SMS dịrị ka nche nwee ike nyochaa ozi n’onwe ya.",
+      "cta": "Lelee ikike",
+      "reviewOnboarding": "Gbalịa njem mmalite ọzọ"
+    },
+    "modals": {
+      "messagesScanned": {
+        "title": "Otu nyocha si arụ ọrụ",
+        "body": "A na-enyocha ozi n’ime ngwaọrụ ozugbo ha pụta. Nke a na-ejikọta ihe atụ dataset na nyocha atụ gị ka i mara etu nche si-arụ ọrụ."
+      },
+      "threatsBlocked": {
+        "title": "Banyere ihe ize ndụ a kwụsịrị",
+        "body": "Ihe mgbochi na-egosi ihe ọ bụla yiri ihe ize ndụ, ma ọ sitere na ndekọ gara aga ma ọ bụ nyocha atụ gị. Jiri ya tụọ etu phishing si apụtakwa."
+      },
+      "safeMessages": {
+        "title": "Ịghọta ozi dị nchebe",
+        "body": "Ọnụọgụ dị nchebe na-atụgharị anya ka ọtụtụ ozi gafere nyocha. A na-ewepụ ihe yiri ize ndụ n’ime ihe niile e nyochara ka i hụ mgbe igbe ozi gị na-adị ọcha."
+      }
     },
     "mockDetection": {
       "title": "Mee nyocha n’ụdị atụ",
-      "subtitle": "Gbanye nchọpụta na ozi atụ ka ị hụ otú nche si apụta.",
+      "subtitle": "Gbanye nchọpụta na ozi atụ ka ị hụ otú nche si arụ ọrụ.",
       "cta": "Gbanye nyocha",
       "runningLabel": "Na-enyocha ozi atụ…",
-      "helper": "Ọ bụrụ na achọpụta ihe ize ndụ atụ, a ga-egosi ya ebe a, a ga-ezighịkwa gị ozi ịdọ aka ná ntị.",
+      "helper": "Ọ bụrụ na achọpụta ihe ize ndụ atụ, a ga-egosi ya ebe a ma zipụkwa gị nkwupụta mpaghara.",
       "successTitle": "Enwetara nche atụ",
       "successBody": "Lelee ngalaba nkwupụta gị ka ị hụ ka o si apụta.",
       "noThreatTitle": "Enweghị ihe ize ndụ",
-      "noThreatBody": "Ozi atụ niile dị mma. Gbalịa ọzọ obere oge!",
+      "noThreatBody": "Ozi atụ niile dị mma n’oge a. Gbalịa ọzọ n’oge nta!",
       "errorTitle": "Nchọpụta atụ adịghị",
-      "errorBody": "Anyị enweghị ike ịgba nchọpụta ahụ ugbu a. Biko megharia ngwa ahụ ma gbalịa ọzọ.",
+      "errorBody": "Anyị enweghị ike ịgba nchọpụta ahụ ugbu a. Meghee ngwa ọzọ ma gbalịa ọzọ.",
       "noResultPlaceholder": "Gbanye nyocha ka ị hụ kpọmkwem ka nche si apụta n’ihe omume ahụ.",
       "detectedAt": "Achọpụtara na {{time}}",
-      "scoreLabel": "Ọnụ ọgụgụ ihe ize ndụ: {{score}}%",
-      "noMatches": "Enweghị ụzọ phishing pụtara ìhè, mana ozi ahụ ka na-egosi ihe ize ndụ.",
+      "scoreLabel": "Ọnụọgụ ihe ize ndụ: {{score}}%",
+      "noMatches": "Enweghị ụkpụrụ phishing dọtara, mana ozi ka gosiri ihe ize ndụ.",
+      "viewSafeSample": "Lee ozi dị mma",
+      "safePreviewTitle": "Ihe atụ nke ozi dị mma",
+      "safePreviewSubtitle": "Lee otú nchọpụta si ele ozi yiri ka ọ dị mma.",
+      "safePreviewLabel": "E kpọrọ ya dị mma",
+      "safeSampleUnavailableTitle": "Enweghị ihe atụ dị mma",
+      "safeSampleUnavailableBody": "Anyị achọtaghị ihe atụ dị ala n’oge a. Gbalịa gbaa nyocha ọzọ.",
+      "clearLastDetection": "Hichapụ nsonaazụ atụ",
+      "clearedTitle": "Nsonaazụ atụ e hichapụrụ",
+      "clearedBody": "Kaadị nchọpụta atụ agbanyelarị ọhụrụ.",
       "channels": {
         "sms": "SMS",
         "whatsapp": "WhatsApp",
         "email": "Email"
       }
     },
-    "navigateLabel": "Gagharịa",
+    "navigateLabel": "Ọrụ ngwa ngwa",
     "links": {
-      "onboarding": {
-        "title": "Gaa na nkuzi mbu",
-        "description": "Lelee ọzọ nkuzi ole na ole na mgbakwunye banyere ikike."
-      },
       "settings": {
-        "title": "Meghee ntọala",
-        "description": "Hazie asụsụ, nkwupụta, na nyocha."
+        "title": "Meghee Ntọala",
+        "description": "Hazie asụsụ, nkwupụta, na nnyocha."
       }
     }
   },
   "onboarding": {
     "badge": "Nnọọ",
-    "title": "Malite Nchebe Phishing AI gị",
-    "subtitle": "Gaa n’ihe ndị dị mkpa ka ị ghọta ihe ngwa ahụ na-eme na ihe kpatara ikike ji dị mkpa.",
+    "title": "Bido nchebe AI Phishing Shield gị",
+    "subtitle": "Gaa n’ihe ndị dị mkpirikpi ka ị ghọta ihe ngwa ahụ na-eme na ihe kpatara ikike ji dị mkpa.",
     "skip": "Hapụ",
     "next": "Gaa n’ihu",
-    "start": "Bidoro ichebe",
+    "start": "Bido ichebe",
     "skipDialog": {
       "title": "Ị chọrọ ịhapụ ikike ndị a?",
-      "body": "Enweghị ụgbọa maka ikikere nkwupụta na SMS, ngwa nchebe agaghị enwe ike ilekọta aghụghọ na-akpaghị aka. Ị nwere ike ịgbanye ha n’oge ọzọ n’ime ntọala.",
+      "body": "Enweghị nkwupụta na ikike SMS, ihe mgbochi ahụ agaghị enwe ike ilekọta phishing n’onwe ya. Ị nwere ike gbanye ha n’oge ọzọ na Ntọala.",
       "cancel": "Nọgide ebe a",
-      "confirm": "Hapụ ya mgbe a"
+      "confirm": "Hapụ ya ugbu a"
     },
-    "permissionNoteTitle": "Tupu anyị ebido",
-    "permissionNoteBody": "Ị ga-enye ikike nkwupụta na SMS ozugbo nkuzi a dị mkpirikpi gasịrị.",
-    "permissionStepsTitle": "Ị ga-enye arụmọrụ maka:",
+    "permissionNoteTitle": "Tupu anyị ebido nche",
+    "permissionNoteBody": "Ị ga-enye ikike nkwupụta na SMS ozugbo nkuzi a gasịrị.",
+    "permissionStepsTitle": "Ị ga-eme ka ndị a dịrị mfe:",
     "permissions": {
       "title": "Mee ka nche ahụ sie ike",
       "subtitle": "Kwado ikike ndị a ka anyị na-enyocha ozi ozugbo ha rutere.",
       "notifications": {
         "title": "Ikike nkwupụta",
-        "description": "Kwe ka anyị nyochaa WhatsApp, Messenger, Gmail na ndị ọzọ ozugbo.",
+        "description": "Kwe ka anyị nyochaa WhatsApp, Messenger, Gmail, na ndị ọzọ n’oge dị adị.",
         "cta": "Gbanye nkwupụta",
         "grantedCta": "Nkwupụta agbanyere",
         "openSettings": "Meghee ntọala sistem"
       },
       "sms": {
         "title": "Ikike SMS",
-        "description": "Kwe ka anyị gụọ SMS na-abata n’ime ngwaọrụ ka anyị mata ozi a na-enyo enyo ozugbo.",
+        "description": "Kwe ka anyị gụọ SMS na-abata n’ime ngwaọrụ ka anyị mata ozi dị ize ndụ n’ime sekọnd.",
         "cta": "Gbanye ikike SMS",
         "grantedCta": "SMS agbanyere",
         "openSettings": "Meghee ntọala sistem",
@@ -138,35 +283,35 @@
         "blocked": "Gbanye ya n’ime ntọala",
         "required": "Ka dị mkpa"
       },
-      "finishCta": "Malite ichebe",
+      "finishCta": "Bido ichebe",
       "checking": "Na-enyocha ikike ugbu a…",
-      "continueHelper": "Gbanye ikike ndị a ka i nwee ike ịga n’ihu",
+      "continueHelper": "Gbanye ikike ndị a ka ị gaa n’ihu",
       "incompleteTitle": "Mechie nhazi nke ikike",
       "incompleteBody": "Gbanye nkwupụta na SMS ka nche nwee ike ịgba ọsọ n’onwe ya."
     },
     "slides": [
       {
-        "title": "Zere phishing",
-        "description": "Anyị na-enyocha SMS na nkwupụta niile na-enweta gị ka anyị mata aghụghọ ozugbo.",
+        "title": "Zere aghụghọ phishing",
+        "description": "Anyị na-enyocha SMS na nkwupụta na-abata ozugbo iji mata aghụghọ.",
         "icon": "shield-check"
       },
       {
-        "title": "Nzuzo gị dị ezigbo mkpa",
-        "description": "Nyocha niile na-eme n’ime ekwentị gị. Ozi gị anaghị apụ ma ọ bụ chekwaa na igwe ojii.",
+        "title": "Nzuzo gị dị oke mkpa",
+        "description": "Nyocha niile na-eme n’ime ekwentị gị. A naghị zipụ ozi gị ma ọ bụ debe ya n’igwe ojii.",
         "icon": "lock-check"
       },
       {
         "title": "Nyefee ikike ziri ezi",
-        "description": "Anyị ga-ajụ SMS na ikike nkwupụta ka anyị wee nwee ike ịdị n’ụlọ azụ.",
+        "description": "Anyị ga-ajụ SMS na ikike nkwupụta ka anyị nwee ike ilekọta n’azụ.",
         "icon": "cellphone-message",
         "permissions": [
           {
             "title": "Ike ịnweta nkwupụta",
-            "description": "Ka anyị wee nwee ike ịlele WhatsApp, Messenger, Gmail, wdg ozugbo."
+            "description": "Ka anyị wee nyochaa WhatsApp, Messenger, Gmail na ndị ọzọ n’ime ntabi anya."
           },
           {
-            "title": "Ike ịgụ SMS",
-            "description": "Ka anyị mata ozi na-abịa ozugbo ẹ dere ya."
+            "title": "Ikike ịgụ SMS",
+            "description": "A chọrọ ya ka anyị mata ozi SMS dị ize ndụ ozugbo ha rutere."
           }
         ]
       }
@@ -174,30 +319,235 @@
   },
   "settings": {
     "title": "Ntọala",
-    "subtitle": "Hazie asụsụ, nkwupụta na nyocha. Nke a bụ ihuenyo nwa oge ruo mgbe nhazi zuru oke dị.",
+    "subtitle": "Hazie asụsụ, nkwupụta, na nnyocha. Nke a bụ ihuenyo nwa oge ruo mgbe nhazi zuru ezu dị.",
+    "language": {
+      "loading": "Na-akwadebe asụsụ..."
+    },
+    "diagnostics": {
+      "loading": "Na-anakọta nnyocha na-enweghị aha...",
+      "errorTitle": "Enweghị ike ibu nnyocha",
+      "errorBody": "Anyị zutere nsogbu mgbe anyị na-emepụta snapshot ahụ. Gbalịa ọzọ mgbe njikọ siri ike dị.",
+      "retry": "Gbalịa ọzọ",
+      "shareTitle": "Snapshot nnyocha",
+      "shareButton": "Kesaa snapshot",
+      "shareErrorTitle": "Nkesa adaghị",
+      "shareErrorBody": "Anyị enweghị ike kesaa snapshot nnyocha ahụ. Biko gbalịa ọzọ.",
+      "refreshButton": "Mee ka snapshot dị ọhụrụ",
+      "lastGenerated": "E mepụtara {{date}}",
+      "disclaimer": "Nzipu a anaghị etinye ọdịnaya onwe gị. Kesaa ya naanị na ndị ọrụ nkwado ị tụkwasịrị obi.",
+      "sections": {
+        "environment": "Ọnọdụ gburugburu",
+        "localization": "Asụsụ",
+        "theme": "Ụdị anya",
+        "notifications": "Nkwupụta",
+        "sms": "SMS",
+        "detections": "Nchọpụta",
+        "trustedSources": "Ndị zipụrụ a tụkwasịrị obi",
+        "telemetry": "Telemetry"
+      },
+      "fields": {
+        "platform": "Ikpo okwu",
+        "appOwnership": "Onye nwe ngwa",
+        "appVersion": "Ụdị ngwa",
+        "buildNumber": "Nọmba owuwu",
+        "activeLocale": "Asụsụ dị ugbu a",
+        "deviceLocale": "Asụsụ ngwaọrụ",
+        "storedLocale": "Asụsụ echekwara",
+        "storedPreference": "Mmasị echekwara",
+        "notificationPermission": "Ikike nkwupụta",
+        "alertsEnabled": "Nche enyere",
+        "soundEnabled": "Ụda enyere",
+        "vibrationEnabled": "Mgbaaka enyere",
+        "quietHoursEnabled": "Oge udo",
+        "quietHoursActive": "Oge udo na-arụ ọrụ",
+        "quietHoursWindow": "Oge udo e debere",
+        "smsPermission": "Ikike SMS",
+        "historicalCount": "Nchọpụta gara aga",
+        "simulatedCount": "Nchọpụta atụ",
+        "lastSimulatedAt": "Nyocha atụ ikpeazụ",
+        "trustedSourcesTotal": "Ndị zipụrụ a tụkwasịrị obi",
+        "telemetryEvents": "Ihe omume echekwara",
+        "telemetryLatest": "Ihe omume kacha ọhụrụ"
+      },
+      "values": {
+        "yes": "Ee",
+        "no": "Mba",
+        "none": "Ọ dịghị",
+        "unknown": "Amaghị",
+        "permission": {
+          "granted": "A kwadoro",
+          "denied": "Ajụrụ ya",
+          "blocked": "E mechiri ya",
+          "unavailable": "Adịghị ugbu a"
+        }
+      }
+    },
     "entries": {
       "theme": {
         "title": "Ụdị anya",
-        "description": "Họrọ otu ngwa ahụ ga-esi gosi onwe ya.",
+        "description": "Họrọ otu ngwa ga-esi gbanwee agba ya.",
         "options": {
           "dark": "Ọchịchịrị (ndabere)",
           "light": "Ọcha",
           "system": "Soro usoro"
         }
       },
+      "telemetry": {
+        "title": "Ịkekọrịta ihe egwu",
+        "description": "Jikwaa otú a ga-esi kesaa mgbaàmà na akụkọ na AI Phishing Shield iji mee ka ụdị ahụ ka mma.",
+        "autoUploadTitle": "Zipu nchọpụta n'onwe ya",
+        "autoUploadSubtitle": "Kesaa metadata echefuru aha mgbe a hụrụ ihe na-enyo enyo.",
+        "manualReportsTitle": "Kwe ka a na-aza akụkọ n'aka",
+        "manualReportsSubtitle": "Mee ka i wee kwalite atụmatụ iwelite akụkọ mgbe i hụrụ ozi na-enyo enyo na dashboard.",
+        "errorTitle": "Ịmelite adịghị eme",
+        "errorBody": "Enweghị ike ịchekwa nhọrọ gị. Biko nwaa ọzọ."
+      },
       "language": {
         "title": "Asụsụ",
-        "description": "Họrọ n’etiti Bekee, French, Swahili, Yoruba, Igbo, Hausa, Pidgin, Arabic, na Amharic."
+        "description": "Họrọ n’etiti Bekee, French, Swahili, Yorùbá, Igbo, Hausa, Pidgin, Arabic, na Amharic.",
+        "activeBadge": "Asụsụ a na-eji",
+        "deviceDefault": {
+          "title": "Kwesị ka asụsụ ngwaọrụ",
+          "description": "Jide n’aka na ngwa na-eso asụsụ isi nke ekwentị gị.",
+          "badge": "Na-eso ngwaọrụ"
+        },
+        "options": {
+          "en": {
+            "title": "Bekee",
+            "native": "English"
+          },
+          "fr": {
+            "title": "French",
+            "native": "Français"
+          },
+          "sw": {
+            "title": "Swahili",
+            "native": "Kiswahili"
+          },
+          "yo": {
+            "title": "Yoruba",
+            "native": "Yorùbá"
+          },
+          "ig": {
+            "title": "Igbo",
+            "native": "Ásụ̀sụ́ Ìgbò"
+          },
+          "ha": {
+            "title": "Hausa",
+            "native": "Hausa"
+          },
+          "pcm": {
+            "title": "Pidgin",
+            "native": "Naijá"
+          },
+          "ar": {
+            "title": "Arabic",
+            "native": "العربية"
+          },
+          "am": {
+            "title": "Amharic",
+            "native": "አማርኛ"
+          }
+        }
       },
       "notifications": {
-        "title": "Nkwupụta",
-        "description": "Hazie ụda, mgbaaka, na oge izuike."
+        "title": "Ntọala nkwupụta",
+        "description": "Jikwaa ụda, mgbakwunye na oge udo."
+      },
+      "trustedSources": {
+        "title": "Ndị zipụrụ a tụkwasịrị obi",
+        "description": "Jikwaa nọmba ekwentị ma ọ bụ ozi email ị na-atụkwasị obi.",
+        "addButton": "Tinye onye zipụrụ",
+        "emptyState": "Enweghị kọntaktị a tụkwasịrị obi. Tinye akara ụlọ akụ kwadoro, ndị HR, ma ọ bụ ndị òtù ị na-adabere na ha.",
+        "removeTitle": "Wepụ onye zipụrụ a tụkwasịrị obi?",
+        "removeConfirm": "Wepụ",
+        "removeA11y": "Wepụ onye zipụrụ a tụkwasịrị obi {{name}}",
+        "validationTitle": "Achọghị onye zipụrụ",
+        "validationHandle": "Tinye aha ma ọ bụ nọmba onye zipụrụ achọrọ ịtụkwasị obi.",
+        "duplicateTitle": "Enwerela ntụkwasị obi",
+        "duplicateBody": "A debanyela onye zipụrụ a dịka onye a tụkwasịrị obi na chanel a.",
+        "successTitle": "Echekwara onye zipụrụ a tụkwasịrị obi",
+        "errorTitle": "Nsogbu mere",
+        "errorBody": "Anyị enweghị ike imelite ndị zipụrụ a tụkwasịrị obi gị. Biko gbalịa ọzọ.",
+        "modalTitle": "Tinye onye zipụrụ a tụkwasịrị obi",
+        "modalSubtitle": "Deba kọntaktị kwadoro ka ozi nche gị bụrụ nke bara uru.",
+        "fields": {
+          "channel": "Ụzọ",
+          "handle": "Onye zipụrụ",
+          "displayName": "Aha ngosipụta",
+          "note": "Nkọwa"
+        },
+        "placeholders": {
+          "handle": "dịka UBA Secure",
+          "displayName": "Aha enyi (nhọrọ)",
+          "note": "Tinye obere nkọwa (nhọrọ)"
+        },
+        "saving": "Na-echekwa..."
       },
       "diagnostics": {
         "title": "Nnyocha",
-        "description": "Zipu ndekọ na-enweghị aha iji nyere aka imeziwanye nchọpụta."
+        "description": "Zipu ndekọ na-enweghị aha iji nyere aka kwalite nchọpụta."
+      },
+      "model": {
+        "title": "Mmelite nlereanya",
+        "description": "Tinye nlereanya nchọpụta phishing ọhụrụ ma jikwaa ụdị dị.",
+        "manageButton": "Mepee onye njikwa",
+        "currentBadge": "Ụdị ugbu a {{version}}"
       }
     },
-    "back": "\u2190 Laghachi na dashboard"
+    "back": "← Laghachi na dashboard",
+    "model": {
+      "title": "Njikwa nlereanya",
+      "subtitle": "Budata mmelite, kpalie ụdị, na nyochaa akụkọ ntinye.",
+      "syncButton": "Kwekọọ mmelite",
+      "syncing": "Na-eme ka mmelite kwekọọ...",
+      "lastSynced": "Mmelite ikpeazụ kwekọọ {{time}}",
+      "neverSynced": "A naghị kwekọọ katalọgụ",
+      "availableTitle": "Ụdị dị",
+      "availableEmpty": "Ị na-eji ụdị kacha ọhụrụ ugbu a.",
+      "installedTitle": "Ụdị etinyere",
+      "installedEmpty": "Enweghị nlereanya etinyere ugbu a.",
+      "badges": {
+        "current": "Na-arụ ọrụ",
+        "installed": "Etinyere"
+      },
+      "sizeLabel": "{{size}} MB",
+      "releaseDate": "Ebipụtara {{date}}",
+      "changelogTitle": "Kedu ihe ọhụrụ",
+      "actions": {
+        "install": "Tinye",
+        "activate": "Kpalie",
+        "remove": "Wepụ"
+      },
+      "alerts": {
+        "installSuccessTitle": "Etinyere nlereanya",
+        "installSuccessBody": "Ụdị {{version}} amalitela ịrụ ọrụ n’aka ngwaọrụ gị.",
+        "installErrorTitle": "Ntinye dara",
+        "installErrorBody": "Anyị enweghị ike itinye ụdị {{version}}. Gbalịa ọzọ n’oge nta.",
+        "activateSuccessTitle": "E kpaliri nlereanya",
+        "activateSuccessBody": "Ụdị {{version}} bụ onye nchọpụta na-arụ ọrụ ugbu a.",
+        "activateErrorTitle": "Ịkpali dara",
+        "activateErrorBody": "Anyị enweghị ike gbanwee nlereanya. Biko gbalịa ọzọ.",
+        "removeConfirmTitle": "Wepụ ụdị nlereanya a?",
+        "removeConfirmBody": "Iwepụ ụdị {{version}} na-eme ka ebe nchekwa dị. Ị nwere ike itinye ya ọzọ mgbe ọ dị gị mkpa.",
+        "removeConfirmAction": "Wepụ",
+        "removeSuccessTitle": "E wepụrụ nlereanya",
+        "removeSuccessBody": "Ụdị {{version}} ewepụtala na nchekwa ime.",
+        "removeErrorTitle": "Iwepu dara",
+        "removeErrorBody": "Anyị enweghị ike iwepụ ụdị {{version}}. Gbalịa ọzọ mgbe e mesịrị ka e mechara mmegharị.",
+        "syncErrorTitle": "Mmegharị dara",
+        "syncErrorBody": "Anyị enweghị ike imelite katalọgụ. Lelee njikọ gị ma gbalịa ọzọ."
+      }
+    }
+  },
+  "developerTools": {
+    "resetOnboarding": {
+      "title": "Tọgharịa usoro onboarding",
+      "successTitle": "E tọgharịrị onboarding",
+      "successBody": "Anyị kpochapụrụ ọnọdụ onboarding. Mepee ngwa ọzọ ka i bido njem ahụ ọzọ.",
+      "errorTitle": "Ntughari adaala",
+      "errorBody": "Anyị enweghị ike kpochapụ ọnọdụ onboarding. Gbalịa ọzọ.",
+      "restart": "Malite onboarding ọzọ"
+    }
   }
 }

@@ -1,24 +1,36 @@
-export { default } from './(tabs)/index';
-
-/* Legacy dashboard implementation retained for future reference.
+import { Link, useRouter } from 'expo-router';
 import Constants from 'expo-constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { useCallback, useMemo, useState } from 'react';
+import {
+  ActivityIndicator,
+  Alert,
+  LayoutChangeEvent,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useOnboardingGate } from '../lib/hooks/useOnboardingGate';
-import { triggerMockDetectionNow } from '../lib/services/backgroundDetection';
-import type { DetectionResult } from '../lib/detection/mockDetection';
-import { analyzeMessage, getMockMessages } from '../lib/detection/mockDetection';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useOnboardingGate } from '../../lib/hooks/useOnboardingGate';
+import { useModelManager } from '../../lib/modelManager';
+import { triggerMockDetectionNow } from '../../lib/services/backgroundDetection';
+import { trackTelemetryEvent } from '../../lib/services/telemetry';
+import type { DetectionResult } from '../../lib/detection/mockDetection';
+import { analyzeMessage, getMockMessages } from '../../lib/detection/mockDetection';
 import {
   addSimulatedDetection,
   removeSimulatedDetection,
   useDetectionHistory,
   type DetectionRecord,
-} from '../lib/detection/detectionHistory';
-import { useTrustedSources, type TrustedSource } from '../lib/trustedSources';
-import { AppModal } from '../components/AppModal';
+} from '../../lib/detection/detectionHistory';
+import { useTrustedSources, type TrustedSource } from '../../lib/trustedSources';
+import { AppModal } from '../../components/AppModal';
+import { ReportMessageModal } from '../../components/ReportMessageModal';
+import { clearOnboardingComplete } from '../../lib/storage';
+import { useTelemetryPreferences } from '../../lib/telemetryPreferences';
 
 type StatTimeframe = '24h' | '7d' | '30d' | 'all';
 type AlertFilter = 'all' | 'historical' | 'simulated' | 'trusted';
@@ -29,10 +41,11 @@ type DashboardStat = {
   value: string;
   helper: string;
   trendLabel: string;
+  trendValue: number;
   direction: 'up' | 'down' | 'flat';
 };
 
-const quickActionStyles = `px-4 py-3 rounded-xl border border-blue-100 bg-white shadow-sm dark:border-blue-900/60 dark:bg-slate-900 dark:shadow-none`;
+const quickActionStyles = `px-4 py-4 rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900`;
 const TIMEFRAME_KEYS: StatTimeframe[] = ['24h', '7d', '30d', 'all'];
 const TIMEFRAME_RANGES_MS: Record<StatTimeframe, number | null> = {
   '24h': 24 * 60 * 60 * 1000,
@@ -40,21 +53,50 @@ const TIMEFRAME_RANGES_MS: Record<StatTimeframe, number | null> = {
   '30d': 30 * 24 * 60 * 60 * 1000,
   all: null,
 };
+const EXPO_NOTICE_KEY = 'dashboard_expo_go_notice_dismissed_v1';
+const STAT_ICONS: Record<DashboardStat['key'], string> = {
+  messagesScanned: 'email-receive-outline',
+  threatsBlocked: 'shield-alert',
+  safeMessages: 'shield-check-outline',
+};
 
 export default function DashboardScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const { checking, allowed, permissions, permissionsSatisfied } = useOnboardingGate();
+  const { checking, allowed, permissionsSatisfied } = useOnboardingGate();
   const {
     merged: detectionHistory,
     simulated: simulatedDetections,
     lastSimulated,
   } = useDetectionHistory();
+  const {
+    ready: modelReady,
+    current: activeModel,
+    status: modelStatus,
+    activeOperation: modelOperation,
+  } = useModelManager();
+  const { ready: telemetryReady, preferences: telemetryPreferences } = useTelemetryPreferences();
   const { sources: trustedSources } = useTrustedSources();
   const [isTriggeringDetection, setIsTriggeringDetection] = useState(false);
   const [selectedDetection, setSelectedDetection] = useState<DetectionRecord | null>(null);
+  const [selectedStat, setSelectedStat] = useState<DashboardStat['key'] | null>(null);
   const [selectedTimeframe, setSelectedTimeframe] = useState<StatTimeframe>('7d');
   const [alertFilter, setAlertFilter] = useState<AlertFilter>('all');
+  const [isExpoNoticeDismissed, setIsExpoNoticeDismissed] = useState(false);
+  const scrollViewRef = useRef<ScrollView | null>(null);
+  const [isReportModalVisible, setIsReportModalVisible] = useState(false);
+  type SectionPositions = {
+    stats: number;
+    alerts: number;
+    mock: number;
+    trusted: number;
+  };
+  const [sectionPositions, setSectionPositions] = useState<SectionPositions>({
+    stats: 0,
+    alerts: 0,
+    mock: 0,
+    trusted: 0,
+  });
   const trustedLookup = useMemo(() => {
     const map = new Map<string, TrustedSource>();
     const normalize = (value: string) => value.trim().toLowerCase();
@@ -95,12 +137,128 @@ export default function DashboardScreen() {
     );
   }, [getTrustedSource, selectedDetection]);
   const [safePreview, setSafePreview] = useState<DetectionResult | null>(null);
+  const activeModelVersion = activeModel?.version ?? 'v0.1.0';
+  const modelStatusLabel = useMemo(() => {
+    if (!modelReady) {
+      return null;
+    }
+
+    if (modelStatus === 'syncing') {
+      return t('dashboard.hero.modelStatus.syncing');
+    }
+
+    if (modelStatus === 'downloading' && modelOperation?.version) {
+      return t('dashboard.hero.modelStatus.downloading', { version: modelOperation.version });
+    }
+
+    if (modelOperation?.type === 'activate' && modelOperation.version) {
+      return t('dashboard.hero.modelStatus.activating', { version: modelOperation.version });
+    }
+
+    if (modelOperation?.type === 'remove' && modelOperation.version) {
+      return t('dashboard.hero.modelStatus.removing', { version: modelOperation.version });
+    }
+
+    return null;
+  }, [modelOperation, modelReady, modelStatus, t]);
   const isExpoGo = Constants.appOwnership === 'expo';
+  useEffect(() => {
+    if (!isExpoGo) {
+      return;
+    }
+
+    AsyncStorage.getItem(EXPO_NOTICE_KEY)
+      .then((value) => {
+        if (value === 'true') {
+          setIsExpoNoticeDismissed(true);
+        }
+      })
+      .catch((error) => {
+        console.warn('[dashboard] Failed to load Expo notice state', error);
+      });
+  }, [isExpoGo]);
 
   const mockMessages = useMemo(() => getMockMessages(), []);
   const messageAnalyses = useMemo(
     () => mockMessages.map((message) => analyzeMessage(message)),
     [mockMessages]
+  );
+
+  const handleDismissExpoNotice = useCallback(() => {
+    setIsExpoNoticeDismissed(true);
+    AsyncStorage.setItem(EXPO_NOTICE_KEY, 'true').catch((error) => {
+      console.warn('[dashboard] Failed to persist Expo notice dismissal', error);
+    });
+  }, []);
+
+  const handleSectionLayout = useCallback(
+    (key: keyof SectionPositions) => (event: LayoutChangeEvent) => {
+      const { y } = event.nativeEvent.layout;
+      setSectionPositions((prev) => ({
+        ...prev,
+        [key]: y,
+      }));
+    },
+    []
+  );
+
+  const scrollToSection = useCallback((position: number) => {
+    if (!scrollViewRef.current) {
+      return;
+    }
+
+    scrollViewRef.current.scrollTo({ y: Math.max(position - 24, 0), animated: true });
+  }, []);
+
+  const handleQuickActionMock = useCallback(() => {
+    scrollToSection(sectionPositions.mock);
+  }, [scrollToSection, sectionPositions.mock]);
+
+  const handleHistoryPress = useCallback(() => {
+    router.push('/alerts');
+  }, [router]);
+
+  const handleOpenSettings = useCallback(() => {
+    router.push('/settings');
+  }, [router]);
+
+  const handleOpenModelManager = useCallback(() => {
+    trackTelemetryEvent('settings.model.manage_opened', { source: 'dashboard_quick_action' });
+    router.push('/settings/model');
+  }, [router]);
+
+  const quickActions = useMemo(
+    () => [
+      {
+        key: 'mock' as const,
+        icon: 'beaker-check',
+        title: t('dashboard.quickActions.mockScan.title'),
+        subtitle: t('dashboard.quickActions.mockScan.subtitle'),
+        action: handleQuickActionMock,
+      },
+      {
+        key: 'alerts' as const,
+        icon: 'bell-alert-outline',
+        title: t('dashboard.quickActions.alerts.title'),
+        subtitle: t('dashboard.quickActions.alerts.subtitle'),
+        action: handleHistoryPress,
+      },
+      {
+        key: 'settings' as const,
+        icon: 'cog-outline',
+        title: t('dashboard.quickActions.settings.title'),
+        subtitle: t('dashboard.quickActions.settings.subtitle'),
+        action: handleOpenSettings,
+      },
+      {
+        key: 'model' as const,
+        icon: 'database-sync',
+        title: t('dashboard.quickActions.model.title'),
+        subtitle: t('dashboard.quickActions.model.subtitle'),
+        action: handleOpenModelManager,
+      },
+    ],
+    [handleHistoryPress, handleOpenModelManager, handleOpenSettings, handleQuickActionMock, t]
   );
 
   const timelineLatest = useMemo(() => {
@@ -222,13 +380,14 @@ export default function DashboardScreen() {
   const computeTrend = useCallback(
     (current: number, previous: number) => {
       if (!previous && !current) {
-        return { direction: 'flat' as const, label: t('dashboard.stats.trend.flat') };
+        return { direction: 'flat' as const, label: t('dashboard.stats.trend.flat'), value: 0 };
       }
 
       if (!previous) {
         return {
           direction: 'up' as const,
           label: t('dashboard.stats.trend.up', { value: 100 }),
+          value: 100,
         };
       }
 
@@ -236,19 +395,21 @@ export default function DashboardScreen() {
       const rounded = Math.round(Math.abs(delta));
 
       if (rounded === 0) {
-        return { direction: 'flat' as const, label: t('dashboard.stats.trend.flat') };
+        return { direction: 'flat' as const, label: t('dashboard.stats.trend.flat'), value: 0 };
       }
 
       if (delta > 0) {
         return {
           direction: 'up' as const,
           label: t('dashboard.stats.trend.up', { value: rounded }),
+          value: rounded,
         };
       }
 
       return {
         direction: 'down' as const,
         label: t('dashboard.stats.trend.down', { value: rounded }),
+        value: rounded,
       };
     },
     [t]
@@ -266,6 +427,7 @@ export default function DashboardScreen() {
         value: numberFormatter.format(totalScannedCount),
         helper: t('dashboard.stats.since', { timeframe: timeframeLabel }),
         trendLabel: scanTrend.label,
+        trendValue: scanTrend.value,
         direction: scanTrend.direction,
       },
       {
@@ -274,6 +436,7 @@ export default function DashboardScreen() {
         value: numberFormatter.format(totalDetectionsCount),
         helper: t('dashboard.stats.since', { timeframe: timeframeLabel }),
         trendLabel: detectionTrend.label,
+        trendValue: detectionTrend.value,
         direction: detectionTrend.direction,
       },
       {
@@ -282,6 +445,7 @@ export default function DashboardScreen() {
         value: numberFormatter.format(safeCount),
         helper: t('dashboard.stats.since', { timeframe: timeframeLabel }),
         trendLabel: safeTrend.label,
+        trendValue: safeTrend.value,
         direction: safeTrend.direction,
       },
     ];
@@ -326,6 +490,19 @@ export default function DashboardScreen() {
     ],
     [t]
   );
+
+  const activeFilterLabel = useMemo(() => {
+    const match = alertFilterOptions.find((option) => option.key === alertFilter);
+    return match?.label ?? '';
+  }, [alertFilter, alertFilterOptions]);
+
+  const emptyAlertsMessage = useMemo(() => {
+    if (alertFilter === 'all') {
+      return t('dashboard.recentAlerts.empty');
+    }
+
+    return t('dashboard.recentAlerts.emptyWithFilters', { filters: activeFilterLabel });
+  }, [activeFilterLabel, alertFilter, t]);
 
   const formatDetectedAt = useCallback(
     (value: string) => {
@@ -376,18 +553,109 @@ export default function DashboardScreen() {
     };
   }, []);
 
-  const handleReportPress = useCallback(() => {
-    Alert.alert(t('dashboard.report.alertTitle'), t('dashboard.report.alertBody'));
-  }, [t]);
+  const lastScanText = useMemo(() => {
+    if (!detectionEntries.length) {
+      return t('dashboard.hero.lastScanFallback');
+    }
 
-  const handleHistoryPress = useCallback(() => {
-    router.push('/alerts');
-  }, [router]);
+    return formatDetectedAt(detectionEntries[0].detectedAt);
+  }, [detectionEntries, formatDetectedAt, t]);
+
+  const latestActivity = detectionEntries[0] ?? null;
+
+  const latestActivityTrustedSource = useMemo(() => {
+    if (!latestActivity) {
+      return null;
+    }
+
+    return getTrustedSource(
+      latestActivity.result.message.sender,
+      latestActivity.result.message.channel
+    );
+  }, [getTrustedSource, latestActivity]);
+
+  const topTrustedSources = useMemo(() => trustedSources.slice(0, 2), [trustedSources]);
+
+  const statModalContent = useMemo(() => {
+    if (!selectedStat) {
+      return null;
+    }
+
+    switch (selectedStat) {
+      case 'messagesScanned':
+        return {
+          title: t('dashboard.modals.messagesScanned.title'),
+          body: t('dashboard.modals.messagesScanned.body'),
+        };
+      case 'threatsBlocked':
+        return {
+          title: t('dashboard.modals.threatsBlocked.title'),
+          body: t('dashboard.modals.threatsBlocked.body'),
+        };
+      case 'safeMessages':
+        return {
+          title: t('dashboard.modals.safeMessages.title'),
+          body: t('dashboard.modals.safeMessages.body'),
+        };
+      default:
+        return null;
+    }
+  }, [selectedStat, t]);
+
+  const handleCloseStatModal = useCallback(() => {
+    setSelectedStat(null);
+  }, []);
+
+  const getTrendBadgeStyle = useCallback((direction: DashboardStat['direction']) => {
+    switch (direction) {
+      case 'up':
+        return {
+          container: 'bg-emerald-500/15 dark:bg-emerald-500/20',
+          text: 'text-emerald-600 dark:text-emerald-200',
+          icon: '#059669',
+        };
+      case 'down':
+        return {
+          container: 'bg-rose-500/15 dark:bg-rose-500/20',
+          text: 'text-rose-600 dark:text-rose-200',
+          icon: '#dc2626',
+        };
+      default:
+        return {
+          container: 'bg-slate-500/10 dark:bg-slate-500/20',
+          text: 'text-slate-600 dark:text-slate-200',
+          icon: '#64748b',
+        };
+    }
+  }, []);
+
+  const showExpoNotice = isExpoGo && !isExpoNoticeDismissed;
+
+  const handleReportPress = useCallback(() => {
+    if (!telemetryReady) {
+      Alert.alert(t('dashboard.report.loadingTitle'), t('dashboard.report.loadingBody'));
+      return;
+    }
+
+    if (!telemetryPreferences.allowManualReports) {
+      Alert.alert(t('dashboard.report.disabled.title'), t('dashboard.report.disabled.body'));
+      return;
+    }
+
+    setIsReportModalVisible(true);
+    trackTelemetryEvent('dashboard.manual_report_opened', {
+      source: 'quick_action',
+    });
+  }, [t, telemetryPreferences.allowManualReports, telemetryReady]);
 
   const handleSimulateDetectionPress = useCallback(async () => {
     try {
       setIsTriggeringDetection(true);
       const outcome = await triggerMockDetectionNow();
+      trackTelemetryEvent('dashboard.mock_detection_triggered', {
+        source: 'quick_action',
+        triggered: outcome.triggered,
+      });
 
       if (outcome.triggered) {
         const detection: DetectionRecord = {
@@ -426,8 +694,8 @@ export default function DashboardScreen() {
       return;
     }
 
-    const index = Math.floor(Math.random() * safeSamples.length);
-    setSafePreview(safeSamples[index]);
+    setSafePreview(safeSamples[Math.floor(Math.random() * safeSamples.length)]);
+    trackTelemetryEvent('dashboard.safe_sample_previewed', undefined);
   }, [safeSamples, t]);
 
   const handleClearLastDetection = useCallback(() => {
@@ -441,68 +709,100 @@ export default function DashboardScreen() {
       t('dashboard.mockDetection.clearedTitle'),
       t('dashboard.mockDetection.clearedBody')
     );
+    trackTelemetryEvent('dashboard.detection_cleared', {
+      recordId: lastSimulated.recordId,
+    });
   }, [lastSimulated, t]);
+
+  const handleResetOnboarding = useCallback(async () => {
+    try {
+      await clearOnboardingComplete();
+      Alert.alert(
+        t('developerTools.resetOnboarding.successTitle'),
+        t('developerTools.resetOnboarding.successBody')
+      );
+    } catch (error) {
+      console.warn('[dashboard] Failed to reset onboarding', error);
+      Alert.alert(
+        t('developerTools.resetOnboarding.errorTitle'),
+        t('developerTools.resetOnboarding.errorBody')
+      );
+    }
+  }, [t]);
 
   if (checking) {
     return (
-      <SafeAreaView className="flex-1 items-center justify-center bg-slate-50">
+      <SafeAreaView className="flex-1 items-center justify-center bg-slate-50 dark:bg-slate-950">
         <ActivityIndicator size="large" color="#2563eb" />
-        <Text className="mt-4 text-sm text-slate-500">{t('common.loading')}</Text>
+        <Text className="mt-4 text-sm text-slate-500 dark:text-slate-400">
+          {t('common.loading')}
+        </Text>
       </SafeAreaView>
     );
   }
 
-  if (!allowed) {
-    return null;
-  }
-
-  const smsRequired = permissions ? !(permissions.sms.unavailable ?? false) : true;
-  const missingPermissions: string[] = [];
-  if (permissions) {
-    if (!permissions.notifications.granted) {
-      missingPermissions.push(t('onboarding.permissions.notifications.title'));
-    }
-    if (smsRequired && !permissions.sms.granted) {
-      missingPermissions.push(t('onboarding.permissions.sms.title'));
-    }
-  }
-
-  return (
-    <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-950">
-      <ScrollView contentContainerStyle={{ paddingBottom: 32 }} className="flex-1">
-        <View className="space-y-8 px-6 py-8">
-          {!permissionsSatisfied ? (
-            <View className="flex-row gap-3 rounded-2xl border border-rose-200 bg-rose-50 p-4 dark:border-rose-500/40 dark:bg-rose-500/10">
-              <View className="h-10 w-10 items-center justify-center rounded-full bg-rose-100 dark:bg-rose-500/30">
-                <MaterialCommunityIcons name="alert-circle" size={22} color="#be123c" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-sm font-semibold text-rose-900 dark:text-rose-200">
-                  {t('dashboard.permissionsReminder.title')}
-                </Text>
-                <Text className="mt-1 text-sm text-rose-900/90 dark:text-rose-100/90">
-                  {t('dashboard.permissionsReminder.body')}
-                </Text>
-                {missingPermissions.length > 0 ? (
-                  <View className="mt-2 space-y-1">
-                    {missingPermissions.map((label) => (
-                      <Text
-                        key={label}
-                        className="text-xs font-medium uppercase tracking-wide text-rose-800 dark:text-rose-200">
-                        • {label}
-                      </Text>
-                    ))}
-                  </View>
-                ) : null}
-                <Link href="/onboarding" asChild>
-                  <TouchableOpacity
-                    activeOpacity={0.85}
-                    className="mt-3 w-full items-center justify-center rounded-full bg-rose-600 px-4 py-2 dark:bg-rose-500">
-                    <Text className="text-xs font-semibold uppercase tracking-wide text-white">
+  if (!allowed || !permissionsSatisfied) {
+    return (
+      <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-950">
+        <ScrollView contentContainerStyle={{ padding: 24 }}>
+          <View className="gap-4">
+            <View className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <Text className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+                {t('dashboard.permissionsReminder.title')}
+              </Text>
+              <Text className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                {t('dashboard.permissionsReminder.body')}
+              </Text>
+              <View className="mt-4 flex-row gap-3">
+                <Link href="/settings" asChild>
+                  <TouchableOpacity className="flex-1 rounded-full bg-blue-600 px-5 py-3">
+                    <Text className="text-center text-sm font-semibold text-white">
                       {t('dashboard.permissionsReminder.cta')}
                     </Text>
                   </TouchableOpacity>
                 </Link>
+                <Link href="/onboarding" asChild>
+                  <TouchableOpacity className="flex-1 rounded-full border border-blue-600 px-5 py-3">
+                    <Text className="text-center text-sm font-semibold text-blue-600">
+                      {t('dashboard.permissionsReminder.reviewOnboarding')}
+                    </Text>
+                  </TouchableOpacity>
+                </Link>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-950">
+      <ScrollView
+        ref={scrollViewRef}
+        contentInsetAdjustmentBehavior="automatic"
+        contentContainerStyle={{ padding: 24 }}>
+        <View className="gap-6">
+          {showExpoNotice ? (
+            <View className="flex-row items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-500/40 dark:bg-amber-500/10">
+              <View className="h-10 w-10 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-500/30">
+                <MaterialCommunityIcons name="information-outline" size={24} color="#d97706" />
+              </View>
+              <View className="flex-1">
+                <Text className="text-sm font-semibold text-amber-900 dark:text-amber-200">
+                  {t('dashboard.expoGoNotice.title')}
+                </Text>
+                <Text className="mt-1 text-sm text-amber-800/90 dark:text-amber-100/90">
+                  {t('dashboard.expoGoNotice.body')}
+                </Text>
+                <TouchableOpacity
+                  onPress={handleDismissExpoNotice}
+                  activeOpacity={0.75}
+                  className="mt-3 self-start rounded-full border border-amber-300 px-3 py-1 dark:border-amber-500/60">
+                  <Text className="text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-200">
+                    {t('common.clear')}
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
           ) : null}
@@ -517,26 +817,84 @@ export default function DashboardScreen() {
           </View>
 
           <View className="rounded-3xl bg-blue-600 p-6 shadow-lg dark:shadow-blue-900/40">
-            <View className="flex-row items-center justify-between">
-              <View>
-                <Text className="text-sm font-semibold uppercase tracking-wide text-blue-100">
-                  {t('dashboard.statusCard.title')}
-                </Text>
-                <Text className="mt-1 text-lg text-blue-50">
-                  {t('dashboard.statusCard.description')}
-                </Text>
+            <View className="flex-row items-start justify-between gap-4">
+              <View className="flex-1 space-y-3">
+                <View>
+                  <Text className="text-xs font-semibold uppercase tracking-wide text-blue-100">
+                    {permissionsSatisfied
+                      ? t('dashboard.hero.status.active')
+                      : t('dashboard.hero.status.paused')}
+                  </Text>
+                  <Text className="mt-1 text-lg font-semibold text-white">
+                    {permissionsSatisfied
+                      ? t('dashboard.statusCard.description')
+                      : t('dashboard.hero.pausedDescription')}
+                  </Text>
+                </View>
+                <View className="flex-row flex-wrap items-center gap-3">
+                  <View className="rounded-full bg-white/10 px-3 py-1">
+                    <Text className="text-xs font-medium uppercase tracking-wide text-blue-50">
+                      {t('dashboard.hero.modelVersion', { version: activeModelVersion })}
+                    </Text>
+                  </View>
+                  {modelStatusLabel ? (
+                    <View className="rounded-full bg-white/10 px-3 py-1">
+                      <Text className="text-xs font-medium uppercase tracking-wide text-blue-50">
+                        {modelStatusLabel}
+                      </Text>
+                    </View>
+                  ) : null}
+                  <View className="rounded-full bg-white/10 px-3 py-1">
+                    <Text className="text-xs font-medium uppercase tracking-wide text-blue-50">
+                      {t('dashboard.hero.lastScan', { time: lastScanText })}
+                    </Text>
+                  </View>
+                  <View
+                    className={`rounded-full px-3 py-1 ${permissionsSatisfied ? 'bg-emerald-500/20' : 'bg-amber-500/20'}`}>
+                    <Text className="text-xs font-medium uppercase tracking-wide text-blue-50">
+                      {permissionsSatisfied
+                        ? t('dashboard.hero.permissions.ok')
+                        : t('dashboard.hero.permissions.missing')}
+                    </Text>
+                  </View>
+                </View>
               </View>
-              <View className="h-16 w-16 items-center justify-center rounded-2xl bg-white/10">
+              <View className="h-16 w-16 items-center justify-center overflow-hidden rounded-3xl bg-white/10">
                 <MaterialCommunityIcons name="shield-check" size={40} color="white" />
               </View>
             </View>
-            <View className="mt-6 space-y-2">
-              <Text className="text-sm text-blue-100">
-                {t('dashboard.statusCard.model', { model: 'NLP ZeroDay v0.1' })}
+            <TouchableOpacity
+              onPress={() => router.push('/settings/diagnostics')}
+              activeOpacity={0.8}
+              className="mt-6 inline-flex self-start rounded-full border border-white/30 px-4 py-2">
+              <Text className="text-xs font-semibold uppercase tracking-wide text-blue-50">
+                {t('dashboard.hero.goToDiagnostics')}
               </Text>
-              <Text className="text-sm text-blue-100">
-                {t('dashboard.statusCard.lastScan', { time: 'just now' })}
-              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View className="space-y-3">
+            <Text className="text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+              {t('dashboard.quickActions.title')}
+            </Text>
+            <View className="flex-row flex-wrap gap-3">
+              {quickActions.map((action) => (
+                <TouchableOpacity
+                  key={action.key}
+                  onPress={action.action}
+                  activeOpacity={0.85}
+                  className={`${quickActionStyles} w-full md:w-[48%] lg:w-[31%]`}>
+                  <View className="mb-3 h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-500/20">
+                    <MaterialCommunityIcons name={action.icon as any} size={22} color="#2563eb" />
+                  </View>
+                  <Text className="text-base font-semibold text-slate-900 dark:text-slate-100">
+                    {action.title}
+                  </Text>
+                  <Text className="mt-1 text-sm text-slate-500 dark:text-slate-300">
+                    {action.subtitle}
+                  </Text>
+                </TouchableOpacity>
+              ))}
             </View>
           </View>
 
@@ -573,71 +931,121 @@ export default function DashboardScreen() {
               </View>
             </View>
 
-            <View className="flex-row flex-wrap justify-between">
-              {stats.map((stat, index) => {
+            <View className="flex-row flex-wrap justify-between gap-3">
+              {stats.map((stat) => {
                 const trendIcon =
                   stat.direction === 'up'
-                    ? 'arrow-up-bold'
+                    ? 'arrow-up'
                     : stat.direction === 'down'
-                      ? 'arrow-down-bold'
+                      ? 'arrow-down'
                       : 'minus';
-                const trendColor =
-                  stat.direction === 'up'
-                    ? 'text-emerald-600 dark:text-emerald-400'
-                    : stat.direction === 'down'
-                      ? 'text-rose-600 dark:text-rose-400'
-                      : 'text-slate-500 dark:text-slate-400';
+                const trendBadge = getTrendBadgeStyle(stat.direction);
+                const cardStyles = statsLength > 1 ? 'w-full md:w-[48%] lg:w-[31%]' : 'w-full';
+                const trendBadgeLabel =
+                  stat.direction === 'flat'
+                    ? t('dashboard.stats.trendBadges.flat')
+                    : t(`dashboard.stats.trendBadges.${stat.direction}`, {
+                        value: stat.trendValue,
+                      });
 
                 return (
-                  <View
+                  <TouchableOpacity
                     key={stat.key}
-                    className="mb-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:shadow-none"
-                    style={{
-                      width:
-                        statsLength > 1
-                          ? statsLength % 2 === 1 && index === statsLength - 1
-                            ? '100%'
-                            : '48%'
-                          : '100%',
-                    }}>
-                    <Text className="text-3xl font-semibold text-slate-900 dark:text-slate-100">
-                      {stat.value}
-                    </Text>
-                    <Text className="mt-1 text-sm text-slate-500 dark:text-slate-300">
+                    onPress={() => setSelectedStat(stat.key)}
+                    activeOpacity={0.85}
+                    className={`rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 ${cardStyles}`}>
+                    <View className="flex-row items-center justify-between">
+                      <View className="h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-500/20">
+                        <MaterialCommunityIcons
+                          name={STAT_ICONS[stat.key] as any}
+                          size={20}
+                          color="#1d4ed8"
+                        />
+                      </View>
+                      <MaterialCommunityIcons name="chevron-right" size={18} color="#64748b" />
+                    </View>
+                    <Text className="mt-3 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                       {stat.label}
                     </Text>
-                    <View className="mt-4 flex-row items-center justify-between">
-                      <Text className="text-xs font-medium uppercase tracking-wide text-blue-600 dark:text-blue-400">
-                        {stat.helper}
-                      </Text>
-                      <View className="flex-row items-center gap-1">
-                        <MaterialCommunityIcons name={trendIcon} size={16} color="#38bdf8" />
-                        <Text className={`text-xs font-semibold ${trendColor}`}>
-                          {stat.trendLabel}
+                    <Text className="mt-1 text-3xl font-semibold text-slate-900 dark:text-slate-100">
+                      {stat.value}
+                    </Text>
+                    <View className="mt-3 flex-row items-center gap-2">
+                      <View
+                        className={`flex-row items-center gap-1 rounded-full px-3 py-1 ${trendBadge.container}`}>
+                        <MaterialCommunityIcons
+                          name={trendIcon as any}
+                          size={14}
+                          color={trendBadge.icon}
+                        />
+                        <Text className={`text-xs font-semibold ${trendBadge.text}`}>
+                          {trendBadgeLabel}
                         </Text>
                       </View>
+                      <Text className="text-xs text-slate-500 dark:text-slate-400">
+                        {t('dashboard.stats.comparison')}
+                      </Text>
                     </View>
-                  </View>
+                    <Text className="mt-2 text-xs text-slate-400 dark:text-slate-500">
+                      {stat.helper}
+                    </Text>
+                  </TouchableOpacity>
                 );
               })}
             </View>
           </View>
 
-          {isExpoGo ? (
-            <View className="flex-row gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-500/40 dark:bg-amber-500/10">
-              <View className="h-10 w-10 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-500/30">
-                <MaterialCommunityIcons name="information-outline" size={24} color="#d97706" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-sm font-semibold text-amber-900 dark:text-amber-200">
-                  {t('dashboard.expoGoNotice.title')}
+          {latestActivity ? (
+            <TouchableOpacity
+              onPress={() => setSelectedDetection(latestActivity)}
+              activeOpacity={0.85}
+              className="space-y-2 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <View className="flex-row items-center justify-between">
+                <Text className="text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                  {t('dashboard.activity.title')}
                 </Text>
-                <Text className="mt-1 text-sm text-amber-800/90 dark:text-amber-100/90">
-                  {t('dashboard.expoGoNotice.body')}
-                </Text>
+                <MaterialCommunityIcons name="chevron-right" size={18} color="#64748b" />
               </View>
+              <Text className="text-base font-semibold text-slate-900 dark:text-slate-100">
+                {latestActivity.result.message.sender}
+              </Text>
+              <Text className="text-sm text-slate-500 dark:text-slate-300" numberOfLines={2}>
+                {latestActivity.result.message.body}
+              </Text>
+              <View className="flex-row flex-wrap items-center gap-2">
+                <View className="rounded-full bg-blue-50 px-3 py-1 dark:bg-blue-500/20">
+                  <Text className="text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-300">
+                    {t(`dashboard.mockDetection.channels.${latestActivity.result.message.channel}`)}
+                  </Text>
+                </View>
+                <Text className="text-xs font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                  {formatDetectedAt(latestActivity.detectedAt)}
+                </Text>
+                {latestActivityTrustedSource ? (
+                  <View className="flex-row items-center gap-1 rounded-full bg-emerald-100 px-3 py-1 dark:bg-emerald-500/20">
+                    <MaterialCommunityIcons name="shield-check" size={14} color="#059669" />
+                    <Text className="text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-200">
+                      {t('dashboard.recentAlerts.trustedBadge')}
+                    </Text>
+                  </View>
+                ) : null}
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <View className="rounded-3xl border border-dashed border-slate-200 bg-white p-5 text-center dark:border-slate-700 dark:bg-slate-900">
+              <Text className="text-sm text-slate-500 dark:text-slate-400">
+                {t('dashboard.activity.empty')}
+              </Text>
+              <TouchableOpacity
+                onPress={handleQuickActionMock}
+                activeOpacity={0.85}
+                className="mt-3 self-center rounded-full bg-slate-900 px-5 py-2 dark:bg-blue-500">
+                <Text className="text-sm font-semibold text-white">
+                  {t('dashboard.quickActions.mockScan.title')}
+                </Text>
+              </TouchableOpacity>
             </View>
-          ) : null}
+          )}
 
           <View className="space-y-3">
             <View className="flex-row items-start justify-between gap-3">
@@ -689,7 +1097,7 @@ export default function DashboardScreen() {
                 <View className="items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900">
                   <MaterialCommunityIcons name="check-circle" size={32} color="#22c55e" />
                   <Text className="mt-3 text-center text-sm text-slate-500 dark:text-slate-300">
-                    {t('dashboard.recentAlerts.empty')}
+                    {emptyAlertsMessage}
                   </Text>
                 </View>
               ) : (
@@ -710,7 +1118,7 @@ export default function DashboardScreen() {
                       key={entry.recordId}
                       onPress={() => setSelectedDetection(entry)}
                       activeOpacity={0.85}
-                      className="flex-row gap-4 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                      className="flex-row gap-4 rounded-2xl border border-transparent bg-white p-4 shadow-sm dark:border-transparent dark:bg-slate-900">
                       <View className="h-12 w-12 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-500/20">
                         <MaterialCommunityIcons name="alert" size={24} color={iconColor} />
                       </View>
@@ -775,6 +1183,61 @@ export default function DashboardScreen() {
             </View>
           </View>
 
+          <View className="space-y-3 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <View className="flex-row items-center justify-between">
+              <View>
+                <Text className="text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                  {t('dashboard.trustedSources.title')}
+                </Text>
+                <Text className="mt-1 text-sm text-slate-500 dark:text-slate-300">
+                  {t('dashboard.trustedSources.subtitle')}
+                </Text>
+              </View>
+              <TouchableOpacity onPress={handleOpenSettings} activeOpacity={0.8}>
+                <Text className="text-sm font-semibold text-blue-600 dark:text-blue-400">
+                  {t('dashboard.trustedSources.cta')}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {trustedSources.length === 0 ? (
+              <Text className="text-sm text-slate-500 dark:text-slate-400">
+                {t('dashboard.trustedSources.empty')}
+              </Text>
+            ) : (
+              <View className="space-y-3">
+                <Text className="text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                  {t('dashboard.trustedSources.count', { count: trustedSources.length })}
+                </Text>
+                {topTrustedSources.map((source) => (
+                  <View
+                    key={source.id}
+                    className="rounded-2xl border border-slate-200/70 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/60">
+                    <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                      {source.displayName || source.handle}
+                    </Text>
+                    <View className="mt-2 flex-row flex-wrap items-center gap-2">
+                      <View className="rounded-full bg-blue-50 px-3 py-1 dark:bg-blue-500/20">
+                        <Text className="text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-300">
+                          {t(`dashboard.mockDetection.channels.${source.channel}`)}
+                        </Text>
+                      </View>
+                      <Text className="text-xs text-slate-500 dark:text-slate-300">
+                        {source.note ?? t('dashboard.trustedSources.noteFallback')}
+                      </Text>
+                    </View>
+                  </View>
+                ))}
+                {trustedSources.length > topTrustedSources.length ? (
+                  <Text className="text-xs text-slate-500 dark:text-slate-400">
+                    {t('dashboard.trustedSources.more', {
+                      remaining: trustedSources.length - topTrustedSources.length,
+                    })}
+                  </Text>
+                ) : null}
+              </View>
+            )}
+          </View>
+
           <View className="space-y-3 rounded-3xl border border-blue-100 bg-blue-50 p-6 dark:border-blue-900/60 dark:bg-blue-500/10">
             <Text className="text-lg font-semibold text-slate-900 dark:text-slate-100">
               {t('dashboard.report.title')}
@@ -821,7 +1284,9 @@ export default function DashboardScreen() {
             </View>
           </View>
 
-          <View className="space-y-3 rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+          <View
+            onLayout={handleSectionLayout('mock')}
+            className="space-y-3 rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
             <View>
               <Text className="text-lg font-semibold text-slate-900 dark:text-slate-100">
                 {t('dashboard.mockDetection.title')}
@@ -946,9 +1411,63 @@ export default function DashboardScreen() {
                 {t('dashboard.mockDetection.noResultPlaceholder')}
               </Text>
             )}
+
+            <View className="rounded-2xl border border-slate-200/70 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/60">
+              <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                {t('dashboard.quickActions.developer.title')}
+              </Text>
+              <Text className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                {t('dashboard.quickActions.developer.subtitle')}
+              </Text>
+              <View className="mt-3 flex-row flex-wrap gap-3">
+                <TouchableOpacity
+                  onPress={handleResetOnboarding}
+                  activeOpacity={0.85}
+                  className="flex-row items-center gap-2 rounded-full bg-slate-900 px-4 py-2 dark:bg-blue-500">
+                  <MaterialCommunityIcons name="refresh" size={16} color="#ffffff" />
+                  <Text className="text-sm font-semibold text-white">
+                    {t('developerTools.resetOnboarding.title')}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => router.push('/onboarding')}
+                  activeOpacity={0.85}
+                  className="flex-row items-center gap-2 rounded-full border border-slate-300 px-4 py-2 dark:border-slate-600">
+                  <MaterialCommunityIcons name="walk" size={16} color="#0f172a" />
+                  <Text className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+                    {t('developerTools.resetOnboarding.restart')}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </View>
       </ScrollView>
+
+      <AppModal
+        isVisible={Boolean(statModalContent)}
+        onClose={handleCloseStatModal}
+        testID="stat-detail-modal">
+        <View className="flex-1 justify-end">
+          <View className="w-full rounded-t-3xl bg-white p-6 dark:bg-slate-900">
+            {statModalContent ? (
+              <View className="space-y-3">
+                <View className="flex-row items-center justify-between">
+                  <Text className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                    {statModalContent.title}
+                  </Text>
+                  <TouchableOpacity onPress={handleCloseStatModal} activeOpacity={0.7}>
+                    <MaterialCommunityIcons name="close" size={22} color="#64748b" />
+                  </TouchableOpacity>
+                </View>
+                <Text className="text-sm text-slate-600 dark:text-slate-300">
+                  {statModalContent.body}
+                </Text>
+              </View>
+            ) : null}
+          </View>
+        </View>
+      </AppModal>
 
       <AppModal
         isVisible={Boolean(selectedDetection)}
@@ -1042,6 +1561,11 @@ export default function DashboardScreen() {
         </View>
       </AppModal>
 
+      <ReportMessageModal
+        isVisible={isReportModalVisible}
+        onClose={() => setIsReportModalVisible(false)}
+      />
+
       <AppModal isVisible={Boolean(safePreview)} onClose={() => setSafePreview(null)}>
         <View className="flex-1 justify-end">
           <View className="w-full rounded-t-3xl bg-white p-6 dark:bg-slate-900">
@@ -1107,4 +1631,3 @@ export default function DashboardScreen() {
     </SafeAreaView>
   );
 }
-*/

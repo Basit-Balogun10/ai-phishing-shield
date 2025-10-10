@@ -20,6 +20,9 @@ importers:
       expo-background-task:
         specifier: ~1.0.8
         version: 1.0.8(expo@54.0.12)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))
+      expo-file-system:
+        specifier: ~19.0.17
+        version: 19.0.17(expo@54.0.12)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))
       expo-localization:
         specifier: ~17.0.7
         version: 17.0.7(expo@54.0.12)(react@19.1.0)
@@ -50,6 +53,9 @@ importers:
       react-native:
         specifier: 0.81.4
         version: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0)
+      react-native-modal:
+        specifier: ^13.0.2
+        version: 13.0.2(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-reanimated:
         specifier: ~4.1.1
         version: 4.1.2(@babel/core@7.28.4)(react-native-worklets@0.5.1(@babel/core@7.28.4)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -2243,8 +2249,8 @@ packages:
       expo: '*'
       react-native: '*'
 
-  expo-file-system@19.0.16:
-    resolution: {integrity: sha512-9Ee6HpcUEfO7dOet/on9yAg7ysegBua35Q0oGrJzoRc+xW6IlTxoSFbmK8QhjA3MZpkukP3DhaiYENYOzkw9SQ==}
+  expo-file-system@19.0.17:
+    resolution: {integrity: sha512-WwaS01SUFrxBnExn87pg0sCTJjZpf2KAOzfImG0o8yhkU7fbYpihpl/oocXBEsNbj58a8hVt1Y4CVV5c1tzu/g==}
     peerDependencies:
       expo: '*'
       react-native: '*'
@@ -3730,6 +3736,9 @@ packages:
   react-is@19.2.0:
     resolution: {integrity: sha512-x3Ax3kNSMIIkyVYhWPyO09bu0uttcAIoecO/um/rKGQ4EltYWVYtyiGkS/3xMynrbVQdS69Jhlv8FXUEZehlzA==}
 
+  react-native-animatable@1.4.0:
+    resolution: {integrity: sha512-DZwaDVWm2NBvBxf7I0wXKXLKb/TxDnkV53sWhCvei1pRyTX3MVFpkvdYBknNBqPrxYuAIlPxEp7gJOidIauUkw==}
+
   react-native-css-interop@0.1.20:
     resolution: {integrity: sha512-afFcrXkFEv35pkMgc9R5k79d6KyZpTtDgci0tM9NTs76/0NZcQu2YuEXoC1r4Efg/2PsWI/1/GJKVXww7RQNDg==}
     engines: {node: '>=18'}
@@ -3751,6 +3760,13 @@ packages:
     peerDependencies:
       react: '*'
       react-native: '*'
+
+  react-native-modal@13.0.2:
+    resolution: {integrity: sha512-jCUR2DAskuZtVIbnt2ZssX70DCbTLydkL1Glv1Fc/fqVIhq1LpwBK2hKgSf9VIINXFnDjjGIMIC9HhDXnW7Enw==}
+    deprecated: this version introduce potentially breaking changes, use with caution. It has been mistakenly released.
+    peerDependencies:
+      react: '*'
+      react-native: '>=0.70.0'
 
   react-native-reanimated@4.1.2:
     resolution: {integrity: sha512-qzmQiFrvjm62pRBcj97QI9Xckc3EjgHQoY1F2yjktd0kpjhoyePeuTEXjYRCAVIy7IV/1cfeSup34+zFThFoHQ==}
@@ -7306,7 +7322,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  expo-file-system@19.0.16(expo@54.0.12)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0)):
+  expo-file-system@19.0.17(expo@54.0.12)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0)):
     dependencies:
       expo: 54.0.12(@babel/core@7.28.4)(@expo/metro-runtime@6.1.2)(expo-router@6.0.10)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0)
@@ -7439,7 +7455,7 @@ snapshots:
       babel-preset-expo: 54.0.3(@babel/core@7.28.4)(@babel/runtime@7.28.4)(expo@54.0.12)(react-refresh@0.14.2)
       expo-asset: 12.0.9(expo@54.0.12)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       expo-constants: 18.0.9(expo@54.0.12)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))
-      expo-file-system: 19.0.16(expo@54.0.12)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))
+      expo-file-system: 19.0.17(expo@54.0.12)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))
       expo-font: 14.0.8(expo@54.0.12)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       expo-keep-awake: 15.0.7(expo@54.0.12)(react@19.1.0)
       expo-modules-autolinking: 3.0.14
@@ -8963,6 +8979,10 @@ snapshots:
 
   react-is@19.2.0: {}
 
+  react-native-animatable@1.4.0:
+    dependencies:
+      prop-types: 15.8.1
+
   react-native-css-interop@0.1.20(react-native-reanimated@4.1.2(@babel/core@7.28.4)(react-native-worklets@0.5.1(@babel/core@7.28.4)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.1(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.18(yaml@2.8.1)):
     dependencies:
       '@babel/helper-module-imports': 7.27.1
@@ -8984,6 +9004,12 @@ snapshots:
     dependencies:
       react: 19.1.0
       react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0)
+
+  react-native-modal@13.0.2(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0)
+      react-native-animatable: 1.4.0
 
   react-native-reanimated@4.1.2(@babel/core@7.28.4)(react-native-worklets@0.5.1(@babel/core@7.28.4)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
     dependencies:

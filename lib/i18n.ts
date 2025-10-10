@@ -13,7 +13,19 @@ import pcm from '../locales/pcm.json';
 import sw from '../locales/sw.json';
 import yo from '../locales/yo.json';
 
-type SupportedLocale = 'am' | 'ar' | 'en' | 'fr' | 'ha' | 'ig' | 'pcm' | 'sw' | 'yo';
+export type SupportedLocale = 'am' | 'ar' | 'en' | 'fr' | 'ha' | 'ig' | 'pcm' | 'sw' | 'yo';
+
+export const supportedLocales: SupportedLocale[] = [
+  'am',
+  'ar',
+  'en',
+  'fr',
+  'ha',
+  'ig',
+  'pcm',
+  'sw',
+  'yo',
+];
 
 const resources = {
   am: { translation: am },
@@ -27,7 +39,7 @@ const resources = {
   yo: { translation: yo },
 } satisfies Record<SupportedLocale, { translation: Record<string, unknown> }>;
 
-const getInitialLocale = (): SupportedLocale => {
+export const resolveInitialLocale = (): SupportedLocale => {
   const [primaryLocale] = Localization.getLocales();
   const languageCode = primaryLocale?.languageCode?.toLowerCase();
   const normalizedTag = primaryLocale?.languageTag?.toLowerCase();
@@ -88,14 +100,14 @@ const getInitialLocale = (): SupportedLocale => {
 if (!i18n.isInitialized) {
   i18n.use(initReactI18next).init({
     compatibilityJSON: 'v4',
-    lng: getInitialLocale(),
+    lng: resolveInitialLocale(),
     fallbackLng: 'en',
     resources,
     interpolation: {
       escapeValue: false,
     },
     returnNull: false,
-    supportedLngs: ['am', 'ar', 'en', 'fr', 'ha', 'ig', 'pcm', 'sw', 'yo'],
+    supportedLngs: supportedLocales,
     load: 'languageOnly',
   });
 }

@@ -8,6 +8,7 @@ import {
   scheduleDetectionNotificationAsync,
 } from '../notifications';
 import { checkNotificationPermission, checkSmsPermission } from '../permissions';
+import { trackTelemetryEvent } from './telemetry';
 
 const { BackgroundTaskResult, BackgroundTaskStatus } = BackgroundTask;
 
@@ -60,6 +61,10 @@ export const initializeMockBackgroundDetectionAsync = async () => {
       console.warn(
         '[backgroundDetection] Skipping background registration because required permissions are missing.'
       );
+      trackTelemetryEvent('background.detection_registration', {
+        status: 'skipped',
+        reason: 'missing_permissions',
+      });
       return;
     }
 
@@ -67,12 +72,20 @@ export const initializeMockBackgroundDetectionAsync = async () => {
       console.warn(
         '[backgroundDetection] Background tasks are unavailable in Expo Go. Skipping registration.'
       );
+      trackTelemetryEvent('background.detection_registration', {
+        status: 'skipped',
+        reason: 'expo_go',
+      });
       return;
     }
 
     const status = await BackgroundTask.getStatusAsync();
     if (status === BackgroundTaskStatus.Restricted) {
       console.warn('[backgroundDetection] Background tasks are restricted on this device.');
+      trackTelemetryEvent('background.detection_registration', {
+        status: 'skipped',
+        reason: 'restricted',
+      });
       return;
     }
     const isRegistered = await TaskManager.isTaskRegisteredAsync(TASK_NAME);
@@ -80,9 +93,21 @@ export const initializeMockBackgroundDetectionAsync = async () => {
       await BackgroundTask.registerTaskAsync(TASK_NAME, {
         minimumInterval: 60 * 15,
       });
+      trackTelemetryEvent('background.detection_registration', {
+        status: 'registered',
+      });
+    } else {
+      trackTelemetryEvent('background.detection_registration', {
+        status: 'registered',
+        reason: 'already_registered',
+      });
     }
   } catch (error) {
     console.warn('[backgroundDetection] Failed to register background detection', error);
+    trackTelemetryEvent('background.detection_registration', {
+      status: 'skipped',
+      reason: 'error',
+    });
   }
 };
 

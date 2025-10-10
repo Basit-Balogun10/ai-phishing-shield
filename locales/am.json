@@ -2,34 +2,150 @@
   "common": {
     "continue": "ቀጥል",
     "back": "ተመለስ",
-    "loading": "የጥበቃ ሁኔታን በመመርመር ላይ…",
-    "comingSoonTitle": "በቅርቡ",
-    "comingSoonBody": "ይህን አማራጭ እንሠራ እና እንጨርሰዋለን። በቅርቡ ይመለሱ።"
+    "loading": "የጥበቃ ሁኔታን በመጫን ላይ...",
+    "cancel": "ይቁም",
+    "save": "አስቀምጥ",
+    "clear": "አጽዳ",
+    "comingSoonTitle": "በቅርቡ ይመጣል",
+    "comingSoonBody": "ይህን አማራጭ ማጠናቀቅ እያለን ነን። በቅርቡ ይመለሱ።"
+  },
+  "navigation": {
+    "tabs": {
+      "home": "መነሻ",
+      "alerts": "ማስጠንቀቂያዎች",
+      "settings": "ማስተካከያ"
+    }
   },
   "dashboard": {
     "title": "AI አንግት መከላከያ",
-    "subtitle": "የስልክዎ ጥበቃ ሁኔታን በፈጣን ያሳያችሁ።",
+    "subtitle": "የስልክዎ ጥበቃ ሁኔታን የዘመኑ እይታ ይያዙ።",
     "statusCard": {
-      "title": "ተከላከላችሁ",
-      "description": "የፊሺንግ መለያየት በጀርባ በጸጥታ እየሰራ ነው።",
-      "model": "ሞዴል: {{model}}",
-      "lastScan": "መጨረሻ ግምገማ {{time}}"
+      "title": "በደህና ተጠበቁ",
+      "description": "በጀርባ ያለው የፊሺንግ መመርመር በቀጥታ እየሰራ ነው።",
+      "model": "ሞዴል፡ {{model}}",
+      "lastScan": "መጨረሻ ማረጋገጫ {{time}}"
+    },
+    "hero": {
+      "status": {
+        "active": "ንቁ ጥበቃ",
+        "paused": "እርምጃ ያስፈልጋል"
+      },
+      "pausedDescription": "የጎዱትን ፍቃዶች ይስጡ እና መመርመሩ ንቁ እንዲቆይ ያድርጉ።",
+      "modelVersion": "ሞዴል {{version}}",
+      "lastScan": "መጨረሻ ማረጋገጫ {{time}}",
+      "lastScanFallback": "የመጀመሪያ ምርመራን እየጠበቅን ነን",
+      "permissions": {
+        "ok": "ማንቂያና SMS ዝግጁ ናቸው",
+        "missing": "ፍቃዶችን ያስተካክሉ"
+      },
+      "modelStatus": {
+        "syncing": "ዝመናዎችን በማስዛመድ ላይ",
+        "downloading": "{{version}} በመውረድ ላይ",
+        "activating": "{{version}} በማግበር ላይ",
+        "removing": "{{version}} በማስወገድ ላይ"
+      },
+      "goToDiagnostics": "ምርመራን ይመልከቱ"
     },
     "stats": {
-      "title": "የጥበቃ ስኬቶችዎ",
+      "title": "የጥበቃ ስታቲስቲክስዎ",
       "messagesScanned": "የተመረመሩ መልዕክቶች",
       "threatsBlocked": "የተከለከሉ አደጋዎች",
-      "safeMessages": "ደህና ያሉ መልዕክቶች",
-      "since": "ከ {{timeframe}} ጀምሮ",
-      "defaultTimeframe": "ያለፈው 7 ቀናት"
+      "safeMessages": "ደህና የታዩ መልዕክቶች",
+      "since": "ከ{{timeframe}} ጀምሮ",
+      "defaultTimeframe": "ባለፈው 7 ቀናት",
+      "timeframes": {
+        "24h": "የመጨረሻ 24 ሰዓታት",
+        "7d": "የመጨረሻ 7 ቀናት",
+        "30d": "የመጨረሻ 30 ቀናት",
+        "all": "ሁሉም ጊዜ"
+      },
+      "trend": {
+        "up": "{{value}}% ከቀድሞው ጊዜ ጋር",
+        "down": "{{value}}% ከቀድሞው ጊዜ ጋር",
+        "flat": "ከቀድሞው ጊዜ ጋር ይመሳሳል"
+      },
+      "trendBadges": {
+        "up": "{{value}}%",
+        "down": "{{value}}%",
+        "flat": "ቋሚ"
+      },
+      "comparison": "ከቀድሞው ጊዜ ጋር"
+    },
+    "quickActions": {
+      "title": "ፈጣን እርምጃዎች",
+      "mockScan": {
+        "title": "ሞክር ምርመራ ያስኪዱ",
+        "subtitle": "ምሳሌ መመርመር በሚነሳበት ጊዜ ማንቂያውን እንዴት እንደሚያሳይ ይመልከቱ።"
+      },
+      "alerts": {
+        "title": "ማስጠንቀቂያዎችን ተመልከት",
+        "subtitle": "ሙሉ የመመርመር ታሪክዎን ክፈት።"
+      },
+      "settings": {
+        "title": "ቅንብሮችን ያቆጣጠሩ",
+        "subtitle": "ቋንቋ፣ ማንቂያ ምርጫዎችን እና ምርመራዎችን ያስተካክሉ።"
+      },
+      "model": {
+        "title": "የሞዴል ዝመናዎች",
+        "subtitle": "የመመርመር ሞዴሎችን ያረጋግጡ እና የተጫኑትን ስሪቶች ይቆጣጠሩ።"
+      },
+      "developer": {
+        "title": "የአበልጻጊ መሣሪያዎች",
+        "subtitle": "መጀመሪያ መመሪያውን እንደገና ያስጀምሩ እና ፍቃዶችን ዳግም ይፈትሹ።"
+      }
+    },
+    "activity": {
+      "title": "የቅርብ እንቅስቃሴ",
+      "empty": "እስካሁን መመርመር አልተካሄደም። ማስጠንቀቂያዎችን ለማየት ሞክር ምርመራ አሂዱ።"
     },
     "recentAlerts": {
       "title": "የቅርብ ማስጠንቀቂያዎች",
-      "subtitle": "ግንዛቤ የተነሳበት ተጠ suspect መልዕክቶች ይህ ነው።",
-      "empty": "አሁን ላይ ማስጠንቀቂያ የለም። ጥንቃቄ ይቀጥሉ!",
-      "viewAll": "ሙሉ ታሪክ ይመልከቱ",
+      "subtitle": "ጋሻው የገደበውን የተጠርጣሪ መልዕክቶች ማስታወቂያ ነው።",
+      "empty": "አሁን ላይ ማስጠንቀቂያ የለም። ትኩረትዎን ይጠብቁ!",
+      "emptyWithFilters": "ምንም ማስጠንቀቂያ {{filters}} አልተገኘም። እባክዎ ማጣሪያዎቹን ይቀይሩ።",
+      "viewAll": "ሙሉ ታሪኩን ይመልከቱ",
+      "filters": {
+        "all": "ሁሉም ማስጠንቀቂያዎች",
+        "historical": "የሙከራ መረጃ",
+        "simulated": "የሞክር ሙከራዎችዎ",
+        "trusted": "ታማኝ እርስዎ ያመኑት ልኪዎች"
+      },
+      "severity": {
+        "all": "ሁሉም ደረጃ",
+        "high": "ከፍተኛ አደጋ",
+        "medium": "መካከለኛ አደጋ",
+        "low": "ዝቅተኛ አደጋ"
+      },
+      "channels": {
+        "all": "ማንኛውም ቻናል"
+      },
+      "trustedToggle": {
+        "label": "ታማኝ ልኪዎችን ብቻ አሳይ",
+        "description": "በማስተካከያ ውስጥ ታማኝ ብለው ያመለከቱትን ውጤቶች ብቻ ያግኙ።"
+      },
+      "trustedOnlyBadge": "ታማኝ ልኪዎች ብቻ",
+      "feedback": {
+        "title": "ይህ ማንቂያ ትክክል ነበር?",
+        "subtitle": "ይህ የእውነት የፊሺንግ ሙከራ ነበር ወይስ የተሳሳተ ማንቂያ እንደነበር ንገሩን።",
+        "actions": {
+          "confirm": "አደጋን አረጋግጥ",
+          "confirmHelper": "የፊሺንግ ሙከራ ነበር",
+          "dismiss": "ደህና ሆነ ምልክት ላይ አድርግ",
+          "dismissHelper": "ትክክለኛ መልዕክት ነበር"
+        },
+        "status": {
+          "submitted": "ጋሻውን ለማሻሻል የሰጣችሁትን አስተያየት እናመሰግናለን።",
+          "confirmed": "እንደ ፊሺንግ ተሰናክሏል",
+          "falsePositive": "እንደ ደህና ተሰናክሏል",
+          "pending": "አስተያየቱን በመላክ ላይ..."
+        },
+        "error": "አስተያየቱን መላክ አልተቻለም። እባክዎን ዳግም ይሞክሩ።"
+      },
+      "searchPlaceholder": "ማስጠንቀቂያዎችን በልኪ፣ በይዘት ወይም በታግ ፈልግ",
+      "trustedBadge": "ታማኝ ልኪ",
+      "trustedDefault": "ይህን ልኪ በማስተካከያ ውስጥ እንደ ታማኝ ሰው ምልክት አድርጋችሁታል።",
       "historyAlertTitle": "በቅርቡ",
-      "historyAlertBody": "ሙሉ ታሪኩን በሚቀጥለው ዙር ታያላችሁ።",
+      "historyAlertBody": "ሙሉ የማስጠንቀቂያ ታሪክ በሚቀጥለው ማሻሻያ ይገናኛል።",
       "items": [
         {
           "sender": "ያልታወቀ ቁጥር",
@@ -48,21 +164,90 @@
         }
       ]
     },
+    "trustedSources": {
+      "title": "ታማኝ ልኪዎች",
+      "subtitle": "እርስዎ ደህንነት ብለው የምታዩትን ግንኙነቶች ያቆጣጠሩ።",
+      "cta": "ታማኝ ልኪዎችን ያስተዳድሩ",
+      "empty": "እስካሁን ታማኝ ልኪ አልጨምሩም።",
+      "count": "{{count}} ተመርጠው",
+      "noteFallback": "በደህንነት ታስየዋል",
+      "more": "+{{remaining}} ተጨማሪ"
+    },
     "report": {
-      "title": "መልዕክት ያሳውቁ",
-      "subtitle": "ጠ suspect የሆነ SMS ያስገቡ እንድንማሩ ፈጣን።",
-      "cta": "ያሳውቁ",
-      "alertTitle": "በቅርቡ",
-      "alertBody": "ጠ suspect መልዕክቶችን ለመላክ በሚቀጥለው ዙር ይችላሉ።"
+      "title": "Report a message",
+      "subtitle": "Share suspicious messages anonymously to strengthen the shield.",
+      "cta": "Report message",
+      "modalTitle": "Report a suspicious message",
+      "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
+      "fields": {
+        "channelLabel": "Message came from",
+        "senderLabel": "Sender (optional)",
+        "messageLabel": "Message content",
+        "categoryLabel": "What type of issue?",
+        "commentLabel": "Anything else to include? (optional)"
+      },
+      "placeholders": {
+        "sender": "e.g. +234 812 345 6789",
+        "message": "Paste or describe the suspicious message here...",
+        "comment": "Add context, e.g. why it looks risky."
+      },
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Email"
+      },
+      "categories": {
+        "phishing": "Likely phishing",
+        "suspicious": "Suspicious content",
+        "false_positive": "False alarm",
+        "other": "Something else"
+      },
+      "status": {
+        "heading": "Report status",
+        "idle": "Queued reports send automatically when a secure connection is available.",
+        "submitting": "Submitting report...",
+        "success": "Report queued successfully. Thanks for training the shield!",
+        "error": "We couldn't queue the report. Please try again.",
+        "errorTitle": "Submission failed"
+      },
+      "validation": {
+        "messageRequired": "Add the suspicious message so we know what to review."
+      },
+      "disabled": {
+        "title": "Manual reporting disabled",
+        "body": "Turn on manual reports in Settings → Data & telemetry to send suspicious messages."
+      },
+      "loadingTitle": "Preparing settings",
+      "loadingBody": "We're still loading your reporting preferences. Try again in a moment.",
+      "actions": {
+        "submit": "Submit report",
+        "cancel": "Cancel",
+        "close": "Close"
+      }
     },
     "expoGoNotice": {
       "title": "የExpo Go ገደብ",
-      "body": "የጀርባ ሂደት በExpo Go ይቆማል። መተግበሪያ የልማት ወይም የተነጠለ ስራ ይገንቡ እንዲቀጥል ከመተግበሪያው በኋላም ይቆይ።"
+      "body": "የጀርባ መመርመር በExpo Go ላይ ይቆማል። ከመተግበሪያው በኋላ ምንም ጊዜ ንቁ እንዲቆይ የልማት ኮሌንት ወይም ሙሉ መተግበሪያ ይገንቡ።"
     },
     "permissionsReminder": {
       "title": "አስፈላጊ ፍቃዶችን አንቃ",
-      "body": "ማንቂያና SMS አንቃ እንዲሁም አንግቱ በራሱ ላይ እንዲሰራ.",
-      "cta": "ፍቃዶችን ይመረምሩ"
+      "body": "ማንቂያን እና SMS ይክፈቱ እንዲሁም ጋሻው በራሱ ላይ ማመርመር ይችላል።",
+      "cta": "ፍቃዶችን ይመረምሩ",
+      "reviewOnboarding": "የመጀመሪያ መመሪያ ዳግም ይመለከቱ"
+    },
+    "modals": {
+      "messagesScanned": {
+        "title": "መመርመር እንዴት እንደሚሰራ",
+        "body": "መልዕክቶች በመታየታቸው ጊዜ በመሣሪያዎ ላይ ይተካሉ። ይህ ጋሻው ምን ያህል እንደተጣለ ለማሳየት የዳታ ናሙናዎችን ከሞክር ማስመርመርዎ ጋር ይዋሃዳል።"
+      },
+      "threatsBlocked": {
+        "title": "ስለተከለከሉ አደጋዎች",
+        "body": "ጋሻው የአደጋ ምልክት ያለውን ሁሉንም ይገምግማል፣ ከቀድሞ ምሳሌዎች ወይም ከማስመርመሪያዎ ቢመጣ ይሁን። ይህን በመጠቀም የፊሺንግ ሙከራዎች ምን ያህል እንደምንከላከል ያውቁ።"
+      },
+      "safeMessages": {
+        "title": "ስለ ደህና ያሉ መልዕክቶች",
+        "body": "የደህንነት ቆጠራ ግምገማውን ያልተያዘባቸውን መልዕክቶች ያስሉ። ተጠርጣሪ የሚመስሉትን በማግደል መልዕክት ሳጥኖችዎ እንዴት እንደሚቆዩ ይታያል።"
+      }
     },
     "mockDetection": {
       "title": "ሞክር ምርመራ አድርጉ",
@@ -80,93 +265,98 @@
       "detectedAt": "ተገኘ በ {{time}}",
       "scoreLabel": "የአደጋ እሴት: {{score}}%",
       "noMatches": "የተለየ የፊሺንግ ዘዴ አልተገኘም፣ ነገር ግን መልዕክቱ ገና አደጋ ነው።",
+      "viewSafeSample": "ደህና ያለ ምሳሌ ይመልከቱ",
+      "safePreviewTitle": "ደህና ያለ መልዕክት ምሳሌ",
+      "safePreviewSubtitle": "አንግቱ አስተማማኝ የሚመስል መልዕክትን እንዴት እንደሚገምግም ይመልከቱ።",
+      "safePreviewLabel": "ደህና ተደርጓል",
+      "safeSampleUnavailableTitle": "የደህንነት ምሳሌ የለም",
+      "safeSampleUnavailableBody": "የተረፈ ዝቅተኛ አደጋ ያለው ምሳሌ አልተገኘም። እባክዎን እንደገና ሞክሩ።",
+      "clearLastDetection": "ሞክር ውጤትን አጽዳ",
+      "clearedTitle": "ሞክር ውጤቱ ተጸድቷል",
+      "clearedBody": "የሞክር መለያየት ካርዱ ተቀመጠ።",
       "channels": {
         "sms": "SMS",
         "whatsapp": "ዋትሳፕ",
         "email": "ኢሜይል"
       }
     },
-    "navigateLabel": "ተጓዝ",
+    "navigateLabel": "ፈጣን እርምጃዎች",
     "links": {
-      "onboarding": {
-        "title": "ወደ መጀመሪያ ጉዞ ይሂዱ",
-        "description": "የእንክብካቤ መመሪያዎችን እና የፈቃድ መረጃን ይመልከቱ।"
-      },
       "settings": {
         "title": "ማስተካከያ ክፈት",
-        "description": "ቋንቋ፣ ማንቂያ፣ ምርመራዎችን ይቆጣጠሩ።"
+        "description": "ቋንቋ፣ የማንቂያ ምርጫዎች እና ምርመራን ያቆጣጠሩ።"
       }
     }
   },
   "onboarding": {
     "badge": "እንኳን በደህና መጣችሁ",
     "title": "AI አንግትን በስልክዎ ያግቡ",
-    "subtitle": "መተግበሪያው ምን እንደሚያደርግ እና ፈቃድ ለምን እንደሚያስፈልገን ያስተውሉ ለማድረግ ትንሽ ጉዞ ይውሰዱ።",
+    "subtitle": "መተግበሪያው ምን እንደሚያደርግ እና ፈቃዶች ለምን እንደሚያስፈልጉ በፍጥነት የሚገልጽ ጉዞ ይውሰዱ።",
     "skip": "ይዝለሉ",
     "next": "ቀጥሉ",
     "start": "ጥበቃን ይጀምሩ",
     "skipDialog": {
-      "title": "አስፈላጊ ፍቃዶችን ልትዝሉ?",
-      "body": "ያለ የማንቂያና SMS ፍቃድ አንግቱ በራሱ ላይ የፊሺንግ ሙከራዎችን ማለት አይችልም። እነሱን በኋላ በማስተካከያ ማንበብ ይችላሉ።",
+      "title": "አስፈላጊ ፍቃዶችን ትዝላሉ?",
+      "body": "ያለ ማንቂያ እና SMS ፍቃድ ጋሻው በራሱ ላይ የፊሺንግ ሙከራዎችን ማወቅ አይችልም። በኋላ ከማስተካከያ ማንበብ ይችላሉ።",
       "cancel": "እዚህ ቆይ",
       "confirm": "ለጊዜው ዝለል"
     },
     "permissionNoteTitle": "ከመጀመርዎ በፊት",
-    "permissionNoteBody": "ይህ አጭር መመሪያ ከተጠናቀቀ በኋላ የማንቂያና የSMS ፈቃድ ስለሚሰጡ ማስታወሻ ይደርሳችሁ።",
-    "permissionStepsTitle": "ፈቃድ ለመስጠት የሚያስፈልጉት:",
+    "permissionNoteBody": "ይህን አጭር መመሪያ ከጨረሱ በኋላ የማንቂያና የSMS ፍቃድ ማብራሪያ ትቀበላላችሁ።",
+    "permissionStepsTitle": "የምታንቁዋቸው ፍቃዶች:",
     "permissions": {
-      "title": "አንግቱን በስራ ላይ ያድርጉ",
-      "subtitle": "መልዕክቶች ሲደርሱ በቅድሚያ እንድንመርመር እነዚህን ፍቃዶች አንቃ።",
+      "title": "ጋሻውን በስራ ላይ ያድርጉ",
+      "subtitle": "መልዕክቶች ሲደርሱ በዚያኑ ጊዜ እንድንመርመር እነዚህን ፍቃዶች ይክፈቱ።",
       "notifications": {
-        "title": "የማንቂያ ፍቃድ",
-        "description": "WhatsApp፣ Messenger፣ Gmail እና ሌሎችን በቅርቡ እንድንመርመር እንዲፈቅዱልን።",
-        "cta": "ማንቂያ አንቃ",
+        "title": "የማንቂያ መዳረሻ",
+        "description": "WhatsApp፣ Messenger፣ Gmail እና ሌሎችን በእውነተኛ ጊዜ እንድንመርመር የድርሻ ፈቃድ ይስጡን።",
+        "cta": "ማንቂያ ያንቁ",
         "grantedCta": "ማንቂያ ተከፍቷል",
-        "openSettings": "የስርዓት ቅንብር ክፈት"
+        "openSettings": "የስርዓት ቅንብሮችን ክፈት"
       },
       "sms": {
-        "title": "የSMS ፍቃድ",
-        "description": "ጥ suspect መልዕክቶችን በወቅታቸው ለመለየት SMS በአካባቢ እንክብካቤ እንድንሰጥ።",
-        "cta": "የSMS ፍቃድ አንቃ",
+        "title": "የSMS መዳረሻ",
+        "description": "ተጠርጣሪ የሚመስሉትን ጽሁፎች በወቅታቸው ለመለየት SMS በቀጥታ እንንቀሳቀስ።",
+        "cta": "የSMS መዳረሻ አንቃ",
         "grantedCta": "SMS ተከፍቷል",
         "openSettings": "የስርዓት ቅንብር ክፈት",
         "unavailable": "በዚህ መሣሪያ ላይ የSMS ፍቃድ አያስፈልግም።"
       },
       "status": {
         "requesting": "በመጠየቅ ላይ…",
-        "granted": "ተከፍቷል",
-        "blocked": "በቅንብር ውስጥ አንቃ",
-        "required": "እስካሁን ያስፈልጋል"
+        "granted": "ነቅቷል",
+        "blocked": "በቅንብሮች ይክፈቱት",
+        "required": "ገና ያስፈልጋል"
       },
-      "finishCta": "ጥበቃን ጀምር",
-      "checking": "ያሉትን ፍቃዶች በመፈተሽ ላይ…",
-      "continueHelper": "ለመቀጠል አስፈላጊውን አንቃ",
-      "incompleteTitle": "የፍቃድ ማሰናጃን ያጠናቅቁ",
-      "incompleteBody": "ማንቂያና SMS አንቃ እንዲሁም አንግቱ በራሱ ላይ እንዲሰራ."
+      "finishCta": "ጥበቃን ይጀምሩ",
+      "checking": "የአሁኑን ፍቃዶች በመርመር ላይ…",
+      "continueHelper": "ለመቀጠል የሚያስፈልጉትን ፍቃዶች አንቁ።",
+      "incompleteTitle": "የፍቃድ ማብቂያውን ያጠናቀቁ",
+      "incompleteBody": "ጋሻው በራሱ ላይ እንዲሰራ ማንቂያን እና SMS ያንቁ።"
     },
     "slides": [
       {
-        "title": "ከማስታለላ በፊት ይቅዱ",
-        "description": "ስልክዎ ላይ የሚደርሱ ሁሉንም SMS እና ማንቂያዎችን እንመርመራ የፊሺንግ ሙከራዎችን ወዲያውኑ እንድንገናኝ።",
+        "title": "ከፊሺንግ ይቀድሙ",
+        "description": "የመጪውን SMS እና የማንቂያ ይዘት በመሣሪያዎ ላይ ወዲያውኑ እንመርመራለን ፊሺንግን ፈጣን ለመለየት።",
         "icon": "shield-check"
       },
       {
         "title": "ግላዊነትዎ አስፈላጊ ነው",
-        "description": "ሁሉም መለያያት በመሣሪያዎ ላይ ነው የሚሰሩት። መልዕክቶች ከዚያ ቦታ አይወጡም፣ በክላውድም አይቀመጡም።",
+        "description": "ሁሉም መመርመር ኦፍላይን ይተካል። መልዕክቶች ከመሣሪያዎ አይወጡ እና መረጃ በደመና አይቀመጥም።",
         "icon": "lock-check"
       },
       {
-        "title": "ትክክለኛውን ፈቃድ እንድንኖር",
-        "description": "የSMS እና ማንቂያ ፈቃድን እንጠይቃለን በጀርባ በጸጥታ እንድንሰራ።",
+        "title": "ትክክለኛውን ፍቃድ ይስጡ",
+        "description": "በጀርባ ጥበቃው ንቁ እንዲቆይ የSMS እና የማንቂያ ፍቃዶችን እንጠይቃለን።",
         "icon": "cellphone-message",
         "permissions": [
           {
-            "title": "የማንቂያ ፈቃድ",
-            "description": "WhatsApp, Messenger, Gmail እና ሌሎችን በፈጣን እንድንመርመር።"
+            "title": "የማንቂያ መዳረሻ",
+            "description": "WhatsApp፣ Messenger፣ Gmail እና ሌሎችን ወዲያውኑ እንመርመር ዘንድ ይረዳናል።"
           },
           {
-            "title": "የSMS ንባብ ፈቃድ",
-            "description": "ጠ suspect መልዕክቶች በሚደርሱ ጊዜ ለመተንተን ያስፈልጋል።"
+            "title": "የSMS ንባብ ፍቃድ",
+            "description": "ተጠርጣሪ ጽሁፎች ሲደርሱ በቅርቡ ለመቆጣጠር ይፈቅዱ።"
           }
         ]
       }
@@ -174,30 +364,235 @@
   },
   "settings": {
     "title": "ማስተካከያ",
-    "subtitle": "ቋንቋ፣ ማንቂያዎች እና ምርመራዎችን ይቆጣጠሩ። እርስዎ ሙሉ ማስተካከያ እስኪገናኝ ድረስ እርስዎ የሚያዩት ማብራሪያ ነው።",
+    "subtitle": "ቋንቋ፣ ማንቂያዎች እና ምርመራዎችን ያቆጣጠሩ። እሱ ሙሉ አማራጭ እስኪቀር ድረስ ጊዜያዊ ስክሪን ነው።",
+    "language": {
+      "loading": "ቋንቋዎችን በመዘጋጀት ላይ..."
+    },
+    "diagnostics": {
+      "loading": "የስም ያልተገለጹ መረጃዎችን በመሰብሰብ ላይ...",
+      "errorTitle": "ምርመራውን መጫን አልተቻለም",
+      "errorBody": "ስእሉን ለማቅረብ ሲሞክር ችግኝ ተፈጥሯል። እባክዎን በጠንካራ ግንኙነት ይሞክሩ።",
+      "retry": "እንደገና ይሞክሩ",
+      "shareTitle": "የምርመራ ስእል",
+      "shareButton": "ስእሉን ያካፍሉ",
+      "shareErrorTitle": "ማካፈል አልተሳካም",
+      "shareErrorBody": "የምርመራ ስእሉን ማካፈል አልቻልንም። እባክዎን ዳግም ይሞክሩ።",
+      "refreshButton": "ስእሉን ያድሱ",
+      "lastGenerated": "ተፈጠረ {{date}}",
+      "disclaimer": "ይህ ማስገቢያ የግል ይዘት አያካትትም። ለምታመኑት የድጋፍ ባለሞያዎች ብቻ ያካፍሉት።",
+      "sections": {
+        "environment": "አካባቢ",
+        "localization": "መደበኛ ቋንቋ",
+        "theme": "መልክ",
+        "notifications": "ማንቂያዎች",
+        "sms": "SMS",
+        "detections": "መመርመሮች",
+        "trustedSources": "ታማኝ ልኪዎች",
+        "telemetry": "ቴሌሜትሪ"
+      },
+      "fields": {
+        "platform": "መድረክ",
+        "appOwnership": "የመተግበሪያ ባለቤትነት",
+        "appVersion": "የመተግበሪያ እትም",
+        "buildNumber": "የግንባታ ቁጥር",
+        "activeLocale": "በአሁኑ ጊዜ የሚጠቀም ቋንቋ",
+        "deviceLocale": "የመሣሪያ ቋንቋ",
+        "storedLocale": "የተቀመጠ ቋንቋ",
+        "storedPreference": "የተቀመጠ ምርጫ",
+        "notificationPermission": "የማንቂያ ፍቃድ",
+        "alertsEnabled": "ማስጠንቀቂያዎች ተከፍተዋል",
+        "soundEnabled": "ድምጽ ተነስቷል",
+        "vibrationEnabled": "መንቀሳቀስ ተነስቷል",
+        "quietHoursEnabled": "የዝምታ ሰአቶች ተነስተዋል",
+        "quietHoursActive": "የዝምታ ሰአት ንቁ ነው",
+        "quietHoursWindow": "የዝምታ ሰአት ክፍት ጊዜ",
+        "smsPermission": "የSMS ፍቃድ",
+        "historicalCount": "የታሪክ መመርመሮች",
+        "simulatedCount": "የሞክር መመርመሮች",
+        "lastSimulatedAt": "መጨረሻ ሙከራ",
+        "trustedSourcesTotal": "ጠቃሚ ታማኝ ልኪዎች",
+        "telemetryEvents": "የተቀመጡ ክስተቶች",
+        "telemetryLatest": "የመጨረሻው ክስተት"
+      },
+      "values": {
+        "yes": "አዎ",
+        "no": "አይ",
+        "none": "አልተገኘም",
+        "unknown": "ያልታወቀ",
+        "permission": {
+          "granted": "ተፈቀደ",
+          "denied": "ተከልክሏል",
+          "blocked": "ታግዷል",
+          "unavailable": "የለም"
+        }
+      }
+    },
     "entries": {
       "theme": {
-        "title": "የቅርጸ-ተሞክሮ",
-        "description": "መተግበሪያው እንዴት እንደሚታይ ይመርጡ።",
+        "title": "መልክ",
+        "description": "መተግበሪያው ቀለማትን እንዴት እንዲቀይር ይመርጡ።",
         "options": {
-          "dark": "ግራር (ነባር)",
+          "dark": "ጨለማ (ነባር)",
           "light": "ብርሃን",
-          "system": "የስርዓቱን አከታትሉ"
+          "system": "የስርዓቱን ይከተሉ"
         }
+      },
+      "telemetry": {
+        "title": "የማስጠንቀቂያ ጋርነት",
+        "description": "ማስጠንቀቂያዎችን እና ሪፖርቶችን ለሞዴሉ ማሻሻያ እንዴት እንደምንጋራ ይቆጣጠሩ።",
+        "autoUploadTitle": "ተጠርጣሪ ማስጠንቀቂያዎችን በራስ-ሰር ላክ",
+        "autoUploadSubtitle": "ተጠርጣሪ ሲገኝ የግል መረጃ ያልሆነ መረጃ እንዲጋራ ይፍቀዱ።",
+        "manualReportsTitle": "በእጅ ሪፖርት እንዲያድርጉ",
+        "manualReportsSubtitle": "ተጠርጣሪ መልዕክት ሲታይ ከዳሽቦርድ ሪፖርት ማቅረብ ይችላሉ።",
+        "errorTitle": "ማዘመን አልተሳካም",
+        "errorBody": "ምርጫዎችን ማስቀመጥ አልቻልንም። እባክዎን ዳግም ይሞክሩ።"
+      },
+      "model": {
+        "title": "የሞዴል ዝመናዎች",
+        "description": "አዳዲስ የፊሺንግ መለያየት ሞዴሎችን ይጫኑ እና ስሪቶችን ያቆጣጠሩ።",
+        "manageButton": "አስተዳዳሪን ክፈት",
+        "currentBadge": "የአሁኑ {{version}}"
       },
       "language": {
         "title": "ቋንቋ",
-        "description": "በእንግሊዝኛ፣ ፈረንሳይኛ፣ ስዋሂሊ፣ ዮሩባ፣ ኢግቦ፣ ሃውሳ፣ ፒጅን፣ ዓረብኛ እና አማርኛ መካከል ይመርጡ።"
+        "description": "እንግሊዝኛ፣ ፈረንሳይኛ፣ ስዋሂሊ፣ ዮሩባ፣ ኢግቦ፣ ሃውሳ፣ ፒጅን፣ ዓረብኛ እና አማርኛ መካከል ይመርጡ።",
+        "activeBadge": "በአሁኑ ጊዜ የሚጠቀሙት",
+        "deviceDefault": {
+          "title": "የመሣሪያውን ቋንቋ ይከተሉ",
+          "description": "መተግበሪያው ከስልክዎ ዋና ቋንቋ ጋር እንዲስማማ ይጠብቁ።",
+          "badge": "ከመሣሪያ ነባር ጋር ይከተላል"
+        },
+        "options": {
+          "en": {
+            "title": "እንግሊዝኛ",
+            "native": "English"
+          },
+          "fr": {
+            "title": "ፈረንሳይኛ",
+            "native": "Français"
+          },
+          "sw": {
+            "title": "ስዋሂሊ",
+            "native": "Kiswahili"
+          },
+          "yo": {
+            "title": "ዮሩባ",
+            "native": "Yorùbá"
+          },
+          "ig": {
+            "title": "ኢግቦ",
+            "native": "Ásụ̀sụ́ Ìgbò"
+          },
+          "ha": {
+            "title": "ሃውሳ",
+            "native": "Hausa"
+          },
+          "pcm": {
+            "title": "ናይጄሪያ ፒጅን",
+            "native": "Naijá"
+          },
+          "ar": {
+            "title": "ዓረብኛ",
+            "native": "العربية"
+          },
+          "am": {
+            "title": "አማርኛ",
+            "native": "አማርኛ"
+          }
+        }
       },
       "notifications": {
-        "title": "ማንቂያዎች",
-        "description": "የማንቂያ ድምጽ፣ መንቀሳቀስ እና የእረፍት ሰአትን ያቀናብሩ።"
+        "title": "የማንቂያ ምርጫዎች",
+        "description": "የማንቂያ ድምጽ፣ መንቀሳቀስ እና የዝምታ ሰአቶችን ያቆጣጠሩ።"
       },
       "diagnostics": {
         "title": "ምርመራ",
-        "description": "ለአዲስ መረጃ በማድረግ ለመረጃ ትክክለኛነት ይረዱ።"
+        "description": "የተስተካከሉ መዝገቦችን በመላክ የመመርመር ትክክለኛነትን ይደግፉ።"
+      },
+      "trustedSources": {
+        "title": "ታማኝ ልኪዎች",
+        "description": "ደህና ብለው የምታመኑባቸውን ስልክ ቁጥሮች ወይም ኢሜይሎች ይቆጣጠሩ።",
+        "addButton": "ልኪ ያክሉ",
+        "emptyState": "ምንም ታማኝ እውቂያ አልጨመሩም። የታረመ የባንክ መስመር፣ የሥራ አስተዳዳሪዎች ወይም የምታመኑባቸውን አጋሮች ያክሉ።",
+        "removeTitle": "ታማኝ ልኪን ልታወጡ?",
+        "removeConfirm": "አስወግድ",
+        "removeA11y": "ታማኝ ልኪ {{name}} ያስወግዱ",
+        "validationTitle": "ልኪ ይጎድላል",
+        "validationHandle": "ለማመን የሚፈልጉትን ትክክለኛ ስም ወይም ቁጥር ያስገቡ።",
+        "duplicateTitle": "ቀድሞውኑ ታመነ",
+        "duplicateBody": "ይህ ልኪ በዚህ ቻናል አስቀድሞ ታማኝ ተሰይሟል።",
+        "successTitle": "ታማኝ ልኪ ተቀመጠ",
+        "errorTitle": "ችግኝ ተፈጠረ",
+        "errorBody": "ታማኝ ልኪዎችን ማዘመን አልተቻለም። እባክዎን እንደገና ይሞክሩ።",
+        "modalTitle": "ታማኝ ልኪ ያክሉ",
+        "modalSubtitle": "ማስጠንቀቂያዎች ትክክለኛ እንዲሆኑ የእርስዎን ዋና እውቂያ ይመዝግቡ።",
+        "fields": {
+          "channel": "ቻናል",
+          "handle": "ልኪ",
+          "displayName": "የሚታይ ስም",
+          "note": "ማስታወሻ"
+        },
+        "placeholders": {
+          "handle": "ለምሳሌ፡ UBA Secure",
+          "displayName": "የጓደኛ ስም (አማራጭ)",
+          "note": "አጭር ማስታወሻ ያክሉ (አማራጭ)"
+        },
+        "saving": "በመቀመጥ ላይ..."
       }
     },
-    "back": "\u2190 ወደ ዳሽቦርድ ተመለስ"
+    "model": {
+      "title": "የሞዴል አስተዳደር",
+      "subtitle": "ዝመናዎችን ይውሰዱ፣ ስሪቶችን አግብሩ እና የተጫኑትን ታሪክ ይመልከቱ።",
+      "syncButton": "ዝመናዎችን አዛመድ",
+      "syncing": "ዝመናዎችን በመዛመድ ላይ...",
+      "lastSynced": "መጨረሻ ተዛመደ {{time}}",
+      "neverSynced": "ካታሎጉ ገና አልተዛመደም",
+      "availableTitle": "የሚገኙ ስሪቶች",
+      "availableEmpty": "አሁን ከፍተኛውን ስሪት ታጠቃለህ።",
+      "installedTitle": "ተጫኑ ስሪቶች",
+      "installedEmpty": "እስካሁን ሞዴሎች አልተጫኑም።",
+      "badges": {
+        "current": "ንቁ",
+        "installed": "ተጫኗል"
+      },
+      "sizeLabel": "{{size}} ሜባ",
+      "releaseDate": "{{date}} ተለቀቀ",
+      "changelogTitle": "አዲስ ምን አለ",
+      "actions": {
+        "install": "ጫን",
+        "activate": "አግብር",
+        "remove": "አስወግድ"
+      },
+      "alerts": {
+        "installSuccessTitle": "ሞዴሉ ተጫኗል",
+        "installSuccessBody": "{{version}} ስሪት አሁን በመሣሪያዎ ላይ ንቁ ነው።",
+        "installErrorTitle": "ጫን አልተሳካም",
+        "installErrorBody": "{{version}} ስሪትን ማከል አልቻልንም። እባክዎን በቅርቡ ይሞክሩ።",
+        "activateSuccessTitle": "ሞዴሉ ተግብሯል",
+        "activateSuccessBody": "{{version}} ስሪት አሁን ንቁ መለያየት ነው።",
+        "activateErrorTitle": "ማግበር አልተሳካም",
+        "activateErrorBody": "ሞዴሉን መቀየር አልቻልንም። እባክዎን ዳግም ይሞክሩ።",
+        "removeConfirmTitle": "የሞዴሉን ስሪት ልታስወግዱ?",
+        "removeConfirmBody": "{{version}} ስሪትን ማስወገድ ቦታ ይፈታል። በኋላ እንደፈለጉ እንደገና መጫን ትችላላችሁ።",
+        "removeConfirmAction": "አስወግድ",
+        "removeSuccessTitle": "ሞዴሉ ተወግዷል",
+        "removeSuccessBody": "{{version}} ስሪት ከአካባቢ ማከማቻ ተወግዷል።",
+        "removeErrorTitle": "ማስወገድ አልተሳካም",
+        "removeErrorBody": "{{version}} ስሪትን ማስወገድ አልቻልንም። ማስዛመድ ካጠናቀቁ በኋላ ይሞክሩ።",
+        "syncErrorTitle": "ማስዛመድ አልተሳካም",
+        "syncErrorBody": "ካታሎጉን ማዘመን አልቻልንም። አገናኙን ያረጋግጡ እና ዳግም ይሞክሩ።"
+      }
+    },
+    "back": "← ወደ ዳሽቦርድ ተመለስ"
+  },
+  "developerTools": {
+    "resetOnboarding": {
+      "title": "የመጀመሪያ መመሪያን ዳግም ያስጀምሩ",
+      "successTitle": "መመሪያው ተዘጋ",
+      "successBody": "የመጀመሪያ እርምጃዎችን አጽዳናል። ጉዞውን ለመጀመር መተግበሪያውን እንደገና ይክፈቱ።",
+      "errorTitle": "እንደገና ማስጀመር አልተሳካም",
+      "errorBody": "የመጀመሪያ ሁኔታውን ማጽዳት አልተቻለም። እባክዎን እንደገና ይሞክሩ።",
+      "restart": "መመሪያውን ዳግም ጀምር"
+    }
   }
 }

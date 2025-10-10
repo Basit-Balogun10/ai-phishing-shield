@@ -12,21 +12,19 @@ import {
   View,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useOnboardingGate } from '../lib/hooks/useOnboardingGate';
-import { useThemePreference } from '../lib/hooks/useThemePreference';
-import { useLanguagePreference } from '../lib/hooks/useLanguagePreference';
-import type { ThemePreference } from '../lib/storage';
-import { AppModal } from '../components/AppModal';
+import { useOnboardingGate } from '../../lib/hooks/useOnboardingGate';
+import { useThemePreference } from '../../lib/hooks/useThemePreference';
+import type { ThemePreference } from '../../lib/storage';
+import { AppModal } from '../../components/AppModal';
 import {
   isTrustedSender,
   trustedSourcesStore,
   useTrustedSources,
   type TrustedSource,
-} from '../lib/trustedSources';
-import { useNotificationPreferences } from '../lib/notificationPreferences';
-import { trackTelemetryEvent } from '../lib/services/telemetry';
-import { useModelManager } from '../lib/modelManager';
-import { telemetryPreferencesStore, useTelemetryPreferences } from '../lib/telemetryPreferences';
+} from '../../lib/trustedSources';
+import { telemetryPreferencesStore, useTelemetryPreferences } from '../../lib/telemetryPreferences';
+import { trackTelemetryEvent } from '../../lib/services/telemetry';
+import { useModelManager } from '../../lib/modelManager';
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
@@ -37,13 +35,6 @@ export default function SettingsScreen() {
     setPreference,
     ready: themeReady,
   } = useThemePreference();
-  const {
-    ready: languageReady,
-    locale: activeLocale,
-    usingDeviceDefault,
-  } = useLanguagePreference();
-  const { ready: notificationsReady, preferences: notificationPreferences } =
-    useNotificationPreferences();
   const { ready: trustedReady, sources: trustedSources } = useTrustedSources();
   const { ready: telemetryReady, preferences: telemetryPreferences } = useTelemetryPreferences();
   const {
@@ -208,18 +199,11 @@ export default function SettingsScreen() {
   }, [modelOperation, modelReady, modelStatus, t]);
 
   const handleOpenModelManager = () => {
-    trackTelemetryEvent('settings.model_entry_opened', { source: 'settings_root' });
+    trackTelemetryEvent('settings.model_entry_opened', { source: 'settings_tab' });
     router.push('/settings/model');
   };
 
-  if (
-    checking ||
-    !themeReady ||
-    !trustedReady ||
-    !languageReady ||
-    !notificationsReady ||
-    !telemetryReady
-  ) {
+  if (checking || !themeReady || !trustedReady || !telemetryReady) {
     return (
       <SafeAreaView className="flex-1 items-center justify-center bg-slate-50 dark:bg-slate-950">
         <ActivityIndicator size="large" color="#2563eb" />
@@ -229,15 +213,6 @@ export default function SettingsScreen() {
       </SafeAreaView>
     );
   }
-
-  const notificationBadge = notificationPreferences.alertsEnabled
-    ? notificationPreferences.quietHoursEnabled
-      ? t('settings.entries.notifications.badge.quietHours', {
-          start: notificationPreferences.quietHoursStart,
-          end: notificationPreferences.quietHoursEnd,
-        })
-      : t('settings.entries.notifications.badge.on')
-    : t('settings.entries.notifications.badge.off');
 
   if (!allowed) {
     return null;
@@ -454,7 +429,7 @@ export default function SettingsScreen() {
 
         <TouchableOpacity
           activeOpacity={0.85}
-          onPress={() => router.push('/settings/language')}
+          onPress={() => Alert.alert(t('common.comingSoonTitle'), t('common.comingSoonBody'))}
           className="rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
           <Text className="text-lg font-medium text-slate-900 dark:text-slate-100">
             {t('settings.entries.language.title')}
@@ -462,25 +437,17 @@ export default function SettingsScreen() {
           <Text className="mt-1 text-sm text-slate-500 dark:text-slate-300">
             {t('settings.entries.language.description')}
           </Text>
-          <Text className="mt-3 text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400">
-            {usingDeviceDefault
-              ? t('settings.entries.language.deviceDefault.badge')
-              : t(`settings.entries.language.options.${activeLocale}.title`)}
-          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           activeOpacity={0.85}
-          onPress={() => router.push('/settings/notifications')}
+          onPress={() => Alert.alert(t('common.comingSoonTitle'), t('common.comingSoonBody'))}
           className="rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
           <Text className="text-lg font-medium text-slate-900 dark:text-slate-100">
             {t('settings.entries.notifications.title')}
           </Text>
           <Text className="mt-1 text-sm text-slate-500 dark:text-slate-300">
             {t('settings.entries.notifications.description')}
-          </Text>
-          <Text className="mt-3 text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400">
-            {notificationBadge}
           </Text>
         </TouchableOpacity>
 

@@ -3,17 +3,48 @@
     "continue": "Ci gaba",
     "back": "Koma baya",
     "loading": "Ana duba matsayi na kariya…",
+    "cancel": "Soke",
+    "save": "Ajiye",
+    "clear": "Share",
     "comingSoonTitle": "Zai iso nan ba da jimawa ba",
-    "comingSoonBody": "Muna kammala wannan zaɓi. Don Allah ka dawo nan ba da jimawa ba."
+    "comingSoonBody": "Muna kammala wannan zaɓin. Don Allah ka dawo nan ba da jimawa ba."
+  },
+  "navigation": {
+    "tabs": {
+      "home": "Gida",
+      "alerts": "Gargadi",
+      "settings": "Saituna"
+    }
   },
   "dashboard": {
     "title": "Garkuwar Phishing ta AI",
-    "subtitle": "Ga sabuwar hoton tsaro na wayarka a yanzu haka.",
+    "subtitle": "Ga yadda kariyar wayarka take a yanzu.",
     "statusCard": {
       "title": "Kana cikin kariya",
-      "description": "Ganewar barazanar phishing na aiki a hankali a bayan fage.",
+      "description": "Ganewar barazanar phishing na gudana a hankali a bayan fage.",
       "model": "Samfuri: {{model}}",
       "lastScan": "Bincike na ƙarshe {{time}}"
+    },
+    "hero": {
+      "status": {
+        "active": "Kariya tana aiki",
+        "paused": "Ana buƙatar mataki"
+      },
+      "pausedDescription": "Ba da izinonin da suka rage domin ganowar phishing ta ci gaba da aiki.",
+      "modelVersion": "Samfuri {{version}}",
+      "lastScan": "Bincike na ƙarshe {{time}}",
+      "lastScanFallback": "Ana jiran binciken farko",
+      "permissions": {
+        "ok": "Sanarwa da SMS sun shirya",
+        "missing": "Gyara izinoni"
+      },
+      "modelStatus": {
+        "syncing": "Ana daidaita sabunta bayanai",
+        "downloading": "Ana sauke {{version}}",
+        "activating": "Ana kunna {{version}}",
+        "removing": "Ana cire {{version}}"
+      },
+      "goToDiagnostics": "Duba bincike"
     },
     "stats": {
       "title": "Kididdigar kariyarka",
@@ -21,77 +52,191 @@
       "threatsBlocked": "Barazanar da aka toshe",
       "safeMessages": "Saƙonnin lafiya",
       "since": "Tun {{timeframe}}",
-      "defaultTimeframe": "kwanaki 7 da suka wuce"
+      "defaultTimeframe": "kwanaki 7 da suka wuce",
+      "timeframes": {
+        "24h": "Awanni 24 da suka wuce",
+        "7d": "Kwanaki 7 da suka wuce",
+        "30d": "Kwanaki 30 da suka wuce",
+        "all": "Duk lokacin"
+      },
+      "trend": {
+        "up": "{{value}}% idan aka kwatanta da baya",
+        "down": "{{value}}% idan aka kwatanta da baya",
+        "flat": "Babu canji idan aka kwatanta da baya"
+      },
+      "trendBadges": {
+        "up": "{{value}}%",
+        "down": "{{value}}%",
+        "flat": "Tsayayye"
+      },
+      "comparison": "idan aka kwatanta da lokacin baya"
+    },
+    "quickActions": {
+      "title": "Ayyuka masu sauri",
+      "mockScan": {
+        "title": "Gudanar da binciken kwaikwayo",
+        "subtitle": "Jeka na’urar kwaikwayo domin tayar da ganowa ta misali."
+      },
+      "alerts": {
+        "title": "Duba gargadi",
+        "subtitle": "Bude duk tarihin ganowarka."
+      },
+      "settings": {
+        "title": "Sarrafa saituna",
+        "subtitle": "Daidaici harshe, sanarwa, da bincike."
+      },
+      "model": {
+        "title": "Sabunta samfurin",
+        "subtitle": "Duba sabbin nau’in na’urar gano barazana kuma sarrafa sigogin da aka saka."
+      },
+      "developer": {
+        "title": "Kayan aikin masu haɓakawa",
+        "subtitle": "Sake saita koyarwar farko kuma sake duba izinoni."
+      }
+    },
+    "activity": {
+      "title": "Aikin kwanan nan",
+      "empty": "Har yanzu babu ganowa. Gudanar da binciken kwaikwayo don ganin yadda gargadi zai fito."
     },
     "recentAlerts": {
       "title": "Gargadi na baya-bayan nan",
-      "subtitle": "Sabbin saƙonnin da aka yi zargin phishing da garkuwa ta gano.",
+      "subtitle": "Sabbin saƙonnin da garkuwa ta nuna akwai haɗari.",
       "empty": "Babu gargadi a yanzu. Ka ci gaba da lura!",
-      "viewAll": "Duba duk tarihin",
+      "emptyWithFilters": "Ba a samu gargadin da ya dace da {{filters}} ba. Gwada sauya matattara.",
+      "viewAll": "Duba cikakken tarihi",
+      "filters": {
+        "all": "Duk gargadi",
+        "historical": "Rumbun bayanan kai tsaye",
+        "simulated": "Gwaje-gwajen ka",
+        "trusted": "Masu aiko amintattu"
+      },
+      "severity": {
+        "all": "Duk matakin haɗari",
+        "high": "Babban haɗari",
+        "medium": "Matsakaicin haɗari",
+        "low": "Ƙananan haɗari"
+      },
+      "channels": {
+        "all": "Duk wata hanya"
+      },
+      "trustedToggle": {
+        "label": "Nuna masu aiko da kake yarda da su kaɗai",
+        "description": "Takaita sakamakon zuwa masu aiko da ka sa a matsayin masu aminci a cikin Saituna."
+      },
+      "trustedOnlyBadge": "Masu aiko amintattu kaɗai",
+      "feedback": {
+        "title": "Shin wannan gargaɗi ya dace?",
+        "subtitle": "Faɗa mana ko harin phishing ne na gaske ko ƙararrawa ce ta ƙarya.",
+        "actions": {
+          "confirm": "Tabbatar da barazana",
+          "confirmHelper": "Harin phishing ne",
+          "dismiss": "Alamar lafiya",
+          "dismissHelper": "Saƙon gaskiya ne"
+        },
+        "status": {
+          "submitted": "Mun gode da taimakonka wajen inganta garkuwan.",
+          "confirmed": "An sanya shi a matsayin phishing",
+          "falsePositive": "An sanya shi a matsayin lafiya",
+          "pending": "Ana aikawa da ra'ayi..."
+        },
+        "error": "Ba mu iya aikawa da wannan ra'ayi ba. Ka sake gwadawa."
+      },
+      "searchPlaceholder": "Nemo gargadi ta mai aikowa, abun ciki, ko alama",
+      "trustedBadge": "An amince da mai aikowa",
+      "trustedDefault": "Ka saka wannan mai aiko cikin jerin masu aminci a Saituna.",
       "historyAlertTitle": "Zai iso nan ba da jimawa ba",
-      "historyAlertBody": "Za ka iya ganin duk tarihin gargadi a mataki na gaba.",
+      "historyAlertBody": "Za ka iya duba cikakken tarihin gargadi a matakin gaba.",
       "items": [
         {
           "sender": "Lamba mara sani",
-          "preview": "Fansa harajin ka yanzu. Danna haɗin nan…",
+          "preview": "Ka karɓi kuɗin haraji yanzu. Danna wannan mahaɗi…",
           "timestamp": "Awanni 2 da suka wuce"
         },
         {
-          "sender": "Hedkwatar Kuɗi",
-          "preview": "Gaggawa: Tabbatar da bayanan kuɗin ka kafin a dakatar da kai.",
+          "sender": "Hedikwatar Kuɗi",
+          "preview": "Gaggawa: Tabbatar da bayanan biyan kuɗinka don kar a dakatar da kai.",
           "timestamp": "Jiya"
         },
         {
           "sender": "+234 900 123 4567",
-          "preview": "Mun saka kuɗi a asusunka. Don Allah ka tabbatar nan take!",
+          "preview": "Mun saka kuɗi a asusunka. Don Allah ka tabbatar nan da nan!",
           "timestamp": "Litinin"
         }
       ]
     },
+    "trustedSources": {
+      "title": "Masu aiko amintattu",
+      "subtitle": "Sarrafa lambobin tuntuɓa da ka ware a matsayin masu aminci.",
+      "cta": "Sarrafa masu aiko amintattu",
+      "empty": "Ba ka ƙara wani mai aiko amintacce ba tukuna.",
+      "count": "{{count}} masu aminci",
+      "noteFallback": "An nuna ya dace",
+      "more": "+{{remaining}} ƙari"
+    },
     "report": {
       "title": "Ba da rahoton saƙo",
-      "subtitle": "Tura SMS da kake zargi domin mu koyi yadda ake gano su cikin sauri.",
-      "cta": "Ba da rahoton saƙo",
-      "alertTitle": "Zai iso nan ba da jimawa ba",
-      "alertBody": "Za ka iya tura saƙonnin da ake zargi a mataki na gaba."
+      "subtitle": "Ba da daɗewa ba: raba saƙonnin da kake zargi ba tare da sunanka ba domin ƙarfafa samfurin.",
+      "cta": "Zai iso nan ba da jimawa ba",
+      "alertTitle": "Hanyar aiki mai zuwa",
+      "alertBody": "Za mu baka damar aika rahotanni da sauke sabon sigar samfurin da zarar uwar garken tsaro ta shirya."
     },
     "expoGoNotice": {
       "title": "Takaitaccen Expo Go",
-      "body": "Binciken bango yana tsaya wa a Expo Go. Gina app na ci gaba ko ƙaƙƙarfan app domin garkuwa ya ci gaba da aiki ko ka rufe app ɗin."
+      "body": "Binciken baya yana tsaya wa a Expo Go. Gina app na ci gaba ko na kansa domin garkuwa ta cigaba da aiki ko da ka rufe app ɗin."
     },
     "permissionsReminder": {
-      "title": " kunna damar da ake buƙata",
-      "body": " kunna sanarwa da SMS domin garkuwa ta duba saƙonni ta atomatik.",
-      "cta": "Duba izini"
+      "title": "Kunna izinonin da ake buƙata",
+      "body": "Kunna sanarwa da SMS domin garkuwa ta iya duba saƙonni ta atomatik.",
+      "cta": "Duba izinoni",
+      "reviewOnboarding": "Koma ga koyarwar farko"
+    },
+    "modals": {
+      "messagesScanned": {
+        "title": "Yadda bincike ke aiki",
+        "body": "Ana nazarin saƙonni a kan na’urarka nan take bayan sun bayyana. Muna haɗa samfurin bayanai da gwaje-gwajen kwaikwayo domin nuna yadda garkuwa ke aiki koyaushe."
+      },
+      "threatsBlocked": {
+        "title": "Game da barazanar da aka toshe",
+        "body": "Garkuwa tana ɗaga duk abin da ya nuna haɗari, ko daga bayanan tarihi ko kuma gwaje-gwajenka. Yi amfani da wannan don kimanta yadda ake kama yunkurin phishing."
+      },
+      "safeMessages": {
+        "title": "Fahimtar saƙonnin lafiya",
+        "body": "Ƙididdigar lafiya na nuna yawan saƙonnin da suka wuce tantancewa. Muna cire abin da ake zargi daga jimillar da aka duba don nuna tsabtar akwatin saƙonninka."
+      }
     },
     "mockDetection": {
       "title": "Gudanar da gwajin kwaikwayo",
-      "subtitle": " kunna na’urar gano barazana da saƙonnin kwaikwayo domin ganin yadda gargadi ke bayyana.",
+      "subtitle": " kunna na’urar gano barazana da saƙonnin kwaikwayo don ganin yadda gargadi ke bayyana.",
       "cta": "Gwada gano barazana",
       "runningLabel": "Ana gudanar da gwajin kwaikwayo…",
-      "helper": "Idan an gano barazana, za a nuna cikakkun bayanai a nan kuma za ka samu sanarwa a wayarka.",
-      "successTitle": "Gargadin kwaikwayo ya iso",
-      "successBody": "Duba sashen sanarwarka domin ganin yadda zai bayyana.",
+      "helper": "Idan an gano barazana, za a nuna bayanai a nan sannan ka karɓi sanarwa a wayarka.",
+      "successTitle": "An tayar da gargadin kwaikwayo",
+      "successBody": "Duba ɓangaren sanarwa domin ganin yadda zai bayyana a zahiri.",
       "noThreatTitle": "Babu barazana",
-      "noThreatBody": "Saƙonnin kwaikwayo duk sun kasance lafiya. Gwada kuma daga baya!",
-      "errorTitle": "Ba a samun gwajin kwaikwayo",
-      "errorBody": "Ba za mu iya gudanar da gwajin yanzu ba. Sake kunna app ɗin ka gwada kuma.",
-      "noResultPlaceholder": "Gudanar da gwajin kwaikwayo domin ganin yadda gargadi zai bayyana a cikin app ɗin.",
+      "noThreatBody": "Dukkan saƙonnin kwaikwayo sun kasance lafiya wannan karon. Gwada kuma daga baya!",
+      "errorTitle": "Gwajin kwaikwayo bai samu ba",
+      "errorBody": "Ba mu iya gudanar da na’urar gano barazana yanzu ba. Rufe app ɗin ka sake budewa sannan kuma ka gwada.",
+      "noResultPlaceholder": "Gudanar da kwaikwayo don ganin ainihin yadda gargadi zai bayyana a cikin app ɗin.",
       "detectedAt": "An gano a {{time}}",
-      "scoreLabel": "Matsayin barazana: {{score}}%",
-      "noMatches": "Ba a gano wani sigar phishing ba amma saƙon yana nuna barazana har yanzu.",
+      "scoreLabel": "Matsayin haɗari: {{score}}%",
+      "noMatches": "Ba a dace da wani tsari na phishing ba, amma saƙon har yanzu yana nuna haɗari.",
+      "viewSafeSample": "Duba misalin lafiya",
+      "safePreviewTitle": "Misalin saƙo mai lafiya",
+      "safePreviewSubtitle": "Ga yadda na’urar bincike ke kallon saƙo mai kama da na gaskiya.",
+      "safePreviewLabel": "An nuna shi lafiya",
+      "safeSampleUnavailableTitle": "Babu misalin lafiya",
+      "safeSampleUnavailableBody": "Ba mu samu saƙon da haɗarinsa ya yi ƙasa a yanzu ba. Gwada gudanar da wani kwaikwayo.",
+      "clearLastDetection": "Share sakamakon kwaikwayo",
+      "clearedTitle": "An share sakamakon kwaikwayo",
+      "clearedBody": "An sake saita katin gano kwaikwayo.",
       "channels": {
         "sms": "SMS",
         "whatsapp": "WhatsApp",
         "email": "Imel"
       }
     },
-    "navigateLabel": "Kewayawa",
+    "navigateLabel": "Ayyuka masu sauri",
     "links": {
-      "onboarding": {
-        "title": "Je zuwa farawa",
-        "description": "Duba darasin farko da bayanin dalilin neman izini."
-      },
       "settings": {
         "title": "Buɗe saituna",
         "description": "Sarrafa harshe, sanarwa, da bincike."
@@ -101,63 +246,63 @@
   "onboarding": {
     "badge": "Barka",
     "title": "Kunshi Garkuwar Phishing ta AI",
-    "subtitle": "Bi waɗannan matakai ka fahimci abin da app ɗin ke yi da kuma dalilin neman izini.",
+    "subtitle": "Bi waɗannan matakai ka fahimci abin da app ɗin ke yi da dalilin da yasa ake buƙatar izinoni.",
     "skip": "Tsallake",
     "next": "Ci gaba",
     "start": "Fara kariya",
     "skipDialog": {
-      "title": "Kana son tsallake izinin da ake buƙata?",
-      "body": "Ba tare da izinin sanarwa da SMS ba, garkuwa ba zai iya lura da zamba ta atomatik ba. Kana iya kunna su daga baya a cikin saituna.",
-      "cancel": "Ci gaba a nan",
+      "title": "Kana son tsallake izinonin da ake buƙata?",
+      "body": "Ba tare da sanarwa da SMS ba, garkuwa ba za ta iya lura da zamba ta atomatik ba. Za ka iya kunna su daga baya a Saituna.",
+      "cancel": "Zauna nan",
       "confirm": "Tsallake yanzu"
     },
     "permissionNoteTitle": "Kafin mu fara",
-    "permissionNoteBody": "Za ka bayar da izinin sanarwa da SMS bayan wannan taƙaitaccen jagora.",
+    "permissionNoteBody": "Da zarar wannan gajeren jagora ya ƙare za ka ba da damar sanarwa da SMS.",
     "permissionStepsTitle": "Za ka ba da izini ga:",
     "permissions": {
       "title": "Ka bar garkuwa tana aiki",
       "subtitle": " kunna waɗannan izinonin domin mu binciki saƙonni da zarar sun iso.",
       "notifications": {
         "title": "Izinin sanarwa",
-        "description": "Ba mu izini mu bincika WhatsApp, Messenger, Gmail da sauran ainihi.",
+        "description": "Bar mu mu duba WhatsApp, Messenger, Gmail da sauran su a take.",
         "cta": " kunna sanarwa",
-        "grantedCta": "Sanarwa ta kunna",
+        "grantedCta": "Sanarwa sun kunna",
         "openSettings": "Buɗe saitin tsarin"
       },
       "sms": {
         "title": "Izinin SMS",
-        "description": "Ba mu damar karanta SMS da ke shigowa domin gano saƙonnin da ake zargi nan take.",
+        "description": "Bar mu mu karanta SMS da ke shigowa domin gano abin da ake zargi nan da nan.",
         "cta": " kunna izinin SMS",
         "grantedCta": "SMS ta kunna",
         "openSettings": "Buɗe saitin tsarin",
-        "unavailable": "Izinin SMS ba dole ba ne akan wannan na’ura."
+        "unavailable": "Izinin SMS ba dole ba ne a wannan na’ura."
       },
       "status": {
         "requesting": "Ana nema…",
-        "granted": "An kunna",
+        "granted": "An yarda",
         "blocked": "Kunne ta cikin saituna",
         "required": "Har yanzu ana buƙata"
       },
       "finishCta": "Fara kariya",
-      "checking": "Ana duba izinonin yanzu…",
-      "continueHelper": " kunna abin da ake buƙata domin cigaba",
-      "incompleteTitle": "Kammala saiti na izini",
+      "checking": "Ana duba izinoni yanzu…",
+      "continueHelper": " kunna abin da ake buƙata kafin ka ci gaba",
+      "incompleteTitle": "Kammala saiti na izinoni",
       "incompleteBody": " kunna sanarwa da SMS domin garkuwa ta yi aiki ta atomatik."
     },
     "slides": [
       {
-        "title": "Kasance a gaba da masu zamba",
-        "description": "Mun duba SMS da sanarwa a kan wayarka domin gano masu zamba nan take.",
+        "title": "Kasance gaba da masu zamba",
+        "description": "Muna tantance SMS da sanarwa da zarar sun shigo wayarka domin gano masu zamba nan take.",
         "icon": "shield-check"
       },
       {
-        "title": "Sirrinka yana da muhimmanci",
-        "description": "Dukkan bincike yana faruwa ne a kan wayarka. Ba mu tura saƙonni zuwa girgije.",
+        "title": "Sirrin ka muhimmi ne",
+        "description": "Duk bincike yana faruwa ne a kan na’urarka. Ba ma turawa ko ajiye bayananka a girgije.",
         "icon": "lock-check"
       },
       {
-        "title": "Ba mu izini mai kyau",
-        "description": "Za mu roƙi izinin SMS da sanarwa domin mu ci gaba da lura a bayan fage.",
+        "title": "Ba mu izinonin da suka dace",
+        "description": "Za mu roƙi sanarwa da SMS domin mu ci gaba da lura a bayan gida ba tare da hayaniya ba.",
         "icon": "cellphone-message",
         "permissions": [
           {
@@ -166,7 +311,7 @@
           },
           {
             "title": "Izinin karanta SMS",
-            "description": "Domin sanin saƙonnin da ake zargi da zarar sun iso."
+            "description": "Ana buƙatar shi don tantance saƙonnin da ake zargi da zarar sun iso."
           }
         ]
       }
@@ -174,30 +319,235 @@
   },
   "settings": {
     "title": "Saituna",
-    "subtitle": "Sarrafa harshe, sanarwa, da bincike. Wannan allon ɗin wucin gadi ne har sai an ƙara ainihin saituna.",
+    "subtitle": "Sarrafa harshe, sanarwa, da bincike. Wannan allon na wucin gadi ne har sai mun gama saituna na gaskiya.",
+    "language": {
+      "loading": "Ana shirya harsuna..."
+    },
+    "diagnostics": {
+      "loading": "Ana tattara bayanan bincike ba tare da sunaye ba...",
+      "errorTitle": "An kasa loda bayanan bincike",
+      "errorBody": "Mun sami matsala wajen ƙirƙirar hoton nan take. Sake gwadawa da kyakkyawan haɗi.",
+      "retry": "Sake gwadawa",
+      "shareTitle": "Hoto na bincike",
+      "shareButton": "Raba hoton",
+      "shareErrorTitle": "Rabawa ta gaza",
+      "shareErrorBody": "Ba mu iya raba hoton bincike ba. Don Allah a sake gwadawa.",
+      "refreshButton": "Sabunta hoton",
+      "lastGenerated": "An samar da shi {{date}}",
+      "disclaimer": "Wannan fitarwa ba ya ɗauke da bayanan sirri. Raba shi da ma’aikatan tallafin da kake yarda da su kaɗai.",
+      "sections": {
+        "environment": "Muhalli",
+        "localization": "Harshe",
+        "theme": "Tsari",
+        "notifications": "Sanarwa",
+        "sms": "SMS",
+        "detections": "Ganowa",
+        "trustedSources": "Masu aiko amintattu",
+        "telemetry": "Telemetry"
+      },
+      "fields": {
+        "platform": "Dandali",
+        "appOwnership": "Wanda ke da app",
+        "appVersion": "Sigar app",
+        "buildNumber": "Lamba ta gini",
+        "activeLocale": "Harshe mai aiki",
+        "deviceLocale": "Harshe na’ura",
+        "storedLocale": "Harshe da aka ajiye",
+        "storedPreference": "Zabin da aka ajiye",
+        "notificationPermission": "Izinin sanarwa",
+        "alertsEnabled": "An kunna gargadi",
+        "soundEnabled": "An kunna sauti",
+        "vibrationEnabled": "An kunna jijjiga",
+        "quietHoursEnabled": "Lokutan natsuwa",
+        "quietHoursActive": "Lokutan natsuwa suna aiki",
+        "quietHoursWindow": "Lokacin natsuwa",
+        "smsPermission": "Izinin SMS",
+        "historicalCount": "Ganowa na baya",
+        "simulatedCount": "Ganowa na kwaikwayo",
+        "lastSimulatedAt": "An yi kwaikwayo na ƙarshe",
+        "trustedSourcesTotal": "Jimillar masu aiko amintattu",
+        "telemetryEvents": "Abubuwan da aka adana",
+        "telemetryLatest": "Abu na ƙarshe"
+      },
+      "values": {
+        "yes": "Eh",
+        "no": "A'a",
+        "none": "Babu",
+        "unknown": "Ba a sani ba",
+        "permission": {
+          "granted": "An amince",
+          "denied": "An ƙi",
+          "blocked": "An toshe",
+          "unavailable": "Ba ya nan"
+        }
+      }
+    },
     "entries": {
       "theme": {
-        "title": "Jigon hoto",
+        "title": "Tsarin kallo",
         "description": "Zaɓi yadda app ɗin zai bayyana.",
         "options": {
-          "dark": "Duhu (tsoho)",
+          "dark": "Duhu (na asali)",
           "light": "Haske",
-          "system": "Bi tsarin waya"
+          "system": "Bi tsarin na’ura"
         }
+      },
+      "telemetry": {
+        "title": "Raba barazana",
+        "description": "Ka sarrafa yadda ake raba faɗakarwa da rahotanni da AI Phishing Shield domin inganta samfurin.",
+        "autoUploadTitle": "Aika gano barazana ta atomatik",
+        "autoUploadSubtitle": "Raba bayanan faɗakarwa ba tare da sunan mai amfani ba idan aka gano abin zargi.",
+        "manualReportsTitle": "Ba da damar rahoto da hannu",
+        "manualReportsSubtitle": "Kasance da damar aikewa da rahoto daga dashboard idan ka lura da saƙo mai zargi.",
+        "errorTitle": "Sabuntawa ta gaza",
+        "errorBody": "Ba mu iya ajiye zabin ka ba. Da fatan ka sake gwadawa."
+      },
+      "model": {
+        "title": "Sabunta samfurin",
+        "description": "Saka sabbin samfuran gano phishing kuma sarrafa sigogi.",
+        "manageButton": "Buɗe mai kula",
+        "currentBadge": "Siga ta yanzu {{version}}"
       },
       "language": {
         "title": "Harshe",
-        "description": "Zaɓi daga Turanci, Faransanci, Swahili, Yarbanci, Ibo, Hausa, Pidgin, Larabci, da Amharic."
+        "description": "Sauya tsakanin Turanci, Faransanci, Swahili, Yarbanci, Igbo, Hausa, Pijin, Larabci, da Amharic.",
+        "activeBadge": "Harshe mai aiki",
+        "deviceDefault": {
+          "title": "Bi harshen na’urar",
+          "description": "A bar app ɗin ya yi daidai da harshen wayarka.",
+          "badge": "Yana bin na’urar"
+        },
+        "options": {
+          "en": {
+            "title": "Turanci",
+            "native": "English"
+          },
+          "fr": {
+            "title": "Faransanci",
+            "native": "Français"
+          },
+          "sw": {
+            "title": "Swahili",
+            "native": "Kiswahili"
+          },
+          "yo": {
+            "title": "Yarbanci",
+            "native": "Yorùbá"
+          },
+          "ig": {
+            "title": "Igbo",
+            "native": "Ásụ̀sụ́ Ìgbò"
+          },
+          "ha": {
+            "title": "Hausa",
+            "native": "Hausa"
+          },
+          "pcm": {
+            "title": "Nijeriya Pijin",
+            "native": "Naijá"
+          },
+          "ar": {
+            "title": "Larabci",
+            "native": "العربية"
+          },
+          "am": {
+            "title": "Amharic",
+            "native": "አማርኛ"
+          }
+        }
       },
       "notifications": {
         "title": "Sanarwa",
-        "description": "Saita sauti, rawar jiki, da lokutan hutu."
+        "description": "Saita sautin gargadi, jijjiga, da lokutan shiru."
+      },
+      "trustedSources": {
+        "title": "Masu aiko amintattu",
+        "description": "Sarrafa lambobin waya ko masu aiko da imel da kake ganin sun dace.",
+        "addButton": "Ƙara mai aikowa",
+        "emptyState": "Har yanzu babu wanda ka ƙara. Ƙara layukan banki, ma’aikatan HR, ko abokan harka da kake yarda da su.",
+        "removeTitle": "A cire wannan mai aikowa amintacce?",
+        "removeConfirm": "Cire",
+        "removeA11y": "Cire mai aikowa amintacce {{name}}",
+        "validationTitle": "Ba a samu mai aikowa ba",
+        "validationHandle": "Shigar da sunan ko lambar da kake son ka yarda da shi daidai",
+        "duplicateTitle": "Tuni an yarda",
+        "duplicateBody": "An riga an yi alamar wannan mai aiko a matsayin amintacce ga wannan tashar.",
+        "successTitle": "An adana mai aiko amintacce",
+        "errorTitle": "Wani abu ya faru",
+        "errorBody": "Ba mu iya sabunta jerin masu aiko amintattunka ba. Don Allah ka sake gwadawa.",
+        "modalTitle": "Ƙara mai aikowa amintacce",
+        "modalSubtitle": "Rubuta tuntuɓa na hukuma domin gargadi su ci gaba da zama masu ma’ana.",
+        "fields": {
+          "channel": "Hanya",
+          "handle": "Mai aikowa",
+          "displayName": "Sunan da zai bayyana",
+          "note": "Lura"
+        },
+        "placeholders": {
+          "handle": "misali UBA Secure",
+          "displayName": "Lakabi mai daɗi (zaɓi)",
+          "note": "Ƙara taƙaitaccen bayani (zaɓi)"
+        },
+        "saving": "Ana ajiye..."
       },
       "diagnostics": {
         "title": "Bincike",
-        "description": "Tura bayanai marasa suna domin tallafa wa inganta gano barazana."
+        "description": "Aika bayanai ba tare da suna ba domin taimaka wa ingancin ganowa."
       }
     },
-    "back": "\u2190 Koma zuwa dashboard"
+    "model": {
+      "title": "Gudanar da samfurin",
+      "subtitle": "Sauke sabuntawa, kunna sigogi, kuma duba tarihin sakawa.",
+      "syncButton": "Daidaita sabuntawa",
+      "syncing": "Ana daidaita sabuntawa...",
+      "lastSynced": "An daidaita na ƙarshe {{time}}",
+      "neverSynced": "Katalog bai taɓa daidaituwa ba",
+      "availableTitle": "Sigogi masu samuwa",
+      "availableEmpty": "Kana amfani da sabuwar sigar yanzu.",
+      "installedTitle": "Sigogi da aka saka",
+      "installedEmpty": "Babu samfurin da aka saka tukuna.",
+      "badges": {
+        "current": "Aiki",
+        "installed": "An saka"
+      },
+      "sizeLabel": "{{size}} MB",
+      "releaseDate": "An fitar {{date}}",
+      "changelogTitle": "Me ya sabunta",
+      "actions": {
+        "install": "Saka",
+        "activate": "Kunna",
+        "remove": "Cire"
+      },
+      "alerts": {
+        "installSuccessTitle": "An saka samfurin",
+        "installSuccessBody": "Sigar {{version}} yanzu tana aiki a kan na'urarka.",
+        "installErrorTitle": "Saka bai yi nasara ba",
+        "installErrorBody": "Ba mu iya ƙara sigar {{version}} ba. Da fatan za ka sake gwadawa.",
+        "activateSuccessTitle": "An kunna samfurin",
+        "activateSuccessBody": "Sigar {{version}} ita ce mai gano barazana yanzu.",
+        "activateErrorTitle": "Kunna bai yi nasara ba",
+        "activateErrorBody": "Ba mu iya sauya samfurin ba. Da fatan za ka gwada kuma.",
+        "removeConfirmTitle": "A cire sigar samfurin?",
+        "removeConfirmBody": "Cire sigar {{version}} yana sake sarari. Za ka iya sake sakawa daga baya idan kana buƙata.",
+        "removeConfirmAction": "Cire",
+        "removeSuccessTitle": "An cire samfurin",
+        "removeSuccessBody": "Sigar {{version}} ta goge daga ajiya.",
+        "removeErrorTitle": "Cirewa ta kasa",
+        "removeErrorBody": "Ba mu iya cire sigar {{version}} ba. Gwada bayan ka daidaita.",
+        "syncErrorTitle": "Daidaitawa ta gaza",
+        "syncErrorBody": "Ba mu iya sabunta katalog ba. Duba haɗinka ka gwada kuma."
+      }
+    },
+    "back": "← Koma zuwa dashboard"
+  },
+  "developerTools": {
+    "resetOnboarding": {
+      "title": "Sake saita tsarin koyarwa",
+      "successTitle": "An sake saita koyarwa",
+      "successBody": "Mun share matsayin koyarwar farko. Bude app ɗin domin fara darasin daga farko.",
+      "errorTitle": "Sake saitawa ta gaza",
+      "errorBody": "Ba mu iya share matsayin koyarwar farko ba. Don Allah ka sake gwadawa.",
+      "restart": "Fara koyarwar daga farko"
+    }
   }
 }

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Appearance } from 'react-native';
-import { NativeWindStyleSheet } from 'nativewind';
+import { useColorScheme as useNativeWindColorScheme } from 'nativewind';
 
 import { getThemePreference, setThemePreference, ThemePreference } from '../storage';
 
@@ -30,14 +30,15 @@ export function useThemePreference(): ThemePreferenceState {
     DEFAULT_PREFERENCE
   );
   const [ready, setReady] = useState(false);
+  const { setColorScheme } = useNativeWindColorScheme();
 
-  const applyColorScheme = useCallback((scheme: 'light' | 'dark') => {
-    setResolvedColorScheme(scheme);
-
-    if (typeof NativeWindStyleSheet.setColorScheme === 'function') {
-      NativeWindStyleSheet.setColorScheme(scheme);
-    }
-  }, []);
+  const applyColorScheme = useCallback(
+    (scheme: 'light' | 'dark') => {
+      setResolvedColorScheme(scheme);
+      setColorScheme?.(scheme);
+    },
+    [setColorScheme]
+  );
 
   useEffect(() => {
     let isMounted = true;
