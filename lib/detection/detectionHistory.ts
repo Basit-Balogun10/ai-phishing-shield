@@ -40,10 +40,6 @@ const historicalDetections = buildHistoricalDetections();
 let simulatedDetections: DetectionRecord[] = [];
 let lastSimulatedId: string | null = null;
 
-const emit = () => {
-  listeners.forEach((listener) => listener());
-};
-
 const sortDetections = (records: DetectionRecord[]): DetectionRecord[] => {
   return [...records].sort(
     (a, b) => new Date(b.detectedAt).getTime() - new Date(a.detectedAt).getTime()
@@ -73,7 +69,18 @@ const buildSnapshot = (): DetectionHistorySnapshot => {
   };
 };
 
-const getSnapshot = () => buildSnapshot();
+let currentSnapshot: DetectionHistorySnapshot = buildSnapshot();
+
+const refreshSnapshot = () => {
+  currentSnapshot = buildSnapshot();
+};
+
+const emit = () => {
+  refreshSnapshot();
+  listeners.forEach((listener) => listener());
+};
+
+const getSnapshot = () => currentSnapshot;
 
 const subscribe = (listener: () => void) => {
   listeners.add(listener);

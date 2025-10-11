@@ -1,10 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import FileSystem, {
-  getInfoAsync,
-  makeDirectoryAsync,
-  writeAsStringAsync,
-  deleteAsync,
-} from 'expo-file-system';
+import * as FileSystem from 'expo-file-system';
 import { useEffect, useMemo, useSyncExternalStore } from 'react';
 
 type ExpoFileSystemModule = typeof FileSystem & {
@@ -13,6 +8,7 @@ type ExpoFileSystemModule = typeof FileSystem & {
 };
 
 const expoFs = FileSystem as ExpoFileSystemModule;
+const { getInfoAsync, makeDirectoryAsync, writeAsStringAsync, deleteAsync } = expoFs;
 
 type Listener = () => void;
 
@@ -52,12 +48,13 @@ type ModelManagerSnapshot = {
   error: string | null;
 };
 
-const MODEL_DIRECTORY_ROOT = expoFs.documentDirectory ?? expoFs.cacheDirectory;
-if (!MODEL_DIRECTORY_ROOT) {
-  throw new Error('[modelManager] No filesystem directory available for model storage');
-}
+const MODEL_DIRECTORY_ROOT = expoFs.documentDirectory ?? expoFs.cacheDirectory ?? null;
+const FILESYSTEM_AVAILABLE =
+  typeof MODEL_DIRECTORY_ROOT === 'string' && MODEL_DIRECTORY_ROOT.length > 0;
+const MODEL_DIRECTORY = FILESYSTEM_AVAILABLE ? `${MODEL_DIRECTORY_ROOT}models` : null;
+const MEMORY_PLACEHOLDER_PREFIX = 'model_manager_memory_placeholder_v1_';
 
-const MODEL_DIRECTORY = `${MODEL_DIRECTORY_ROOT}models`;
+const isMemoryPath = (path: string) => path.startsWith('memory://');
 
 const REMOTE_MODEL_REGISTRY: ModelVersionMetadata[] = [
   {
@@ -123,14 +120,19 @@ const persistState = async (state: PersistedModelState) => {
 };
 
 const ensureModelDirectory = async () => {
+  if (!FILESYSTEM_AVAILABLE || !MODEL_DIRECTORY) {
+    return false;
+  }
+
   try {
     const info = await getInfoAsync(MODEL_DIRECTORY);
     if (!info.exists) {
       await makeDirectoryAsync(MODEL_DIRECTORY, { intermediates: true });
     }
+    return true;
   } catch (error) {
     console.warn('[modelManager] Failed to ensure model directory', error);
-    throw error;
+    return false;
   }
 };
 
@@ -146,9 +148,18 @@ const MODEL_PLACEHOLDER_TEMPLATE = (metadata: ModelVersionMetadata) =>
   );
 
 const writeModelPlaceholder = async (metadata: ModelVersionMetadata) => {
+  const payload = MODEL_PLACEHOLDER_TEMPLATE(metadata);
+
+  if (!FILESYSTEM_AVAILABLE || !MODEL_DIRECTORY) {
+    await AsyncStorage.setItem(`${MEMORY_PLACEHOLDER_PREFIX}${metadata.version}`, payload);
+    return {
+      path: `memory://${metadata.version}`,
+      sizeBytes: payload.length,
+    };
+  }
+
   await ensureModelDirectory();
   const filePath = `${MODEL_DIRECTORY}/${metadata.version.replace(/\./g, '_')}.tflite.json`;
-  const payload = MODEL_PLACEHOLDER_TEMPLATE(metadata);
 
   await writeAsStringAsync(filePath, payload);
 
@@ -186,13 +197,42 @@ const loadPersistedState = async (): Promise<PersistedModelState | null> => {
         typeof entry.installedAt === 'string' &&
         typeof entry.localPath === 'string'
       ) {
-        const info = await getInfoAsync(entry.localPath);
-        if (info.exists) {
-          sanitizedInstalled.push({
-            ...entry,
-            fileSizeBytes:
-              typeof entry.fileSizeBytes === 'number' ? entry.fileSizeBytes : (info.size ?? 0),
-          });
+        const baseRecord: InstalledModelRecord = {
+          ...entry,
+          fileSizeBytes: typeof entry.fileSizeBytes === 'number' ? entry.fileSizeBytes : 0,
+        };
+
+        if (isMemoryPath(entry.localPath)) {
+          const memoryPayload = await AsyncStorage.getItem(
+            `${MEMORY_PLACEHOLDER_PREFIX}${entry.version}`
+          );
+          if (memoryPayload) {
+            sanitizedInstalled.push({
+              ...baseRecord,
+              fileSizeBytes: memoryPayload.length,
+            });
+          }
+          continue;
+        }
+
+        if (!FILESYSTEM_AVAILABLE) {
+          sanitizedInstalled.push(baseRecord);
+          continue;
+        }
+
+        try {
+          const info = await getInfoAsync(entry.localPath);
+          if (info.exists) {
+            sanitizedInstalled.push({
+              ...baseRecord,
+              fileSizeBytes:
+                typeof baseRecord.fileSizeBytes === 'number'
+                  ? baseRecord.fileSizeBytes
+                  : (info.size ?? 0),
+            });
+          }
+        } catch (fsError) {
+          console.warn('[modelManager] Failed to validate installed model file', fsError);
         }
       }
     }
@@ -384,10 +424,14 @@ const modelManagerStore = {
     updateSnapshot({ activeOperation: { type: 'remove', version } });
     const record = snapshot.installed.find((item) => item.version === version);
     if (record) {
-      try {
-        await deleteAsync(record.localPath, { idempotent: true });
-      } catch (error) {
-        console.warn('[modelManager] Failed to delete model file', error);
+      if (isMemoryPath(record.localPath)) {
+        await AsyncStorage.removeItem(`${MEMORY_PLACEHOLDER_PREFIX}${record.version}`);
+      } else if (FILESYSTEM_AVAILABLE) {
+        try {
+          await deleteAsync(record.localPath, { idempotent: true });
+        } catch (error) {
+          console.warn('[modelManager] Failed to delete model file', error);
+        }
       }
     }
 
