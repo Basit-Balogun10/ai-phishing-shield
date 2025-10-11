@@ -6,7 +6,9 @@ import {
   ActivityIndicator,
   Alert,
   LayoutChangeEvent,
+  Platform,
   ScrollView,
+  Switch,
   Text,
   TouchableOpacity,
   View,
@@ -31,6 +33,7 @@ import { AppModal } from '../../components/AppModal';
 import { ReportMessageModal } from '../../components/ReportMessageModal';
 import { clearOnboardingComplete } from '../../lib/storage';
 import { useTelemetryPreferences } from '../../lib/telemetryPreferences';
+import { shieldStateStore, useShieldState } from '../../lib/shieldState';
 
 type StatTimeframe = '24h' | '7d' | '30d' | 'all';
 type AlertFilter = 'all' | 'historical' | 'simulated' | 'trusted';
@@ -45,7 +48,6 @@ type DashboardStat = {
   direction: 'up' | 'down' | 'flat';
 };
 
-const quickActionStyles = `px-4 py-4 rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900`;
 const TIMEFRAME_KEYS: StatTimeframe[] = ['24h', '7d', '30d', 'all'];
 const TIMEFRAME_RANGES_MS: Record<StatTimeframe, number | null> = {
   '24h': 24 * 60 * 60 * 1000,
@@ -59,6 +61,10 @@ const STAT_ICONS: Record<DashboardStat['key'], string> = {
   threatsBlocked: 'shield-alert',
   safeMessages: 'shield-check-outline',
 };
+
+const SECTION_WRAPPER = 'rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900';
+const SECTION_TITLE = 'text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400';
+const SECTION_SUBTITLE = 'text-sm text-slate-500 dark:text-slate-400';
 
 export default function DashboardScreen() {
   const router = useRouter();
@@ -77,7 +83,9 @@ export default function DashboardScreen() {
   } = useModelManager();
   const { ready: telemetryReady, preferences: telemetryPreferences } = useTelemetryPreferences();
   const { sources: trustedSources } = useTrustedSources();
+  const { ready: shieldReady, paused: shieldPaused } = useShieldState();
   const [isTriggeringDetection, setIsTriggeringDetection] = useState(false);
+  const [isUpdatingShield, setIsUpdatingShield] = useState(false);
   const [selectedDetection, setSelectedDetection] = useState<DetectionRecord | null>(null);
   const [selectedStat, setSelectedStat] = useState<DashboardStat['key'] | null>(null);
   const [selectedTimeframe, setSelectedTimeframe] = useState<StatTimeframe>('7d');
@@ -138,6 +146,13 @@ export default function DashboardScreen() {
   }, [getTrustedSource, selectedDetection]);
   const [safePreview, setSafePreview] = useState<DetectionResult | null>(null);
   const activeModelVersion = activeModel?.version ?? 'v0.1.0';
+  const protectionActive = permissionsSatisfied && !shieldPaused;
+  const heroStatusLabel = protectionActive
+    ? t('dashboard.hero.status.active')
+    : t('dashboard.hero.status.paused');
+  const heroDescription = protectionActive
+    ? t('dashboard.statusCard.description')
+    : t('dashboard.hero.pausedDescription');
   const modelStatusLabel = useMemo(() => {
     if (!modelReady) {
       return null;
@@ -227,6 +242,47 @@ export default function DashboardScreen() {
     router.push('/settings/model');
   }, [router]);
 
+  const handleReportPress = useCallback(() => {
+    if (!telemetryReady) {
+      Alert.alert(t('dashboard.report.loadingTitle'), t('dashboard.report.loadingBody'));
+      return;
+    }
+
+    if (!telemetryPreferences.allowManualReports) {
+      Alert.alert(t('dashboard.report.disabled.title'), t('dashboard.report.disabled.body'));
+      return;
+    }
+
+    setIsReportModalVisible(true);
+    trackTelemetryEvent('dashboard.manual_report_opened', {
+      source: 'quick_action',
+    });
+  }, [t, telemetryPreferences.allowManualReports, telemetryReady]);
+
+  const handleToggleShield = useCallback(async () => {
+    if (isUpdatingShield || !shieldReady) {
+      return;
+    }
+
+    const nextPaused = !shieldPaused;
+
+    try {
+      setIsUpdatingShield(true);
+      await shieldStateStore.setPaused(nextPaused);
+      trackTelemetryEvent('dashboard.shield_toggled', {
+        paused: nextPaused,
+      });
+    } catch (error) {
+      console.warn('[dashboard] Failed to toggle shield', error);
+      Alert.alert(
+        t('dashboard.report.status.errorTitle'),
+        t('dashboard.report.status.error')
+      );
+    } finally {
+      setIsUpdatingShield(false);
+    }
+  }, [isUpdatingShield, shieldPaused, shieldReady, t]);
+
   const quickActions = useMemo(
     () => [
       {
@@ -235,6 +291,13 @@ export default function DashboardScreen() {
         title: t('dashboard.quickActions.mockScan.title'),
         subtitle: t('dashboard.quickActions.mockScan.subtitle'),
         action: handleQuickActionMock,
+      },
+      {
+        key: 'report' as const,
+        icon: 'email-alert-outline',
+        title: t('dashboard.report.title'),
+        subtitle: t('dashboard.report.subtitle'),
+        action: handleReportPress,
       },
       {
         key: 'alerts' as const,
@@ -258,7 +321,14 @@ export default function DashboardScreen() {
         action: handleOpenModelManager,
       },
     ],
-    [handleHistoryPress, handleOpenModelManager, handleOpenSettings, handleQuickActionMock, t]
+    [
+      handleHistoryPress,
+      handleOpenModelManager,
+      handleOpenSettings,
+      handleQuickActionMock,
+      handleReportPress,
+      t,
+    ]
   );
 
   const timelineLatest = useMemo(() => {
@@ -631,23 +701,6 @@ export default function DashboardScreen() {
 
   const showExpoNotice = isExpoGo && !isExpoNoticeDismissed;
 
-  const handleReportPress = useCallback(() => {
-    if (!telemetryReady) {
-      Alert.alert(t('dashboard.report.loadingTitle'), t('dashboard.report.loadingBody'));
-      return;
-    }
-
-    if (!telemetryPreferences.allowManualReports) {
-      Alert.alert(t('dashboard.report.disabled.title'), t('dashboard.report.disabled.body'));
-      return;
-    }
-
-    setIsReportModalVisible(true);
-    trackTelemetryEvent('dashboard.manual_report_opened', {
-      source: 'quick_action',
-    });
-  }, [t, telemetryPreferences.allowManualReports, telemetryReady]);
-
   const handleSimulateDetectionPress = useCallback(async () => {
     try {
       setIsTriggeringDetection(true);
@@ -821,15 +874,9 @@ export default function DashboardScreen() {
               <View className="flex-1 space-y-3">
                 <View>
                   <Text className="text-xs font-semibold uppercase tracking-wide text-blue-100">
-                    {permissionsSatisfied
-                      ? t('dashboard.hero.status.active')
-                      : t('dashboard.hero.status.paused')}
+                    {heroStatusLabel}
                   </Text>
-                  <Text className="mt-1 text-lg font-semibold text-white">
-                    {permissionsSatisfied
-                      ? t('dashboard.statusCard.description')
-                      : t('dashboard.hero.pausedDescription')}
-                  </Text>
+                  <Text className="mt-1 text-lg font-semibold text-white">{heroDescription}</Text>
                 </View>
                 <View className="flex-row flex-wrap items-center gap-3">
                   <View className="rounded-full bg-white/10 px-3 py-1">
@@ -849,18 +896,39 @@ export default function DashboardScreen() {
                       {t('dashboard.hero.lastScan', { time: lastScanText })}
                     </Text>
                   </View>
-                  <View
-                    className={`rounded-full px-3 py-1 ${permissionsSatisfied ? 'bg-emerald-500/20' : 'bg-amber-500/20'}`}>
-                    <Text className="text-xs font-medium uppercase tracking-wide text-blue-50">
-                      {permissionsSatisfied
-                        ? t('dashboard.hero.permissions.ok')
-                        : t('dashboard.hero.permissions.missing')}
-                    </Text>
-                  </View>
+                  {!permissionsSatisfied ? (
+                    <View className="rounded-full bg-amber-500/30 px-3 py-1">
+                      <Text className="text-xs font-medium uppercase tracking-wide text-blue-50">
+                        {t('dashboard.hero.permissions.missing')}
+                      </Text>
+                    </View>
+                  ) : null}
                 </View>
               </View>
-              <View className="h-16 w-16 items-center justify-center overflow-hidden rounded-3xl bg-white/10">
-                <MaterialCommunityIcons name="shield-check" size={40} color="white" />
+              <View className="items-end gap-4">
+                <View className="flex-row items-center gap-2 rounded-full bg-white/10 px-3 py-2">
+                  <Text className="text-xs font-semibold uppercase tracking-wide text-blue-50">
+                    {shieldPaused
+                      ? t('dashboard.hero.status.paused')
+                      : t('dashboard.hero.status.active')}
+                  </Text>
+                  <Switch
+                    value={!shieldPaused}
+                    onValueChange={handleToggleShield}
+                    disabled={!shieldReady || isUpdatingShield}
+                    trackColor={{ false: '#94a3b8', true: '#22c55e' }}
+                    thumbColor={
+                      Platform.OS === 'ios' ? undefined : shieldPaused ? '#f4f4f5' : '#ffffff'
+                    }
+                  />
+                </View>
+                <View className="h-16 w-16 items-center justify-center overflow-hidden rounded-3xl bg-white/10">
+                  <MaterialCommunityIcons
+                    name={shieldPaused ? 'shield-off-outline' : 'shield-check'}
+                    size={40}
+                    color="white"
+                  />
+                </View>
               </View>
             </View>
             <TouchableOpacity
@@ -873,17 +941,15 @@ export default function DashboardScreen() {
             </TouchableOpacity>
           </View>
 
-          <View className="space-y-3">
-            <Text className="text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
-              {t('dashboard.quickActions.title')}
-            </Text>
-            <View className="flex-row flex-wrap gap-3">
+          <View className={SECTION_WRAPPER}>
+            <Text className={SECTION_TITLE}>{t('dashboard.quickActions.title')}</Text>
+            <View className="mt-4 flex-row flex-wrap gap-3">
               {quickActions.map((action) => (
                 <TouchableOpacity
                   key={action.key}
                   onPress={action.action}
                   activeOpacity={0.85}
-                  className={`${quickActionStyles} w-full md:w-[48%] lg:w-[31%]`}>
+                  className="flex-1 min-w-[48%] rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-700 dark:bg-slate-900/60">
                   <View className="mb-3 h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-500/20">
                     <MaterialCommunityIcons name={action.icon as any} size={22} color="#2563eb" />
                   </View>
@@ -898,11 +964,9 @@ export default function DashboardScreen() {
             </View>
           </View>
 
-          <View className="space-y-4">
+          <View className={SECTION_WRAPPER}>
             <View className="flex-row flex-wrap items-center justify-between gap-3">
-              <Text className="text-sm font-medium uppercase tracking-wide text-slate-500">
-                {t('dashboard.stats.title')}
-              </Text>
+              <Text className={SECTION_TITLE}>{t('dashboard.stats.title')}</Text>
               <View className="flex-row flex-wrap gap-2">
                 {TIMEFRAME_KEYS.map((key) => {
                   const label = t(`dashboard.stats.timeframes.${key}`);
@@ -931,7 +995,7 @@ export default function DashboardScreen() {
               </View>
             </View>
 
-            <View className="flex-row flex-wrap justify-between gap-3">
+            <View className="mt-4 flex-row flex-wrap justify-between gap-3">
               {stats.map((stat) => {
                 const trendIcon =
                   stat.direction === 'up'
@@ -999,17 +1063,15 @@ export default function DashboardScreen() {
             <TouchableOpacity
               onPress={() => setSelectedDetection(latestActivity)}
               activeOpacity={0.85}
-              className="space-y-2 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              className={`${SECTION_WRAPPER} space-y-2`}>
               <View className="flex-row items-center justify-between">
-                <Text className="text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                  {t('dashboard.activity.title')}
-                </Text>
+                <Text className={SECTION_TITLE}>{t('dashboard.activity.title')}</Text>
                 <MaterialCommunityIcons name="chevron-right" size={18} color="#64748b" />
               </View>
               <Text className="text-base font-semibold text-slate-900 dark:text-slate-100">
                 {latestActivity.result.message.sender}
               </Text>
-              <Text className="text-sm text-slate-500 dark:text-slate-300" numberOfLines={2}>
+              <Text className={SECTION_SUBTITLE} numberOfLines={2}>
                 {latestActivity.result.message.body}
               </Text>
               <View className="flex-row flex-wrap items-center gap-2">
@@ -1032,14 +1094,12 @@ export default function DashboardScreen() {
               </View>
             </TouchableOpacity>
           ) : (
-            <View className="rounded-3xl border border-dashed border-slate-200 bg-white p-5 text-center dark:border-slate-700 dark:bg-slate-900">
-              <Text className="text-sm text-slate-500 dark:text-slate-400">
-                {t('dashboard.activity.empty')}
-              </Text>
+            <View className={`${SECTION_WRAPPER} items-center justify-center gap-3 text-center`}>
+              <Text className={SECTION_SUBTITLE}>{t('dashboard.activity.empty')}</Text>
               <TouchableOpacity
                 onPress={handleQuickActionMock}
                 activeOpacity={0.85}
-                className="mt-3 self-center rounded-full bg-slate-900 px-5 py-2 dark:bg-blue-500">
+                className="rounded-full bg-slate-900 px-5 py-2 dark:bg-blue-500">
                 <Text className="text-sm font-semibold text-white">
                   {t('dashboard.quickActions.mockScan.title')}
                 </Text>
@@ -1047,15 +1107,11 @@ export default function DashboardScreen() {
             </View>
           )}
 
-          <View className="space-y-3">
+          <View className={SECTION_WRAPPER}>
             <View className="flex-row items-start justify-between gap-3">
               <View className="flex-1">
-                <Text className="text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                  {t('dashboard.recentAlerts.title')}
-                </Text>
-                <Text className="text-sm text-slate-500 dark:text-slate-400">
-                  {t('dashboard.recentAlerts.subtitle')}
-                </Text>
+                <Text className={SECTION_TITLE}>{t('dashboard.recentAlerts.title')}</Text>
+                <Text className={SECTION_SUBTITLE}>{t('dashboard.recentAlerts.subtitle')}</Text>
                 <View className="mt-3 flex-row flex-wrap gap-2">
                   {alertFilterOptions.map((option) => {
                     const isActive = alertFilter === option.key;
@@ -1066,8 +1122,8 @@ export default function DashboardScreen() {
                         activeOpacity={0.85}
                         className={`rounded-full px-3 py-1 ${
                           isActive
-                            ? 'bg-blue-600/10 dark:bg-blue-500/20'
-                            : 'bg-slate-100 dark:bg-slate-800'
+                            ? 'bg-blue-600/15 dark:bg-blue-500/20'
+                            : 'bg-slate-100/70 dark:bg-slate-800/80'
                         }`}>
                         <Text
                           className={`text-xs font-semibold uppercase tracking-wide ${
@@ -1085,14 +1141,14 @@ export default function DashboardScreen() {
               <TouchableOpacity
                 onPress={handleHistoryPress}
                 activeOpacity={0.7}
-                className="px-3 py-2">
+                className="self-start rounded-full px-3 py-2">
                 <Text className="text-sm font-medium text-blue-600 dark:text-blue-400">
                   {t('dashboard.recentAlerts.viewAll')}
                 </Text>
               </TouchableOpacity>
             </View>
 
-            <View className="space-y-3">
+            <View className="mt-4 space-y-3">
               {filteredDetectionEntries.length === 0 ? (
                 <View className="items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900">
                   <MaterialCommunityIcons name="check-circle" size={32} color="#22c55e" />
@@ -1255,35 +1311,6 @@ export default function DashboardScreen() {
             </TouchableOpacity>
           </View>
 
-          <View className="space-y-4">
-            <Text className="text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
-              {t('dashboard.navigateLabel')}
-            </Text>
-            <View className="space-y-3">
-              <TouchableOpacity
-                onPress={handleHistoryPress}
-                activeOpacity={0.85}
-                className={`${quickActionStyles} border-dashed`}>
-                <Text className="text-lg font-medium text-blue-700 dark:text-blue-400">
-                  {t('dashboard.recentAlerts.viewAll')}
-                </Text>
-                <Text className="mt-1 text-sm text-slate-500 dark:text-slate-300">
-                  {t('dashboard.recentAlerts.subtitle')}
-                </Text>
-              </TouchableOpacity>
-              <Link href="/settings" asChild>
-                <TouchableOpacity activeOpacity={0.85} className={quickActionStyles}>
-                  <Text className="text-lg font-medium text-blue-700 dark:text-blue-400">
-                    {t('dashboard.links.settings.title')}
-                  </Text>
-                  <Text className="mt-1 text-sm text-slate-500 dark:text-slate-300">
-                    {t('dashboard.links.settings.description')}
-                  </Text>
-                </TouchableOpacity>
-              </Link>
-            </View>
-          </View>
-
           <View
             onLayout={handleSectionLayout('mock')}
             className="space-y-3 rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
@@ -1429,15 +1456,6 @@ export default function DashboardScreen() {
                     {t('developerTools.resetOnboarding.title')}
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => router.push('/onboarding')}
-                  activeOpacity={0.85}
-                  className="flex-row items-center gap-2 rounded-full border border-slate-300 px-4 py-2 dark:border-slate-600">
-                  <MaterialCommunityIcons name="walk" size={16} color="#0f172a" />
-                  <Text className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-                    {t('developerTools.resetOnboarding.restart')}
-                  </Text>
-                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -1477,7 +1495,7 @@ export default function DashboardScreen() {
           <View className="w-full rounded-t-3xl bg-white p-6 dark:bg-slate-900">
             {selectedDetection ? (
               <View className="space-y-4">
-                <View className="flex-row items-start justify-between">
+                <View className="flex-row items-center justify-between">
                   <View className="flex-1 pr-4">
                     <Text className="text-lg font-semibold text-slate-900 dark:text-slate-100">
                       {selectedDetection.result.message.sender}

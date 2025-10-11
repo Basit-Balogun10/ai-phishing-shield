@@ -6,6 +6,7 @@ const LANGUAGE_PREFERENCE_KEY = 'language_preference_v1';
 const NOTIFICATION_PREFERENCES_KEY = 'notification_preferences_v1';
 const TRUSTED_SOURCES_KEY = 'trusted_sources_v1';
 const TELEMETRY_PREFERENCES_KEY = 'telemetry_preferences_v1';
+const SHIELD_STATE_KEY = 'shield_state_v1';
 
 export type ThemePreference = 'light' | 'dark' | 'system';
 
@@ -30,6 +31,11 @@ export type StoredTelemetryPreferences = {
   autoUploadEnabled: boolean;
   allowManualReports: boolean;
   lastUpdatedAt: string | null;
+};
+
+export type StoredShieldState = {
+  paused: boolean;
+  updatedAt: string | null;
 };
 
 const SUPPORTED_LOCALES = ['am', 'ar', 'en', 'fr', 'ha', 'ig', 'pcm', 'sw', 'yo'] as const;
@@ -194,4 +200,35 @@ export async function setTelemetryPreferencesInStorage(
 
 export async function clearTelemetryPreferencesInStorage(): Promise<void> {
   await AsyncStorage.removeItem(TELEMETRY_PREFERENCES_KEY);
+}
+
+export async function getShieldStateFromStorage(): Promise<StoredShieldState | null> {
+  const raw = await AsyncStorage.getItem(SHIELD_STATE_KEY);
+
+  if (!raw) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(raw);
+
+    if (typeof parsed === 'object' && parsed !== null) {
+      return {
+        paused: Boolean(parsed.paused),
+        updatedAt: typeof parsed.updatedAt === 'string' ? parsed.updatedAt : null,
+      } satisfies StoredShieldState;
+    }
+  } catch (error) {
+    console.warn('[storage] Failed to parse shield state', error);
+  }
+
+  return null;
+}
+
+export async function setShieldStateInStorage(value: StoredShieldState): Promise<void> {
+  await AsyncStorage.setItem(SHIELD_STATE_KEY, JSON.stringify(value));
+}
+
+export async function clearShieldStateInStorage(): Promise<void> {
+  await AsyncStorage.removeItem(SHIELD_STATE_KEY);
 }

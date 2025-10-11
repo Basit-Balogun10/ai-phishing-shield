@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import ReactNativeModal from 'react-native-modal';
+import { Platform, StyleSheet, View } from 'react-native';
 import type { ViewStyle } from 'react-native';
 
 export type AppModalProps = {
@@ -23,20 +24,40 @@ export function AppModal({
   contentStyle,
   testID,
 }: AppModalProps) {
+  const shouldUseNativeDriver = useMemo(() => {
+    if (Platform.OS === 'android') {
+      return false;
+    }
+    return useNativeDriver;
+  }, [useNativeDriver]);
+
   return (
     <ReactNativeModal
       isVisible={isVisible}
       onBackdropPress={onClose}
       onBackButtonPress={onClose}
       backdropOpacity={backdropOpacity}
-      useNativeDriver={useNativeDriver}
-      useNativeDriverForBackdrop={useNativeDriver}
+      backdropTransitionOutTiming={0}
+      useNativeDriver={shouldUseNativeDriver}
+      useNativeDriverForBackdrop={shouldUseNativeDriver}
       avoidKeyboard={avoidKeyboard}
-      style={{ margin: 0 }}
       propagateSwipe
+      swipeDirection={[ 'down' ]}
+      onSwipeComplete={onClose}
+      style={styles.modal}
       testID={testID}
       statusBarTranslucent>
-      {children}
+      <View style={[styles.content, contentStyle]}>{children}</View>
     </ReactNativeModal>
   );
 }
+
+const styles = StyleSheet.create({
+  modal: {
+    margin: 0,
+    justifyContent: 'flex-end',
+  },
+  content: {
+    width: '100%',
+  },
+});

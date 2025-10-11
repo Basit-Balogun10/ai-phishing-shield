@@ -113,6 +113,9 @@ export type TelemetryPayloads = {
     source: 'quick_action' | 'background';
     triggered: boolean;
   };
+  'dashboard.shield_toggled': {
+    paused: boolean;
+  };
   'dashboard.manual_report_opened': {
     source: ManualReportSource;
   };
