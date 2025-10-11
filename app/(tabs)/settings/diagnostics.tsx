@@ -13,12 +13,12 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { useThemePreference } from '../../lib/hooks/useThemePreference';
+import { useThemePreference } from '../../../lib/hooks/useThemePreference';
 import {
   buildDiagnosticsSnapshot,
   formatDiagnosticsSnapshot,
   type DiagnosticsSnapshot,
-} from '../../lib/services/diagnostics';
+} from '../../../lib/services/diagnostics';
 
 const formatBoolean = (value: boolean, yes: string, no: string) => (value ? yes : no);
 

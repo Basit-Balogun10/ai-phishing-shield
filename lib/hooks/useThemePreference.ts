@@ -12,7 +12,10 @@ export type ThemePreferenceState = {
   togglePreference: () => Promise<void>;
 };
 
-const DEFAULT_PREFERENCE: ThemePreference = 'dark';
+const DEFAULT_PREFERENCE: ThemePreference = 'system';
+
+const getSystemScheme = (): 'light' | 'dark' =>
+  (Appearance.getColorScheme() ?? 'light') as 'light' | 'dark';
 
 const resolveColorScheme = (
   preference: ThemePreference,
@@ -26,8 +29,8 @@ const resolveColorScheme = (
 
 export function useThemePreference(): ThemePreferenceState {
   const [preference, setPreferenceState] = useState<ThemePreference>(DEFAULT_PREFERENCE);
-  const [resolvedColorScheme, setResolvedColorScheme] = useState<'light' | 'dark'>(
-    DEFAULT_PREFERENCE
+  const [resolvedColorScheme, setResolvedColorScheme] = useState<'light' | 'dark'>(() =>
+    getSystemScheme()
   );
   const [ready, setReady] = useState(false);
   const { setColorScheme } = useNativeWindColorScheme();
@@ -45,7 +48,7 @@ export function useThemePreference(): ThemePreferenceState {
 
     const loadPreference = async () => {
       const storedPreference = await getThemePreference();
-      const systemScheme = (Appearance.getColorScheme() ?? 'dark') as 'light' | 'dark';
+      const systemScheme = getSystemScheme();
       const effectivePreference = storedPreference ?? DEFAULT_PREFERENCE;
       const resolvedScheme = resolveColorScheme(effectivePreference, systemScheme);
 
@@ -73,7 +76,7 @@ export function useThemePreference(): ThemePreferenceState {
     const listener = Appearance.addChangeListener(({ colorScheme: nextScheme }) => {
       const resolvedScheme = resolveColorScheme(
         'system',
-        (nextScheme ?? 'dark') as 'light' | 'dark'
+        (nextScheme ?? 'light') as 'light' | 'dark'
       );
       applyColorScheme(resolvedScheme);
     });
@@ -83,7 +86,7 @@ export function useThemePreference(): ThemePreferenceState {
 
   useEffect(() => {
     if (ready) {
-      const systemScheme = (Appearance.getColorScheme() ?? 'dark') as 'light' | 'dark';
+      const systemScheme = getSystemScheme();
       const resolvedScheme = resolveColorScheme(preference, systemScheme);
       applyColorScheme(resolvedScheme);
     }
@@ -92,7 +95,7 @@ export function useThemePreference(): ThemePreferenceState {
   const persistPreference = useCallback(
     async (nextPreference: ThemePreference) => {
       setPreferenceState(nextPreference);
-      const systemScheme = (Appearance.getColorScheme() ?? 'dark') as 'light' | 'dark';
+      const systemScheme = getSystemScheme();
       const resolvedScheme = resolveColorScheme(nextPreference, systemScheme);
       applyColorScheme(resolvedScheme);
       await setThemePreference(nextPreference);
@@ -101,7 +104,7 @@ export function useThemePreference(): ThemePreferenceState {
   );
 
   const togglePreference = useCallback(async () => {
-    const rotation: ThemePreference[] = ['dark', 'light', 'system'];
+    const rotation: ThemePreference[] = ['system', 'light', 'dark'];
     const currentIndex = rotation.indexOf(preference);
     const nextPreference = rotation[(currentIndex + 1) % rotation.length] ?? DEFAULT_PREFERENCE;
     await persistPreference(nextPreference);

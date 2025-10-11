@@ -13,18 +13,18 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { useThemePreference } from '../../lib/hooks/useThemePreference';
+import { useThemePreference } from '../../../lib/hooks/useThemePreference';
 import {
   useNotificationPreferences,
   notificationPreferencesStore,
-} from '../../lib/notificationPreferences';
+} from '../../../lib/notificationPreferences';
 import {
   checkNotificationPermission,
   requestNotificationPermission,
   openSystemSettings,
   type PermissionStatus,
-} from '../../lib/permissions';
-import { trackTelemetryEvent } from '../../lib/services/telemetry';
+} from '../../../lib/permissions';
+import { trackTelemetryEvent } from '../../../lib/services/telemetry';
 
 const formatRange = (start: string, end: string) => {
   const toLabel = (value: string) => {

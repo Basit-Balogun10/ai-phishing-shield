@@ -5,10 +5,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { useLanguagePreference } from '../../lib/hooks/useLanguagePreference';
-import { useThemePreference } from '../../lib/hooks/useThemePreference';
-import type { SupportedLocale } from '../../lib/i18n';
-import { trackTelemetryEvent } from '../../lib/services/telemetry';
+import { useLanguagePreference } from '../../../lib/hooks/useLanguagePreference';
+import { useThemePreference } from '../../../lib/hooks/useThemePreference';
+import type { SupportedLocale } from '../../../lib/i18n';
+import { trackTelemetryEvent } from '../../../lib/services/telemetry';
 
 export default function LanguageSettingsScreen() {
   const { t } = useTranslation();

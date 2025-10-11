@@ -35,18 +35,18 @@ This document provides a holistic view of the mobile client: how screens connect
 
 ## Data Persistence Map
 
-| Domain | Storage Key | Module |
-| --- | --- | --- |
-| Detection history | `@ai-phishing-shield/detections/history` | `lib/detection/detectionHistory.ts` |
-| Alert feedback | `@ai-phishing-shield/detections/feedback` | `lib/detection/feedback.ts` |
-| Network outbox | `@ai-phishing-shield/network/outbox` | `lib/services/networkOutbox.ts` |
-| Legacy feedback outbox (migrated) | `@ai-phishing-shield/alerts/feedback/outbox` | auto-imported by network outbox |
-| Telemetry buffer | `@ai-phishing-shield/telemetry/events` | `lib/services/telemetryAdapter.ts` |
-| Telemetry prefs | `@ai-phishing-shield/settings/telemetry` | `lib/telemetryPreferences.ts` |
-| Notification prefs | `@ai-phishing-shield/settings/notifications` | `lib/notificationPreferences.ts` |
-| Trusted sources | `@ai-phishing-shield/trusted-sources` | `lib/trustedSources.ts` |
-| Onboarding gate | `@ai-phishing-shield/onboarding/gate` | `lib/hooks/useOnboardingGate.ts` |
-| Language preference | `@ai-phishing-shield/settings/language` | `lib/hooks/useLanguagePreference.ts` |
+| Domain                            | Storage Key                                  | Module                               |
+| --------------------------------- | -------------------------------------------- | ------------------------------------ |
+| Detection history                 | `@ai-phishing-shield/detections/history`     | `lib/detection/detectionHistory.ts`  |
+| Alert feedback                    | `@ai-phishing-shield/detections/feedback`    | `lib/detection/feedback.ts`          |
+| Network outbox                    | `@ai-phishing-shield/network/outbox`         | `lib/services/networkOutbox.ts`      |
+| Legacy feedback outbox (migrated) | `@ai-phishing-shield/alerts/feedback/outbox` | auto-imported by network outbox      |
+| Telemetry buffer                  | `@ai-phishing-shield/telemetry/events`       | `lib/services/telemetryAdapter.ts`   |
+| Telemetry prefs                   | `@ai-phishing-shield/settings/telemetry`     | `lib/telemetryPreferences.ts`        |
+| Notification prefs                | `@ai-phishing-shield/settings/notifications` | `lib/notificationPreferences.ts`     |
+| Trusted sources                   | `@ai-phishing-shield/trusted-sources`        | `lib/trustedSources.ts`              |
+| Onboarding gate                   | `@ai-phishing-shield/onboarding/gate`        | `lib/hooks/useOnboardingGate.ts`     |
+| Language preference               | `@ai-phishing-shield/settings/language`      | `lib/hooks/useLanguagePreference.ts` |
 
 _All stores expose async getters/setters with in-memory caches to reduce cross-component churn._
 

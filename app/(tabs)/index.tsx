@@ -62,8 +62,10 @@ const STAT_ICONS: Record<DashboardStat['key'], string> = {
   safeMessages: 'shield-check-outline',
 };
 
-const SECTION_WRAPPER = 'rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900';
-const SECTION_TITLE = 'text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400';
+const SECTION_WRAPPER =
+  'rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900';
+const SECTION_TITLE =
+  'text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400';
 const SECTION_SUBTITLE = 'text-sm text-slate-500 dark:text-slate-400';
 
 export default function DashboardScreen() {
@@ -274,10 +276,7 @@ export default function DashboardScreen() {
       });
     } catch (error) {
       console.warn('[dashboard] Failed to toggle shield', error);
-      Alert.alert(
-        t('dashboard.report.status.errorTitle'),
-        t('dashboard.report.status.error')
-      );
+      Alert.alert(t('dashboard.report.status.errorTitle'), t('dashboard.report.status.error'));
     } finally {
       setIsUpdatingShield(false);
     }
@@ -949,7 +948,7 @@ export default function DashboardScreen() {
                   key={action.key}
                   onPress={action.action}
                   activeOpacity={0.85}
-                  className="flex-1 min-w-[48%] rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-700 dark:bg-slate-900/60">
+                  className="min-w-[48%] flex-1 rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-700 dark:bg-slate-900/60">
                   <View className="mb-3 h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-500/20">
                     <MaterialCommunityIcons name={action.icon as any} size={22} color="#2563eb" />
                   </View>

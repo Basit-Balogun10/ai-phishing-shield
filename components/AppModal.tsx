@@ -1,14 +1,19 @@
-import React, { useMemo } from 'react';
-import ReactNativeModal from 'react-native-modal';
-import { Platform, StyleSheet, View } from 'react-native';
-import type { ViewStyle } from 'react-native';
+import React from 'react';
+import {
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  Pressable,
+  StyleSheet,
+  View,
+  type ViewStyle,
+} from 'react-native';
 
 export type AppModalProps = {
   isVisible: boolean;
   onClose: () => void;
   children: React.ReactNode;
   backdropOpacity?: number;
-  useNativeDriver?: boolean;
   avoidKeyboard?: boolean;
   contentStyle?: ViewStyle;
   testID?: string;
@@ -19,45 +24,60 @@ export function AppModal({
   onClose,
   children,
   backdropOpacity = 0.4,
-  useNativeDriver = true,
   avoidKeyboard = true,
   contentStyle,
   testID,
 }: AppModalProps) {
-  const shouldUseNativeDriver = useMemo(() => {
-    if (Platform.OS === 'android') {
-      return false;
-    }
-    return useNativeDriver;
-  }, [useNativeDriver]);
+  if (!isVisible) {
+    return null;
+  }
+
+  const SheetWrapper = avoidKeyboard ? KeyboardAvoidingView : View;
+  const sheetWrapperProps = avoidKeyboard
+    ? ({ behavior: Platform.OS === 'ios' ? 'padding' : undefined } as const)
+    : ({} as const);
+  const overlayColor = `rgba(15, 23, 42, ${backdropOpacity})`;
 
   return (
-    <ReactNativeModal
-      isVisible={isVisible}
-      onBackdropPress={onClose}
-      onBackButtonPress={onClose}
-      backdropOpacity={backdropOpacity}
-      backdropTransitionOutTiming={0}
-      useNativeDriver={shouldUseNativeDriver}
-      useNativeDriverForBackdrop={shouldUseNativeDriver}
-      avoidKeyboard={avoidKeyboard}
-      propagateSwipe
-      swipeDirection={[ 'down' ]}
-      onSwipeComplete={onClose}
-      style={styles.modal}
-      testID={testID}
+    <Modal
+      transparent
+      visible
+      animationType="fade"
+      onRequestClose={onClose}
+      presentationStyle="overFullScreen"
       statusBarTranslucent>
-      <View style={[styles.content, contentStyle]}>{children}</View>
-    </ReactNativeModal>
+      <View style={styles.overlay} pointerEvents="box-none">
+        <Pressable
+          style={[styles.backdrop, { backgroundColor: overlayColor }]}
+          onPress={onClose}
+          testID={testID && `${testID}-backdrop`}
+        />
+        <SheetWrapper
+          style={[styles.sheetWrapper, contentStyle]}
+          {...sheetWrapperProps}
+          pointerEvents="box-none"
+          testID={testID}>
+          {children}
+        </SheetWrapper>
+      </View>
+    </Modal>
   );
 }
 
 const styles = StyleSheet.create({
-  modal: {
-    margin: 0,
+  overlay: {
+    flex: 1,
     justifyContent: 'flex-end',
   },
-  content: {
+  backdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(15, 23, 42, 0.4)',
+  },
+  sheetWrapper: {
+    flex: 1,
     width: '100%',
+    alignSelf: 'stretch',
+    justifyContent: 'flex-end',
+    alignItems: 'stretch',
   },
 });

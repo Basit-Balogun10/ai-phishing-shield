@@ -1,5 +1,4 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -11,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { AppModal } from '../../components/AppModal';
 import { type DetectionRecord, useDetectionHistory } from '../../lib/detection/detectionHistory';
 import { type DetectionFeedbackStatus, useDetectionFeedback } from '../../lib/detection/feedback';
@@ -69,7 +69,6 @@ const getSeverityColor = (score: number) => {
 };
 
 export default function AlertsScreen() {
-  const router = useRouter();
   const { t } = useTranslation();
   const { merged: detectionHistory } = useDetectionHistory();
   const [filter, setFilter] = useState<AlertFilter>('all');
@@ -81,6 +80,20 @@ export default function AlertsScreen() {
   const [trustedOnly, setTrustedOnly] = useState(false);
   const [feedbackError, setFeedbackError] = useState<string | null>(null);
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
+  const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+
+  const togglePosition = useSharedValue(0);
+
+  useEffect(() => {
+    togglePosition.value = withSpring(trustedOnly ? 1 : 0, {
+      damping: 15,
+      stiffness: 150,
+    });
+  }, [trustedOnly, togglePosition]);
+
+  const animatedToggleStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: togglePosition.value * 24 }],
+  }));
 
   const { ready: feedbackReady, feedback } = useDetectionFeedback(
     selectedDetection?.recordId ?? null
@@ -316,29 +329,25 @@ export default function AlertsScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-950">
-      <View className="flex-row items-center justify-between px-5 py-4">
-        <TouchableOpacity
-          onPress={() => router.back()}
-          activeOpacity={0.7}
-          className="h-10 w-10 items-center justify-center rounded-full bg-slate-200/60 dark:bg-slate-800/70">
-          <MaterialCommunityIcons name="arrow-left" size={20} color="#0f172a" />
-        </TouchableOpacity>
-        <View className="flex-1 px-4">
-          <Text className="text-base font-semibold text-slate-900 dark:text-slate-100">
-            {t('dashboard.recentAlerts.title')}
-          </Text>
-          <Text className="text-xs text-slate-500 dark:text-slate-400">
-            {t('dashboard.recentAlerts.subtitle')}
-          </Text>
+      <View className="px-6 pb-4 pt-6">
+        <View className="flex-row items-center gap-4">
+          <View className="h-14 w-14 items-center justify-center rounded-2xl bg-blue-600/10 dark:bg-blue-500/20">
+            <MaterialCommunityIcons name="shield-alert" size={28} color="#2563eb" />
+          </View>
+          <View className="flex-1">
+            <Text className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+              {t('dashboard.recentAlerts.title')}
+            </Text>
+          </View>
         </View>
-        <View className="h-10 w-10 items-center justify-center rounded-full bg-blue-600/10 dark:bg-blue-500/20">
-          <MaterialCommunityIcons name="shield-alert" size={20} color="#2563eb" />
-        </View>
+        <Text className="mt-4 text-base text-slate-600 dark:text-slate-400">
+          {t('dashboard.recentAlerts.subtitle')}
+        </Text>
       </View>
 
-      <View className="px-5 pb-4">
-        <View className="flex-row items-center gap-3 rounded-full border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
-          <MaterialCommunityIcons name="magnify" size={18} color="#64748b" />
+      <View className="space-y-4 px-6 pb-4">
+        <View className="flex-row items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <MaterialCommunityIcons name="magnify" size={20} color="#64748b" />
           <TextInput
             value={searchInput}
             onChangeText={setSearchInput}
@@ -353,78 +362,123 @@ export default function AlertsScreen() {
               onPress={() => setSearchInput('')}
               accessibilityRole="button"
               accessibilityLabel={t('common.clear')}
-              className="rounded-full bg-slate-200/80 p-2 dark:bg-slate-800/80">
-              <MaterialCommunityIcons name="close" size={14} color="#64748b" />
+              className="rounded-full bg-slate-100 p-1.5 dark:bg-slate-800">
+              <MaterialCommunityIcons name="close" size={16} color="#64748b" />
             </TouchableOpacity>
           ) : null}
         </View>
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="-mx-1">
-          <View className="flex-row gap-2 px-1">
-            {filterOptions.map((option) => (
-              <AlertFilterChip
-                key={option.key}
-                label={option.label}
-                isActive={filter === option.key}
-                onPress={() => setFilter(option.key)}
-              />
-            ))}
-          </View>
-        </ScrollView>
-
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="-mx-1 mt-3">
-          <View className="flex-row gap-2 px-1">
-            {severityOptions.map((option) => (
-              <AlertFilterChip
-                key={option.key}
-                label={option.label}
-                isActive={severity === option.key}
-                onPress={() => setSeverity(option.key)}
-              />
-            ))}
-          </View>
-        </ScrollView>
-
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="-mx-1 mt-3">
-          <View className="flex-row gap-2 px-1">
-            {channelOptions.map((option) => (
-              <AlertFilterChip
-                key={option.key}
-                label={option.label}
-                isActive={channel === option.key}
-                onPress={() => setChannel(option.key)}
-              />
-            ))}
-          </View>
-        </ScrollView>
-
-        <TouchableOpacity
-          onPress={() => setTrustedOnly((prev) => !prev)}
-          activeOpacity={0.85}
-          className={`mt-3 flex-row items-center justify-between rounded-2xl border px-4 py-3 ${
-            trustedOnly
-              ? 'border-blue-500 bg-blue-500/10 dark:border-blue-400 dark:bg-blue-500/20'
-              : 'border-slate-200 bg-slate-100/60 dark:border-slate-700 dark:bg-slate-900/60'
-          }`}>
-          <View className="flex-1 pr-3">
-            <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-              {t('dashboard.recentAlerts.trustedToggle.label')}
-            </Text>
-            <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-              {t('dashboard.recentAlerts.trustedToggle.description')}
-            </Text>
-          </View>
-          <View
-            className={`h-6 w-12 flex-row items-center rounded-full px-1 ${
-              trustedOnly ? 'bg-blue-500/90' : 'bg-slate-400/40'
-            }`}>
-            <View
-              className={`h-5 w-5 rounded-full bg-white transition-all duration-200 ${
-                trustedOnly ? 'translate-x-6' : 'translate-x-0'
-              }`}
+        <View className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <TouchableOpacity
+            onPress={() => setIsFilterExpanded((prev) => !prev)}
+            activeOpacity={0.85}
+            className="flex-row items-center justify-between">
+            <View className="flex-1">
+              <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                {t('dashboard.recentAlerts.filtersTitle', { defaultValue: 'Filters' })}
+              </Text>
+              <Text className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                {[
+                  filter !== 'all' ? filterOptions.find((opt) => opt.key === filter)?.label : null,
+                  severity !== 'all'
+                    ? severityOptions.find((opt) => opt.key === severity)?.label
+                    : null,
+                  channel !== 'all'
+                    ? channelOptions.find((opt) => opt.key === channel)?.label
+                    : null,
+                  trustedOnly ? t('dashboard.recentAlerts.trustedOnlyBadge') : null,
+                ]
+                  .filter(Boolean)
+                  .join(' • ') ||
+                  t('dashboard.recentAlerts.noFiltersApplied', {
+                    defaultValue: 'No filters applied',
+                  })}
+              </Text>
+            </View>
+            <MaterialCommunityIcons
+              name={isFilterExpanded ? 'chevron-up' : 'chevron-down'}
+              size={20}
+              color="#64748b"
             />
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+
+          {isFilterExpanded ? (
+            <View className="mt-4 space-y-4">
+              <View>
+                <Text className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                  {t('dashboard.recentAlerts.sourceLabel', { defaultValue: 'Source' })}
+                </Text>
+                <View className="flex-row flex-wrap gap-2">
+                  {filterOptions.map((option) => (
+                    <AlertFilterChip
+                      key={option.key}
+                      label={option.label}
+                      isActive={filter === option.key}
+                      onPress={() => setFilter(option.key)}
+                    />
+                  ))}
+                </View>
+              </View>
+
+              <View>
+                <Text className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                  {t('dashboard.recentAlerts.severityLabel', { defaultValue: 'Severity' })}
+                </Text>
+                <View className="flex-row flex-wrap gap-2">
+                  {severityOptions.map((option) => (
+                    <AlertFilterChip
+                      key={option.key}
+                      label={option.label}
+                      isActive={severity === option.key}
+                      onPress={() => setSeverity(option.key)}
+                    />
+                  ))}
+                </View>
+              </View>
+
+              <View>
+                <Text className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                  {t('dashboard.recentAlerts.channelLabel', { defaultValue: 'Channel' })}
+                </Text>
+                <View className="flex-row flex-wrap gap-2">
+                  {channelOptions.map((option) => (
+                    <AlertFilterChip
+                      key={option.key}
+                      label={option.label}
+                      isActive={channel === option.key}
+                      onPress={() => setChannel(option.key)}
+                    />
+                  ))}
+                </View>
+              </View>
+
+              <View className="border-t border-slate-200 pt-4 dark:border-slate-700">
+                <TouchableOpacity
+                  onPress={() => setTrustedOnly((prev) => !prev)}
+                  activeOpacity={0.85}
+                  className="flex-row items-center justify-between">
+                  <View className="flex-1 pr-3">
+                    <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                      {t('dashboard.recentAlerts.trustedToggle.label')}
+                    </Text>
+                    <Text className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                      {t('dashboard.recentAlerts.trustedToggle.description')}
+                    </Text>
+                  </View>
+                  <View
+                    className={`h-7 w-14 flex-row items-center rounded-full px-0.5 ${
+                      trustedOnly ? 'bg-blue-500' : 'bg-slate-300 dark:bg-slate-700'
+                    }`}>
+                    <Animated.View
+                      className="h-6 w-6 rounded-full bg-white shadow-sm"
+                      style={animatedToggleStyle}
+                    />
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : null}
+        </View>
       </View>
 
       <ScrollView className="flex-1 px-5" contentContainerStyle={{ paddingBottom: 32 }}>

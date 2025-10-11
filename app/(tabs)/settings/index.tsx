@@ -12,19 +12,22 @@ import {
   View,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useOnboardingGate } from '../../lib/hooks/useOnboardingGate';
-import { useThemePreference } from '../../lib/hooks/useThemePreference';
-import type { ThemePreference } from '../../lib/storage';
-import { AppModal } from '../../components/AppModal';
+import { useOnboardingGate } from '../../../lib/hooks/useOnboardingGate';
+import { useThemePreference } from '../../../lib/hooks/useThemePreference';
+import type { ThemePreference } from '../../../lib/storage';
+import { AppModal } from '../../../components/AppModal';
 import {
   isTrustedSender,
   trustedSourcesStore,
   useTrustedSources,
   type TrustedSource,
-} from '../../lib/trustedSources';
-import { telemetryPreferencesStore, useTelemetryPreferences } from '../../lib/telemetryPreferences';
-import { trackTelemetryEvent } from '../../lib/services/telemetry';
-import { useModelManager } from '../../lib/modelManager';
+} from '../../../lib/trustedSources';
+import {
+  telemetryPreferencesStore,
+  useTelemetryPreferences,
+} from '../../../lib/telemetryPreferences';
+import { trackTelemetryEvent } from '../../../lib/services/telemetry';
+import { useModelManager } from '../../../lib/modelManager';
 
 export default function SettingsScreen() {
   const { t } = useTranslation();

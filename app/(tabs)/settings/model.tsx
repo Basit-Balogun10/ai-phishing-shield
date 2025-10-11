@@ -4,8 +4,8 @@ import { ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View } fr
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import modelManagerStore, { useModelManager } from '../../lib/modelManager';
-import { trackTelemetryEvent } from '../../lib/services/telemetry';
+import modelManagerStore, { useModelManager } from '../../../lib/modelManager';
+import { trackTelemetryEvent } from '../../../lib/services/telemetry';
 
 const DATE_FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {
   month: 'short',
@@ -253,14 +253,14 @@ export default function ModelManagementScreen() {
 
   const handleSync = async () => {
     setIsSyncing(true);
-    trackTelemetryEvent('model_manager.sync_requested');
+    trackTelemetryEvent('model_manager.sync_requested', undefined);
     const success = await modelManagerStore.syncCatalog();
     setIsSyncing(false);
 
     if (success) {
-      trackTelemetryEvent('model_manager.sync_completed');
+      trackTelemetryEvent('model_manager.sync_completed', undefined);
     } else {
-      trackTelemetryEvent('model_manager.sync_failed');
+      trackTelemetryEvent('model_manager.sync_failed', undefined);
       Alert.alert(
         t('settings.model.alerts.syncErrorTitle'),
         t('settings.model.alerts.syncErrorBody')

@@ -32,15 +32,16 @@ export default function RootLayout() {
   return (
     <I18nextProvider i18n={i18n}>
       <StatusBar style={resolvedColorScheme === 'light' ? 'dark' : 'light'} />
-      <Stack
+      {/* <Stack
         initialRouteName="(tabs)"
         screenOptions={{
           headerShown: false,
           contentStyle: {
             backgroundColor: resolvedColorScheme === 'light' ? '#f9fafb' : '#020617',
           },
-        }}>
-        <Stack.Screen name="(tabs)" />
+        }}> */}
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding" options={{ presentation: 'modal' }} />
       </Stack>
     </I18nextProvider>
