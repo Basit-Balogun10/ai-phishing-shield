@@ -44,6 +44,10 @@ export function useThemePreference(): ThemePreferenceState {
   );
 
   useEffect(() => {
+    applyColorScheme(getSystemScheme());
+  }, [applyColorScheme]);
+
+  useEffect(() => {
     let isMounted = true;
 
     const loadPreference = async () => {
@@ -83,14 +87,6 @@ export function useThemePreference(): ThemePreferenceState {
 
     return () => listener.remove();
   }, [applyColorScheme, preference]);
-
-  useEffect(() => {
-    if (ready) {
-      const systemScheme = getSystemScheme();
-      const resolvedScheme = resolveColorScheme(preference, systemScheme);
-      applyColorScheme(resolvedScheme);
-    }
-  }, [applyColorScheme, preference, ready]);
 
   const persistPreference = useCallback(
     async (nextPreference: ThemePreference) => {

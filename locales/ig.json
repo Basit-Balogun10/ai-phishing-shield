@@ -30,6 +30,7 @@
         "active": "Nche na-arụ ọrụ",
         "paused": "Achọrọ ime ihe"
       },
+      "activeDescription": "Nchọpụta phishing na-agba ọsọ nwayọọ nwayọọ n’azụ azụ.",
       "pausedDescription": "Kwekọrịta ikike furu efu ka nchọpụta phishing ghara ịkwụsị.",
       "modelVersion": "Ụdị {{version}}",
       "lastScan": "Nyocha ikpeazụ {{time}}",
@@ -39,6 +40,8 @@
         "missing": "Dozie ikike"
       },
       "goToDiagnostics": "Lelee nnyocha",
+      "viewStats": "Lelee nchịkọta nchebe",
+      "trustedCount": "{{count}} ndị zipụrụ a tụkwasịrị obi",
       "modelStatus": {
         "syncing": "Na-eme ka mmelite kwekọọ",
         "downloading": "Na-ebudata {{version}}",
@@ -81,6 +84,14 @@
         "title": "Lelee nche",
         "subtitle": "Meghee akụkọ nchọpụta gị niile."
       },
+      "stats": {
+        "title": "Nchịkọta nchebe",
+        "subtitle": "Hụ ka ozi e nyochara na ihe ize ndụ e kwụsịrị si agbanwe."
+      },
+      "trusted": {
+        "title": "Ndị zipụrụ a tụkwasịrị obi",
+        "subtitle": "Lelee ma jikwaa kọntaktị ị debara dịka ndị dị nchebe."
+      },
       "settings": {
         "title": "Hazi ntọala",
         "subtitle": "Hazie asụsụ, nkwupụta, na nnyocha."
@@ -94,6 +105,12 @@
         "subtitle": "Lelee ụdị ọhụụ nke ngwaọrụ nchọpụta ma jikwaa ụdị etinyere."
       }
     },
+    "filtersTitle": "Ntacha",
+    "openFilters": "Mepee ntacha",
+    "editFilters": "Hazie ntacha",
+    "clearFilters": "Hichapụ niile",
+    "applyFilters": "Emechara",
+    "noFiltersApplied": "Enweghị ntacha etinyere",
     "activity": {
       "title": "Ọrụ kacha ọhụrụ",
       "empty": "Enweghị nchọpụta ugbu a. Gbaa nyocha atụ ka ị hụ ka ozi si pụta."
@@ -103,12 +120,25 @@
       "subtitle": "Ozi ndị ihe mgbochi ahụ hụrụ dị ize ndụ kacha ọhụrụ.",
       "empty": "Enweghị nche ugbu a. Nọgide na-ele anya!",
       "emptyWithFilters": "Enweghị nche dabara na {{filters}}. Gbalịa gbanwee ntacha gị.",
+      "filtersTitle": "Ntacha",
+      "openFilters": "Mepee ntacha",
+      "editFilters": "Hazie ntacha",
+      "clearFilters": "Hichapụ niile",
+      "applyFilters": "Emechara",
+      "noFiltersApplied": "Enweghị ntacha etinyere",
       "viewAll": "Lelee akụkọ zuru ezu",
       "filters": {
         "all": "Gosi nche niile",
         "historical": "Ndekọ ndụ",
         "simulated": "Nchọpụta atụ gị",
         "trusted": "Ndị zipụrụ a tụkwasịrị obi"
+      },
+      "timeframeLabel": "Achọpụtara n'ime",
+      "timeframe": {
+        "all": "Oge ọ bụla",
+        "24h": "Awa 24 gara aga",
+        "7d": "Ụbọchị 7 gara aga",
+        "30d": "Ụbọchị 30 gara aga"
       },
       "severity": {
         "all": "Ọkwa ọ bụla",
@@ -119,6 +149,7 @@
       "channels": {
         "all": "Ụzọ ọ bụla"
       },
+      "matchesHeading": "Mgbaàmà achọpụtara",
       "trustedToggle": {
         "label": "Gosi naanị ndị zipụrụ ị tụkwasịrị obi",
         "description": "Họrọ naanị ndị ị debara dị ka ndị a tụkwasịrị obi na Ntọala."
@@ -177,8 +208,53 @@
       "title": "Kọpụta ozi",
       "subtitle": "N’oge na-adịghị anya: kesaa ozi ị na-enyo enyo n’enweghị aha ka anyị nwee ike mee ka nlereanya sie ike.",
       "cta": "Na-abịa ngwa ngwa",
-      "alertTitle": "Usoro n’ihu",
-      "alertBody": "Anyị ga-enye gị ohere iziga nche na ibudata ụdị ọhụrụ ozugbo sava echekwara dị njikere."
+      "modalTitle": "Report a suspicious message",
+      "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
+      "fields": {
+        "channelLabel": "Message came from",
+        "senderLabel": "Sender (optional)",
+        "messageLabel": "Message content",
+        "categoryLabel": "What type of issue?",
+        "commentLabel": "Anything else to include? (optional)"
+      },
+      "placeholders": {
+        "sender": "e.g. +234 812 345 6789",
+        "message": "Paste or describe the suspicious message here...",
+        "comment": "Add context, e.g. why it looks risky."
+      },
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Email"
+      },
+      "categories": {
+        "phishing": "Likely phishing",
+        "suspicious": "Suspicious content",
+        "false_positive": "False alarm",
+        "other": "Something else"
+      },
+      "status": {
+        "heading": "Report status",
+        "idle": "Queued reports send automatically when a secure connection is available.",
+        "submitting": "Submitting report...",
+        "success": "Report queued successfully. Thanks for training the shield!",
+        "error": "We couldn't queue the report. Please try again.",
+        "errorTitle": "Submission failed"
+      },
+      "validation": {
+        "messageRequired": "Add the suspicious message so we know what to review."
+      },
+      "disabled": {
+        "title": "Manual reporting disabled",
+        "body": "Turn on manual reports in Settings → Data & telemetry to send suspicious messages."
+      },
+      "loadingTitle": "Preparing settings",
+      "loadingBody": "We're still loading your reporting preferences. Try again in a moment.",
+      "actions": {
+        "submit": "Submit report",
+        "cancel": "Cancel",
+        "close": "Close"
+      }
     },
     "expoGoNotice": {
       "title": "Oke Expo Go",
@@ -229,6 +305,7 @@
       "clearLastDetection": "Hichapụ nsonaazụ atụ",
       "clearedTitle": "Nsonaazụ atụ e hichapụrụ",
       "clearedBody": "Kaadị nchọpụta atụ agbanyelarị ọhụrụ.",
+      "showTools": "Gosi ngwaọrụ mmepe",
       "channels": {
         "sms": "SMS",
         "whatsapp": "WhatsApp",
@@ -452,7 +529,39 @@
       },
       "notifications": {
         "title": "Ntọala nkwupụta",
-        "description": "Jikwaa ụda, mgbakwunye na oge udo."
+        "description": "Jikwaa ụda, mgbakwunye na oge udo.",
+        "badge": {
+          "on": "Alerts on",
+          "off": "Alerts off",
+          "quietHours": "Quiet hours {{start}}–{{end}}"
+        },
+        "loading": "Loading notification preferences...",
+        "errorTitle": "Update failed",
+        "errorBody": "We couldn't save these notification settings. Please try again.",
+        "permissionTitle": "Permission status",
+        "permissionGranted": "Notifications are enabled at the system level.",
+        "permissionMissing": "Turn on notification access to let the shield alert you instantly.",
+        "permissionButtonGranted": "Enabled",
+        "permissionButton": "Enable notifications",
+        "openSettings": "Open system settings",
+        "masterToggle": {
+          "title": "Alerts",
+          "description": "Turn phishing alerts on or off for this device."
+        },
+        "sound": {
+          "title": "Play sound",
+          "description": "Play a tone when a phishing alert is detected."
+        },
+        "vibration": {
+          "title": "Vibrate on alert",
+          "description": "Trigger vibration feedback when alerts fire."
+        },
+        "quietHours": {
+          "title": "Quiet hours",
+          "description": "Pause alert sounds between {{range}}.",
+          "current": "Currently {{range}}",
+          "helper": "Tap to rotate through preset quiet-hour windows."
+        }
       },
       "trustedSources": {
         "title": "Ndị zipụrụ a tụkwasịrị obi",
@@ -507,6 +616,9 @@
       "availableEmpty": "Ị na-eji ụdị kacha ọhụrụ ugbu a.",
       "installedTitle": "Ụdị etinyere",
       "installedEmpty": "Enweghị nlereanya etinyere ugbu a.",
+      "detailsTitle": "Details",
+      "downloadProgress": "Downloading… {{progress}}%",
+      "offlineFallbackBanner": "Couldn't reach the live registry. Showing the built-in demo catalog for now.",
       "badges": {
         "current": "Na-arụ ọrụ",
         "installed": "Etinyere"
@@ -514,6 +626,21 @@
       "sizeLabel": "{{size}} MB",
       "releaseDate": "Ebipụtara {{date}}",
       "changelogTitle": "Kedu ihe ọhụrụ",
+      "catalogMode": {
+        "toggleLabel": "Model catalog",
+        "description": "Switch between live registry updates and the offline demo catalog. Live mode downloads real model files.",
+        "live": "Live registry",
+        "dummy": "Demo catalog",
+        "offlineFallback": "Offline fallback"
+      },
+      "details": {
+        "activeVersion": "Active version",
+        "currentStatusActive": "This model is currently powering phishing detection.",
+        "noActive": "No model is active yet. Install and activate a version to start scanning.",
+        "installedOn": "Installed {{date}}",
+        "storageFootprint": "Storage: {{size}} MB",
+        "summaryTitle": "Shield snapshot"
+      },
       "actions": {
         "install": "Tinye",
         "activate": "Kpalie",

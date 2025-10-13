@@ -205,7 +205,22 @@ export const flushOutbox = async () => {
 
     if (!endpoint) {
       if (__DEV__) {
-        console.info('[outbox] No endpoint configured; retaining entries locally.');
+        const byChannel = queue.reduce<Record<string, number>>((acc, entry) => {
+          acc[entry.channel] = (acc[entry.channel] ?? 0) + 1;
+          return acc;
+        }, {});
+        const sampleEntries = queue.slice(0, 3).map((entry) => ({
+          id: entry.id,
+          channel: entry.channel,
+          createdAt: entry.createdAt,
+          retryCount: entry.retryCount,
+        }));
+
+        console.info('[outbox] No endpoint configured; retaining entries locally.', {
+          total: queue.length,
+          byChannel,
+          sample: sampleEntries,
+        });
       }
       return;
     }

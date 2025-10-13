@@ -30,6 +30,7 @@
         "active": "الحماية مفعّلة",
         "paused": "إجراء مطلوب"
       },
+      "activeDescription": "اكتشاف التصيّد يعمل بصمت في الخلفية لحمايتك على مدار الساعة.",
       "pausedDescription": "امنح الأذونات الناقصة ليبقى اكتشاف التصيّد نشطًا دائمًا.",
       "modelVersion": "النموذج {{version}}",
       "lastScan": "آخر فحص {{time}}",
@@ -39,6 +40,8 @@
         "missing": "إصلاح الأذونات"
       },
       "goToDiagnostics": "عرض التشخيصات",
+      "viewStats": "عرض إحصاءات الحماية",
+      "trustedCount": "{{count}} مرسل موثوق",
       "modelStatus": {
         "syncing": "جارٍ مزامنة التحديثات",
         "downloading": "جارٍ تنزيل {{version}}",
@@ -57,112 +60,19 @@
         "24h": "آخر 24 ساعة",
         "7d": "آخر 7 أيام",
         "30d": "آخر 30 يومًا",
-        "all": "منذ البداية"
+        "all": "كل الوقت"
       },
       "trend": {
-        "up": "زيادة بنسبة {{value}}% مقارنة بالفترة السابقة",
-        "down": "انخفاض بنسبة {{value}}% مقارنة بالفترة السابقة",
-        "flat": "استقرار مقارنة بالفترة السابقة"
+        "up": "ارتفاع {{value}}% مقارنة بالفترة السابقة",
+        "down": "انخفاض {{value}}% مقارنة بالفترة السابقة",
+        "flat": "ثابت مقارنة بالفترة السابقة"
       },
       "trendBadges": {
-        "up": "{{value}}%",
-        "down": "{{value}}%",
+        "up": "+{{value}}%",
+        "down": "−{{value}}%",
         "flat": "ثابت"
       },
       "comparison": "مقارنة بالفترة السابقة"
-    },
-    "quickActions": {
-      "title": "إجراءات سريعة",
-      "mockScan": {
-        "title": "تشغيل فحص تجريبي",
-        "subtitle": "اذهب إلى المحاكي لتجربة اكتشاف باستخدام رسالة تجريبية."
-      },
-      "alerts": {
-        "title": "عرض التنبيهات",
-        "subtitle": "افتح سجل التنبيهات الكامل."
-      },
-      "settings": {
-        "title": "إدارة الإعدادات",
-        "subtitle": "اضبط اللغة والإشعارات والتشخيصات بالطريقة التي تفضلها."
-      },
-      "developer": {
-        "title": "أدوات المطور",
-        "subtitle": "أعد تشغيل جولة البدء وتحقق من الأذونات مجددًا."
-      },
-      "model": {
-        "title": "تحديثات النموذج",
-        "subtitle": "تحقق من ترقيات أداة الكشف وأدِر الإصدارات المثبّتة."
-      }
-    },
-    "activity": {
-      "title": "أحدث الأنشطة",
-      "empty": "لا توجد عمليات اكتشاف بعد. شغّل فحصًا تجريبيًا لترى التنبيهات مسبقًا."
-    },
-    "recentAlerts": {
-      "title": "التنبيهات الأخيرة",
-      "subtitle": "أحدث الرسائل المشبوهة التي التقطها الدرع.",
-      "empty": "لا توجد تنبيهات حتى الآن. حافظ على يقظتك!",
-      "emptyWithFilters": "لا توجد تنبيهات تطابق {{filters}}. جرّب تعديل عوامل التصفية.",
-      "viewAll": "عرض السجل الكامل",
-      "filters": {
-        "all": "جميع التنبيهات",
-        "historical": "بيانات مباشرة",
-        "simulated": "محاكياتك",
-        "trusted": "مرسلون موثوقون"
-      },
-      "severity": {
-        "all": "أي مستوى خطورة",
-        "high": "خطورة عالية",
-        "medium": "خطورة متوسطة",
-        "low": "خطورة منخفضة"
-      },
-      "channels": {
-        "all": "أي قناة"
-      },
-      "trustedToggle": {
-        "label": "إظهار المرسلين الموثوقين فقط",
-        "description": "قيّد النتائج على المرسلين الذين وسمتهم كموثوقين من الإعدادات."
-      },
-      "trustedOnlyBadge": "مرسلون موثوقون فقط",
-      "feedback": {
-        "title": "هل كان هذا التنبيه دقيقًا؟",
-        "subtitle": "أخبرنا إن كان هذا محاولة تصيّد حقيقية أم إنذارًا خاطئًا.",
-        "actions": {
-          "confirm": "تأكيد التهديد",
-          "confirmHelper": "كان تصيّدًا",
-          "dismiss": "وضع علامة كآمن",
-          "dismissHelper": "كان مشروعًا"
-        },
-        "status": {
-          "submitted": "شكرًا لمساعدتك في تحسين الدرع.",
-          "confirmed": "تم وضع علامة كتصيّد",
-          "falsePositive": "تم وضع علامة كآمن",
-          "pending": "جاري إرسال الملاحظات..."
-        },
-        "error": "تعذّر إرسال هذه الملاحظات. حاول مرة أخرى."
-      },
-      "searchPlaceholder": "ابحث في التنبيهات حسب المرسل أو المحتوى أو الوسم",
-      "trustedBadge": "مرسل موثوق",
-      "trustedDefault": "سبق أن وضعت هذا المرسل في قائمة الموثوقين ضمن الإعدادات.",
-      "historyAlertTitle": "قريبًا",
-      "historyAlertBody": "ستتمكن من مراجعة سجل التنبيهات الكامل في التحديث القادم.",
-      "items": [
-        {
-          "sender": "رقم مجهول",
-          "preview": "استرد ضريبة الدخل الخاصة بك الآن. اضغط على الرابط…",
-          "timestamp": "منذ ساعتين"
-        },
-        {
-          "sender": "الإدارة المالية",
-          "preview": "عاجل: أكد بيانات الرواتب لتفادي الإيقاف.",
-          "timestamp": "أمس"
-        },
-        {
-          "sender": "+234 900 123 4567",
-          "preview": "أضفنا رصيدًا إلى حسابك. يرجى التحقق فورًا!",
-          "timestamp": "الإثنين"
-        }
-      ]
     },
     "trustedSources": {
       "title": "المرسلون الموثوقون",
@@ -177,8 +87,53 @@
       "title": "الإبلاغ عن رسالة",
       "subtitle": "قريبًا: شارك الرسائل المشبوهة دون الكشف عن هويتك لتعزيز النموذج.",
       "cta": "قريبًا",
-      "alertTitle": "آلية العمل المستقبلية",
-      "alertBody": "سنُمكّنك قريبًا من الاشتراك لإرسال التنبيهات وتحميل إصدارات النموذج الجديدة بعد تجهيز الخادم الآمن."
+      "modalTitle": "Report a suspicious message",
+      "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
+      "fields": {
+        "channelLabel": "Message came from",
+        "senderLabel": "Sender (optional)",
+        "messageLabel": "Message content",
+        "categoryLabel": "What type of issue?",
+        "commentLabel": "Anything else to include? (optional)"
+      },
+      "placeholders": {
+        "sender": "e.g. +234 812 345 6789",
+        "message": "Paste or describe the suspicious message here...",
+        "comment": "Add context, e.g. why it looks risky."
+      },
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Email"
+      },
+      "categories": {
+        "phishing": "Likely phishing",
+        "suspicious": "Suspicious content",
+        "false_positive": "False alarm",
+        "other": "Something else"
+      },
+      "status": {
+        "heading": "Report status",
+        "idle": "Queued reports send automatically when a secure connection is available.",
+        "submitting": "Submitting report...",
+        "success": "Report queued successfully. Thanks for training the shield!",
+        "error": "We couldn't queue the report. Please try again.",
+        "errorTitle": "Submission failed"
+      },
+      "validation": {
+        "messageRequired": "Add the suspicious message so we know what to review."
+      },
+      "disabled": {
+        "title": "Manual reporting disabled",
+        "body": "Turn on manual reports in Settings → Data & telemetry to send suspicious messages."
+      },
+      "loadingTitle": "Preparing settings",
+      "loadingBody": "We're still loading your reporting preferences. Try again in a moment.",
+      "actions": {
+        "submit": "Submit report",
+        "cancel": "Cancel",
+        "close": "Close"
+      }
     },
     "expoGoNotice": {
       "title": "قيود Expo Go",
@@ -229,6 +184,7 @@
       "clearLastDetection": "مسح نتيجة المحاكاة",
       "clearedTitle": "تم مسح النتيجة التجريبية",
       "clearedBody": "أُعيد تعيين بطاقة الاكتشاف التجريبي.",
+      "showTools": "إظهار أدوات المطور",
       "channels": {
         "sms": "رسالة نصية",
         "whatsapp": "واتساب",
@@ -241,6 +197,127 @@
         "title": "فتح الإعدادات",
         "description": "أدِر اللغة وتفضيلات الإشعارات والتشخيصات."
       }
+    },
+    "quickActions": {
+      "title": "إجراءات سريعة",
+      "mockScan": {
+        "title": "تشغيل فحص تجريبي",
+        "subtitle": "انتقل إلى المحاكي لتشغيل اكتشاف تجريبي."
+      },
+      "alerts": {
+        "title": "عرض التنبيهات",
+        "subtitle": "افتح سجل الاكتشاف الكامل لديك."
+      },
+      "stats": {
+        "title": "إحصاءات الحماية",
+        "subtitle": "اطلع على اتجاهات الرسائل المفحوصة والتهديدات المحجوبة."
+      },
+      "trusted": {
+        "title": "المرسلون الموثوقون",
+        "subtitle": "راجع وأدر جهات الاتصال التي صنفتها كآمنة."
+      },
+      "settings": {
+        "title": "إدارة الإعدادات",
+        "subtitle": "اضبط اللغة والإشعارات والتشخيصات."
+      },
+      "model": {
+        "title": "تحديثات النموذج",
+        "subtitle": "تحقق من تحسينات الكاشف وأدر الإصدارات المثبتة."
+      },
+      "developer": {
+        "title": "أدوات المطور",
+        "subtitle": "إعادة تعيين البدء وإعادة فحص الأذونات."
+      }
+    },
+    "filtersTitle": "Filters",
+    "openFilters": "Open alert filters",
+    "editFilters": "Adjust filters",
+    "clearFilters": "Clear all",
+    "applyFilters": "Done",
+    "noFiltersApplied": "No filters applied",
+    "activity": {
+      "title": "Latest activity",
+      "empty": "No detections yet. Run a mock scan to preview alerts."
+    },
+    "recentAlerts": {
+      "title": "Recent alerts",
+      "subtitle": "Latest suspicious messages flagged by the shield.",
+      "empty": "No alerts detected yet. Stay vigilant!",
+      "emptyWithFilters": "No alerts matched {{filters}}. Try changing your filters.",
+      "filtersTitle": "Filters",
+      "openFilters": "Open alert filters",
+      "editFilters": "Adjust filters",
+      "clearFilters": "Clear all",
+      "applyFilters": "Done",
+      "noFiltersApplied": "No filters applied",
+      "viewAll": "View full history",
+      "filters": {
+        "all": "All alerts",
+        "historical": "Live dataset",
+        "simulated": "Your mock runs",
+        "trusted": "Trusted senders"
+      },
+      "timeframeLabel": "Detected within",
+      "timeframe": {
+        "all": "Any time",
+        "24h": "Last 24 hours",
+        "7d": "Last 7 days",
+        "30d": "Last 30 days"
+      },
+      "severity": {
+        "all": "Any risk",
+        "high": "High risk",
+        "medium": "Medium risk",
+        "low": "Lower risk"
+      },
+      "channels": {
+        "all": "Any channel"
+      },
+      "matchesHeading": "Detected signals",
+      "trustedToggle": {
+        "label": "Only show trusted senders",
+        "description": "Limit results to senders you’ve marked as safe in Settings."
+      },
+      "trustedOnlyBadge": "Trusted senders only",
+      "feedback": {
+        "title": "Was this alert accurate?",
+        "subtitle": "Tell us if this was a real phishing attempt or a false alarm.",
+        "actions": {
+          "confirm": "Confirm threat",
+          "confirmHelper": "It was phishing",
+          "dismiss": "Mark as safe",
+          "dismissHelper": "It was legitimate"
+        },
+        "status": {
+          "submitted": "Thanks for helping improve the shield.",
+          "confirmed": "Marked as phishing",
+          "falsePositive": "Marked as safe",
+          "pending": "Sending feedback..."
+        },
+        "error": "We couldn't send that feedback. Try again."
+      },
+      "searchPlaceholder": "Search alerts by sender, content, or tag",
+      "trustedBadge": "Trusted sender",
+      "trustedDefault": "You marked this sender as safe in Settings.",
+      "historyAlertTitle": "Coming soon",
+      "historyAlertBody": "You'll be able to review the full alert history in the next milestone.",
+      "items": [
+        {
+          "sender": "Unknown number",
+          "preview": "Claim your tax refund now. Click the link...",
+          "timestamp": "2h ago"
+        },
+        {
+          "sender": "Finance HQ",
+          "preview": "Urgent: Verify your payroll details to avoid suspension.",
+          "timestamp": "Yesterday"
+        },
+        {
+          "sender": "+234 900 123 4567",
+          "preview": "We've credited your account. Confirm login immediately!",
+          "timestamp": "Mon"
+        }
+      ]
     }
   },
   "onboarding": {
@@ -452,7 +529,39 @@
       },
       "notifications": {
         "title": "الإشعارات",
-        "description": "تحكم في الصوت والاهتزاز وفترات الهدوء."
+        "description": "تحكم في الصوت والاهتزاز وفترات الهدوء.",
+        "badge": {
+          "on": "Alerts on",
+          "off": "Alerts off",
+          "quietHours": "Quiet hours {{start}}–{{end}}"
+        },
+        "loading": "Loading notification preferences...",
+        "errorTitle": "Update failed",
+        "errorBody": "We couldn't save these notification settings. Please try again.",
+        "permissionTitle": "Permission status",
+        "permissionGranted": "Notifications are enabled at the system level.",
+        "permissionMissing": "Turn on notification access to let the shield alert you instantly.",
+        "permissionButtonGranted": "Enabled",
+        "permissionButton": "Enable notifications",
+        "openSettings": "Open system settings",
+        "masterToggle": {
+          "title": "Alerts",
+          "description": "Turn phishing alerts on or off for this device."
+        },
+        "sound": {
+          "title": "Play sound",
+          "description": "Play a tone when a phishing alert is detected."
+        },
+        "vibration": {
+          "title": "Vibrate on alert",
+          "description": "Trigger vibration feedback when alerts fire."
+        },
+        "quietHours": {
+          "title": "Quiet hours",
+          "description": "Pause alert sounds between {{range}}.",
+          "current": "Currently {{range}}",
+          "helper": "Tap to rotate through preset quiet-hour windows."
+        }
       },
       "diagnostics": {
         "title": "التشخيصات",
@@ -507,6 +616,9 @@
       "availableEmpty": "تستخدم أحدث إصدار بالفعل.",
       "installedTitle": "الإصدارات المثبتة",
       "installedEmpty": "لا توجد نماذج مثبتة بعد.",
+      "detailsTitle": "Details",
+      "downloadProgress": "Downloading… {{progress}}%",
+      "offlineFallbackBanner": "Couldn't reach the live registry. Showing the built-in demo catalog for now.",
       "badges": {
         "current": "نشط",
         "installed": "مثبّت"
@@ -514,6 +626,21 @@
       "sizeLabel": "{{size}} ميغابايت",
       "releaseDate": "صُدر في {{date}}",
       "changelogTitle": "ما الجديد",
+      "catalogMode": {
+        "toggleLabel": "Model catalog",
+        "description": "Switch between live registry updates and the offline demo catalog. Live mode downloads real model files.",
+        "live": "Live registry",
+        "dummy": "Demo catalog",
+        "offlineFallback": "Offline fallback"
+      },
+      "details": {
+        "activeVersion": "Active version",
+        "currentStatusActive": "This model is currently powering phishing detection.",
+        "noActive": "No model is active yet. Install and activate a version to start scanning.",
+        "installedOn": "Installed {{date}}",
+        "storageFootprint": "Storage: {{size}} MB",
+        "summaryTitle": "Shield snapshot"
+      },
       "actions": {
         "install": "تثبيت",
         "activate": "تفعيل",

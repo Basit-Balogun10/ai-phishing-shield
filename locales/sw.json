@@ -30,6 +30,7 @@
         "active": "Ulinzi unaendelea",
         "paused": "Inahitaji hatua"
       },
+      "activeDescription": "Uchunguzi wa phishing unaendelea kimyakimya nyuma ya pazia.",
       "pausedDescription": "Idhinisha ruhusa zilizokosekana ili kugundua udanganyifu kuendelee.",
       "modelVersion": "Mfano {{version}}",
       "lastScan": "Ukaguzi wa mwisho {{time}}",
@@ -39,6 +40,8 @@
         "missing": "Rekebisha ruhusa"
       },
       "goToDiagnostics": "Angalia utambuzi",
+      "viewStats": "Tazama takwimu za ulinzi",
+      "trustedCount": "{{count}} watumaji wa kuaminika",
       "modelStatus": {
         "syncing": "Inalinganisha masasisho",
         "downloading": "Inapakua {{version}}",
@@ -81,6 +84,14 @@
         "title": "Tazama tahadhari",
         "subtitle": "Fungua historia yako yote ya ugunduzi."
       },
+      "stats": {
+        "title": "Takwimu za ulinzi",
+        "subtitle": "Angalia mwenendo wa ujumbe uliokaguliwa na vitisho vilivyokataliwa."
+      },
+      "trusted": {
+        "title": "Watumaji wa kuaminika",
+        "subtitle": "Kagua na dhibiti mawasiliano ulioweka kuwa salama."
+      },
       "settings": {
         "title": "Simamia mipangilio",
         "subtitle": "Badilisha lugha, arifa, na utambuzi."
@@ -94,6 +105,12 @@
         "subtitle": "Angalia uboreshaji wa kigunduzi na dhibiti matoleo yaliyosakinishwa."
       }
     },
+    "filtersTitle": "Vichujio",
+    "openFilters": "Fungua vichujio vya tahadhari",
+    "editFilters": "Badilisha vichujio",
+    "clearFilters": "Futa vyote",
+    "applyFilters": "Maliza",
+    "noFiltersApplied": "Hakuna kichujio kilichotumika",
     "activity": {
       "title": "Shughuli za hivi karibuni",
       "empty": "Bado hakuna ugunduzi. Endesha uchunguzi wa mfano kuona tahadhari zitakavyokuwa."
@@ -103,12 +120,25 @@
       "subtitle": "Ujumbe wa kutiliwa shaka uliovuliwa na ngao yako.",
       "empty": "Hakuna tahadhari kwa sasa. Endelea kuwa makini!",
       "emptyWithFilters": "Hakuna tahadhari zinazolingana na {{filters}}. Jaribu kubadilisha vichujio vyako.",
+      "filtersTitle": "Vichujio",
+      "openFilters": "Fungua vichujio vya tahadhari",
+      "editFilters": "Badilisha vichujio",
+      "clearFilters": "Futa vyote",
+      "applyFilters": "Maliza",
+      "noFiltersApplied": "Hakuna kichujio kilichotumika",
       "viewAll": "Tazama historia yote",
       "filters": {
         "all": "Tahadhari zote",
         "historical": "Seti ya data ya moja kwa moja",
         "simulated": "Jaribio lako",
         "trusted": "Watumaji uliowaamini"
+      },
+      "timeframeLabel": "Iligunduliwa ndani ya",
+      "timeframe": {
+        "all": "Wakati wowote",
+        "24h": "Masaa 24 yaliyopita",
+        "7d": "Siku 7 zilizopita",
+        "30d": "Siku 30 zilizopita"
       },
       "severity": {
         "all": "Kiwango chochote",
@@ -119,6 +149,7 @@
       "channels": {
         "all": "Njia yoyote"
       },
+      "matchesHeading": "Ishara zilizogunduliwa",
       "trustedToggle": {
         "label": "Onyesha watumaji uliowaamini pekee",
         "description": "Chuja matokeo kwa watumaji ulioweka kuwa salama ndani ya Mipangilio."
@@ -177,8 +208,53 @@
       "title": "Ripoti ujumbe",
       "subtitle": "Hivi karibuni: shiriki ujumbe wa kutiliwa shaka bila kujitambulisha ili kuimarisha mfano.",
       "cta": "Inakuja hivi karibuni",
-      "alertTitle": "Mtindo ujao wa kazi",
-      "alertBody": "Tutakurahisishia kutuma tahadhari na kupakua matoleo mapya pindi seva salama itakapokamilika."
+      "modalTitle": "Report a suspicious message",
+      "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
+      "fields": {
+        "channelLabel": "Message came from",
+        "senderLabel": "Sender (optional)",
+        "messageLabel": "Message content",
+        "categoryLabel": "What type of issue?",
+        "commentLabel": "Anything else to include? (optional)"
+      },
+      "placeholders": {
+        "sender": "e.g. +234 812 345 6789",
+        "message": "Paste or describe the suspicious message here...",
+        "comment": "Add context, e.g. why it looks risky."
+      },
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Email"
+      },
+      "categories": {
+        "phishing": "Likely phishing",
+        "suspicious": "Suspicious content",
+        "false_positive": "False alarm",
+        "other": "Something else"
+      },
+      "status": {
+        "heading": "Report status",
+        "idle": "Queued reports send automatically when a secure connection is available.",
+        "submitting": "Submitting report...",
+        "success": "Report queued successfully. Thanks for training the shield!",
+        "error": "We couldn't queue the report. Please try again.",
+        "errorTitle": "Submission failed"
+      },
+      "validation": {
+        "messageRequired": "Add the suspicious message so we know what to review."
+      },
+      "disabled": {
+        "title": "Manual reporting disabled",
+        "body": "Turn on manual reports in Settings → Data & telemetry to send suspicious messages."
+      },
+      "loadingTitle": "Preparing settings",
+      "loadingBody": "We're still loading your reporting preferences. Try again in a moment.",
+      "actions": {
+        "submit": "Submit report",
+        "cancel": "Cancel",
+        "close": "Close"
+      }
     },
     "expoGoNotice": {
       "title": "Kikomo cha Expo Go",
@@ -229,6 +305,7 @@
       "clearLastDetection": "Futa matokeo ya mfano",
       "clearedTitle": "Matokeo ya mfano yamefutwa",
       "clearedBody": "Kadi ya kugundua mfano imewekwa upya.",
+      "showTools": "Onyesha zana za msanidi",
       "channels": {
         "sms": "SMS",
         "whatsapp": "WhatsApp",
@@ -452,7 +529,39 @@
       },
       "notifications": {
         "title": "Arifa",
-        "description": "Dhibiti sauti, mtetemo na muda wa utulivu."
+        "description": "Dhibiti sauti, mtetemo na muda wa utulivu.",
+        "badge": {
+          "on": "Alerts on",
+          "off": "Alerts off",
+          "quietHours": "Quiet hours {{start}}–{{end}}"
+        },
+        "loading": "Loading notification preferences...",
+        "errorTitle": "Update failed",
+        "errorBody": "We couldn't save these notification settings. Please try again.",
+        "permissionTitle": "Permission status",
+        "permissionGranted": "Notifications are enabled at the system level.",
+        "permissionMissing": "Turn on notification access to let the shield alert you instantly.",
+        "permissionButtonGranted": "Enabled",
+        "permissionButton": "Enable notifications",
+        "openSettings": "Open system settings",
+        "masterToggle": {
+          "title": "Alerts",
+          "description": "Turn phishing alerts on or off for this device."
+        },
+        "sound": {
+          "title": "Play sound",
+          "description": "Play a tone when a phishing alert is detected."
+        },
+        "vibration": {
+          "title": "Vibrate on alert",
+          "description": "Trigger vibration feedback when alerts fire."
+        },
+        "quietHours": {
+          "title": "Quiet hours",
+          "description": "Pause alert sounds between {{range}}.",
+          "current": "Currently {{range}}",
+          "helper": "Tap to rotate through preset quiet-hour windows."
+        }
       },
       "trustedSources": {
         "title": "Watumaji wa kuaminika",
@@ -507,6 +616,9 @@
       "availableEmpty": "Unatumia toleo jipya zaidi tayari.",
       "installedTitle": "Matoleo yaliyosakinishwa",
       "installedEmpty": "Hakuna mfano uliosakinishwa bado.",
+      "detailsTitle": "Details",
+      "downloadProgress": "Downloading… {{progress}}%",
+      "offlineFallbackBanner": "Couldn't reach the live registry. Showing the built-in demo catalog for now.",
       "badges": {
         "current": "Inatumika",
         "installed": "Imesakinishwa"
@@ -514,6 +626,21 @@
       "sizeLabel": "{{size}} MB",
       "releaseDate": "Imetolewa {{date}}",
       "changelogTitle": "Kipi kipya",
+      "catalogMode": {
+        "toggleLabel": "Model catalog",
+        "description": "Switch between live registry updates and the offline demo catalog. Live mode downloads real model files.",
+        "live": "Live registry",
+        "dummy": "Demo catalog",
+        "offlineFallback": "Offline fallback"
+      },
+      "details": {
+        "activeVersion": "Active version",
+        "currentStatusActive": "This model is currently powering phishing detection.",
+        "noActive": "No model is active yet. Install and activate a version to start scanning.",
+        "installedOn": "Installed {{date}}",
+        "storageFootprint": "Storage: {{size}} MB",
+        "summaryTitle": "Shield snapshot"
+      },
       "actions": {
         "install": "Sakinisha",
         "activate": "Wezesha",

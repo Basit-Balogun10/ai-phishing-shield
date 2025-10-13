@@ -4,45 +4,19 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   ScrollView,
+  Switch,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { AppModal } from '../../components/AppModal';
 import { type DetectionRecord, useDetectionHistory } from '../../lib/detection/detectionHistory';
 import { type DetectionFeedbackStatus, useDetectionFeedback } from '../../lib/detection/feedback';
 import { submitDetectionFeedback } from '../../lib/services/alertFeedback';
 import { trackTelemetryEvent } from '../../lib/services/telemetry';
 import { getTrustedSourceForSender } from '../../lib/trustedSources';
-
-type AlertFilter = 'all' | 'historical' | 'simulated' | 'trusted';
-
-const AlertFilterChip = ({
-  label,
-  isActive,
-  onPress,
-}: {
-  label: string;
-  isActive: boolean;
-  onPress: () => void;
-}) => (
-  <TouchableOpacity
-    activeOpacity={0.85}
-    onPress={onPress}
-    className={`rounded-full px-3 py-1 ${
-      isActive ? 'bg-blue-600/10 dark:bg-blue-500/20' : 'bg-slate-100 dark:bg-slate-800'
-    }`}>
-    <Text
-      className={`text-xs font-semibold uppercase tracking-wide ${
-        isActive ? 'text-blue-600 dark:text-blue-300' : 'text-slate-500 dark:text-slate-300'
-      }`}>
-      {label}
-    </Text>
-  </TouchableOpacity>
-);
 
 const getSeverityColor = (score: number) => {
   if (score >= 0.85) {
@@ -68,32 +42,74 @@ const getSeverityColor = (score: number) => {
   };
 };
 
+const TIMEFRAME_THRESHOLDS = {
+  '24h': 24 * 60 * 60 * 1000,
+  '7d': 7 * 24 * 60 * 60 * 1000,
+  '30d': 30 * 24 * 60 * 60 * 1000,
+} as const;
+
 export default function AlertsScreen() {
   const { t } = useTranslation();
   const { merged: detectionHistory } = useDetectionHistory();
-  const [filter, setFilter] = useState<AlertFilter>('all');
   const [selectedDetection, setSelectedDetection] = useState<DetectionRecord | null>(null);
   const [searchInput, setSearchInput] = useState('');
   const [query, setQuery] = useState('');
   const [severity, setSeverity] = useState<'all' | 'high' | 'medium' | 'low'>('all');
   const [channel, setChannel] = useState<'all' | 'sms' | 'whatsapp' | 'email'>('all');
+  const [timeframe, setTimeframe] = useState<'all' | '24h' | '7d' | '30d'>('all');
   const [trustedOnly, setTrustedOnly] = useState(false);
   const [feedbackError, setFeedbackError] = useState<string | null>(null);
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
-  const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+  const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
+  const severityOptions = useMemo(
+    () => [
+      { key: 'all' as const, label: t('dashboard.recentAlerts.severity.all') },
+      { key: 'high' as const, label: t('dashboard.recentAlerts.severity.high') },
+      { key: 'medium' as const, label: t('dashboard.recentAlerts.severity.medium') },
+      { key: 'low' as const, label: t('dashboard.recentAlerts.severity.low') },
+    ],
+    [t]
+  );
 
-  const togglePosition = useSharedValue(0);
+  const channelOptions = useMemo(
+    () => [
+      { key: 'all' as const, label: t('dashboard.recentAlerts.channels.all') },
+      { key: 'sms' as const, label: t('dashboard.mockDetection.channels.sms') },
+      { key: 'whatsapp' as const, label: t('dashboard.mockDetection.channels.whatsapp') },
+      { key: 'email' as const, label: t('dashboard.mockDetection.channels.email') },
+    ],
+    [t]
+  );
 
-  useEffect(() => {
-    togglePosition.value = withSpring(trustedOnly ? 1 : 0, {
-      damping: 15,
-      stiffness: 150,
-    });
-  }, [trustedOnly, togglePosition]);
-
-  const animatedToggleStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: togglePosition.value * 24 }],
-  }));
+  const timeframeOptions = useMemo(
+    () => [
+      {
+        key: 'all' as const,
+        label: t('dashboard.recentAlerts.timeframe.all', {
+          defaultValue: 'Any time',
+        }),
+      },
+      {
+        key: '24h' as const,
+        label: t('dashboard.recentAlerts.timeframe.24h', {
+          defaultValue: 'Last 24 hours',
+        }),
+      },
+      {
+        key: '7d' as const,
+        label: t('dashboard.recentAlerts.timeframe.7d', {
+          defaultValue: 'Last 7 days',
+        }),
+      },
+      {
+        key: '30d' as const,
+        label: t('dashboard.recentAlerts.timeframe.30d', {
+          defaultValue: 'Last 30 days',
+        }),
+      },
+    ],
+    [t]
+  );
 
   const { ready: feedbackReady, feedback } = useDetectionFeedback(
     selectedDetection?.recordId ?? null
@@ -119,36 +135,6 @@ export default function AlertsScreen() {
     setFeedbackError(null);
     setFeedbackSubmitting(false);
   }, [selectedDetection?.recordId]);
-
-  const filterOptions = useMemo(
-    () => [
-      { key: 'all' as const, label: t('dashboard.recentAlerts.filters.all') },
-      { key: 'historical' as const, label: t('dashboard.recentAlerts.filters.historical') },
-      { key: 'simulated' as const, label: t('dashboard.recentAlerts.filters.simulated') },
-      { key: 'trusted' as const, label: t('dashboard.recentAlerts.filters.trusted') },
-    ],
-    [t]
-  );
-
-  const severityOptions = useMemo(
-    () => [
-      { key: 'all' as const, label: t('dashboard.recentAlerts.severity.all') },
-      { key: 'high' as const, label: t('dashboard.recentAlerts.severity.high') },
-      { key: 'medium' as const, label: t('dashboard.recentAlerts.severity.medium') },
-      { key: 'low' as const, label: t('dashboard.recentAlerts.severity.low') },
-    ],
-    [t]
-  );
-
-  const channelOptions = useMemo(
-    () => [
-      { key: 'all' as const, label: t('dashboard.recentAlerts.channels.all') },
-      { key: 'sms' as const, label: t('dashboard.mockDetection.channels.sms') },
-      { key: 'whatsapp' as const, label: t('dashboard.mockDetection.channels.whatsapp') },
-      { key: 'email' as const, label: t('dashboard.mockDetection.channels.email') },
-    ],
-    [t]
-  );
 
   const severityMatchers = useMemo(
     () => ({
@@ -181,30 +167,25 @@ export default function AlertsScreen() {
   }, []);
 
   const filteredDetections = useMemo(() => {
+    const now = Date.now();
+
     return detectionHistory.filter((record) => {
-      if (filter !== 'all') {
-        const isTrustedSource = Boolean(
-          getTrustedSourceForSender(record.result.message.sender, record.result.message.channel)
-        );
+      const isTrustedSource = Boolean(
+        getTrustedSourceForSender(record.result.message.sender, record.result.message.channel)
+      );
 
-        if (filter === 'trusted') {
-          if (!isTrustedSource) {
-            return false;
-          }
-        } else if (record.source !== filter) {
-          return false;
-        }
-
-        if (filter !== 'trusted' && trustedOnly && !isTrustedSource) {
-          return false;
-        }
+      if (trustedOnly && !isTrustedSource) {
+        return false;
       }
 
-      if (filter === 'all' && trustedOnly) {
-        const isTrusted = Boolean(
-          getTrustedSourceForSender(record.result.message.sender, record.result.message.channel)
-        );
-        if (!isTrusted) {
+      if (timeframe !== 'all') {
+        const detectedAtTime = new Date(record.detectedAt).getTime();
+        if (Number.isNaN(detectedAtTime)) {
+          return false;
+        }
+
+        const windowMs = TIMEFRAME_THRESHOLDS[timeframe];
+        if (now - detectedAtTime > windowMs) {
           return false;
         }
       }
@@ -239,24 +220,58 @@ export default function AlertsScreen() {
     channel,
     channelLabelMap,
     detectionHistory,
-    filter,
     formatDetectedAt,
     normalizeText,
     query,
     severity,
     severityMatchers,
+    timeframe,
     trustedOnly,
   ]);
 
   const filtersTelemetryPayload = useMemo(
     () => ({
-      source: filter,
+      source: 'all' as const,
       severity,
       channel,
+      timeframe,
       trustedOnly,
     }),
-    [channel, filter, severity, trustedOnly]
+    [channel, severity, timeframe, trustedOnly]
   );
+
+  const appliedFiltersSummary = useMemo(() => {
+    const parts: string[] = [];
+
+    if (severity !== 'all') {
+      parts.push(t(`dashboard.recentAlerts.severity.${severity}`));
+    }
+
+    if (channel !== 'all') {
+      parts.push(t(`dashboard.mockDetection.channels.${channel}`));
+    }
+
+    if (timeframe !== 'all') {
+      parts.push(
+        t(`dashboard.recentAlerts.timeframe.${timeframe}`, {
+          defaultValue:
+            timeframe === '24h'
+              ? 'Last 24 hours'
+              : timeframe === '7d'
+                ? 'Last 7 days'
+                : 'Last 30 days',
+        })
+      );
+    }
+
+    if (trustedOnly) {
+      parts.push(t('dashboard.recentAlerts.trustedOnlyBadge'));
+    }
+
+    return parts.filter(Boolean).join(' • ');
+  }, [channel, severity, t, timeframe, trustedOnly]);
+
+  const hasActiveFilters = appliedFiltersSummary.length > 0;
 
   const handleFeedback = useCallback(
     async (status: DetectionFeedbackStatus) => {
@@ -291,6 +306,27 @@ export default function AlertsScreen() {
   const initializedSearchTelemetry = useRef(false);
   const previousFiltersRef = useRef(filtersTelemetryPayload);
 
+  const selectedDetectionTrusted = useMemo(() => {
+    if (!selectedDetection) {
+      return false;
+    }
+
+    return Boolean(
+      getTrustedSourceForSender(
+        selectedDetection.result.message.sender,
+        selectedDetection.result.message.channel
+      )
+    );
+  }, [selectedDetection]);
+
+  const selectedSeverityStyles = useMemo(() => {
+    if (!selectedDetection) {
+      return null;
+    }
+
+    return getSeverityColor(selectedDetection.result.score);
+  }, [selectedDetection]);
+
   useEffect(() => {
     const hasQueryChanged = previousQueryRef.current !== query;
     previousQueryRef.current = query;
@@ -313,9 +349,9 @@ export default function AlertsScreen() {
   useEffect(() => {
     const previous = previousFiltersRef.current;
     const hasChanged =
-      previous.source !== filtersTelemetryPayload.source ||
       previous.severity !== filtersTelemetryPayload.severity ||
       previous.channel !== filtersTelemetryPayload.channel ||
+      previous.timeframe !== filtersTelemetryPayload.timeframe ||
       previous.trustedOnly !== filtersTelemetryPayload.trustedOnly;
 
     previousFiltersRef.current = filtersTelemetryPayload;
@@ -329,25 +365,29 @@ export default function AlertsScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-950">
-      <View className="px-6 pb-4 pt-6">
-        <View className="flex-row items-center gap-4">
-          <View className="h-14 w-14 items-center justify-center rounded-2xl bg-blue-600/10 dark:bg-blue-500/20">
-            <MaterialCommunityIcons name="shield-alert" size={28} color="#2563eb" />
-          </View>
-          <View className="flex-1">
-            <Text className="text-xl font-semibold text-slate-900 dark:text-slate-100">
-              {t('dashboard.recentAlerts.title')}
-            </Text>
-          </View>
+      <View className="px-6 pb-3 pt-6">
+        <View className="flex-row items-center justify-between">
+          <Text className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+            {t('dashboard.recentAlerts.title')}
+          </Text>
+          <TouchableOpacity
+            onPress={() => setIsFilterModalVisible(true)}
+            accessibilityRole="button"
+            accessibilityLabel={t('dashboard.recentAlerts.openFilters', {
+              defaultValue: 'Open alert filters',
+            })}
+            className="h-11 w-11 items-center justify-center rounded-full bg-blue-500/10 dark:bg-blue-400/10">
+            <MaterialCommunityIcons name="tune-variant" size={22} color="#2563eb" />
+          </TouchableOpacity>
         </View>
-        <Text className="mt-4 text-base text-slate-600 dark:text-slate-400">
+        <Text className="mt-2 text-sm text-slate-600 dark:text-slate-400">
           {t('dashboard.recentAlerts.subtitle')}
         </Text>
       </View>
 
-      <View className="space-y-4 px-6 pb-4">
-        <View className="flex-row items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <MaterialCommunityIcons name="magnify" size={20} color="#64748b" />
+      <View className="px-6 pb-5">
+        <View className="flex-row items-center gap-3 rounded-2xl border border-slate-200 bg-white/80 px-4 py-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <MaterialCommunityIcons name="magnify" size={22} color="#64748b" />
           <TextInput
             value={searchInput}
             onChangeText={setSearchInput}
@@ -355,129 +395,38 @@ export default function AlertsScreen() {
             placeholderTextColor="#94a3b8"
             autoCapitalize="none"
             autoCorrect={false}
-            className="flex-1 text-sm text-slate-900 dark:text-slate-100"
+            className="flex-1 text-base text-slate-900 dark:text-slate-100"
           />
           {searchInput.length ? (
             <TouchableOpacity
               onPress={() => setSearchInput('')}
               accessibilityRole="button"
               accessibilityLabel={t('common.clear')}
-              className="rounded-full bg-slate-100 p-1.5 dark:bg-slate-800">
+              className="rounded-full bg-slate-100 p-2 dark:bg-slate-800">
               <MaterialCommunityIcons name="close" size={16} color="#64748b" />
             </TouchableOpacity>
           ) : null}
         </View>
 
-        <View className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <View className="mt-3 flex-row items-center justify-between">
+          <Text className="text-xs text-slate-500 dark:text-slate-400">
+            {appliedFiltersSummary ||
+              t('dashboard.recentAlerts.noFiltersApplied', {
+                defaultValue: 'No filters applied',
+              })}
+          </Text>
           <TouchableOpacity
-            onPress={() => setIsFilterExpanded((prev) => !prev)}
-            activeOpacity={0.85}
-            className="flex-row items-center justify-between">
-            <View className="flex-1">
-              <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                {t('dashboard.recentAlerts.filtersTitle', { defaultValue: 'Filters' })}
-              </Text>
-              <Text className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-                {[
-                  filter !== 'all' ? filterOptions.find((opt) => opt.key === filter)?.label : null,
-                  severity !== 'all'
-                    ? severityOptions.find((opt) => opt.key === severity)?.label
-                    : null,
-                  channel !== 'all'
-                    ? channelOptions.find((opt) => opt.key === channel)?.label
-                    : null,
-                  trustedOnly ? t('dashboard.recentAlerts.trustedOnlyBadge') : null,
-                ]
-                  .filter(Boolean)
-                  .join(' • ') ||
-                  t('dashboard.recentAlerts.noFiltersApplied', {
-                    defaultValue: 'No filters applied',
-                  })}
-              </Text>
-            </View>
-            <MaterialCommunityIcons
-              name={isFilterExpanded ? 'chevron-up' : 'chevron-down'}
-              size={20}
-              color="#64748b"
-            />
+            onPress={() => setIsFilterModalVisible(true)}
+            accessibilityRole="button"
+            accessibilityLabel={t('dashboard.recentAlerts.editFilters', {
+              defaultValue: 'Adjust alert filters',
+            })}
+            className="flex-row items-center gap-1">
+            <MaterialCommunityIcons name="tune-variant" size={16} color="#2563eb" />
+            <Text className="text-xs font-semibold text-blue-600 dark:text-blue-300">
+              {t('dashboard.recentAlerts.editFilters', { defaultValue: 'Adjust filters' })}
+            </Text>
           </TouchableOpacity>
-
-          {isFilterExpanded ? (
-            <View className="mt-4 space-y-4">
-              <View>
-                <Text className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                  {t('dashboard.recentAlerts.sourceLabel', { defaultValue: 'Source' })}
-                </Text>
-                <View className="flex-row flex-wrap gap-2">
-                  {filterOptions.map((option) => (
-                    <AlertFilterChip
-                      key={option.key}
-                      label={option.label}
-                      isActive={filter === option.key}
-                      onPress={() => setFilter(option.key)}
-                    />
-                  ))}
-                </View>
-              </View>
-
-              <View>
-                <Text className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                  {t('dashboard.recentAlerts.severityLabel', { defaultValue: 'Severity' })}
-                </Text>
-                <View className="flex-row flex-wrap gap-2">
-                  {severityOptions.map((option) => (
-                    <AlertFilterChip
-                      key={option.key}
-                      label={option.label}
-                      isActive={severity === option.key}
-                      onPress={() => setSeverity(option.key)}
-                    />
-                  ))}
-                </View>
-              </View>
-
-              <View>
-                <Text className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                  {t('dashboard.recentAlerts.channelLabel', { defaultValue: 'Channel' })}
-                </Text>
-                <View className="flex-row flex-wrap gap-2">
-                  {channelOptions.map((option) => (
-                    <AlertFilterChip
-                      key={option.key}
-                      label={option.label}
-                      isActive={channel === option.key}
-                      onPress={() => setChannel(option.key)}
-                    />
-                  ))}
-                </View>
-              </View>
-
-              <View className="border-t border-slate-200 pt-4 dark:border-slate-700">
-                <TouchableOpacity
-                  onPress={() => setTrustedOnly((prev) => !prev)}
-                  activeOpacity={0.85}
-                  className="flex-row items-center justify-between">
-                  <View className="flex-1 pr-3">
-                    <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                      {t('dashboard.recentAlerts.trustedToggle.label')}
-                    </Text>
-                    <Text className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-                      {t('dashboard.recentAlerts.trustedToggle.description')}
-                    </Text>
-                  </View>
-                  <View
-                    className={`h-7 w-14 flex-row items-center rounded-full px-0.5 ${
-                      trustedOnly ? 'bg-blue-500' : 'bg-slate-300 dark:bg-slate-700'
-                    }`}>
-                    <Animated.View
-                      className="h-6 w-6 rounded-full bg-white shadow-sm"
-                      style={animatedToggleStyle}
-                    />
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ) : null}
         </View>
       </View>
 
@@ -486,18 +435,21 @@ export default function AlertsScreen() {
           <View className="items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
             <MaterialCommunityIcons name="check-circle" size={40} color="#22c55e" />
             <Text className="mt-4 text-center text-sm text-slate-500 dark:text-slate-300">
-              {query || filter !== 'all' || severity !== 'all' || channel !== 'all' || trustedOnly
+              {query || hasActiveFilters
                 ? t('dashboard.recentAlerts.emptyWithFilters', {
                     filters: [
                       query ? `“${searchInput.trim()}”` : null,
-                      filter !== 'all'
-                        ? filterOptions.find((item) => item.key === filter)?.label
-                        : null,
-                      severity !== 'all'
-                        ? severityOptions.find((item) => item.key === severity)?.label
-                        : null,
-                      channel !== 'all'
-                        ? channelOptions.find((item) => item.key === channel)?.label
+                      severity !== 'all' ? t(`dashboard.recentAlerts.severity.${severity}`) : null,
+                      channel !== 'all' ? t(`dashboard.mockDetection.channels.${channel}`) : null,
+                      timeframe !== 'all'
+                        ? t(`dashboard.recentAlerts.timeframe.${timeframe}`, {
+                            defaultValue:
+                              timeframe === '24h'
+                                ? 'Last 24 hours'
+                                : timeframe === '7d'
+                                  ? 'Last 7 days'
+                                  : 'Last 30 days',
+                          })
                         : null,
                       trustedOnly ? t('dashboard.recentAlerts.trustedOnlyBadge') : null,
                     ]
@@ -509,54 +461,66 @@ export default function AlertsScreen() {
           </View>
         ) : (
           filteredDetections.map((entry) => {
-            const { badge, text: severityText, iconColor } = getSeverityColor(entry.result.score);
+            const { badge, text: severityText } = getSeverityColor(entry.result.score);
             const primaryMatch = entry.result.matches[0];
+            const isTrustedSource = Boolean(
+              getTrustedSourceForSender(entry.result.message.sender, entry.result.message.channel)
+            );
 
             return (
               <TouchableOpacity
                 key={entry.recordId}
                 onPress={() => setSelectedDetection(entry)}
                 activeOpacity={0.85}
-                className="mb-4 flex-row gap-4 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-                <View className="h-12 w-12 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-500/20">
-                  <MaterialCommunityIcons name="alert" size={24} color={iconColor} />
-                </View>
-                <View className="flex-1">
-                  <View className="flex-row items-center justify-between">
-                    <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                className="mb-3 rounded-2xl border border-slate-200/70 bg-white/90 px-5 py-4 shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
+                <View className="flex-row items-start justify-between gap-3">
+                  <View className="flex-1 pr-2">
+                    <Text className="text-base font-semibold text-slate-900 dark:text-slate-100">
                       {entry.result.message.sender}
                     </Text>
-                    <View className={`rounded-full px-3 py-1 ${badge}`}>
-                      <Text
-                        className={`text-xs font-semibold uppercase tracking-wide ${severityText}`}>
-                        {t('dashboard.mockDetection.scoreLabel', {
-                          score: Math.round(entry.result.score * 100),
-                        })}
-                      </Text>
-                    </View>
+                    <Text
+                      className="mt-2 text-sm text-slate-500 dark:text-slate-300"
+                      numberOfLines={2}>
+                      {entry.result.message.body}
+                    </Text>
                   </View>
+                  <View className={`rounded-full px-3 py-1 ${badge}`}>
+                    <Text
+                      className={`text-xs font-semibold uppercase tracking-wide ${severityText}`}>
+                      {t('dashboard.mockDetection.scoreLabel', {
+                        score: Math.round(entry.result.score * 100),
+                      })}
+                    </Text>
+                  </View>
+                </View>
 
-                  <Text
-                    className="mt-1 text-sm text-slate-500 dark:text-slate-300"
-                    numberOfLines={2}>
-                    {entry.result.message.body}
-                  </Text>
-
-                  <View className="mt-3 flex-row flex-wrap items-center gap-x-3 gap-y-1">
-                    <Text className="text-xs font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                <View className="mt-3 flex-row flex-wrap items-center gap-2">
+                  <View className="flex-row items-center gap-1">
+                    <MaterialCommunityIcons name="clock-outline" size={14} color="#64748b" />
+                    <Text className="text-xs font-medium text-slate-500 dark:text-slate-400">
                       {formatDetectedAt(entry.detectedAt)}
                     </Text>
-                    <Text className="text-xs font-medium uppercase tracking-wide text-blue-500 dark:text-blue-300">
+                  </View>
+                  <View className="flex-row items-center gap-1">
+                    <MaterialCommunityIcons name="message-text-outline" size={14} color="#2563eb" />
+                    <Text className="text-xs font-medium text-blue-600 dark:text-blue-300">
                       {t(`dashboard.mockDetection.channels.${entry.result.message.channel}`)}
                     </Text>
-                    {primaryMatch ? (
-                      <Text
-                        className="text-xs text-slate-500 dark:text-slate-400"
-                        numberOfLines={1}>
+                  </View>
+                  {primaryMatch ? (
+                    <View className="rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800/60">
+                      <Text className="text-xs font-medium text-slate-600 dark:text-slate-300">
                         {primaryMatch.label}
                       </Text>
-                    ) : null}
-                  </View>
+                    </View>
+                  ) : null}
+                  {isTrustedSource ? (
+                    <View className="rounded-full bg-emerald-100 px-3 py-1 dark:bg-emerald-500/20">
+                      <Text className="text-xs font-medium text-emerald-600 dark:text-emerald-200">
+                        {t('dashboard.recentAlerts.trustedBadge')}
+                      </Text>
+                    </View>
+                  ) : null}
                 </View>
               </TouchableOpacity>
             );
@@ -565,14 +529,192 @@ export default function AlertsScreen() {
       </ScrollView>
 
       <AppModal
+        isVisible={isFilterModalVisible}
+        onClose={() => setIsFilterModalVisible(false)}
+        testID="alerts-filters-modal">
+        <View className="flex-1 justify-end">
+          <View className="max-h-[80vh] w-full rounded-t-3xl bg-white dark:bg-slate-900">
+            <View className="flex-row items-start justify-between border-b border-slate-200 px-6 pb-4 pt-5 dark:border-slate-800">
+              <View className="flex-1 pr-4">
+                <Text className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                  {t('dashboard.recentAlerts.filtersTitle', { defaultValue: 'Filters' })}
+                </Text>
+                <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                  {hasActiveFilters
+                    ? appliedFiltersSummary
+                    : t('dashboard.recentAlerts.noFiltersApplied', {
+                        defaultValue: 'No filters applied',
+                      })}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  setSeverity('all');
+                  setChannel('all');
+                  setTimeframe('all');
+                  setTrustedOnly(false);
+                }}
+                accessibilityRole="button"
+                disabled={!hasActiveFilters}
+                className={`rounded-full px-3 py-1 ${
+                  hasActiveFilters
+                    ? 'bg-blue-500/10'
+                    : 'bg-slate-200/40 opacity-40 dark:bg-slate-800/40'
+                }`}>
+                <Text
+                  className={`text-xs font-semibold ${
+                    hasActiveFilters
+                      ? 'text-blue-600 dark:text-blue-300'
+                      : 'text-slate-400 dark:text-slate-500'
+                  }`}>
+                  {t('dashboard.recentAlerts.clearFilters', { defaultValue: 'Clear all' })}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView className="px-6" contentContainerStyle={{ paddingBottom: 24 }}>
+              <View className="mt-6">
+                <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                  {t('dashboard.recentAlerts.severityLabel', { defaultValue: 'Severity' })}
+                </Text>
+                <View className="mt-3 flex-row flex-wrap gap-2">
+                  {severityOptions.map((option) => {
+                    const isActive = severity === option.key;
+                    return (
+                      <TouchableOpacity
+                        key={option.key}
+                        onPress={() => setSeverity(option.key)}
+                        activeOpacity={0.85}
+                        className={`rounded-full border px-4 py-2 ${
+                          isActive
+                            ? 'border-blue-500 bg-blue-500/10'
+                            : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
+                        }`}>
+                        <Text
+                          className={`text-sm font-medium ${
+                            isActive
+                              ? 'text-blue-600 dark:text-blue-300'
+                              : 'text-slate-500 dark:text-slate-300'
+                          }`}>
+                          {option.label}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              </View>
+
+              <View className="mt-6">
+                <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                  {t('dashboard.recentAlerts.channelLabel', { defaultValue: 'Channel' })}
+                </Text>
+                <View className="mt-3 flex-row flex-wrap gap-2">
+                  {channelOptions.map((option) => {
+                    const isActive = channel === option.key;
+                    return (
+                      <TouchableOpacity
+                        key={option.key}
+                        onPress={() => setChannel(option.key)}
+                        activeOpacity={0.85}
+                        className={`rounded-full border px-4 py-2 ${
+                          isActive
+                            ? 'border-blue-500 bg-blue-500/10'
+                            : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
+                        }`}>
+                        <Text
+                          className={`text-sm font-medium ${
+                            isActive
+                              ? 'text-blue-600 dark:text-blue-300'
+                              : 'text-slate-500 dark:text-slate-300'
+                          }`}>
+                          {option.label}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              </View>
+
+              <View className="mt-6">
+                <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                  {t('dashboard.recentAlerts.timeframeLabel', { defaultValue: 'Detected within' })}
+                </Text>
+                <View className="mt-3 flex-row flex-wrap gap-2">
+                  {timeframeOptions.map((option) => {
+                    const isActive = timeframe === option.key;
+                    return (
+                      <TouchableOpacity
+                        key={option.key}
+                        onPress={() => setTimeframe(option.key)}
+                        activeOpacity={0.85}
+                        className={`rounded-full border px-4 py-2 ${
+                          isActive
+                            ? 'border-blue-500 bg-blue-500/10'
+                            : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
+                        }`}>
+                        <Text
+                          className={`text-sm font-medium ${
+                            isActive
+                              ? 'text-blue-600 dark:text-blue-300'
+                              : 'text-slate-500 dark:text-slate-300'
+                          }`}>
+                          {option.label}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              </View>
+
+              <View className="mt-6">
+                <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                  {t('dashboard.recentAlerts.trustedToggle.label')}
+                </Text>
+                <View className="mt-3 rounded-2xl border border-slate-200 bg-white px-4 py-4 dark:border-slate-800 dark:bg-slate-900">
+                  <View className="flex-row items-center justify-between">
+                    <View className="flex-1 pr-4">
+                      <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                        {t('dashboard.recentAlerts.trustedToggle.label')}
+                      </Text>
+                      <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                        {t('dashboard.recentAlerts.trustedToggle.description')}
+                      </Text>
+                    </View>
+                    <Switch
+                      value={trustedOnly}
+                      onValueChange={setTrustedOnly}
+                      trackColor={{ false: '#cbd5f5', true: '#2563eb' }}
+                      thumbColor={trustedOnly ? '#1e40af' : '#f8fafc'}
+                      ios_backgroundColor="#cbd5f5"
+                    />
+                  </View>
+                </View>
+              </View>
+            </ScrollView>
+
+            <View className="border-t border-slate-200 px-6 py-4 dark:border-slate-800">
+              <TouchableOpacity
+                onPress={() => setIsFilterModalVisible(false)}
+                activeOpacity={0.85}
+                className="items-center justify-center rounded-full bg-blue-600 py-3 dark:bg-blue-500">
+                <Text className="text-sm font-semibold text-white">
+                  {t('dashboard.recentAlerts.applyFilters', { defaultValue: 'Done' })}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </AppModal>
+
+      <AppModal
         isVisible={Boolean(selectedDetection)}
         onClose={() => setSelectedDetection(null)}
         testID="alerts-detection-detail-modal">
         <View className="flex-1 justify-end">
-          <View className="w-full rounded-t-3xl bg-white p-6 dark:bg-slate-900">
+          <View className="max-h-[90vh] w-full rounded-t-3xl bg-white dark:bg-slate-900">
             {selectedDetection ? (
-              <View className="space-y-4">
-                <View className="flex-row items-start justify-between">
+              <>
+                <View className="flex-row items-center justify-between border-b border-slate-200 px-6 pb-4 pt-5 dark:border-slate-800">
                   <View className="flex-1 pr-4">
                     <Text className="text-lg font-semibold text-slate-900 dark:text-slate-100">
                       {selectedDetection.result.message.sender}
@@ -583,155 +725,179 @@ export default function AlertsScreen() {
                   </View>
                   <TouchableOpacity
                     onPress={() => setSelectedDetection(null)}
-                    activeOpacity={0.7}
-                    className="rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800">
-                    <Text className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">
-                      {t('common.back')}
-                    </Text>
+                    accessibilityRole="button"
+                    className="h-9 w-9 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+                    <MaterialCommunityIcons name="close" size={18} color="#475569" />
                   </TouchableOpacity>
                 </View>
 
-                <View className="flex-row flex-wrap items-center gap-3">
-                  <Text className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:bg-blue-500/20 dark:text-blue-200">
-                    {t(
-                      `dashboard.mockDetection.channels.${selectedDetection.result.message.channel}`
-                    )}
-                  </Text>
-                  <Text className="text-sm text-slate-500 dark:text-slate-300">
-                    {t('dashboard.mockDetection.scoreLabel', {
-                      score: Math.round(selectedDetection.result.score * 100),
-                    })}
-                  </Text>
-                  {selectedDetection.source === 'simulated' ? (
-                    <Text className="text-xs font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
-                      • {t('dashboard.mockDetection.successTitle')}
-                    </Text>
-                  ) : null}
-                </View>
-
-                <Text className="text-sm text-slate-700 dark:text-slate-200">
-                  “{selectedDetection.result.message.body}”
-                </Text>
-
-                <View className="space-y-2">
-                  {selectedDetection.result.matches.length ? (
-                    selectedDetection.result.matches.map((match, index) => (
-                      <View
-                        key={`${match.label}-${index}`}
-                        className="flex-row items-start gap-3 rounded-xl border border-slate-200 bg-white/80 p-3 dark:border-slate-700 dark:bg-slate-900/80">
-                        <MaterialCommunityIcons name="shield-alert" size={18} color="#fb923c" />
-                        <View className="flex-1">
-                          <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                            {match.label}
-                          </Text>
-                          <Text className="mt-1 text-sm text-slate-600 dark:text-slate-200">
-                            “{match.excerpt || match.label}”
+                <ScrollView className="px-6" contentContainerStyle={{ paddingBottom: 28 }}>
+                  <View className="mt-6 space-y-3">
+                    <View className="flex-row flex-wrap items-center gap-2">
+                      {selectedSeverityStyles ? (
+                        <View className={`rounded-full px-3 py-1 ${selectedSeverityStyles.badge}`}>
+                          <Text
+                            className={`text-xs font-semibold uppercase tracking-wide ${selectedSeverityStyles.text}`}>
+                            {t('dashboard.mockDetection.scoreLabel', {
+                              score: Math.round(selectedDetection.result.score * 100),
+                            })}
                           </Text>
                         </View>
+                      ) : null}
+                      <View className="rounded-full bg-blue-500/10 px-3 py-1 dark:bg-blue-500/20">
+                        <Text className="text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-200">
+                          {t(
+                            `dashboard.mockDetection.channels.${selectedDetection.result.message.channel}`
+                          )}
+                        </Text>
                       </View>
-                    ))
-                  ) : (
-                    <View className="rounded-xl border border-slate-200 bg-white/80 p-3 dark:border-slate-700 dark:bg-slate-900/80">
-                      <Text className="text-sm text-slate-600 dark:text-slate-200">
-                        {t('dashboard.mockDetection.noMatches')}
+                      {selectedDetection.source === 'simulated' ? (
+                        <View className="rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800/60">
+                          <Text className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">
+                            {t('dashboard.mockDetection.successTitle')}
+                          </Text>
+                        </View>
+                      ) : null}
+                      {selectedDetectionTrusted ? (
+                        <View className="rounded-full bg-emerald-100 px-3 py-1 dark:bg-emerald-500/20">
+                          <Text className="text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-200">
+                            {t('dashboard.recentAlerts.trustedBadge')}
+                          </Text>
+                        </View>
+                      ) : null}
+                    </View>
+
+                    <View className="rounded-2xl border border-slate-200 bg-white/90 p-4 dark:border-slate-800 dark:bg-slate-900/70">
+                      <Text className="text-sm text-slate-700 dark:text-slate-200">
+                        “{selectedDetection.result.message.body}”
                       </Text>
                     </View>
-                  )}
-                </View>
-
-                <View className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/60">
-                  <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                    {t('dashboard.recentAlerts.feedback.title')}
-                  </Text>
-                  <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                    {t('dashboard.recentAlerts.feedback.subtitle')}
-                  </Text>
-
-                  <View className="mt-4 space-y-3">
-                    <TouchableOpacity
-                      accessibilityRole="button"
-                      onPress={() => handleFeedback('confirmed')}
-                      disabled={
-                        !feedbackReady || feedbackSubmitting || feedback?.status === 'confirmed'
-                      }
-                      activeOpacity={0.85}
-                      className={`rounded-2xl border px-4 py-3 ${
-                        !feedbackReady || feedbackSubmitting || feedback?.status === 'confirmed'
-                          ? 'border-rose-500/30 bg-rose-500/10 opacity-60'
-                          : 'border-rose-500/50 bg-rose-500/20'
-                      }`}>
-                      <View className="flex-row items-center justify-between">
-                        <View className="flex-1 pr-3">
-                          <Text className="text-sm font-semibold text-rose-700 dark:text-rose-200">
-                            {t('dashboard.recentAlerts.feedback.actions.confirm')}
-                          </Text>
-                          <Text className="mt-1 text-xs text-rose-600/80 dark:text-rose-200/80">
-                            {t('dashboard.recentAlerts.feedback.actions.confirmHelper')}
-                          </Text>
-                        </View>
-                        <MaterialCommunityIcons name="check-decagram" size={20} color="#fb7185" />
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      accessibilityRole="button"
-                      onPress={() => handleFeedback('false_positive')}
-                      disabled={
-                        !feedbackReady ||
-                        feedbackSubmitting ||
-                        feedback?.status === 'false_positive'
-                      }
-                      activeOpacity={0.85}
-                      className={`rounded-2xl border px-4 py-3 ${
-                        !feedbackReady ||
-                        feedbackSubmitting ||
-                        feedback?.status === 'false_positive'
-                          ? 'border-emerald-500/30 bg-emerald-500/10 opacity-60'
-                          : 'border-emerald-500/40 bg-emerald-500/15'
-                      }`}>
-                      <View className="flex-row items-center justify-between">
-                        <View className="flex-1 pr-3">
-                          <Text className="text-sm font-semibold text-emerald-700 dark:text-emerald-200">
-                            {t('dashboard.recentAlerts.feedback.actions.dismiss')}
-                          </Text>
-                          <Text className="mt-1 text-xs text-emerald-600/80 dark:text-emerald-200/80">
-                            {t('dashboard.recentAlerts.feedback.actions.dismissHelper')}
-                          </Text>
-                        </View>
-                        <MaterialCommunityIcons name="shield-check" size={20} color="#22c55e" />
-                      </View>
-                    </TouchableOpacity>
                   </View>
 
-                  {feedbackSubmitting ? (
-                    <View className="mt-3 flex-row items-center gap-2">
-                      <ActivityIndicator size="small" color="#2563eb" />
-                      <Text className="text-xs text-slate-500 dark:text-slate-400">
-                        {t('dashboard.recentAlerts.feedback.status.pending')}
-                      </Text>
-                    </View>
-                  ) : null}
-
-                  {feedback ? (
-                    <View className="mt-3 rounded-xl border border-slate-200 bg-white/80 p-3 dark:border-slate-700 dark:bg-slate-900/80">
-                      <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                        {feedback.status === 'confirmed'
-                          ? t('dashboard.recentAlerts.feedback.status.confirmed')
-                          : t('dashboard.recentAlerts.feedback.status.falsePositive')}
-                      </Text>
-                      <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                        {t('dashboard.recentAlerts.feedback.status.submitted')}
-                      </Text>
-                    </View>
-                  ) : null}
-
-                  {feedbackError ? (
-                    <Text className="mt-3 text-xs text-rose-500 dark:text-rose-400">
-                      {feedbackError}
+                  <View className="mt-6">
+                    <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                      {t('dashboard.recentAlerts.matchesHeading', {
+                        defaultValue: 'Detected signals',
+                      })}
                     </Text>
-                  ) : null}
-                </View>
-              </View>
+                    <View className="mt-3 space-y-3">
+                      {selectedDetection.result.matches.length ? (
+                        selectedDetection.result.matches.map((match, index) => (
+                          <View
+                            key={`${match.label}-${index}`}
+                            className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-700 dark:bg-slate-900/60">
+                            <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                              {match.label}
+                            </Text>
+                            <Text className="mt-2 text-sm text-slate-600 dark:text-slate-200">
+                              “{match.excerpt || match.label}”
+                            </Text>
+                          </View>
+                        ))
+                      ) : (
+                        <View className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-700 dark:bg-slate-900/60">
+                          <Text className="text-sm text-slate-600 dark:text-slate-200">
+                            {t('dashboard.mockDetection.noMatches')}
+                          </Text>
+                        </View>
+                      )}
+                    </View>
+                  </View>
+
+                  <View className="mt-6 rounded-3xl border border-slate-200 bg-slate-50/80 p-5 dark:border-slate-700 dark:bg-slate-900/60">
+                    <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                      {t('dashboard.recentAlerts.feedback.title')}
+                    </Text>
+                    <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                      {t('dashboard.recentAlerts.feedback.subtitle')}
+                    </Text>
+
+                    <View className="mt-4 space-y-3">
+                      <TouchableOpacity
+                        accessibilityRole="button"
+                        onPress={() => handleFeedback('confirmed')}
+                        disabled={
+                          !feedbackReady || feedbackSubmitting || feedback?.status === 'confirmed'
+                        }
+                        activeOpacity={0.85}
+                        className={`rounded-2xl border px-4 py-3 ${
+                          !feedbackReady || feedbackSubmitting || feedback?.status === 'confirmed'
+                            ? 'border-rose-500/30 bg-rose-500/10 opacity-60'
+                            : 'border-rose-500/50 bg-rose-500/20'
+                        }`}>
+                        <View className="flex-row items-center justify-between">
+                          <View className="flex-1 pr-3">
+                            <Text className="text-sm font-semibold text-rose-700 dark:text-rose-200">
+                              {t('dashboard.recentAlerts.feedback.actions.confirm')}
+                            </Text>
+                            <Text className="mt-1 text-xs text-rose-600/80 dark:text-rose-200/80">
+                              {t('dashboard.recentAlerts.feedback.actions.confirmHelper')}
+                            </Text>
+                          </View>
+                          <MaterialCommunityIcons name="check-decagram" size={20} color="#fb7185" />
+                        </View>
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        accessibilityRole="button"
+                        onPress={() => handleFeedback('false_positive')}
+                        disabled={
+                          !feedbackReady ||
+                          feedbackSubmitting ||
+                          feedback?.status === 'false_positive'
+                        }
+                        activeOpacity={0.85}
+                        className={`rounded-2xl border px-4 py-3 ${
+                          !feedbackReady ||
+                          feedbackSubmitting ||
+                          feedback?.status === 'false_positive'
+                            ? 'border-emerald-500/30 bg-emerald-500/10 opacity-60'
+                            : 'border-emerald-500/40 bg-emerald-500/15'
+                        }`}>
+                        <View className="flex-row items-center justify-between">
+                          <View className="flex-1 pr-3">
+                            <Text className="text-sm font-semibold text-emerald-700 dark:text-emerald-200">
+                              {t('dashboard.recentAlerts.feedback.actions.dismiss')}
+                            </Text>
+                            <Text className="mt-1 text-xs text-emerald-600/80 dark:text-emerald-200/80">
+                              {t('dashboard.recentAlerts.feedback.actions.dismissHelper')}
+                            </Text>
+                          </View>
+                          <MaterialCommunityIcons name="shield-check" size={20} color="#22c55e" />
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+
+                    {feedbackSubmitting ? (
+                      <View className="mt-3 flex-row items-center gap-2">
+                        <ActivityIndicator size="small" color="#2563eb" />
+                        <Text className="text-xs text-slate-500 dark:text-slate-400">
+                          {t('dashboard.recentAlerts.feedback.status.pending')}
+                        </Text>
+                      </View>
+                    ) : null}
+
+                    {feedback ? (
+                      <View className="mt-3 rounded-2xl border border-slate-200 bg-white/90 p-3 dark:border-slate-700 dark:bg-slate-900/70">
+                        <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                          {feedback.status === 'confirmed'
+                            ? t('dashboard.recentAlerts.feedback.status.confirmed')
+                            : t('dashboard.recentAlerts.feedback.status.falsePositive')}
+                        </Text>
+                        <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                          {t('dashboard.recentAlerts.feedback.status.submitted')}
+                        </Text>
+                      </View>
+                    ) : null}
+
+                    {feedbackError ? (
+                      <Text className="mt-3 text-xs text-rose-500 dark:text-rose-400">
+                        {feedbackError}
+                      </Text>
+                    ) : null}
+                  </View>
+                </ScrollView>
+              </>
             ) : null}
           </View>
         </View>

@@ -123,6 +123,9 @@ export type TelemetryPayloads = {
   'dashboard.detection_cleared': {
     recordId: string;
   };
+  'stats.timeframe_changed': {
+    timeframe: '24h' | '7d' | '30d' | 'all';
+  };
   'reports.submitted': {
     category: ManualReportCategory;
     channel: ManualReportChannel;

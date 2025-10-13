@@ -27,7 +27,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff",
+      "backgroundColor": "#f9fafb",
       "dark": {
         "image": "./assets/splash.png",
         "backgroundColor": "#020617"
@@ -45,6 +45,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
+    },
+    "extra": {
+      "modelRegistryUrl": "https://download.afrihackbox.dev/models/catalog.json"
     }
   }
 }

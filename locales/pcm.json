@@ -30,6 +30,7 @@
         "active": "Protection dey work",
         "paused": "Action dey wait"
       },
+      "activeDescription": "Real-time phishing check dey run quietly for background.",
       "pausedDescription": "Give the permissions wey still remain make phishing guard no sleep.",
       "modelVersion": "Model {{version}}",
       "lastScan": "Last scan {{time}}",
@@ -39,6 +40,8 @@
         "missing": "Fix permissions"
       },
       "goToDiagnostics": "Open diagnostics",
+      "viewStats": "See protection stats",
+      "trustedCount": "{{count}} trusted senders",
       "modelStatus": {
         "syncing": "We dey sync updates",
         "downloading": "We dey download {{version}}",
@@ -81,6 +84,14 @@
         "title": "View alerts",
         "subtitle": "Open the entire detection history."
       },
+      "stats": {
+        "title": "Protection stats",
+        "subtitle": "See trends for messages wey we scan and threats wey we block."
+      },
+      "trusted": {
+        "title": "Trusted senders",
+        "subtitle": "Review and manage the contacts wey you don mark safe."
+      },
       "settings": {
         "title": "Manage settings",
         "subtitle": "Set languages, notifications, and diagnostics the way you want."
@@ -94,6 +105,12 @@
         "subtitle": "Check for fresh detector updates and manage the versions wey you already get."
       }
     },
+    "filtersTitle": "Filters",
+    "openFilters": "Open alert filters",
+    "editFilters": "Adjust filters",
+    "clearFilters": "Clear all",
+    "applyFilters": "Done",
+    "noFiltersApplied": "No filters applied",
     "activity": {
       "title": "Latest activity",
       "empty": "No detection yet. Run mock scan make you preview alerts."
@@ -103,12 +120,25 @@
       "subtitle": "Latest suspicious messages wey the shield don flag.",
       "empty": "No alert show yet. Stay sharp!",
       "emptyWithFilters": "No alert match {{filters}}. Try change your filters.",
+      "filtersTitle": "Filters",
+      "openFilters": "Open alert filters",
+      "editFilters": "Adjust filters",
+      "clearFilters": "Clear all",
+      "applyFilters": "Done",
+      "noFiltersApplied": "No filters applied",
       "viewAll": "See full history",
       "filters": {
         "all": "All alerts",
         "historical": "Live dataset",
         "simulated": "Your mock runs",
         "trusted": "Trusted senders"
+      },
+      "timeframeLabel": "Detected within",
+      "timeframe": {
+        "all": "Any time",
+        "24h": "Last 24 hours",
+        "7d": "Last 7 days",
+        "30d": "Last 30 days"
       },
       "severity": {
         "all": "Any risk",
@@ -119,6 +149,7 @@
       "channels": {
         "all": "Any channel"
       },
+      "matchesHeading": "Signals we detect",
       "trustedToggle": {
         "label": "Show trusted senders only",
         "description": "Limit results to senders wey you mark safe inside Settings."
@@ -177,8 +208,53 @@
       "title": "Report message",
       "subtitle": "Soon: Share suspicious message anonymous make the model strong pass.",
       "cta": "Coming soon",
-      "alertTitle": "Future workflow",
-      "alertBody": "Soon you go fit opt-in to submit alerts and download fresh model versions once secure server ready."
+      "modalTitle": "Report a suspicious message",
+      "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
+      "fields": {
+        "channelLabel": "Message came from",
+        "senderLabel": "Sender (optional)",
+        "messageLabel": "Message content",
+        "categoryLabel": "What type of issue?",
+        "commentLabel": "Anything else to include? (optional)"
+      },
+      "placeholders": {
+        "sender": "e.g. +234 812 345 6789",
+        "message": "Paste or describe the suspicious message here...",
+        "comment": "Add context, e.g. why it looks risky."
+      },
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Email"
+      },
+      "categories": {
+        "phishing": "Likely phishing",
+        "suspicious": "Suspicious content",
+        "false_positive": "False alarm",
+        "other": "Something else"
+      },
+      "status": {
+        "heading": "Report status",
+        "idle": "Queued reports send automatically when a secure connection is available.",
+        "submitting": "Submitting report...",
+        "success": "Report queued successfully. Thanks for training the shield!",
+        "error": "We couldn't queue the report. Please try again.",
+        "errorTitle": "Submission failed"
+      },
+      "validation": {
+        "messageRequired": "Add the suspicious message so we know what to review."
+      },
+      "disabled": {
+        "title": "Manual reporting disabled",
+        "body": "Turn on manual reports in Settings → Data & telemetry to send suspicious messages."
+      },
+      "loadingTitle": "Preparing settings",
+      "loadingBody": "We're still loading your reporting preferences. Try again in a moment.",
+      "actions": {
+        "submit": "Submit report",
+        "cancel": "Cancel",
+        "close": "Close"
+      }
     },
     "expoGoNotice": {
       "title": "Expo Go limitation",
@@ -229,6 +305,7 @@
       "clearLastDetection": "Clear mock result",
       "clearedTitle": "Mock result cleared",
       "clearedBody": "We don reset the mock detection card.",
+      "showTools": "Show developer mock tools",
       "channels": {
         "sms": "SMS",
         "whatsapp": "WhatsApp",
@@ -452,7 +529,39 @@
       },
       "notifications": {
         "title": "Notification settings",
-        "description": "Control alert sound, vibration, and quiet time."
+        "description": "Control alert sound, vibration, and quiet time.",
+        "badge": {
+          "on": "Alerts on",
+          "off": "Alerts off",
+          "quietHours": "Quiet hours {{start}}–{{end}}"
+        },
+        "loading": "Loading notification preferences...",
+        "errorTitle": "Update failed",
+        "errorBody": "We couldn't save these notification settings. Please try again.",
+        "permissionTitle": "Permission status",
+        "permissionGranted": "Notifications are enabled at the system level.",
+        "permissionMissing": "Turn on notification access to let the shield alert you instantly.",
+        "permissionButtonGranted": "Enabled",
+        "permissionButton": "Enable notifications",
+        "openSettings": "Open system settings",
+        "masterToggle": {
+          "title": "Alerts",
+          "description": "Turn phishing alerts on or off for this device."
+        },
+        "sound": {
+          "title": "Play sound",
+          "description": "Play a tone when a phishing alert is detected."
+        },
+        "vibration": {
+          "title": "Vibrate on alert",
+          "description": "Trigger vibration feedback when alerts fire."
+        },
+        "quietHours": {
+          "title": "Quiet hours",
+          "description": "Pause alert sounds between {{range}}.",
+          "current": "Currently {{range}}",
+          "helper": "Tap to rotate through preset quiet-hour windows."
+        }
       },
       "diagnostics": {
         "title": "Diagnostics",
@@ -507,6 +616,9 @@
       "availableEmpty": "You already dey run the latest version.",
       "installedTitle": "Versions wey don install",
       "installedEmpty": "No model don install yet.",
+      "detailsTitle": "Details",
+      "downloadProgress": "Downloading… {{progress}}%",
+      "offlineFallbackBanner": "Couldn't reach the live registry. Showing the built-in demo catalog for now.",
       "badges": {
         "current": "Active",
         "installed": "Installed"
@@ -514,6 +626,21 @@
       "sizeLabel": "{{size}} MB",
       "releaseDate": "Release date {{date}}",
       "changelogTitle": "Wetīn change",
+      "catalogMode": {
+        "toggleLabel": "Model catalog",
+        "description": "Switch between live registry updates and the offline demo catalog. Live mode downloads real model files.",
+        "live": "Live registry",
+        "dummy": "Demo catalog",
+        "offlineFallback": "Offline fallback"
+      },
+      "details": {
+        "activeVersion": "Active version",
+        "currentStatusActive": "This model is currently powering phishing detection.",
+        "noActive": "No model is active yet. Install and activate a version to start scanning.",
+        "installedOn": "Installed {{date}}",
+        "storageFootprint": "Storage: {{size}} MB",
+        "summaryTitle": "Shield snapshot"
+      },
       "actions": {
         "install": "Install",
         "activate": "Activate",

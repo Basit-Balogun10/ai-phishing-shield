@@ -30,6 +30,7 @@
         "active": "Kariya tana aiki",
         "paused": "Ana buƙatar mataki"
       },
+      "activeDescription": "Ganewar barazanar phishing na gudana a hankali a bayan fage.",
       "pausedDescription": "Ba da izinonin da suka rage domin ganowar phishing ta ci gaba da aiki.",
       "modelVersion": "Samfuri {{version}}",
       "lastScan": "Bincike na ƙarshe {{time}}",
@@ -44,7 +45,9 @@
         "activating": "Ana kunna {{version}}",
         "removing": "Ana cire {{version}}"
       },
-      "goToDiagnostics": "Duba bincike"
+      "goToDiagnostics": "Duba bincike",
+      "viewStats": "Duba kididdigar kariya",
+      "trustedCount": "{{count}} masu aikowa amintattu"
     },
     "stats": {
       "title": "Kididdigar kariyarka",
@@ -81,6 +84,14 @@
         "title": "Duba gargadi",
         "subtitle": "Bude duk tarihin ganowarka."
       },
+      "stats": {
+        "title": "Kididdigar kariya",
+        "subtitle": "Duba yadda aka duba saƙonni da barazanar da aka toshe."
+      },
+      "trusted": {
+        "title": "Masu aikowa amintattu",
+        "subtitle": "Duba da sarrafa lambobin da ka ware a matsayin masu aminci."
+      },
       "settings": {
         "title": "Sarrafa saituna",
         "subtitle": "Daidaici harshe, sanarwa, da bincike."
@@ -94,6 +105,12 @@
         "subtitle": "Sake saita koyarwar farko kuma sake duba izinoni."
       }
     },
+    "filtersTitle": "Matattara",
+    "openFilters": "Buɗe matattara",
+    "editFilters": "Daidaice matattara",
+    "clearFilters": "Share duka",
+    "applyFilters": "An gama",
+    "noFiltersApplied": "Ba a saka matattara ba",
     "activity": {
       "title": "Aikin kwanan nan",
       "empty": "Har yanzu babu ganowa. Gudanar da binciken kwaikwayo don ganin yadda gargadi zai fito."
@@ -103,12 +120,25 @@
       "subtitle": "Sabbin saƙonnin da garkuwa ta nuna akwai haɗari.",
       "empty": "Babu gargadi a yanzu. Ka ci gaba da lura!",
       "emptyWithFilters": "Ba a samu gargadin da ya dace da {{filters}} ba. Gwada sauya matattara.",
+      "filtersTitle": "Matattara",
+      "openFilters": "Buɗe matattara",
+      "editFilters": "Daidaice matattara",
+      "clearFilters": "Share duka",
+      "applyFilters": "An gama",
+      "noFiltersApplied": "Ba a saka matattara ba",
       "viewAll": "Duba cikakken tarihi",
       "filters": {
         "all": "Duk gargadi",
         "historical": "Rumbun bayanan kai tsaye",
         "simulated": "Gwaje-gwajen ka",
         "trusted": "Masu aiko amintattu"
+      },
+      "timeframeLabel": "An gano a cikin",
+      "timeframe": {
+        "all": "Kowane lokaci",
+        "24h": "Sa'o'i 24 da suka wuce",
+        "7d": "Kwanaki 7 da suka wuce",
+        "30d": "Kwanaki 30 da suka wuce"
       },
       "severity": {
         "all": "Duk matakin haɗari",
@@ -119,6 +149,7 @@
       "channels": {
         "all": "Duk wata hanya"
       },
+      "matchesHeading": "Alamomin da aka gano",
       "trustedToggle": {
         "label": "Nuna masu aiko da kake yarda da su kaɗai",
         "description": "Takaita sakamakon zuwa masu aiko da ka sa a matsayin masu aminci a cikin Saituna."
@@ -177,8 +208,53 @@
       "title": "Ba da rahoton saƙo",
       "subtitle": "Ba da daɗewa ba: raba saƙonnin da kake zargi ba tare da sunanka ba domin ƙarfafa samfurin.",
       "cta": "Zai iso nan ba da jimawa ba",
-      "alertTitle": "Hanyar aiki mai zuwa",
-      "alertBody": "Za mu baka damar aika rahotanni da sauke sabon sigar samfurin da zarar uwar garken tsaro ta shirya."
+      "modalTitle": "Report a suspicious message",
+      "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
+      "fields": {
+        "channelLabel": "Message came from",
+        "senderLabel": "Sender (optional)",
+        "messageLabel": "Message content",
+        "categoryLabel": "What type of issue?",
+        "commentLabel": "Anything else to include? (optional)"
+      },
+      "placeholders": {
+        "sender": "e.g. +234 812 345 6789",
+        "message": "Paste or describe the suspicious message here...",
+        "comment": "Add context, e.g. why it looks risky."
+      },
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Email"
+      },
+      "categories": {
+        "phishing": "Likely phishing",
+        "suspicious": "Suspicious content",
+        "false_positive": "False alarm",
+        "other": "Something else"
+      },
+      "status": {
+        "heading": "Report status",
+        "idle": "Queued reports send automatically when a secure connection is available.",
+        "submitting": "Submitting report...",
+        "success": "Report queued successfully. Thanks for training the shield!",
+        "error": "We couldn't queue the report. Please try again.",
+        "errorTitle": "Submission failed"
+      },
+      "validation": {
+        "messageRequired": "Add the suspicious message so we know what to review."
+      },
+      "disabled": {
+        "title": "Manual reporting disabled",
+        "body": "Turn on manual reports in Settings → Data & telemetry to send suspicious messages."
+      },
+      "loadingTitle": "Preparing settings",
+      "loadingBody": "We're still loading your reporting preferences. Try again in a moment.",
+      "actions": {
+        "submit": "Submit report",
+        "cancel": "Cancel",
+        "close": "Close"
+      }
     },
     "expoGoNotice": {
       "title": "Takaitaccen Expo Go",
@@ -229,6 +305,7 @@
       "clearLastDetection": "Share sakamakon kwaikwayo",
       "clearedTitle": "An share sakamakon kwaikwayo",
       "clearedBody": "An sake saita katin gano kwaikwayo.",
+      "showTools": "Nuna kayan aikin masu haɓakawa",
       "channels": {
         "sms": "SMS",
         "whatsapp": "WhatsApp",
@@ -458,7 +535,39 @@
       },
       "notifications": {
         "title": "Sanarwa",
-        "description": "Saita sautin gargadi, jijjiga, da lokutan shiru."
+        "description": "Saita sautin gargadi, jijjiga, da lokutan shiru.",
+        "badge": {
+          "on": "Alerts on",
+          "off": "Alerts off",
+          "quietHours": "Quiet hours {{start}}–{{end}}"
+        },
+        "loading": "Loading notification preferences...",
+        "errorTitle": "Update failed",
+        "errorBody": "We couldn't save these notification settings. Please try again.",
+        "permissionTitle": "Permission status",
+        "permissionGranted": "Notifications are enabled at the system level.",
+        "permissionMissing": "Turn on notification access to let the shield alert you instantly.",
+        "permissionButtonGranted": "Enabled",
+        "permissionButton": "Enable notifications",
+        "openSettings": "Open system settings",
+        "masterToggle": {
+          "title": "Alerts",
+          "description": "Turn phishing alerts on or off for this device."
+        },
+        "sound": {
+          "title": "Play sound",
+          "description": "Play a tone when a phishing alert is detected."
+        },
+        "vibration": {
+          "title": "Vibrate on alert",
+          "description": "Trigger vibration feedback when alerts fire."
+        },
+        "quietHours": {
+          "title": "Quiet hours",
+          "description": "Pause alert sounds between {{range}}.",
+          "current": "Currently {{range}}",
+          "helper": "Tap to rotate through preset quiet-hour windows."
+        }
       },
       "trustedSources": {
         "title": "Masu aiko amintattu",
@@ -506,6 +615,9 @@
       "availableEmpty": "Kana amfani da sabuwar sigar yanzu.",
       "installedTitle": "Sigogi da aka saka",
       "installedEmpty": "Babu samfurin da aka saka tukuna.",
+      "detailsTitle": "Details",
+      "downloadProgress": "Downloading… {{progress}}%",
+      "offlineFallbackBanner": "Couldn't reach the live registry. Showing the built-in demo catalog for now.",
       "badges": {
         "current": "Aiki",
         "installed": "An saka"
@@ -513,6 +625,21 @@
       "sizeLabel": "{{size}} MB",
       "releaseDate": "An fitar {{date}}",
       "changelogTitle": "Me ya sabunta",
+      "catalogMode": {
+        "toggleLabel": "Model catalog",
+        "description": "Switch between live registry updates and the offline demo catalog. Live mode downloads real model files.",
+        "live": "Live registry",
+        "dummy": "Demo catalog",
+        "offlineFallback": "Offline fallback"
+      },
+      "details": {
+        "activeVersion": "Active version",
+        "currentStatusActive": "This model is currently powering phishing detection.",
+        "noActive": "No model is active yet. Install and activate a version to start scanning.",
+        "installedOn": "Installed {{date}}",
+        "storageFootprint": "Storage: {{size}} MB",
+        "summaryTitle": "Shield snapshot"
+      },
       "actions": {
         "install": "Saka",
         "activate": "Kunna",

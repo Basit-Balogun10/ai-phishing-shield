@@ -30,6 +30,7 @@
         "active": "Active protection",
         "paused": "Action required"
       },
+      "activeDescription": "Real-time phishing detection is running silently in the background.",
       "pausedDescription": "Grant the missing permissions so phishing detection stays active.",
       "modelVersion": "Model {{version}}",
       "lastScan": "Last scan {{time}}",
@@ -44,7 +45,9 @@
         "activating": "Activating {{version}}",
         "removing": "Removing {{version}}"
       },
-      "goToDiagnostics": "View diagnostics"
+      "goToDiagnostics": "View diagnostics",
+      "viewStats": "View protection stats",
+      "trustedCount": "{{count}} trusted senders"
     },
     "stats": {
       "title": "Your protection stats",
@@ -81,9 +84,17 @@
         "title": "View alerts",
         "subtitle": "Open your full detection history."
       },
+      "stats": {
+        "title": "Protection stats",
+        "subtitle": "See trends for scanned messages and blocked threats."
+      },
+      "trusted": {
+        "title": "Trusted senders",
+        "subtitle": "Review and manage the contacts you’ve marked as safe."
+      },
       "settings": {
         "title": "Manage settings",
-        "subtitle": "Configure localization, notifications, and diagnostics."
+        "subtitle": "Fine-tune appearance, alerts, and privacy controls without leaving the dashboard."
       },
       "model": {
         "title": "Model updates",
@@ -94,6 +105,12 @@
         "subtitle": "Reset onboarding and re-run permission checks."
       }
     },
+    "filtersTitle": "Filters",
+    "openFilters": "Open alert filters",
+    "editFilters": "Adjust filters",
+    "clearFilters": "Clear all",
+    "applyFilters": "Done",
+    "noFiltersApplied": "No filters applied",
     "activity": {
       "title": "Latest activity",
       "empty": "No detections yet. Run a mock scan to preview alerts."
@@ -103,12 +120,25 @@
       "subtitle": "Latest suspicious messages flagged by the shield.",
       "empty": "No alerts detected yet. Stay vigilant!",
       "emptyWithFilters": "No alerts matched {{filters}}. Try changing your filters.",
+      "filtersTitle": "Filters",
+      "openFilters": "Open alert filters",
+      "editFilters": "Adjust filters",
+      "clearFilters": "Clear all",
+      "applyFilters": "Done",
+      "noFiltersApplied": "No filters applied",
       "viewAll": "View full history",
       "filters": {
         "all": "All alerts",
         "historical": "Live dataset",
         "simulated": "Your mock runs",
         "trusted": "Trusted senders"
+      },
+      "timeframeLabel": "Detected within",
+      "timeframe": {
+        "all": "Any time",
+        "24h": "Last 24 hours",
+        "7d": "Last 7 days",
+        "30d": "Last 30 days"
       },
       "severity": {
         "all": "Any risk",
@@ -119,6 +149,7 @@
       "channels": {
         "all": "Any channel"
       },
+      "matchesHeading": "Detected signals",
       "trustedToggle": {
         "label": "Only show trusted senders",
         "description": "Limit results to senders you’ve marked as safe in Settings."
@@ -274,6 +305,7 @@
       "clearLastDetection": "Clear mock result",
       "clearedTitle": "Mock result cleared",
       "clearedBody": "The mock detection card has been reset.",
+      "showTools": "Show developer mock tools",
       "channels": {
         "sms": "SMS",
         "whatsapp": "WhatsApp",
@@ -347,16 +379,16 @@
       },
       {
         "title": "Grant the Right Access",
-        "description": "We will ask for SMS and notification permissions so we can keep watch quietly in the background.",
+        "description": "Turn on SMS and notification access so the shield can keep watch quietly in the background.",
         "icon": "cellphone-message",
         "permissions": [
           {
             "title": "Notification access",
-            "description": "So we can scan WhatsApp, Messenger, Gmail, and more instantly."
+            "description": "Scans app notifications like WhatsApp and Gmail the moment they arrive."
           },
           {
             "title": "SMS read access",
-            "description": "Required to analyze suspicious text messages the moment they arrive."
+            "description": "Checks new texts locally to spot suspicious links before you tap."
           }
         ]
       }
@@ -364,7 +396,7 @@
   },
   "settings": {
     "title": "Settings",
-    "subtitle": "Configure localization, alerts, and diagnostics. This is a placeholder until we wire up real settings.",
+    "subtitle": "Customize appearance, alerts, language, and data sharing in one place.",
     "language": {
       "loading": "Preparing languages..."
     },
@@ -502,8 +534,40 @@
         }
       },
       "notifications": {
-        "title": "Notification Preferences",
-        "description": "Control alert sound, vibration, and quiet hours."
+        "title": "Notification preferences",
+        "description": "Control alert sound, vibration, quiet hours, and permission status.",
+        "badge": {
+          "on": "Alerts on",
+          "off": "Alerts off",
+          "quietHours": "Quiet hours {{start}}–{{end}}"
+        },
+        "loading": "Loading notification preferences...",
+        "errorTitle": "Update failed",
+        "errorBody": "We couldn't save these notification settings. Please try again.",
+        "permissionTitle": "Permission status",
+        "permissionGranted": "Notifications are enabled at the system level.",
+        "permissionMissing": "Turn on notification access to let the shield alert you instantly.",
+        "permissionButtonGranted": "Enabled",
+        "permissionButton": "Enable notifications",
+        "openSettings": "Open system settings",
+        "masterToggle": {
+          "title": "Alerts",
+          "description": "Turn phishing alerts on or off for this device."
+        },
+        "sound": {
+          "title": "Play sound",
+          "description": "Play a tone when a phishing alert is detected."
+        },
+        "vibration": {
+          "title": "Vibrate on alert",
+          "description": "Trigger vibration feedback when alerts fire."
+        },
+        "quietHours": {
+          "title": "Quiet hours",
+          "description": "Pause alert sounds between {{range}}.",
+          "current": "Currently {{range}}",
+          "helper": "Tap to rotate through preset quiet-hour windows."
+        }
       },
       "diagnostics": {
         "title": "Diagnostics",
@@ -551,6 +615,9 @@
       "availableEmpty": "You're running the latest version.",
       "installedTitle": "Installed versions",
       "installedEmpty": "No models installed yet.",
+      "detailsTitle": "Details",
+      "downloadProgress": "Downloading… {{progress}}%",
+      "offlineFallbackBanner": "Couldn't reach the live registry. Showing the built-in demo catalog for now.",
       "badges": {
         "current": "Active",
         "installed": "Installed"
@@ -558,6 +625,21 @@
       "sizeLabel": "{{size}} MB",
       "releaseDate": "Released {{date}}",
       "changelogTitle": "What's new",
+      "catalogMode": {
+        "toggleLabel": "Model catalog",
+        "description": "Switch between live registry updates and the offline demo catalog. Live mode downloads real model files.",
+        "live": "Live registry",
+        "dummy": "Demo catalog",
+        "offlineFallback": "Offline fallback"
+      },
+      "details": {
+        "activeVersion": "Active version",
+        "currentStatusActive": "This model is currently powering phishing detection.",
+        "noActive": "No model is active yet. Install and activate a version to start scanning.",
+        "installedOn": "Installed {{date}}",
+        "storageFootprint": "Storage: {{size}} MB",
+        "summaryTitle": "Shield snapshot"
+      },
       "actions": {
         "install": "Install",
         "activate": "Activate",

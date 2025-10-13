@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
 import * as FileSystem from 'expo-file-system';
 import { useEffect, useMemo, useSyncExternalStore } from 'react';
 
@@ -8,7 +9,13 @@ type ExpoFileSystemModule = typeof FileSystem & {
 };
 
 const expoFs = FileSystem as ExpoFileSystemModule;
-const { getInfoAsync, makeDirectoryAsync, writeAsStringAsync, deleteAsync } = expoFs;
+const {
+  getInfoAsync,
+  makeDirectoryAsync,
+  writeAsStringAsync,
+  deleteAsync,
+  createDownloadResumable,
+} = expoFs;
 
 type Listener = () => void;
 
@@ -29,10 +36,13 @@ type InstalledModelRecord = ModelVersionMetadata & {
   fileSizeBytes: number;
 };
 
+type CatalogMode = 'live' | 'dummy';
+
 type PersistedModelState = {
   installed: InstalledModelRecord[];
   currentVersion: string | null;
   lastSyncedAt: string | null;
+  catalogMode: CatalogMode;
 };
 
 type OperationType = 'download' | 'activate' | 'sync' | 'remove';
@@ -46,6 +56,9 @@ type ModelManagerSnapshot = {
   status: 'idle' | 'syncing' | 'downloading';
   activeOperation: { type: OperationType; version: string } | null;
   error: string | null;
+  catalogMode: CatalogMode;
+  downloadProgress: number | null;
+  isOfflineFallback: boolean;
 };
 
 const MODEL_DIRECTORY_ROOT = expoFs.documentDirectory ?? expoFs.cacheDirectory ?? null;
@@ -53,6 +66,17 @@ const FILESYSTEM_AVAILABLE =
   typeof MODEL_DIRECTORY_ROOT === 'string' && MODEL_DIRECTORY_ROOT.length > 0;
 const MODEL_DIRECTORY = FILESYSTEM_AVAILABLE ? `${MODEL_DIRECTORY_ROOT}models` : null;
 const MEMORY_PLACEHOLDER_PREFIX = 'model_manager_memory_placeholder_v1_';
+
+const DEFAULT_REGISTRY_URL = 'https://download.afrihackbox.dev/models/catalog.json';
+
+const resolveRegistryUrl = () => {
+  const url = Constants.expoConfig?.extra?.modelRegistryUrl;
+  if (typeof url === 'string' && url.length > 0) {
+    return url;
+  }
+
+  return DEFAULT_REGISTRY_URL;
+};
 
 const isMemoryPath = (path: string) => path.startsWith('memory://');
 
@@ -103,6 +127,9 @@ let snapshot: ModelManagerSnapshot = {
   status: 'idle',
   activeOperation: null,
   error: null,
+  catalogMode: 'live',
+  downloadProgress: null,
+  isOfflineFallback: false,
 };
 
 const listeners = new Set<Listener>();
@@ -241,6 +268,7 @@ const loadPersistedState = async (): Promise<PersistedModelState | null> => {
       installed: sanitizedInstalled,
       currentVersion: typeof parsed.currentVersion === 'string' ? parsed.currentVersion : null,
       lastSyncedAt: typeof parsed.lastSyncedAt === 'string' ? parsed.lastSyncedAt : null,
+      catalogMode: parsed.catalogMode === 'dummy' ? 'dummy' : 'live',
     } satisfies PersistedModelState;
   } catch (error) {
     console.warn('[modelManager] Failed to load persisted state', error);
@@ -294,6 +322,7 @@ const ensureReady = async () => {
       status: 'idle',
       activeOperation: null,
       error: null,
+      catalogMode: persisted.catalogMode,
     };
   } else {
     snapshot = {
@@ -302,6 +331,7 @@ const ensureReady = async () => {
       status: 'idle',
       activeOperation: null,
       error: null,
+      catalogMode: 'live',
     };
   }
 
@@ -316,22 +346,141 @@ const updateSnapshot = (updates: Partial<ModelManagerSnapshot>) => {
   emit();
 };
 
-const simulateNetworkDelay = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 600));
-};
-
 const persistFromSnapshot = () => {
   const state: PersistedModelState = {
     installed: snapshot.installed,
     currentVersion: snapshot.current?.version ?? null,
     lastSyncedAt: snapshot.lastSyncedAt,
+    catalogMode: snapshot.catalogMode,
   };
   void persistState(state);
+};
+
+const fetchRemoteCatalog = async (): Promise<ModelVersionMetadata[]> => {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+
+  try {
+    const response = await fetch(resolveRegistryUrl(), {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Unexpected status: ${response.status}`);
+    }
+
+    const payload = await response.json();
+    if (!Array.isArray(payload)) {
+      throw new Error('Invalid payload shape');
+    }
+
+    return payload.map(
+      (entry) =>
+        ({
+          version: String(entry.version),
+          releasedAt:
+            typeof entry.releasedAt === 'string' ? entry.releasedAt : new Date().toISOString(),
+          sizeMB: Number(entry.sizeMB) || 0,
+          checksum: typeof entry.checksum === 'string' ? entry.checksum : 'unknown',
+          changelog: Array.isArray(entry.changelog)
+            ? entry.changelog.map((item: unknown) => String(item))
+            : [],
+          downloadUrl: typeof entry.downloadUrl === 'string' ? entry.downloadUrl : '',
+        }) satisfies ModelVersionMetadata
+    );
+  } finally {
+    clearTimeout(timeout);
+  }
+};
+
+const ensureCatalog = async (mode: CatalogMode) => {
+  if (mode === 'dummy') {
+    updateSnapshot({
+      available: REMOTE_MODEL_REGISTRY.map((entry) => ({ ...entry })),
+      isOfflineFallback: false,
+    });
+    return true;
+  }
+
+  try {
+    const remoteCatalog = await fetchRemoteCatalog();
+    updateSnapshot({
+      available: remoteCatalog,
+      isOfflineFallback: false,
+    });
+    return true;
+  } catch (error) {
+    console.warn('[modelManager] Failed to fetch remote catalog, falling back to dummy', error);
+    updateSnapshot({
+      available: REMOTE_MODEL_REGISTRY.map((entry) => ({ ...entry })),
+      isOfflineFallback: true,
+    });
+    return false;
+  }
+};
+
+const resetDownloadProgress = () => {
+  updateSnapshot({ downloadProgress: null });
+};
+
+const downloadModelBinary = async (metadata: ModelVersionMetadata) => {
+  if (!metadata.downloadUrl) {
+    return writeModelPlaceholder(metadata);
+  }
+
+  if (!FILESYSTEM_AVAILABLE || !MODEL_DIRECTORY || !createDownloadResumable) {
+    return writeModelPlaceholder(metadata);
+  }
+
+  await ensureModelDirectory();
+  const extension = metadata.downloadUrl.split('.').pop()?.split('?')[0] ?? 'tflite';
+  const filePath = `${MODEL_DIRECTORY}/${metadata.version.replace(/\./g, '_')}.${extension}`;
+
+  const downloadResumable = createDownloadResumable(
+    metadata.downloadUrl,
+    filePath,
+    {},
+    (progress) => {
+      if (progress.totalBytesExpectedToWrite) {
+        const ratio = progress.totalBytesWritten / Math.max(progress.totalBytesExpectedToWrite, 1);
+        updateSnapshot({ downloadProgress: Math.min(Math.max(ratio, 0), 1) });
+      }
+    }
+  );
+
+  try {
+    const result = await downloadResumable.downloadAsync();
+    if (!result) {
+      throw new Error('Download cancelled');
+    }
+
+    const info = await getInfoAsync(filePath);
+    const sizeBytes =
+      'size' in info && typeof info.size === 'number' ? info.size : (result.totalBytesWritten ?? 0);
+
+    return {
+      path: filePath,
+      sizeBytes,
+    };
+  } catch (error) {
+    resetDownloadProgress();
+    try {
+      await deleteAsync(filePath, { idempotent: true });
+    } catch {
+      // noop
+    }
+    throw error;
+  } finally {
+    resetDownloadProgress();
+  }
 };
 
 const modelManagerStore = {
   async initialize() {
     await ensureReady();
+    await ensureCatalog(snapshot.catalogMode);
   },
   subscribe(listener: Listener) {
     listeners.add(listener);
@@ -340,15 +489,29 @@ const modelManagerStore = {
   getSnapshot(): ModelManagerSnapshot {
     return snapshot;
   },
-  async syncCatalog(): Promise<boolean> {
+  async syncCatalog(modeOverride?: CatalogMode): Promise<boolean> {
     await ensureReady();
-    updateSnapshot({ status: 'syncing', activeOperation: { type: 'sync', version: 'registry' } });
+    const mode = modeOverride ?? snapshot.catalogMode;
+
+    updateSnapshot({
+      status: 'syncing',
+      activeOperation: { type: 'sync', version: 'registry' },
+      error: null,
+    });
 
     try {
-      await simulateNetworkDelay();
-      const mergedCatalog = REMOTE_MODEL_REGISTRY.map((entry) => ({ ...entry }));
+      const success = await ensureCatalog(mode);
+      if (!success && mode === 'live') {
+        updateSnapshot({
+          status: 'idle',
+          activeOperation: null,
+          lastSyncedAt: new Date().toISOString(),
+        });
+        persistFromSnapshot();
+        return false;
+      }
+
       updateSnapshot({
-        available: mergedCatalog,
         status: 'idle',
         activeOperation: null,
         lastSyncedAt: new Date().toISOString(),
@@ -361,6 +524,16 @@ const modelManagerStore = {
       updateSnapshot({ status: 'idle', activeOperation: null, error: 'sync_failed' });
       return false;
     }
+  },
+  async setCatalogMode(mode: CatalogMode) {
+    await ensureReady();
+    if (snapshot.catalogMode === mode) {
+      return;
+    }
+
+    updateSnapshot({ catalogMode: mode });
+    persistFromSnapshot();
+    await modelManagerStore.syncCatalog(mode);
   },
   async installVersion(version: string) {
     await ensureReady();
@@ -376,8 +549,10 @@ const modelManagerStore = {
     });
 
     try {
-      await simulateNetworkDelay();
-      const { path, sizeBytes } = await writeModelPlaceholder(metadata);
+      const { path, sizeBytes } =
+        snapshot.catalogMode === 'live'
+          ? await downloadModelBinary(metadata)
+          : await writeModelPlaceholder(metadata);
 
       const updatedRecord: InstalledModelRecord = {
         ...metadata,
@@ -466,6 +641,11 @@ export const useModelManager = () => {
       status: state.status,
       activeOperation: state.activeOperation,
       error: state.error,
+      catalogMode: state.catalogMode,
+      downloadProgress: state.downloadProgress,
+      isOfflineFallback: state.isOfflineFallback,
+      setCatalogMode: modelManagerStore.setCatalogMode,
+      syncCatalog: modelManagerStore.syncCatalog,
     }),
     [state]
   );

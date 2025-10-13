@@ -1,6 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Platform,
+  ScrollView,
+  Switch,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -16,9 +25,23 @@ const DATE_FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {
 export default function ModelManagementScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const { ready, available, installed, current, lastSyncedAt, status, activeOperation } =
-    useModelManager();
+  const {
+    ready,
+    available,
+    installed,
+    current,
+    lastSyncedAt,
+    status,
+    activeOperation,
+    catalogMode,
+    downloadProgress,
+    isOfflineFallback,
+    setCatalogMode,
+    syncCatalog,
+  } = useModelManager();
   const [isSyncing, setIsSyncing] = useState(false);
+  const [activeTab, setActiveTab] = useState<'available' | 'installed' | 'details'>('available');
+  const [isChangingMode, setIsChangingMode] = useState(false);
 
   useEffect(() => {
     trackTelemetryEvent('model_manager.screen_viewed', {
@@ -50,6 +73,57 @@ export default function ModelManagementScreen() {
     return available.filter((entry) => !installedSet.has(entry.version));
   }, [available, installed]);
 
+  const formatMegabytes = (bytes: number) => {
+    if (!Number.isFinite(bytes) || bytes <= 0) {
+      return 0;
+    }
+
+    return Number((bytes / (1024 * 1024)).toFixed(1));
+  };
+
+  const tabOptions = useMemo(
+    () => [
+      {
+        key: 'available' as const,
+        label: t('settings.model.availableTitle'),
+        count: availableOnly.length,
+      },
+      {
+        key: 'installed' as const,
+        label: t('settings.model.installedTitle'),
+        count: installed.length,
+      },
+      {
+        key: 'details' as const,
+        label: t('settings.model.detailsTitle'),
+      },
+    ],
+    [availableOnly.length, installed.length, t]
+  );
+
+  const totalFootprintMb = useMemo(() => {
+    if (!installed.length) {
+      return 0;
+    }
+
+    const totalBytes = installed.reduce((sum, item) => sum + (item.fileSizeBytes ?? 0), 0);
+    return formatMegabytes(totalBytes);
+  }, [installed]);
+
+  const currentInstalledAtLabel = useMemo(() => {
+    if (!current) {
+      return null;
+    }
+
+    try {
+      return dateFormatter.format(new Date(current.installedAt));
+    } catch {
+      return current.installedAt;
+    }
+  }, [current, dateFormatter]);
+
+  const syncBusy = isSyncing || status === 'syncing';
+
   const renderVersionCard = (version: string) => {
     const availableEntry = available.find((item) => item.version === version);
     const installedEntry = installed.find((item) => item.version === version);
@@ -73,6 +147,10 @@ export default function ModelManagementScreen() {
     const isRemoving = operationMatches && activeOperation?.type === 'remove';
     const isActivating = operationMatches && activeOperation?.type === 'activate';
     const disableActions = isDownloading || isRemoving || isActivating || isSyncingVersion;
+    const showDownloadProgress = isDownloading && typeof downloadProgress === 'number';
+    const downloadPercent = showDownloadProgress
+      ? Math.min(100, Math.max(0, Math.round(downloadProgress * 100)))
+      : null;
 
     const handleInstall = async () => {
       trackTelemetryEvent('model_manager.install_requested', { version });
@@ -247,14 +325,49 @@ export default function ModelManagementScreen() {
             </TouchableOpacity>
           ) : null}
         </View>
+
+        {showDownloadProgress && downloadPercent !== null ? (
+          <View className="mt-4">
+            <View className="h-2 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
+              <View
+                style={{ width: `${downloadPercent}%` }}
+                className="h-full rounded-full bg-blue-600 dark:bg-blue-400"
+              />
+            </View>
+            <Text className="mt-2 text-xs font-medium text-slate-500 dark:text-slate-300">
+              {t('settings.model.downloadProgress', { progress: downloadPercent })}
+            </Text>
+          </View>
+        ) : null}
       </View>
     );
+  };
+
+  const handleCatalogModeToggle = async () => {
+    if (isChangingMode) {
+      return;
+    }
+
+    const nextMode: 'live' | 'dummy' = catalogMode === 'live' ? 'dummy' : 'live';
+
+    try {
+      setIsChangingMode(true);
+      await setCatalogMode(nextMode);
+    } catch (error) {
+      console.warn('[modelManager] Failed to toggle catalog mode', error);
+      Alert.alert(
+        t('settings.model.alerts.syncErrorTitle'),
+        t('settings.model.alerts.syncErrorBody')
+      );
+    } finally {
+      setIsChangingMode(false);
+    }
   };
 
   const handleSync = async () => {
     setIsSyncing(true);
     trackTelemetryEvent('model_manager.sync_requested', undefined);
-    const success = await modelManagerStore.syncCatalog();
+    const success = await syncCatalog();
     setIsSyncing(false);
 
     if (success) {
@@ -312,46 +425,185 @@ export default function ModelManagementScreen() {
             </View>
             <TouchableOpacity
               onPress={handleSync}
-              disabled={isSyncing || status === 'syncing'}
+              disabled={syncBusy}
               className={`rounded-full px-4 py-2 ${
-                isSyncing || status === 'syncing'
-                  ? 'bg-slate-300 dark:bg-slate-700'
-                  : 'bg-blue-600 dark:bg-blue-500'
+                syncBusy ? 'bg-slate-300 dark:bg-slate-700' : 'bg-blue-600 dark:bg-blue-500'
               }`}
               activeOpacity={0.85}>
               <Text className="text-xs font-semibold uppercase tracking-wide text-white">
-                {isSyncing || status === 'syncing'
-                  ? t('settings.model.syncing')
-                  : t('settings.model.syncButton')}
+                {syncBusy ? t('settings.model.syncing') : t('settings.model.syncButton')}
               </Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        <View className="mb-6">
-          <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-            {t('settings.model.availableTitle')}
-          </Text>
-          {availableOnly.length === 0 ? (
-            <Text className="mt-3 text-sm text-slate-500 dark:text-slate-300">
-              {t('settings.model.availableEmpty')}
-            </Text>
-          ) : (
-            availableOnly.map((item) => renderVersionCard(item.version))
-          )}
-        </View>
+        <View className="space-y-6">
+          {isOfflineFallback ? (
+            <View className="rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-500/40 dark:bg-amber-500/15">
+              <Text className="text-sm font-semibold text-amber-900 dark:text-amber-200">
+                {t('settings.model.offlineFallbackBanner')}
+              </Text>
+              <Text className="mt-1 text-xs text-amber-800/90 dark:text-amber-100/80">
+                {t('settings.model.catalogMode.description')}
+              </Text>
+            </View>
+          ) : null}
 
-        <View className="mb-6">
-          <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-            {t('settings.model.installedTitle')}
-          </Text>
-          {installed.length === 0 ? (
-            <Text className="mt-3 text-sm text-slate-500 dark:text-slate-300">
-              {t('settings.model.installedEmpty')}
-            </Text>
-          ) : (
-            installed.map((item) => renderVersionCard(item.version))
-          )}
+          <View className="rounded-full bg-slate-100 p-1 dark:bg-slate-800">
+            <View className="flex-row items-center justify-between">
+              {tabOptions.map((tab) => {
+                const isActive = activeTab === tab.key;
+                return (
+                  <TouchableOpacity
+                    key={tab.key}
+                    onPress={() => setActiveTab(tab.key)}
+                    activeOpacity={0.85}
+                    className={`flex-1 flex-row items-center justify-center gap-1 rounded-full px-3 py-2 ${
+                      isActive ? 'bg-white shadow-sm shadow-blue-500/10 dark:bg-slate-900' : ''
+                    }`}>
+                    <Text
+                      className={`text-xs font-semibold uppercase tracking-wide ${
+                        isActive
+                          ? 'text-blue-600 dark:text-blue-300'
+                          : 'text-slate-500 dark:text-slate-300'
+                      }`}>
+                      {tab.label}
+                    </Text>
+                    {typeof tab.count === 'number' ? (
+                      <Text
+                        className={`text-xs font-semibold ${
+                          isActive
+                            ? 'text-blue-600 dark:text-blue-200'
+                            : 'text-slate-500 dark:text-slate-400'
+                        }`}>
+                        {tab.count}
+                      </Text>
+                    ) : null}
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
+
+          {activeTab === 'available' ? (
+            <View>
+              {availableOnly.length === 0 ? (
+                <Text className="text-sm text-slate-500 dark:text-slate-300">
+                  {t('settings.model.availableEmpty')}
+                </Text>
+              ) : (
+                availableOnly.map((item) => renderVersionCard(item.version))
+              )}
+            </View>
+          ) : null}
+
+          {activeTab === 'installed' ? (
+            <View>
+              {installed.length === 0 ? (
+                <Text className="text-sm text-slate-500 dark:text-slate-300">
+                  {t('settings.model.installedEmpty')}
+                </Text>
+              ) : (
+                installed.map((item) => renderVersionCard(item.version))
+              )}
+            </View>
+          ) : null}
+
+          {activeTab === 'details' ? (
+            <View className="space-y-4">
+              <View className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+                <View className="flex-row items-center justify-between gap-3">
+                  <View className="flex-1">
+                    <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                      {t('settings.model.catalogMode.toggleLabel')}
+                    </Text>
+                    <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                      {t('settings.model.catalogMode.description')}
+                    </Text>
+                  </View>
+                  <Switch
+                    value={catalogMode === 'live'}
+                    onValueChange={() => void handleCatalogModeToggle()}
+                    disabled={isChangingMode || syncBusy || status === 'downloading'}
+                    trackColor={{ false: '#94a3b8', true: '#2563eb' }}
+                    thumbColor={
+                      Platform.OS === 'android'
+                        ? catalogMode === 'live'
+                          ? '#f8fafc'
+                          : '#e2e8f0'
+                        : undefined
+                    }
+                  />
+                </View>
+                <View className="mt-3 flex-row flex-wrap gap-2">
+                  <Text className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:bg-blue-500/20 dark:text-blue-200">
+                    {catalogMode === 'live'
+                      ? t('settings.model.catalogMode.live')
+                      : t('settings.model.catalogMode.dummy')}
+                  </Text>
+                  {isOfflineFallback ? (
+                    <Text className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-700 dark:bg-amber-500/20 dark:text-amber-200">
+                      {t('settings.model.catalogMode.offlineFallback')}
+                    </Text>
+                  ) : null}
+                </View>
+              </View>
+
+              <View className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+                <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  {t('settings.model.details.activeVersion')}
+                </Text>
+                {current ? (
+                  <View className="mt-3 space-y-2">
+                    <Text className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+                      {current.version}
+                    </Text>
+                    <View className="flex-row flex-wrap gap-2">
+                      {currentInstalledAtLabel ? (
+                        <Text className="rounded-full bg-slate-200 px-3 py-1 text-xs font-medium uppercase tracking-wide text-slate-700 dark:bg-slate-700/40 dark:text-slate-200">
+                          {t('settings.model.details.installedOn', {
+                            date: currentInstalledAtLabel,
+                          })}
+                        </Text>
+                      ) : null}
+                      <Text className="rounded-full bg-slate-200 px-3 py-1 text-xs font-medium uppercase tracking-wide text-slate-700 dark:bg-slate-700/40 dark:text-slate-200">
+                        {t('settings.model.details.storageFootprint', {
+                          size: formatMegabytes(current.fileSizeBytes ?? 0),
+                        })}
+                      </Text>
+                    </View>
+                    <Text className="text-sm text-slate-600 dark:text-slate-300">
+                      {t('settings.model.details.currentStatusActive')}
+                    </Text>
+                  </View>
+                ) : (
+                  <Text className="mt-3 text-sm text-slate-500 dark:text-slate-300">
+                    {t('settings.model.details.noActive')}
+                  </Text>
+                )}
+              </View>
+
+              <View className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+                <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  {t('settings.model.details.summaryTitle')}
+                </Text>
+                <View className="mt-3 space-y-2">
+                  <Text className="text-xs text-slate-500 dark:text-slate-400">
+                    {t('settings.model.installedTitle')}: {installed.length}
+                  </Text>
+                  <Text className="text-xs text-slate-500 dark:text-slate-400">
+                    {t('settings.model.availableTitle')}: {available.length}
+                  </Text>
+                  <Text className="text-xs text-slate-500 dark:text-slate-400">
+                    {t('settings.model.details.storageFootprint', { size: totalFootprintMb })}
+                  </Text>
+                  <Text className="text-xs text-slate-500 dark:text-slate-400">
+                    {lastSyncedLabel}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          ) : null}
         </View>
       </ScrollView>
     </SafeAreaView>

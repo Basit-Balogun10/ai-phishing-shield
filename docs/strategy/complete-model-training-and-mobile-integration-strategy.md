@@ -3,7 +3,9 @@
 ## Overview: The Two Parallel Tracks
 
 ### Track 1: Mobile Dev (Your Partner)
+
 **Timeline:** Days 1-6
+
 - ✅ Phase 1: App skeleton + UI (Days 1-2)
 - ✅ Phase 2: Background service + **mock detection** (Days 3-4)
 - ⏸️ Phase 3: Wait for your `.tflite` model (Day 5)
@@ -11,7 +13,9 @@
 - ✨ Phase 4: Polish (Days 7-8)
 
 ### Track 2: You (Data + AI)
+
 **Timeline:** Days 1-6
+
 - ✅ Day 1: Data collection (TODAY - already in progress!)
 - 🔥 Days 2-3: Model training + optimization
 - 📦 Day 4: TFLite conversion + testing
@@ -19,6 +23,7 @@
 - 🎨 Days 6-8: Fine-tuning + demo prep
 
 ### 🔗 Integration Point (Day 5)
+
 You deliver: `phishing_detector.tflite` (file ~5-20MB)  
 He integrates: Replaces mock detection with real model  
 Result: Fully functional app!
@@ -29,7 +34,7 @@ Result: Fully functional app!
 
 Think of it like teaching a dog to recognize danger:
 
-1. **Collect examples** (✅ You're doing this!) 
+1. **Collect examples** (✅ You're doing this!)
    - Show the dog 1000 pictures of dangerous things (phishing messages)
    - Show the dog 1000 pictures of safe things (legitimate messages)
 
@@ -38,7 +43,7 @@ Think of it like teaching a dog to recognize danger:
    - It learns patterns: "Aha! When I see 'URGENT', 'click this link', 'verify account' together, it's danger!"
    - After seeing enough examples, it can recognize new dangerous messages it's never seen
 
-3. **Testing** 
+3. **Testing**
    - Show the trained "dog" new pictures it's never seen
    - Check: Does it correctly identify danger?
 
@@ -115,8 +120,8 @@ from sklearn.model_selection import train_test_split
 
 # First split: 80% train+val, 20% test (never touch test until final evaluation)
 train_val, test = train_test_split(
-    all_data, 
-    test_size=0.2, 
+    all_data,
+    test_size=0.2,
     stratify=all_data['label'],
     random_state=42
 )
@@ -148,13 +153,15 @@ test.to_csv('test.csv', index=False)
 **Best Options (in priority order):**
 
 ### Option 1: DistilBERT (Multilingual) ⭐ RECOMMENDED
+
 - **Size:** ~135MB → compresses to ~40MB for TFLite
 - **Speed:** Fast enough for mobile
 - **Accuracy:** 93-96% on SMS phishing
 - **Multilingual:** Pre-trained on 104 languages including all yours
 - **Why:** Best balance of size, speed, and accuracy
 
-### Option 2: MobileBERT 
+### Option 2: MobileBERT
+
 - **Size:** ~100MB → ~25MB TFLite
 - **Speed:** Fastest
 - **Accuracy:** 90-94%
@@ -162,6 +169,7 @@ test.to_csv('test.csv', index=False)
 - **Why:** If you need smaller size
 
 ### Option 3: TF-IDF + Logistic Regression (Lightweight Fallback)
+
 - **Size:** <5MB
 - **Speed:** Instant
 - **Accuracy:** 85-90%
@@ -186,9 +194,9 @@ pip install transformers datasets torch scikit-learn pandas numpy tflite-model-m
 import pandas as pd
 import torch
 from transformers import (
-    AutoTokenizer, 
+    AutoTokenizer,
     AutoModelForSequenceClassification,
-    TrainingArguments, 
+    TrainingArguments,
     Trainer
 )
 from datasets import Dataset
@@ -290,10 +298,12 @@ python train_phishing_detector.py
 ```
 
 **Expected Training Time:**
+
 - With GPU: 30-60 minutes
 - Without GPU (CPU only): 2-4 hours
 
 **What You'll See:**
+
 ```
 Epoch 1/3: [████████████████] loss: 0.234, accuracy: 0.912
 Epoch 2/3: [████████████████] loss: 0.156, accuracy: 0.947
@@ -306,7 +316,9 @@ Test Results: {'accuracy': 0.958, 'f1': 0.952, 'precision': 0.961, 'recall': 0.9
 ## Phase 4: Convert to TensorFlow Lite (Day 4)
 
 ### Why TFLite?
+
 Your trained model is in PyTorch format (~500MB). Mobile apps need TensorFlow Lite format (~5-40MB) for:
+
 - Smaller size
 - Faster inference on mobile CPUs
 - Better battery efficiency
@@ -362,12 +374,14 @@ python convert_to_tflite.py
 ```
 
 **Output:**
+
 ```
 TFLite model saved! Size: 42.3 MB
 Conversion complete! ✅
 ```
 
 You now have:
+
 - `phishing_detector.tflite` (the brain)
 - `vocab.txt` (the dictionary)
 
@@ -419,6 +433,7 @@ else:
 ### What You Deliver to Your Mobile Dev Partner
 
 **📦 Package Contents:**
+
 ```
 ai_model_package/
 ├── phishing_detector.tflite    (42 MB)
@@ -433,17 +448,20 @@ ai_model_package/
 # Model Integration Guide
 
 ## Files Included
+
 - `phishing_detector.tflite` - The AI model
 - `vocab.txt` - Tokenizer vocabulary
 
 ## Where to Put Them
 ```
+
 your-expo-app/
 ├── assets/
-│   └── ai/
-│       ├── phishing_detector.tflite
-│       └── vocab.txt
-```
+│ └── ai/
+│ ├── phishing_detector.tflite
+│ └── vocab.txt
+
+````
 
 ## Usage in React Native
 
@@ -462,14 +480,14 @@ const model = await tf.loadLayersModel(
 async function analyzeMessage(text) {
   // Tokenize text (implement based on vocab.txt)
   const tokens = tokenizeText(text);
-  
+
   // Convert to tensor
   const inputTensor = tf.tensor2d([tokens], [1, 128]);
-  
+
   // Run prediction
   const prediction = await model.predict(inputTensor);
   const score = (await prediction.data())[1];
-  
+
   return score; // Returns probability 0-1
 }
 
@@ -481,7 +499,7 @@ if (phishingScore > 0.7) {
   // Trigger alert notification
   sendPhishingAlert(message, phishingScore);
 }
-```
+````
 
 ### Option B: Native Module (Faster, More Complex)
 
@@ -491,20 +509,20 @@ If TF.js is too slow, create a native Android module:
 // android/app/src/main/java/PhishingDetector.kt
 class PhishingDetector(context: Context) {
     private val interpreter: Interpreter
-    
+
     init {
         val model = loadModelFile(context, "phishing_detector.tflite")
         interpreter = Interpreter(model)
     }
-    
+
     fun analyzeMessage(text: String): Float {
         // Tokenize
         val tokens = tokenize(text)
-        
+
         // Run inference
         val output = Array(1) { FloatArray(2) }
         interpreter.run(tokens, output)
-        
+
         return output[0][1] // Phishing probability
     }
 }
@@ -515,18 +533,22 @@ class PhishingDetector(context: Context) {
 Use these test messages to verify integration:
 
 **Should DETECT as Phishing:**
+
 - "URGENT: Your MTN account suspended. Click http://bit.ly/x123"
 - "Congratulations! You won ₦500,000. Send ₦5,000 processing fee"
 
 **Should be SAFE:**
+
 - "Hi, how are you doing today?"
 - "Meeting at 3pm tomorrow"
 
 ## Performance Targets
+
 - Inference time: <100ms per message
 - Memory usage: <50MB
 - Battery impact: <2% per day
-```
+
+````
 
 ---
 
@@ -578,16 +600,20 @@ Before integration, verify:
 ```python
 converter.optimizations = [tf.lite.Optimize.DEFAULT]
 converter.target_spec.supported_types = [tf.int8]  # 8-bit instead of 16-bit
-```
+````
 
 ### Issue 2: Low accuracy on specific language
+
 **Solution:** Add more training data for that language, or train language-specific models
 
 ### Issue 3: Slow inference
+
 **Solution:** Reduce `max_length` from 128 to 64 tokens, or use MobileBERT instead
 
 ### Issue 4: Can't convert to TFLite
+
 **Solution:** Use ONNX as intermediate format:
+
 ```bash
 python -m tf2onnx.convert --saved-model ./tf_model --output model.onnx
 ```
@@ -599,6 +625,7 @@ python -m tf2onnx.convert --saved-model ./tf_model --output model.onnx
 ### For Judges/Presentation
 
 **Live Demo Flow:**
+
 1. Show app dashboard - clean, simple UI
 2. Send a test phishing SMS to demo phone
 3. App immediately shows alert notification
@@ -607,6 +634,7 @@ python -m tf2onnx.convert --saved-model ./tf_model --output model.onnx
 6. Show it works in multiple languages
 
 **Backup Plan:**
+
 - Record demo video beforehand
 - Have test messages ready to manually trigger
 - Screenshot all detection results
@@ -615,16 +643,16 @@ python -m tf2onnx.convert --saved-model ./tf_model --output model.onnx
 
 ## 🎯 Timeline Summary
 
-| Day | You (AI/Data) | Mobile Dev Partner |
-|-----|---------------|-------------------|
-| 1 | ✅ Data collection | ✅ App skeleton + UI |
-| 2 | 🔥 Model training | ✅ Background service |
-| 3 | 🔥 Training + optimization | ✅ Mock detection working |
-| 4 | 📦 TFLite conversion | ⏸️ Waiting for model |
-| 5 | 🤝 Integration support | 🔄 Model integration |
-| 6 | 🎨 Fine-tuning | ✨ Polish + testing |
-| 7 | 🎬 Demo prep | 🎬 Demo prep |
-| 8 | 🚀 Submission | 🚀 Submission |
+| Day | You (AI/Data)              | Mobile Dev Partner        |
+| --- | -------------------------- | ------------------------- |
+| 1   | ✅ Data collection         | ✅ App skeleton + UI      |
+| 2   | 🔥 Model training          | ✅ Background service     |
+| 3   | 🔥 Training + optimization | ✅ Mock detection working |
+| 4   | 📦 TFLite conversion       | ⏸️ Waiting for model      |
+| 5   | 🤝 Integration support     | 🔄 Model integration      |
+| 6   | 🎨 Fine-tuning             | ✨ Polish + testing       |
+| 7   | 🎬 Demo prep               | 🎬 Demo prep              |
+| 8   | 🚀 Submission              | 🚀 Submission             |
 
 ---
 

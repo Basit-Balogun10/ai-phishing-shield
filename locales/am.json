@@ -30,6 +30,7 @@
         "active": "ንቁ ጥበቃ",
         "paused": "እርምጃ ያስፈልጋል"
       },
+      "activeDescription": "በጀርባ ያለው የፊሺንግ መመርመር በቀጥታ እየሰራ ነው።",
       "pausedDescription": "የጎዱትን ፍቃዶች ይስጡ እና መመርመሩ ንቁ እንዲቆይ ያድርጉ።",
       "modelVersion": "ሞዴል {{version}}",
       "lastScan": "መጨረሻ ማረጋገጫ {{time}}",
@@ -44,7 +45,9 @@
         "activating": "{{version}} በማግበር ላይ",
         "removing": "{{version}} በማስወገድ ላይ"
       },
-      "goToDiagnostics": "ምርመራን ይመልከቱ"
+      "goToDiagnostics": "ምርመራን ይመልከቱ",
+      "viewStats": "የጥበቃ ስታቲስቲክስን ይመልከቱ",
+      "trustedCount": "{{count}} ታማኝ ልኪዎች"
     },
     "stats": {
       "title": "የጥበቃ ስታቲስቲክስዎ",
@@ -81,6 +84,14 @@
         "title": "ማስጠንቀቂያዎችን ተመልከት",
         "subtitle": "ሙሉ የመመርመር ታሪክዎን ክፈት።"
       },
+      "stats": {
+        "title": "የጥበቃ ስታቲስቲክስ",
+        "subtitle": "የተመረመሩ መልዕክቶች እና የተከለከሉ አደጋዎችን ያሳዩ የታይ ትኩረቶችን ይመልከቱ።"
+      },
+      "trusted": {
+        "title": "ታማኝ ልኪዎች",
+        "subtitle": "የተሰናከሉትን እውቂያዎች ይቆጣጠሩ።"
+      },
       "settings": {
         "title": "ቅንብሮችን ያቆጣጠሩ",
         "subtitle": "ቋንቋ፣ ማንቂያ ምርጫዎችን እና ምርመራዎችን ያስተካክሉ።"
@@ -94,6 +105,12 @@
         "subtitle": "መጀመሪያ መመሪያውን እንደገና ያስጀምሩ እና ፍቃዶችን ዳግም ይፈትሹ።"
       }
     },
+    "filtersTitle": "Filters",
+    "openFilters": "Open alert filters",
+    "editFilters": "Adjust filters",
+    "clearFilters": "Clear all",
+    "applyFilters": "Done",
+    "noFiltersApplied": "No filters applied",
     "activity": {
       "title": "የቅርብ እንቅስቃሴ",
       "empty": "እስካሁን መመርመር አልተካሄደም። ማስጠንቀቂያዎችን ለማየት ሞክር ምርመራ አሂዱ።"
@@ -103,12 +120,25 @@
       "subtitle": "ጋሻው የገደበውን የተጠርጣሪ መልዕክቶች ማስታወቂያ ነው።",
       "empty": "አሁን ላይ ማስጠንቀቂያ የለም። ትኩረትዎን ይጠብቁ!",
       "emptyWithFilters": "ምንም ማስጠንቀቂያ {{filters}} አልተገኘም። እባክዎ ማጣሪያዎቹን ይቀይሩ።",
+      "filtersTitle": "Filters",
+      "openFilters": "Open alert filters",
+      "editFilters": "Adjust filters",
+      "clearFilters": "Clear all",
+      "applyFilters": "Done",
+      "noFiltersApplied": "No filters applied",
       "viewAll": "ሙሉ ታሪኩን ይመልከቱ",
       "filters": {
         "all": "ሁሉም ማስጠንቀቂያዎች",
         "historical": "የሙከራ መረጃ",
         "simulated": "የሞክር ሙከራዎችዎ",
         "trusted": "ታማኝ እርስዎ ያመኑት ልኪዎች"
+      },
+      "timeframeLabel": "Detected within",
+      "timeframe": {
+        "all": "Any time",
+        "24h": "Last 24 hours",
+        "7d": "Last 7 days",
+        "30d": "Last 30 days"
       },
       "severity": {
         "all": "ሁሉም ደረጃ",
@@ -119,6 +149,7 @@
       "channels": {
         "all": "ማንኛውም ቻናል"
       },
+      "matchesHeading": "Detected signals",
       "trustedToggle": {
         "label": "ታማኝ ልኪዎችን ብቻ አሳይ",
         "description": "በማስተካከያ ውስጥ ታማኝ ብለው ያመለከቱትን ውጤቶች ብቻ ያግኙ።"
@@ -274,6 +305,7 @@
       "clearLastDetection": "ሞክር ውጤትን አጽዳ",
       "clearedTitle": "ሞክር ውጤቱ ተጸድቷል",
       "clearedBody": "የሞክር መለያየት ካርዱ ተቀመጠ።",
+      "showTools": "የአበልጻጊ መሣሪያዎችን አሳይ",
       "channels": {
         "sms": "SMS",
         "whatsapp": "ዋትሳፕ",
@@ -503,7 +535,39 @@
       },
       "notifications": {
         "title": "የማንቂያ ምርጫዎች",
-        "description": "የማንቂያ ድምጽ፣ መንቀሳቀስ እና የዝምታ ሰአቶችን ያቆጣጠሩ።"
+        "description": "የማንቂያ ድምጽ፣ መንቀሳቀስ እና የዝምታ ሰአቶችን ያቆጣጠሩ።",
+        "badge": {
+          "on": "Alerts on",
+          "off": "Alerts off",
+          "quietHours": "Quiet hours {{start}}–{{end}}"
+        },
+        "loading": "Loading notification preferences...",
+        "errorTitle": "Update failed",
+        "errorBody": "We couldn't save these notification settings. Please try again.",
+        "permissionTitle": "Permission status",
+        "permissionGranted": "Notifications are enabled at the system level.",
+        "permissionMissing": "Turn on notification access to let the shield alert you instantly.",
+        "permissionButtonGranted": "Enabled",
+        "permissionButton": "Enable notifications",
+        "openSettings": "Open system settings",
+        "masterToggle": {
+          "title": "Alerts",
+          "description": "Turn phishing alerts on or off for this device."
+        },
+        "sound": {
+          "title": "Play sound",
+          "description": "Play a tone when a phishing alert is detected."
+        },
+        "vibration": {
+          "title": "Vibrate on alert",
+          "description": "Trigger vibration feedback when alerts fire."
+        },
+        "quietHours": {
+          "title": "Quiet hours",
+          "description": "Pause alert sounds between {{range}}.",
+          "current": "Currently {{range}}",
+          "helper": "Tap to rotate through preset quiet-hour windows."
+        }
       },
       "diagnostics": {
         "title": "ምርመራ",
@@ -551,6 +615,9 @@
       "availableEmpty": "አሁን ከፍተኛውን ስሪት ታጠቃለህ።",
       "installedTitle": "ተጫኑ ስሪቶች",
       "installedEmpty": "እስካሁን ሞዴሎች አልተጫኑም።",
+      "detailsTitle": "Details",
+      "downloadProgress": "Downloading… {{progress}}%",
+      "offlineFallbackBanner": "Couldn't reach the live registry. Showing the built-in demo catalog for now.",
       "badges": {
         "current": "ንቁ",
         "installed": "ተጫኗል"
@@ -558,6 +625,21 @@
       "sizeLabel": "{{size}} ሜባ",
       "releaseDate": "{{date}} ተለቀቀ",
       "changelogTitle": "አዲስ ምን አለ",
+      "catalogMode": {
+        "toggleLabel": "Model catalog",
+        "description": "Switch between live registry updates and the offline demo catalog. Live mode downloads real model files.",
+        "live": "Live registry",
+        "dummy": "Demo catalog",
+        "offlineFallback": "Offline fallback"
+      },
+      "details": {
+        "activeVersion": "Active version",
+        "currentStatusActive": "This model is currently powering phishing detection.",
+        "noActive": "No model is active yet. Install and activate a version to start scanning.",
+        "installedOn": "Installed {{date}}",
+        "storageFootprint": "Storage: {{size}} MB",
+        "summaryTitle": "Shield snapshot"
+      },
       "actions": {
         "install": "ጫን",
         "activate": "አግብር",

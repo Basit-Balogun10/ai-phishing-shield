@@ -30,6 +30,7 @@
         "active": "Aàbò ń ṣiṣẹ́",
         "paused": "Ìgbésẹ̀ nílò"
       },
+      "activeDescription": "Ètò ìmúlò ìmúlọ́nnà olè ń ṣiṣẹ́ ní kíkà ní abẹ́lẹ̀ láì fi ara hàn.",
       "pausedDescription": "Fún wa ní ìyọ̀nda tó kù kí ìmúlò ìmúlọ́nnà olè máa ṣiṣẹ́ laifọwọyi.",
       "modelVersion": "Àwoṣe {{version}}",
       "lastScan": "Ìbẹ̀wò tó kẹ́yìn {{time}}",
@@ -39,6 +40,8 @@
         "missing": "Ṣètò ìyọ̀nda"
       },
       "goToDiagnostics": "Wo àyẹ̀wò",
+      "viewStats": "Wo ìtàn ààbò",
+      "trustedCount": "{{count}} olùránṣẹ́ tí o gbẹ́kẹ̀lé",
       "modelStatus": {
         "syncing": "N ṣe ìṣọ̀kan imúdójúìwọ̀n",
         "downloading": "N ń gbasilẹ {{version}}",
@@ -81,6 +84,14 @@
         "title": "Wo ìkìlọ̀",
         "subtitle": "Ṣí ìtàn ìmúlò rẹ ní kíkún."
       },
+      "stats": {
+        "title": "Ìtàn ààbò",
+        "subtitle": "Wo bí a ṣe ń kà ìránṣẹ́ àti bí a ṣe ń dí àwọn ewu."
+      },
+      "trusted": {
+        "title": "Olùránṣẹ́ tí o gbẹ́kẹ̀lé",
+        "subtitle": "Ṣàyẹ̀wò àti ṣàkóso àwọn olùránṣẹ́ tí o ti samisi gẹ́gẹ́ bí ẹni tí ó ní ààbò."
+      },
       "settings": {
         "title": "Ṣàkóso àtúnṣe",
         "subtitle": "Mú èdè, ìkìlọ̀, àti àyẹ̀wò pọ̀."
@@ -94,6 +105,12 @@
         "subtitle": "Ṣàyẹ̀wò àtúnṣe tuntun fún aṣàyàn ìfura, kí o ṣàkóso ẹ̀dá tí a fi sori ẹrọ."
       }
     },
+    "filtersTitle": "Àlẹ̀mọ́",
+    "openFilters": "Ṣí àlẹ̀mọ́ ìkìlọ̀",
+    "editFilters": "Ṣatunṣe àlẹ̀mọ́",
+    "clearFilters": "Pa gbogbo rẹ̀ kúrò",
+    "applyFilters": "Pari",
+    "noFiltersApplied": "Kò sí àlẹ̀mọ́ tí a fi sílẹ̀",
     "activity": {
       "title": "Ìṣe tuntun",
       "empty": "Kò sí ìkìlọ̀ rárá sibẹ̀. Ṣe àdánwò ìmúlò láti rí ìkìlọ̀ àpẹẹrẹ."
@@ -103,12 +120,25 @@
       "subtitle": "Ìrántí tí a mọ̀ pé ó lèwu tí aṣọ ààbò ti mú ṣẹ̀ṣẹ̀ yìí.",
       "empty": "Kò sí ìkìlọ̀ kankan sibẹ̀. Ṣọ́ra ṣùgbọ́n kéèyàn!",
       "emptyWithFilters": "Kò sí ìkìlọ̀ tó bá {{filters}} mu. Gbìmọ̀ yí ìmúlò rẹ padà.",
+      "filtersTitle": "Àlẹ̀mọ́",
+      "openFilters": "Ṣí àlẹ̀mọ́ ìkìlọ̀",
+      "editFilters": "Ṣatunṣe àlẹ̀mọ́",
+      "clearFilters": "Pa gbogbo rẹ̀ kúrò",
+      "applyFilters": "Pari",
+      "noFiltersApplied": "Kò sí àlẹ̀mọ́ tí a fi sílẹ̀",
       "viewAll": "Wo ìtàn gígùn",
       "filters": {
         "all": "Gbogbo ìkìlọ̀",
         "historical": "Àkọọ́lẹ̀ àpẹẹrẹ",
         "simulated": "Àdánwò tirẹ",
         "trusted": "Olùránṣẹ́ tí o gbẹ́kẹ̀lé"
+      },
+      "timeframeLabel": "A rí i nínú àkókò",
+      "timeframe": {
+        "all": "Àkókò gbogbo",
+        "24h": "Wákàtí 24 tó kọjá",
+        "7d": "Ọjọ́ méje tó kọjá",
+        "30d": "Ọjọ́ 30 tó kọjá"
       },
       "severity": {
         "all": "Ipele kankan",
@@ -119,6 +149,7 @@
       "channels": {
         "all": "Ikanni kankan"
       },
+      "matchesHeading": "Àmì tí a rí",
       "trustedToggle": {
         "label": "Ṣe afihan àwọn olùránṣẹ́ tí o gbẹ́kẹ̀lé nikan",
         "description": "Dín abajade sí àwọn olùránṣẹ́ tí o ti samisi gẹ́gẹ́ bí ẹni tí ó ní ààbò ní Ètò."
@@ -176,9 +207,54 @@
     "report": {
       "title": "Jẹ́ kó rí i pé a mọ ìránṣẹ́",
       "subtitle": "Láìpẹ́: Pín ìránṣẹ́ tí o fura sí láìsí orúkọ láti mú awoṣe naa lágbára.",
-      "cta": "N bọ laipẹ",
-      "alertTitle": "Ọ̀nà ọjọ́ iwájú",
-      "alertBody": "A ó jẹ́ kí o yan láti fi ìkìlọ̀ ránṣẹ́ àti gbigba awoṣe tuntun nígbà tí olupin tó dáàbò bò bá ṣetán."
+      "cta": "N bọ́ láipẹ́",
+      "modalTitle": "Report a suspicious message",
+      "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
+      "fields": {
+        "channelLabel": "Message came from",
+        "senderLabel": "Sender (optional)",
+        "messageLabel": "Message content",
+        "categoryLabel": "What type of issue?",
+        "commentLabel": "Anything else to include? (optional)"
+      },
+      "placeholders": {
+        "sender": "e.g. +234 812 345 6789",
+        "message": "Paste or describe the suspicious message here...",
+        "comment": "Add context, e.g. why it looks risky."
+      },
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Email"
+      },
+      "categories": {
+        "phishing": "Likely phishing",
+        "suspicious": "Suspicious content",
+        "false_positive": "False alarm",
+        "other": "Something else"
+      },
+      "status": {
+        "heading": "Report status",
+        "idle": "Queued reports send automatically when a secure connection is available.",
+        "submitting": "Submitting report...",
+        "success": "Report queued successfully. Thanks for training the shield!",
+        "error": "We couldn't queue the report. Please try again.",
+        "errorTitle": "Submission failed"
+      },
+      "validation": {
+        "messageRequired": "Add the suspicious message so we know what to review."
+      },
+      "disabled": {
+        "title": "Manual reporting disabled",
+        "body": "Turn on manual reports in Settings → Data & telemetry to send suspicious messages."
+      },
+      "loadingTitle": "Preparing settings",
+      "loadingBody": "We're still loading your reporting preferences. Try again in a moment.",
+      "actions": {
+        "submit": "Submit report",
+        "cancel": "Cancel",
+        "close": "Close"
+      }
     },
     "expoGoNotice": {
       "title": "Ìdìpọ̀ Expo Go",
@@ -229,6 +305,7 @@
       "clearLastDetection": "Pa abajade àdánwò rẹ mọ́",
       "clearedTitle": "A ti pa abajade àdánwò mọ́",
       "clearedBody": "A tún kárìkítà ìmúlò àpẹẹrẹ ṣe.",
+      "showTools": "Fi ọpa oníṣe hàn",
       "channels": {
         "sms": "SMS",
         "whatsapp": "WhatsApp",
@@ -452,7 +529,39 @@
       },
       "notifications": {
         "title": "Ìkìlọ̀",
-        "description": "Ṣètò ohun ìkìlọ̀, gígùn, àti àsìkò ìsinmi."
+        "description": "Ṣètò ohun ìkìlọ̀, gígùn, àti àsìkò ìsinmi.",
+        "badge": {
+          "on": "Alerts on",
+          "off": "Alerts off",
+          "quietHours": "Quiet hours {{start}}–{{end}}"
+        },
+        "loading": "Loading notification preferences...",
+        "errorTitle": "Update failed",
+        "errorBody": "We couldn't save these notification settings. Please try again.",
+        "permissionTitle": "Permission status",
+        "permissionGranted": "Notifications are enabled at the system level.",
+        "permissionMissing": "Turn on notification access to let the shield alert you instantly.",
+        "permissionButtonGranted": "Enabled",
+        "permissionButton": "Enable notifications",
+        "openSettings": "Open system settings",
+        "masterToggle": {
+          "title": "Alerts",
+          "description": "Turn phishing alerts on or off for this device."
+        },
+        "sound": {
+          "title": "Play sound",
+          "description": "Play a tone when a phishing alert is detected."
+        },
+        "vibration": {
+          "title": "Vibrate on alert",
+          "description": "Trigger vibration feedback when alerts fire."
+        },
+        "quietHours": {
+          "title": "Quiet hours",
+          "description": "Pause alert sounds between {{range}}.",
+          "current": "Currently {{range}}",
+          "helper": "Tap to rotate through preset quiet-hour windows."
+        }
       },
       "trustedSources": {
         "title": "Olùránṣẹ́ tí o gbẹ́kẹ̀lé",
@@ -507,6 +616,9 @@
       "availableEmpty": "O ti ń lò ẹ̀dá tuntun jù lọ báyìí.",
       "installedTitle": "Àwọn ẹ̀dá tí a fi sílẹ̀",
       "installedEmpty": "Kò sí àwoṣe tí a fi sílẹ̀ sibẹ̀.",
+      "detailsTitle": "Details",
+      "downloadProgress": "Downloading… {{progress}}%",
+      "offlineFallbackBanner": "Couldn't reach the live registry. Showing the built-in demo catalog for now.",
       "badges": {
         "current": "Tí ń ṣiṣẹ́",
         "installed": "Ti fi sílẹ̀"
@@ -514,6 +626,21 @@
       "sizeLabel": "{{size}} MB",
       "releaseDate": "Ti jáde {{date}}",
       "changelogTitle": "Kí ni tuntun",
+      "catalogMode": {
+        "toggleLabel": "Model catalog",
+        "description": "Switch between live registry updates and the offline demo catalog. Live mode downloads real model files.",
+        "live": "Live registry",
+        "dummy": "Demo catalog",
+        "offlineFallback": "Offline fallback"
+      },
+      "details": {
+        "activeVersion": "Active version",
+        "currentStatusActive": "This model is currently powering phishing detection.",
+        "noActive": "No model is active yet. Install and activate a version to start scanning.",
+        "installedOn": "Installed {{date}}",
+        "storageFootprint": "Storage: {{size}} MB",
+        "summaryTitle": "Shield snapshot"
+      },
       "actions": {
         "install": "Fi sori ẹrọ",
         "activate": "Mu ṣiṣẹ́",

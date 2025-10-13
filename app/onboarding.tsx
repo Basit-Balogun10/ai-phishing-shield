@@ -7,6 +7,7 @@ import {
   FlatList,
   ListRenderItem,
   Platform,
+  ScrollView,
   Text,
   TouchableOpacity,
   useWindowDimensions,
@@ -64,6 +65,8 @@ export default function OnboardingScreen() {
   const [requestingSms, setRequestingSms] = useState(false);
   const lastTrackedSlideIndex = useRef<number | null>(null);
   const permissionStepTracked = useRef(false);
+  const slideWidth = useMemo(() => width - 48, [width]);
+  const slideSpacing = 16;
 
   const viewabilityConfig = useRef({ viewAreaCoveragePercentThreshold: 55 }).current;
   const onViewableItemsChanged = useCallback(
@@ -196,10 +199,11 @@ export default function OnboardingScreen() {
         notifications: status,
         sms: prev?.sms ?? { granted: false, blocked: false, canAskAgain: true },
       }));
+      await loadPermissions();
     } finally {
       setRequestingNotifications(false);
     }
-  }, []);
+  }, [loadPermissions]);
 
   const requestSms = useCallback(async () => {
     if (!smsIsRequired) {
@@ -220,10 +224,11 @@ export default function OnboardingScreen() {
         notifications: prev?.notifications ?? { granted: false, blocked: false, canAskAgain: true },
         sms: status,
       }));
+      await loadPermissions();
     } finally {
       setRequestingSms(false);
     }
-  }, [smsIsRequired]);
+  }, [loadPermissions, smsIsRequired]);
 
   const renderStatusPill = useCallback(
     (status: PermissionStatus, isLoading: boolean) => {
@@ -231,76 +236,101 @@ export default function OnboardingScreen() {
         'rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide border';
       if (isLoading) {
         return (
-          <View className={`${pillBase} border-blue-400 bg-blue-400/20`}>
-            <Text className="text-blue-100">{t('onboarding.permissions.status.requesting')}</Text>
+          <View
+            className={`${pillBase} border-blue-500 bg-blue-50 dark:border-blue-400 dark:bg-blue-400/20`}>
+            <Text className="text-blue-600 dark:text-blue-100">
+              {t('onboarding.permissions.status.requesting')}
+            </Text>
           </View>
         );
       }
 
       if (status.granted) {
         return (
-          <View className={`${pillBase} border-emerald-400 bg-emerald-400/20`}>
-            <Text className="text-emerald-100">{t('onboarding.permissions.status.granted')}</Text>
+          <View
+            className={`${pillBase} border-emerald-500 bg-emerald-50 dark:border-emerald-400 dark:bg-emerald-400/20`}>
+            <Text className="text-emerald-600 dark:text-emerald-100">
+              {t('onboarding.permissions.status.granted')}
+            </Text>
           </View>
         );
       }
 
       if (status.blocked || !status.canAskAgain) {
         return (
-          <View className={`${pillBase} border-amber-400 bg-amber-400/20`}>
-            <Text className="text-amber-100">{t('onboarding.permissions.status.blocked')}</Text>
+          <View
+            className={`${pillBase} border-amber-500 bg-amber-50 dark:border-amber-400 dark:bg-amber-400/20`}>
+            <Text className="text-amber-600 dark:text-amber-100">
+              {t('onboarding.permissions.status.blocked')}
+            </Text>
           </View>
         );
       }
 
       return (
-        <View className={`${pillBase} border-slate-500 bg-slate-800`}>
-          <Text className="text-slate-200">{t('onboarding.permissions.status.required')}</Text>
+        <View
+          className={`${pillBase} border-slate-300 bg-slate-100 dark:border-slate-500 dark:bg-slate-800`}>
+          <Text className="text-slate-600 dark:text-slate-200">
+            {t('onboarding.permissions.status.required')}
+          </Text>
         </View>
       );
     },
     [t]
   );
 
-  const renderSlide: ListRenderItem<OnboardingSlide> = ({ item }) => {
+  const renderSlide: ListRenderItem<OnboardingSlide> = ({ item, index }) => {
     return (
       <View
-        style={{ width: width - 48 }}
-        className="mr-4 rounded-3xl border border-slate-800 bg-slate-900 p-6">
-        <View className="h-16 w-16 items-center justify-center rounded-2xl bg-blue-500/20">
-          <MaterialCommunityIcons name={item.icon as any} size={36} color="#60a5fa" />
-        </View>
-        <Text className="mt-6 text-2xl font-semibold text-white">{item.title}</Text>
-        <Text className="mt-3 text-base text-slate-300">{item.description}</Text>
-
-        {item.permissions?.length ? (
-          <View className="mt-6 space-y-3">
-            <Text className="text-sm font-medium uppercase tracking-wide text-blue-300">
-              {t('onboarding.permissionStepsTitle')}
-            </Text>
-            {item.permissions.map((permission) => (
-              <View
-                key={permission.title}
-                className="flex-row gap-3 rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
-                <View className="mt-1">
-                  <MaterialCommunityIcons name="check-circle-outline" size={22} color="#38bdf8" />
-                </View>
-                <View className="flex-1">
-                  <Text className="text-sm font-semibold text-white">{permission.title}</Text>
-                  <Text className="mt-1 text-sm text-slate-300">{permission.description}</Text>
-                </View>
-              </View>
-            ))}
-            <View className="rounded-2xl border border-slate-800/60 bg-slate-950/40 p-4">
-              <Text className="text-xs font-medium uppercase tracking-wide text-blue-300">
-                {t('onboarding.permissionNoteTitle')}
-              </Text>
-              <Text className="mt-2 text-sm text-slate-300">
-                {t('onboarding.permissionNoteBody')}
-              </Text>
-            </View>
+        style={{ width: slideWidth, marginRight: index === slides.length - 1 ? 0 : slideSpacing }}
+        className="rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <ScrollView
+          className="rounded-3xl"
+          contentContainerStyle={{ padding: 24, paddingBottom: 32 }}
+          showsVerticalScrollIndicator={false}>
+          <View className="h-14 w-14 items-center justify-center rounded-2xl bg-blue-500/10 dark:bg-blue-500/20">
+            <MaterialCommunityIcons name={item.icon as any} size={32} color="#60a5fa" />
           </View>
-        ) : null}
+          <Text className="mt-5 text-2xl font-semibold text-slate-900 dark:text-white">
+            {item.title}
+          </Text>
+          <Text className="mt-3 text-base text-slate-600 dark:text-slate-300">
+            {item.description}
+          </Text>
+
+          {item.permissions?.length ? (
+            <View className="mt-5 space-y-3">
+              <Text className="text-sm font-medium uppercase tracking-wide text-blue-600 dark:text-blue-300">
+                {t('onboarding.permissionStepsTitle')}
+              </Text>
+              {item.permissions.map((permission) => (
+                <View
+                  key={permission.title}
+                  className="flex-row gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/60">
+                  <View className="mt-1">
+                    <MaterialCommunityIcons name="check-circle-outline" size={20} color="#38bdf8" />
+                  </View>
+                  <View className="flex-1">
+                    <Text className="text-sm font-semibold text-slate-900 dark:text-white">
+                      {permission.title}
+                    </Text>
+                    <Text className="mt-1 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                      {permission.description}
+                    </Text>
+                  </View>
+                </View>
+              ))}
+              <View className="rounded-2xl border border-slate-200 bg-slate-100 p-4 dark:border-slate-800/60 dark:bg-slate-950/40">
+                <Text className="text-xs font-medium uppercase tracking-wide text-blue-600 dark:text-blue-300">
+                  {t('onboarding.permissionNoteTitle')}
+                </Text>
+                <Text className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                  {t('onboarding.permissionNoteBody')}
+                </Text>
+              </View>
+            </View>
+          ) : null}
+        </ScrollView>
       </View>
     );
   };
@@ -362,7 +392,7 @@ export default function OnboardingScreen() {
       return (
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color="#60a5fa" />
-          <Text className="mt-4 text-sm text-slate-400">
+          <Text className="mt-4 text-sm text-slate-600 dark:text-slate-400">
             {t('onboarding.permissions.checking')}
           </Text>
         </View>
@@ -371,22 +401,22 @@ export default function OnboardingScreen() {
 
     return (
       <View className="flex-1 px-6">
-        <View className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-          <Text className="text-xl font-semibold text-white">
+        <View className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <Text className="text-xl font-semibold text-slate-900 dark:text-white">
             {t('onboarding.permissions.title')}
           </Text>
-          <Text className="mt-3 text-sm text-slate-300">
+          <Text className="mt-3 text-sm text-slate-600 dark:text-slate-300">
             {t('onboarding.permissions.subtitle')}
           </Text>
 
           <View className="mt-6 space-y-4">
-            <View className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+            <View className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/60">
               <View className="flex-row items-start justify-between">
                 <View className="flex-1 pr-4">
-                  <Text className="text-base font-semibold text-white">
+                  <Text className="text-base font-semibold text-slate-900 dark:text-white">
                     {t('onboarding.permissions.notifications.title')}
                   </Text>
-                  <Text className="mt-2 text-sm text-slate-300">
+                  <Text className="mt-2 text-sm text-slate-600 dark:text-slate-300">
                     {t('onboarding.permissions.notifications.description')}
                   </Text>
                 </View>
@@ -398,12 +428,22 @@ export default function OnboardingScreen() {
                 disabled={permissionState.notifications.granted || requestingNotifications}
                 activeOpacity={0.85}
                 className={`mt-4 flex-row items-center justify-center rounded-full px-4 py-3 ${
-                  permissionState.notifications.granted ? 'bg-emerald-500/20' : 'bg-blue-500'
+                  permissionState.notifications.granted
+                    ? 'bg-emerald-100 dark:bg-emerald-500/20'
+                    : 'bg-blue-500 dark:bg-blue-500'
                 }`}>
                 {requestingNotifications ? (
-                  <ActivityIndicator size="small" color="#e2e8f0" />
+                  <ActivityIndicator
+                    size="small"
+                    color={permissionState.notifications.granted ? '#047857' : '#e2e8f0'}
+                  />
                 ) : (
-                  <Text className="text-sm font-semibold uppercase tracking-wide text-slate-50">
+                  <Text
+                    className={`text-sm font-semibold uppercase tracking-wide ${
+                      permissionState.notifications.granted
+                        ? 'text-emerald-700 dark:text-emerald-100'
+                        : 'text-slate-50'
+                    }`}>
                     {permissionState.notifications.granted
                       ? t('onboarding.permissions.notifications.grantedCta')
                       : t('onboarding.permissions.notifications.cta')}
@@ -421,20 +461,20 @@ export default function OnboardingScreen() {
                   }}
                   activeOpacity={0.8}
                   className="mt-2 items-center">
-                  <Text className="text-xs font-semibold uppercase tracking-wide text-amber-300">
+                  <Text className="text-xs font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-300">
                     {t('onboarding.permissions.notifications.openSettings')}
                   </Text>
                 </TouchableOpacity>
               )}
             </View>
 
-            <View className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+            <View className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/60">
               <View className="flex-row items-start justify-between">
                 <View className="flex-1 pr-4">
-                  <Text className="text-base font-semibold text-white">
+                  <Text className="text-base font-semibold text-slate-900 dark:text-white">
                     {t('onboarding.permissions.sms.title')}
                   </Text>
-                  <Text className="mt-2 text-sm text-slate-300">
+                  <Text className="mt-2 text-sm text-slate-600 dark:text-slate-300">
                     {smsIsRequired
                       ? t('onboarding.permissions.sms.description')
                       : t('onboarding.permissions.sms.unavailable')}
@@ -449,12 +489,22 @@ export default function OnboardingScreen() {
                   disabled={permissionState.sms.granted || requestingSms}
                   activeOpacity={0.85}
                   className={`mt-4 flex-row items-center justify-center rounded-full px-4 py-3 ${
-                    permissionState.sms.granted ? 'bg-emerald-500/20' : 'bg-blue-500'
+                    permissionState.sms.granted
+                      ? 'bg-emerald-100 dark:bg-emerald-500/20'
+                      : 'bg-blue-500 dark:bg-blue-500'
                   }`}>
                   {requestingSms ? (
-                    <ActivityIndicator size="small" color="#e2e8f0" />
+                    <ActivityIndicator
+                      size="small"
+                      color={permissionState.sms.granted ? '#047857' : '#e2e8f0'}
+                    />
                   ) : (
-                    <Text className="text-sm font-semibold uppercase tracking-wide text-slate-50">
+                    <Text
+                      className={`text-sm font-semibold uppercase tracking-wide ${
+                        permissionState.sms.granted
+                          ? 'text-emerald-700 dark:text-emerald-100'
+                          : 'text-slate-50'
+                      }`}>
                       {permissionState.sms.granted
                         ? t('onboarding.permissions.sms.grantedCta')
                         : t('onboarding.permissions.sms.cta')}
@@ -473,18 +523,18 @@ export default function OnboardingScreen() {
                   }}
                   activeOpacity={0.8}
                   className="mt-2 items-center">
-                  <Text className="text-xs font-semibold uppercase tracking-wide text-amber-300">
+                  <Text className="text-xs font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-300">
                     {t('onboarding.permissions.sms.openSettings')}
                   </Text>
                 </TouchableOpacity>
               )}
             </View>
 
-            <View className="rounded-2xl border border-slate-800/60 bg-slate-950/40 p-4">
-              <Text className="text-xs font-semibold uppercase tracking-wide text-blue-300">
+            <View className="rounded-2xl border border-slate-200 bg-slate-100 p-4 dark:border-slate-800/60 dark:bg-slate-950/40">
+              <Text className="text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-300">
                 {t('onboarding.permissionNoteTitle')}
               </Text>
-              <Text className="mt-2 text-sm text-slate-300">
+              <Text className="mt-2 text-sm text-slate-600 dark:text-slate-300">
                 {t('onboarding.permissionNoteBody')}
               </Text>
             </View>
@@ -492,7 +542,7 @@ export default function OnboardingScreen() {
         </View>
 
         {!allRequiredPermissionsGranted && (
-          <Text className="mt-6 text-center text-xs font-medium uppercase tracking-wide text-slate-400">
+          <Text className="mt-6 text-center text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
             {t('onboarding.permissions.continueHelper')}
           </Text>
         )}
@@ -502,18 +552,20 @@ export default function OnboardingScreen() {
 
   if (guardBlocked) {
     return (
-      <SafeAreaView className="flex-1 items-center justify-center bg-slate-950">
+      <SafeAreaView className="flex-1 items-center justify-center bg-slate-50 dark:bg-slate-950">
         <ActivityIndicator size="large" color="#60a5fa" />
-        <Text className="mt-4 text-base text-slate-400">{t('common.loading')}</Text>
+        <Text className="mt-4 text-base text-slate-600 dark:text-slate-400">
+          {t('common.loading')}
+        </Text>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-slate-950">
-      <View className="flex-1">
+    <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-950">
+      <View className="flex-1 bg-slate-50 dark:bg-slate-950">
         <View className="flex-row items-center justify-between px-6 pt-6">
-          <Text className="text-sm font-semibold uppercase tracking-widest text-blue-400">
+          <Text className="text-sm font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400">
             {t('onboarding.badge')}
           </Text>
           <TouchableOpacity
@@ -523,7 +575,9 @@ export default function OnboardingScreen() {
             disabled={isCompleting}>
             <Text
               className={`text-sm font-semibold uppercase tracking-wide ${
-                isCompleting ? 'text-slate-600' : 'text-slate-400'
+                isCompleting
+                  ? 'text-slate-400 dark:text-slate-500'
+                  : 'text-slate-500 dark:text-slate-400'
               }`}>
               {t('onboarding.skip')}
             </Text>
@@ -531,8 +585,12 @@ export default function OnboardingScreen() {
         </View>
 
         <View className="px-6 pt-4">
-          <Text className="text-3xl font-semibold text-white">{t('onboarding.title')}</Text>
-          <Text className="mt-3 text-base text-slate-300">{t('onboarding.subtitle')}</Text>
+          <Text className="text-3xl font-semibold text-slate-900 dark:text-white">
+            {t('onboarding.title')}
+          </Text>
+          <Text className="mt-3 text-base text-slate-600 dark:text-slate-300">
+            {t('onboarding.subtitle')}
+          </Text>
         </View>
 
         <View className="mt-8 flex-1">
@@ -544,24 +602,35 @@ export default function OnboardingScreen() {
               data={slides}
               keyExtractor={(item) => item.title}
               horizontal
-              pagingEnabled
+              pagingEnabled={false}
               showsHorizontalScrollIndicator={false}
               renderItem={renderSlide}
-              contentContainerStyle={{ paddingHorizontal: 24, paddingRight: 32 }}
+              contentContainerStyle={{ paddingHorizontal: 24 }}
+              snapToInterval={slideWidth + slideSpacing}
+              decelerationRate="fast"
+              snapToAlignment="start"
               onViewableItemsChanged={onViewableItemsChanged}
               viewabilityConfig={viewabilityConfig}
+              getItemLayout={(_, index) => {
+                const isLast = index === slides.length - 1;
+                const length = isLast ? slideWidth : slideWidth + slideSpacing;
+                const offset = (slideWidth + slideSpacing) * index;
+                return { index, length, offset };
+              }}
             />
           )}
         </View>
 
-        <View className="px-6 pb-10">
+        <View className="px-6 py-10">
           {!isPermissionStep ? (
             <View className="flex-row justify-center gap-2">
               {slides.map((_, index) => (
                 <View
                   key={index}
                   className={`h-2 rounded-full ${
-                    index === currentIndex ? 'w-8 bg-blue-400' : 'w-2 bg-slate-700'
+                    index === currentIndex
+                      ? 'w-8 bg-blue-500 dark:bg-blue-400'
+                      : 'w-2 bg-slate-300 dark:bg-slate-700'
                   }`}
                 />
               ))}
@@ -573,7 +642,9 @@ export default function OnboardingScreen() {
             disabled={primaryCtaDisabled}
             activeOpacity={0.9}
             className={`mt-8 rounded-full px-5 py-4 ${
-              primaryCtaDisabled ? 'bg-blue-400/40' : 'bg-blue-500 active:bg-blue-400'
+              primaryCtaDisabled
+                ? 'bg-blue-400/40'
+                : 'bg-blue-500 active:bg-blue-400 dark:bg-blue-500 dark:active:bg-blue-400'
             }`}>
             <Text className="text-center text-base font-semibold uppercase tracking-wide text-white">
               {primaryCtaLabel}
