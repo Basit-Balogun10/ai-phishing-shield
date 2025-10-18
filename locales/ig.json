@@ -18,7 +18,7 @@
   },
   "dashboard": {
     "title": "Ihe Mgbochi Phishing AI",
-    "subtitle": "Lee otú nchebe ekwentị gị si dị ugbu a.",
+    "subtitle": "Nọgide n’ihu ozi aghụghọ site n’inweta nchebe AI n’oge n’ezie a haziri maka gị.",
     "statusCard": {
       "title": "Ị nọ n’aka nchekwa",
       "description": "Nchọpụta phishing na-agba ọsọ nwayọọ nwayọọ n’azụ azụ.",
@@ -47,7 +47,8 @@
         "downloading": "Na-ebudata {{version}}",
         "activating": "Na-akpali {{version}}",
         "removing": "Na-ewepu {{version}}"
-      }
+      },
+      "pausedHelper": "E gbanyụrụ garkwa ahụ, ma ozi aghụghọ nwere ike ịgabiga. Gbagharịa bọtịnụ toggle ka ọ laghachi n’ọrụ!"
     },
     "stats": {
       "title": "Nchịkọta nchebe gị",
@@ -103,6 +104,10 @@
       "model": {
         "title": "Mmelite nlereanya",
         "subtitle": "Lelee ụdị ọhụụ nke ngwaọrụ nchọpụta ma jikwaa ụdị etinyere."
+      },
+      "report": {
+        "title": "Kọpụta ozi",
+        "subtitle": "Zipu ọdịnaya ị na-enyo enyo ka o nyere garkwa mụta."
       }
     },
     "filtersTitle": "Ntacha",
@@ -206,8 +211,8 @@
     },
     "report": {
       "title": "Kọpụta ozi",
-      "subtitle": "N’oge na-adịghị anya: kesaa ozi ị na-enyo enyo n’enweghị aha ka anyị nwee ike mee ka nlereanya sie ike.",
-      "cta": "Na-abịa ngwa ngwa",
+      "subtitle": "Kesaa ozi ị na-enyo enyo n’enweghị aha ka o mee ka nche sie ike.",
+      "cta": "Kọpụta ozi",
       "modalTitle": "Report a suspicious message",
       "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
       "fields": {
@@ -464,7 +469,7 @@
         "title": "Ụdị anya",
         "description": "Họrọ otu ngwa ga-esi gbanwee agba ya.",
         "options": {
-          "dark": "Ọchịchịrị (ndabere)",
+          "dark": "Ọchịchịrị",
           "light": "Ọcha",
           "system": "Soro usoro"
         }
@@ -529,7 +534,7 @@
       },
       "notifications": {
         "title": "Ntọala nkwupụta",
-        "description": "Jikwaa ụda, mgbakwunye na oge udo.",
+        "description": "Jikwaa ụda, mgbakwunye na ọnọdụ ikike.",
         "badge": {
           "on": "Alerts on",
           "off": "Alerts off",

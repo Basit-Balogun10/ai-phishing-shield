@@ -18,7 +18,7 @@
   },
   "dashboard": {
     "title": "Aṣọ́ Ààbò lòdì sí Í-meèlì Olè",
-    "subtitle": "Ìfẹ̀sẹ̀mulẹ̀ tuntun ti ààbò fónran rẹ wà níbí.",
+    "subtitle": "Ṣe ṣáájú àwọn ìránṣẹ́ olè pẹ̀lú ààbò AI ní àkókò gidi tí a ṣe tán fún ọ.",
     "statusCard": {
       "title": "O wa lábò",
       "description": "Ètò ìmúlò ìmúlọ́nnà olè ń ṣiṣẹ́ ní kíkà ní abẹ́lẹ̀ láì fi ara hàn.",
@@ -47,7 +47,8 @@
         "downloading": "N ń gbasilẹ {{version}}",
         "activating": "N ń mu {{version}} ṣiṣẹ́",
         "removing": "N ń yọ {{version}} kúrò"
-      }
+      },
+      "pausedHelper": "Aṣọ ààbò ti pa mọ́, àti pé ìránṣẹ́ olè lè wọlé rọrùn. Yí tẹ́ẹ̀gìlì padà kí o tún un ṣiṣẹ́!"
     },
     "stats": {
       "title": "Ìtàn ààbò rẹ",
@@ -103,6 +104,10 @@
       "model": {
         "title": "Imúdójúìwọ̀n àwoṣe",
         "subtitle": "Ṣàyẹ̀wò àtúnṣe tuntun fún aṣàyàn ìfura, kí o ṣàkóso ẹ̀dá tí a fi sori ẹrọ."
+      },
+      "report": {
+        "title": "Jẹ́ kó rí i pé a mọ ìránṣẹ́",
+        "subtitle": "Rán ìránṣẹ́ tí o ṣiyemeji kí aṣọ ààbò lè kọ́ ẹ̀ síi."
       }
     },
     "filtersTitle": "Àlẹ̀mọ́",
@@ -206,8 +211,8 @@
     },
     "report": {
       "title": "Jẹ́ kó rí i pé a mọ ìránṣẹ́",
-      "subtitle": "Láìpẹ́: Pín ìránṣẹ́ tí o fura sí láìsí orúkọ láti mú awoṣe naa lágbára.",
-      "cta": "N bọ́ láipẹ́",
+      "subtitle": "Pín ìránṣẹ́ tí o fura sí láìsí orúkọ kí aṣọ ààbò lè lágbára.",
+      "cta": "Jẹ́ kó rí i pé a mọ ìránṣẹ́",
       "modalTitle": "Report a suspicious message",
       "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
       "fields": {
@@ -464,7 +469,7 @@
         "title": "Àwọ̀ ara",
         "description": "Yan bí app ṣe yẹ kí ó farahàn.",
         "options": {
-          "dark": "Okunkun (aṣàdá)",
+          "dark": "Okunkun",
           "light": "Imọlẹ̀",
           "system": "Bọ̀ọ̀lù ètò"
         }
@@ -529,7 +534,7 @@
       },
       "notifications": {
         "title": "Ìkìlọ̀",
-        "description": "Ṣètò ohun ìkìlọ̀, gígùn, àti àsìkò ìsinmi.",
+        "description": "Ṣètò ohun ìkìlọ̀, gígùn, àti ipo ìyọ̀nda.",
         "badge": {
           "on": "Alerts on",
           "off": "Alerts off",

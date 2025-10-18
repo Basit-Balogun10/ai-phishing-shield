@@ -48,15 +48,57 @@ const TIMEFRAME_THRESHOLDS = {
   '30d': 30 * 24 * 60 * 60 * 1000,
 } as const;
 
+type SeverityFilter = 'high' | 'medium' | 'low';
+type ChannelFilter = 'sms' | 'whatsapp' | 'email';
+type TimeframeFilter = '24h' | '7d' | '30d';
+
+const SEVERITY_ORDER: Record<SeverityFilter, number> = {
+  high: 0,
+  medium: 1,
+  low: 2,
+};
+
+const CHANNEL_ORDER: Record<ChannelFilter, number> = {
+  sms: 0,
+  whatsapp: 1,
+  email: 2,
+};
+
+const TIMEFRAME_ORDER: Record<TimeframeFilter, number> = {
+  '24h': 0,
+  '7d': 1,
+  '30d': 2,
+};
+
 export default function AlertsScreen() {
   const { t } = useTranslation();
   const { merged: detectionHistory } = useDetectionHistory();
   const [selectedDetection, setSelectedDetection] = useState<DetectionRecord | null>(null);
   const [searchInput, setSearchInput] = useState('');
   const [query, setQuery] = useState('');
-  const [severity, setSeverity] = useState<'all' | 'high' | 'medium' | 'low'>('all');
-  const [channel, setChannel] = useState<'all' | 'sms' | 'whatsapp' | 'email'>('all');
-  const [timeframe, setTimeframe] = useState<'all' | '24h' | '7d' | '30d'>('all');
+  const [severityFilters, setSeverityFilters] = useState<SeverityFilter[]>([]);
+  const [channelFilters, setChannelFilters] = useState<ChannelFilter[]>([]);
+  const [timeframeFilters, setTimeframeFilters] = useState<TimeframeFilter[]>([]);
+  const toggleSeverityFilter = useCallback((value: SeverityFilter) => {
+    setSeverityFilters((prev) => {
+      const next = prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value];
+      return next.sort((a, b) => SEVERITY_ORDER[a] - SEVERITY_ORDER[b]);
+    });
+  }, []);
+
+  const toggleChannelFilter = useCallback((value: ChannelFilter) => {
+    setChannelFilters((prev) => {
+      const next = prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value];
+      return next.sort((a, b) => CHANNEL_ORDER[a] - CHANNEL_ORDER[b]);
+    });
+  }, []);
+
+  const toggleTimeframeFilter = useCallback((value: TimeframeFilter) => {
+    setTimeframeFilters((prev) => {
+      const next = prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value];
+      return next.sort((a, b) => TIMEFRAME_ORDER[a] - TIMEFRAME_ORDER[b]);
+    });
+  }, []);
   const [trustedOnly, setTrustedOnly] = useState(false);
   const [feedbackError, setFeedbackError] = useState<string | null>(null);
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
@@ -136,7 +178,7 @@ export default function AlertsScreen() {
     setFeedbackSubmitting(false);
   }, [selectedDetection?.recordId]);
 
-  const severityMatchers = useMemo(
+  const severityMatchers: Record<SeverityFilter, (score: number) => boolean> = useMemo(
     () => ({
       high: (score: number) => score >= 0.85,
       medium: (score: number) => score >= 0.7 && score < 0.85,
@@ -178,25 +220,31 @@ export default function AlertsScreen() {
         return false;
       }
 
-      if (timeframe !== 'all') {
+      if (timeframeFilters.length) {
         const detectedAtTime = new Date(record.detectedAt).getTime();
         if (Number.isNaN(detectedAtTime)) {
           return false;
         }
 
-        const windowMs = TIMEFRAME_THRESHOLDS[timeframe];
-        if (now - detectedAtTime > windowMs) {
+        const isWithinAnyWindow = timeframeFilters.some((filter) => {
+          const windowMs = TIMEFRAME_THRESHOLDS[filter];
+          return now - detectedAtTime <= windowMs;
+        });
+
+        if (!isWithinAnyWindow) {
           return false;
         }
       }
 
-      if (channel !== 'all' && record.result.message.channel !== channel) {
+      if (channelFilters.length && !channelFilters.includes(record.result.message.channel)) {
         return false;
       }
 
-      if (severity !== 'all') {
-        const matcher = severityMatchers[severity];
-        if (!matcher(record.result.score)) {
+      if (severityFilters.length) {
+        const matchesSeverity = severityFilters.some((filter) =>
+          severityMatchers[filter](record.result.score)
+        );
+        if (!matchesSeverity) {
           return false;
         }
       }
@@ -217,51 +265,53 @@ export default function AlertsScreen() {
       return haystack.some((value) => value.includes(query));
     });
   }, [
-    channel,
+    channelFilters,
     channelLabelMap,
     detectionHistory,
     formatDetectedAt,
     normalizeText,
     query,
-    severity,
+    severityFilters,
     severityMatchers,
-    timeframe,
+    timeframeFilters,
     trustedOnly,
   ]);
 
   const filtersTelemetryPayload = useMemo(
     () => ({
       source: 'all' as const,
-      severity,
-      channel,
-      timeframe,
+      severity: severityFilters,
+      channel: channelFilters,
+      timeframe: timeframeFilters,
       trustedOnly,
     }),
-    [channel, severity, timeframe, trustedOnly]
+    [channelFilters, severityFilters, timeframeFilters, trustedOnly]
   );
 
   const appliedFiltersSummary = useMemo(() => {
     const parts: string[] = [];
 
-    if (severity !== 'all') {
-      parts.push(t(`dashboard.recentAlerts.severity.${severity}`));
+    if (severityFilters.length) {
+      severityFilters.forEach((filter) => {
+        parts.push(t(`dashboard.recentAlerts.severity.${filter}`));
+      });
     }
 
-    if (channel !== 'all') {
-      parts.push(t(`dashboard.mockDetection.channels.${channel}`));
+    if (channelFilters.length) {
+      channelFilters.forEach((filter) => {
+        parts.push(t(`dashboard.mockDetection.channels.${filter}`));
+      });
     }
 
-    if (timeframe !== 'all') {
-      parts.push(
-        t(`dashboard.recentAlerts.timeframe.${timeframe}`, {
-          defaultValue:
-            timeframe === '24h'
-              ? 'Last 24 hours'
-              : timeframe === '7d'
-                ? 'Last 7 days'
-                : 'Last 30 days',
-        })
-      );
+    if (timeframeFilters.length) {
+      timeframeFilters.forEach((filter) => {
+        parts.push(
+          t(`dashboard.recentAlerts.timeframe.${filter}`, {
+            defaultValue:
+              filter === '24h' ? 'Last 24 hours' : filter === '7d' ? 'Last 7 days' : 'Last 30 days',
+          })
+        );
+      });
     }
 
     if (trustedOnly) {
@@ -269,9 +319,13 @@ export default function AlertsScreen() {
     }
 
     return parts.filter(Boolean).join(' • ');
-  }, [channel, severity, t, timeframe, trustedOnly]);
+  }, [channelFilters, severityFilters, t, timeframeFilters, trustedOnly]);
 
-  const hasActiveFilters = appliedFiltersSummary.length > 0;
+  const hasActiveFilters =
+    severityFilters.length > 0 ||
+    channelFilters.length > 0 ||
+    timeframeFilters.length > 0 ||
+    trustedOnly;
 
   const handleFeedback = useCallback(
     async (status: DetectionFeedbackStatus) => {
@@ -439,18 +493,22 @@ export default function AlertsScreen() {
                 ? t('dashboard.recentAlerts.emptyWithFilters', {
                     filters: [
                       query ? `“${searchInput.trim()}”` : null,
-                      severity !== 'all' ? t(`dashboard.recentAlerts.severity.${severity}`) : null,
-                      channel !== 'all' ? t(`dashboard.mockDetection.channels.${channel}`) : null,
-                      timeframe !== 'all'
-                        ? t(`dashboard.recentAlerts.timeframe.${timeframe}`, {
-                            defaultValue:
-                              timeframe === '24h'
-                                ? 'Last 24 hours'
-                                : timeframe === '7d'
-                                  ? 'Last 7 days'
-                                  : 'Last 30 days',
-                          })
-                        : null,
+                      ...severityFilters.map((filter) =>
+                        t(`dashboard.recentAlerts.severity.${filter}`)
+                      ),
+                      ...channelFilters.map((filter) =>
+                        t(`dashboard.mockDetection.channels.${filter}`)
+                      ),
+                      ...timeframeFilters.map((filter) =>
+                        t(`dashboard.recentAlerts.timeframe.${filter}`, {
+                          defaultValue:
+                            filter === '24h'
+                              ? 'Last 24 hours'
+                              : filter === '7d'
+                                ? 'Last 7 days'
+                                : 'Last 30 days',
+                        })
+                      ),
                       trustedOnly ? t('dashboard.recentAlerts.trustedOnlyBadge') : null,
                     ]
                       .filter(Boolean)
@@ -549,9 +607,9 @@ export default function AlertsScreen() {
               </View>
               <TouchableOpacity
                 onPress={() => {
-                  setSeverity('all');
-                  setChannel('all');
-                  setTimeframe('all');
+                  setSeverityFilters([]);
+                  setChannelFilters([]);
+                  setTimeframeFilters([]);
                   setTrustedOnly(false);
                 }}
                 accessibilityRole="button"
@@ -577,93 +635,132 @@ export default function AlertsScreen() {
                 <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                   {t('dashboard.recentAlerts.severityLabel', { defaultValue: 'Severity' })}
                 </Text>
-                <View className="mt-3 flex-row flex-wrap gap-2">
-                  {severityOptions.map((option) => {
-                    const isActive = severity === option.key;
-                    return (
-                      <TouchableOpacity
-                        key={option.key}
-                        onPress={() => setSeverity(option.key)}
-                        activeOpacity={0.85}
-                        className={`rounded-full border px-4 py-2 ${
-                          isActive
-                            ? 'border-blue-500 bg-blue-500/10'
-                            : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
-                        }`}>
-                        <Text
-                          className={`text-sm font-medium ${
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingRight: 24 }}
+                  className="mt-3">
+                  <View className="flex-row items-center gap-2">
+                    {severityOptions.map((option) => {
+                      const isActive =
+                        option.key === 'all'
+                          ? severityFilters.length === 0
+                          : severityFilters.includes(option.key);
+                      return (
+                        <TouchableOpacity
+                          key={option.key}
+                          onPress={() =>
+                            option.key === 'all'
+                              ? setSeverityFilters([])
+                              : toggleSeverityFilter(option.key)
+                          }
+                          activeOpacity={0.85}
+                          className={`rounded-full border px-4 py-2 ${
                             isActive
-                              ? 'text-blue-600 dark:text-blue-300'
-                              : 'text-slate-500 dark:text-slate-300'
+                              ? 'border-blue-500 bg-blue-500/10'
+                              : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
                           }`}>
-                          {option.label}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
+                          <Text
+                            className={`text-sm font-medium ${
+                              isActive
+                                ? 'text-blue-600 dark:text-blue-300'
+                                : 'text-slate-500 dark:text-slate-300'
+                            }`}>
+                            {option.label}
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    })}
+                  </View>
+                </ScrollView>
               </View>
 
               <View className="mt-6">
                 <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                   {t('dashboard.recentAlerts.channelLabel', { defaultValue: 'Channel' })}
                 </Text>
-                <View className="mt-3 flex-row flex-wrap gap-2">
-                  {channelOptions.map((option) => {
-                    const isActive = channel === option.key;
-                    return (
-                      <TouchableOpacity
-                        key={option.key}
-                        onPress={() => setChannel(option.key)}
-                        activeOpacity={0.85}
-                        className={`rounded-full border px-4 py-2 ${
-                          isActive
-                            ? 'border-blue-500 bg-blue-500/10'
-                            : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
-                        }`}>
-                        <Text
-                          className={`text-sm font-medium ${
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingRight: 24 }}
+                  className="mt-3">
+                  <View className="flex-row items-center gap-2">
+                    {channelOptions.map((option) => {
+                      const isActive =
+                        option.key === 'all'
+                          ? channelFilters.length === 0
+                          : channelFilters.includes(option.key);
+                      return (
+                        <TouchableOpacity
+                          key={option.key}
+                          onPress={() =>
+                            option.key === 'all'
+                              ? setChannelFilters([])
+                              : toggleChannelFilter(option.key)
+                          }
+                          activeOpacity={0.85}
+                          className={`rounded-full border px-4 py-2 ${
                             isActive
-                              ? 'text-blue-600 dark:text-blue-300'
-                              : 'text-slate-500 dark:text-slate-300'
+                              ? 'border-blue-500 bg-blue-500/10'
+                              : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
                           }`}>
-                          {option.label}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
+                          <Text
+                            className={`text-sm font-medium ${
+                              isActive
+                                ? 'text-blue-600 dark:text-blue-300'
+                                : 'text-slate-500 dark:text-slate-300'
+                            }`}>
+                            {option.label}
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    })}
+                  </View>
+                </ScrollView>
               </View>
 
               <View className="mt-6">
                 <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                   {t('dashboard.recentAlerts.timeframeLabel', { defaultValue: 'Detected within' })}
                 </Text>
-                <View className="mt-3 flex-row flex-wrap gap-2">
-                  {timeframeOptions.map((option) => {
-                    const isActive = timeframe === option.key;
-                    return (
-                      <TouchableOpacity
-                        key={option.key}
-                        onPress={() => setTimeframe(option.key)}
-                        activeOpacity={0.85}
-                        className={`rounded-full border px-4 py-2 ${
-                          isActive
-                            ? 'border-blue-500 bg-blue-500/10'
-                            : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
-                        }`}>
-                        <Text
-                          className={`text-sm font-medium ${
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingRight: 24 }}
+                  className="mt-3">
+                  <View className="flex-row items-center gap-2">
+                    {timeframeOptions.map((option) => {
+                      const isActive =
+                        option.key === 'all'
+                          ? timeframeFilters.length === 0
+                          : timeframeFilters.includes(option.key as TimeframeFilter);
+                      return (
+                        <TouchableOpacity
+                          key={option.key}
+                          onPress={() =>
+                            option.key === 'all'
+                              ? setTimeframeFilters([])
+                              : toggleTimeframeFilter(option.key as TimeframeFilter)
+                          }
+                          activeOpacity={0.85}
+                          className={`rounded-full border px-4 py-2 ${
                             isActive
-                              ? 'text-blue-600 dark:text-blue-300'
-                              : 'text-slate-500 dark:text-slate-300'
+                              ? 'border-blue-500 bg-blue-500/10'
+                              : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
                           }`}>
-                          {option.label}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
+                          <Text
+                            className={`text-sm font-medium ${
+                              isActive
+                                ? 'text-blue-600 dark:text-blue-300'
+                                : 'text-slate-500 dark:text-slate-300'
+                            }`}>
+                            {option.label}
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    })}
+                  </View>
+                </ScrollView>
               </View>
 
               <View className="mt-6">
@@ -731,9 +828,9 @@ export default function AlertsScreen() {
                   </TouchableOpacity>
                 </View>
 
-                <ScrollView className="px-6" contentContainerStyle={{ paddingBottom: 28 }}>
-                  <View className="mt-6 space-y-3">
-                    <View className="flex-row flex-wrap items-center gap-2">
+                <ScrollView className="px-6" contentContainerStyle={{ paddingBottom: 32 }}>
+                  <View className="mt-6 space-y-6">
+                    <View className="flex-row flex-wrap items-center gap-3">
                       {selectedSeverityStyles ? (
                         <View className={`rounded-full px-3 py-1 ${selectedSeverityStyles.badge}`}>
                           <Text
@@ -767,25 +864,25 @@ export default function AlertsScreen() {
                       ) : null}
                     </View>
 
-                    <View className="rounded-2xl border border-slate-200 bg-white/90 p-4 dark:border-slate-800 dark:bg-slate-900/70">
+                    <View className="rounded-3xl border border-slate-200 bg-white/90 p-6 dark:border-slate-800 dark:bg-slate-900/70">
                       <Text className="text-sm text-slate-700 dark:text-slate-200">
                         “{selectedDetection.result.message.body}”
                       </Text>
                     </View>
                   </View>
 
-                  <View className="mt-6">
+                  <View className="mt-8">
                     <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                       {t('dashboard.recentAlerts.matchesHeading', {
                         defaultValue: 'Detected signals',
                       })}
                     </Text>
-                    <View className="mt-3 space-y-3">
+                    <View className="mt-5 space-y-5">
                       {selectedDetection.result.matches.length ? (
                         selectedDetection.result.matches.map((match, index) => (
                           <View
                             key={`${match.label}-${index}`}
-                            className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-700 dark:bg-slate-900/60">
+                            className="rounded-3xl border border-slate-200 bg-slate-50/80 px-5 py-5 dark:border-slate-700 dark:bg-slate-900/60">
                             <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                               {match.label}
                             </Text>
@@ -795,7 +892,7 @@ export default function AlertsScreen() {
                           </View>
                         ))
                       ) : (
-                        <View className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-700 dark:bg-slate-900/60">
+                        <View className="rounded-3xl border border-slate-200 bg-slate-50/80 px-5 py-5 dark:border-slate-700 dark:bg-slate-900/60">
                           <Text className="text-sm text-slate-600 dark:text-slate-200">
                             {t('dashboard.mockDetection.noMatches')}
                           </Text>
@@ -804,7 +901,7 @@ export default function AlertsScreen() {
                     </View>
                   </View>
 
-                  <View className="mt-6 rounded-3xl border border-slate-200 bg-slate-50/80 p-5 dark:border-slate-700 dark:bg-slate-900/60">
+                  <View className="mt-8 rounded-3xl border border-slate-200 bg-slate-50/80 p-6 dark:border-slate-700 dark:bg-slate-900/60">
                     <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                       {t('dashboard.recentAlerts.feedback.title')}
                     </Text>
@@ -812,7 +909,7 @@ export default function AlertsScreen() {
                       {t('dashboard.recentAlerts.feedback.subtitle')}
                     </Text>
 
-                    <View className="mt-4 space-y-3">
+                    <View className="mt-6 space-y-5">
                       <TouchableOpacity
                         accessibilityRole="button"
                         onPress={() => handleFeedback('confirmed')}
@@ -820,7 +917,7 @@ export default function AlertsScreen() {
                           !feedbackReady || feedbackSubmitting || feedback?.status === 'confirmed'
                         }
                         activeOpacity={0.85}
-                        className={`rounded-2xl border px-4 py-3 ${
+                        className={`rounded-3xl border px-5 py-5 ${
                           !feedbackReady || feedbackSubmitting || feedback?.status === 'confirmed'
                             ? 'border-rose-500/30 bg-rose-500/10 opacity-60'
                             : 'border-rose-500/50 bg-rose-500/20'
@@ -847,7 +944,7 @@ export default function AlertsScreen() {
                           feedback?.status === 'false_positive'
                         }
                         activeOpacity={0.85}
-                        className={`rounded-2xl border px-4 py-3 ${
+                        className={`rounded-3xl border px-5 py-5 ${
                           !feedbackReady ||
                           feedbackSubmitting ||
                           feedback?.status === 'false_positive'

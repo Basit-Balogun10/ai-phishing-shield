@@ -23,7 +23,7 @@
     "expo-localization": "~17.0.7",
     "expo-notifications": "~0.32.12",
     "expo-router": "~6.0.12",
-  "expo-splash-screen": "~31.0.10",
+    "expo-splash-screen": "~31.0.10",
     "expo-status-bar": "~3.0.8",
     "expo-task-manager": "~14.0.7",
     "i18next": "^25.5.3",

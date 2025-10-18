@@ -112,6 +112,12 @@ export default function TabsLayout() {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="settings/trusted"
+        options={{
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }

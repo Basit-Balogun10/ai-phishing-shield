@@ -262,10 +262,10 @@ export default function DiagnosticsSettingsScreen() {
     ];
   }, [snapshot, t, yesLabel, noLabel, noneLabel, unknownLabel]);
 
-  const renderContent = () => {
+  const renderBody = () => {
     if (loading) {
       return (
-        <View className="flex-1 items-center justify-center">
+        <View className="items-center justify-center py-24">
           <ActivityIndicator size="large" color="#2563eb" />
           <Text className="mt-3 text-sm text-slate-500 dark:text-slate-400">
             {t('settings.diagnostics.loading')}
@@ -276,7 +276,7 @@ export default function DiagnosticsSettingsScreen() {
 
     if (error) {
       return (
-        <View className="flex-1 items-center justify-center px-6">
+        <View className="items-center justify-center px-6 py-20">
           <MaterialCommunityIcons name="alert-circle" size={48} color="#f97316" />
           <Text className="mt-4 text-base font-semibold text-slate-900 dark:text-slate-100">
             {t('settings.diagnostics.errorTitle')}
@@ -301,73 +301,73 @@ export default function DiagnosticsSettingsScreen() {
     }
 
     return (
-      <ScrollView
-        className="flex-1"
-        contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 48 }}>
-        <View className="space-y-5">
-          <View className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-            <Text className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-              {t('settings.diagnostics.lastGenerated', {
-                date: formatDateTime(snapshot.generatedAt, unknownLabel),
-              })}
+      <View className="space-y-5">
+        <View className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+          <Text className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+            {t('settings.diagnostics.lastGenerated', {
+              date: formatDateTime(snapshot.generatedAt, unknownLabel),
+            })}
+          </Text>
+          <Text className="mt-3 text-sm text-slate-600 dark:text-slate-300">
+            {t('settings.diagnostics.disclaimer')}
+          </Text>
+          <View className="mt-4 flex-row gap-3">
+            <TouchableOpacity
+              onPress={handleRefresh}
+              activeOpacity={0.85}
+              className="flex-1 rounded-full border border-slate-300 bg-white px-4 py-3 dark:border-slate-700 dark:bg-slate-900">
+              <Text className="text-center text-sm font-semibold text-slate-600 dark:text-slate-200">
+                {t('settings.diagnostics.refreshButton')}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleShare}
+              activeOpacity={0.85}
+              className="flex-1 rounded-full bg-blue-600 px-4 py-3 dark:bg-blue-500">
+              <Text className="text-center text-sm font-semibold text-white">
+                {t('settings.diagnostics.shareButton')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {sections.map((section) => (
+          <View
+            key={section.title}
+            className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+            <Text className="text-base font-semibold text-slate-900 dark:text-slate-100">
+              {section.title}
             </Text>
-            <Text className="mt-3 text-sm text-slate-600 dark:text-slate-300">
-              {t('settings.diagnostics.disclaimer')}
-            </Text>
-            <View className="mt-4 flex-row gap-3">
-              <TouchableOpacity
-                onPress={handleRefresh}
-                activeOpacity={0.85}
-                className="flex-1 rounded-full border border-slate-300 bg-white px-4 py-3 dark:border-slate-700 dark:bg-slate-900">
-                <Text className="text-center text-sm font-semibold text-slate-600 dark:text-slate-200">
-                  {t('settings.diagnostics.refreshButton')}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleShare}
-                activeOpacity={0.85}
-                className="flex-1 rounded-full bg-blue-600 px-4 py-3 dark:bg-blue-500">
-                <Text className="text-center text-sm font-semibold text-white">
-                  {t('settings.diagnostics.shareButton')}
-                </Text>
-              </TouchableOpacity>
+            <View className="mt-4 space-y-3">
+              {section.rows.map((row) => (
+                <View key={row.label} className="flex-row items-start justify-between gap-4">
+                  <Text className="flex-1 text-sm text-slate-500 dark:text-slate-400">
+                    {row.label}
+                  </Text>
+                  <Text className="max-w-[55%] text-right text-sm font-medium text-slate-900 dark:text-slate-100">
+                    {row.value}
+                  </Text>
+                </View>
+              ))}
             </View>
           </View>
-
-          {sections.map((section) => (
-            <View
-              key={section.title}
-              className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-              <Text className="text-base font-semibold text-slate-900 dark:text-slate-100">
-                {section.title}
-              </Text>
-              <View className="mt-4 space-y-3">
-                {section.rows.map((row) => (
-                  <View key={row.label} className="flex-row items-start justify-between gap-4">
-                    <Text className="flex-1 text-sm text-slate-500 dark:text-slate-400">
-                      {row.label}
-                    </Text>
-                    <Text className="max-w-[55%] text-right text-sm font-medium text-slate-900 dark:text-slate-100">
-                      {row.value}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-          ))}
-        </View>
-      </ScrollView>
+        ))}
+      </View>
     );
   };
 
+  const handleBack = useCallback(() => {
+    router.replace('/settings');
+  }, [router]);
+
   return (
     <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-950">
-      <View className="px-6 pb-4 pt-6">
+      <View className="border-b border-slate-200/70 bg-slate-50 px-6 pb-4 pt-6 dark:border-slate-800 dark:bg-slate-950">
         <View className="relative flex-row items-center justify-center">
           <TouchableOpacity
             accessibilityRole="button"
             accessibilityLabel={t('settings.back')}
-            onPress={() => router.back()}
+            onPress={handleBack}
             activeOpacity={0.7}
             className="absolute left-0 rounded-full bg-slate-200 p-2 dark:bg-slate-800">
             <MaterialCommunityIcons
@@ -395,7 +395,12 @@ export default function DiagnosticsSettingsScreen() {
         </Text>
       </View>
 
-      <View className="flex-1">{renderContent()}</View>
+      <ScrollView
+        className="flex-1"
+        contentContainerStyle={{ paddingBottom: 48 }}
+        contentInsetAdjustmentBehavior="automatic">
+        <View className="px-6 pb-8">{renderBody()}</View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

@@ -18,7 +18,7 @@
   },
   "dashboard": {
     "title": "AI አንግት መከላከያ",
-    "subtitle": "የስልክዎ ጥበቃ ሁኔታን የዘመኑ እይታ ይያዙ።",
+    "subtitle": "በእውነተኛ ጊዜ የሚሰራውን የAI ጥበቃ በመጠቀም ከተጠራጣሪ መልዕክቶች በፊት ይሁኑ።",
     "statusCard": {
       "title": "በደህና ተጠበቁ",
       "description": "በጀርባ ያለው የፊሺንግ መመርመር በቀጥታ እየሰራ ነው።",
@@ -47,7 +47,8 @@
       },
       "goToDiagnostics": "ምርመራን ይመልከቱ",
       "viewStats": "የጥበቃ ስታቲስቲክስን ይመልከቱ",
-      "trustedCount": "{{count}} ታማኝ ልኪዎች"
+      "trustedCount": "{{count}} ታማኝ ልኪዎች",
+      "pausedHelper": "ጋሻው ተሰናክሏል፣ የፊሺንግ ጥቃቶች ሊያልፉ ይችላሉ። ቶገሉን እንደገና ያንቁ!"
     },
     "stats": {
       "title": "የጥበቃ ስታቲስቲክስዎ",
@@ -103,6 +104,10 @@
       "developer": {
         "title": "የአበልጻጊ መሣሪያዎች",
         "subtitle": "መጀመሪያ መመሪያውን እንደገና ያስጀምሩ እና ፍቃዶችን ዳግም ይፈትሹ።"
+      },
+      "report": {
+        "title": "መልዕክት ያመልክቱ",
+        "subtitle": "ጋሻውን ለማሻሻል ተጠራጣሪ ይዘትን ያቀርቡ።"
       }
     },
     "filtersTitle": "Filters",
@@ -206,8 +211,8 @@
     },
     "report": {
       "title": "Report a message",
-      "subtitle": "Share suspicious messages anonymously to strengthen the shield.",
-      "cta": "Report message",
+      "subtitle": "ተጠራጣሪ መልዕክቶችን በማንነት ሳይታወቅ ያካፍሉ ጋሻውን ለማጠናቀቅ።",
+      "cta": "መልዕክት ያመልክቱ",
       "modalTitle": "Report a suspicious message",
       "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
       "fields": {
@@ -464,7 +469,7 @@
         "title": "መልክ",
         "description": "መተግበሪያው ቀለማትን እንዴት እንዲቀይር ይመርጡ።",
         "options": {
-          "dark": "ጨለማ (ነባር)",
+          "dark": "ጨለማ",
           "light": "ብርሃን",
           "system": "የስርዓቱን ይከተሉ"
         }
@@ -535,7 +540,7 @@
       },
       "notifications": {
         "title": "የማንቂያ ምርጫዎች",
-        "description": "የማንቂያ ድምጽ፣ መንቀሳቀስ እና የዝምታ ሰአቶችን ያቆጣጠሩ።",
+        "description": "የማንቂያ ድምጽ፣ መንቀሳቀስ እና የፈቃድ ሁኔታን ያቆጣጠሩ።",
         "badge": {
           "on": "Alerts on",
           "off": "Alerts off",

@@ -17,6 +17,10 @@ export default function LanguageSettingsScreen() {
     useLanguagePreference();
   const { resolvedColorScheme } = useThemePreference();
 
+  const handleBack = useCallback(() => {
+    router.replace('/settings');
+  }, [router]);
+
   const handleSelect = useCallback(
     (code: SupportedLocale) => async () => {
       await setLocale(code);
@@ -49,12 +53,12 @@ export default function LanguageSettingsScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-950">
-      <View className="px-6 pb-6 pt-6">
+      <View className="border-b border-slate-200/70 bg-slate-50 px-6 pb-6 pt-6 dark:border-slate-800 dark:bg-slate-950">
         <View className="relative flex-row items-center justify-center">
           <TouchableOpacity
             accessibilityRole="button"
             accessibilityLabel={t('settings.back')}
-            onPress={() => router.back()}
+            onPress={handleBack}
             activeOpacity={0.7}
             className="absolute left-0 rounded-full bg-slate-200 p-2 dark:bg-slate-800">
             <MaterialCommunityIcons
@@ -74,8 +78,9 @@ export default function LanguageSettingsScreen() {
 
       <ScrollView
         className="flex-1"
-        contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 32 }}>
-        <View className="space-y-4">
+        contentContainerStyle={{ paddingBottom: 32 }}
+        contentInsetAdjustmentBehavior="automatic">
+        <View className="px-6 pb-8" style={{ rowGap: 16 }}>
           <TouchableOpacity
             accessibilityRole="button"
             accessibilityState={{ selected: usingDeviceDefault }}
@@ -102,7 +107,7 @@ export default function LanguageSettingsScreen() {
             ) : null}
           </TouchableOpacity>
 
-          <View className="space-y-3">
+          <View style={{ rowGap: 12 }}>
             {availableLocales.map((code) => {
               const isActive = locale === code && !usingDeviceDefault;
               return (

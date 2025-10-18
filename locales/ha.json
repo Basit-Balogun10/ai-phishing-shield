@@ -18,7 +18,7 @@
   },
   "dashboard": {
     "title": "Garkuwar Phishing ta AI",
-    "subtitle": "Ga yadda kariyar wayarka take a yanzu.",
+    "subtitle": "Kasance gaba da saƙonnin zamba tare da kariyar AI ta ainihin lokaci da aka tsara musamman a gare ka.",
     "statusCard": {
       "title": "Kana cikin kariya",
       "description": "Ganewar barazanar phishing na gudana a hankali a bayan fage.",
@@ -47,7 +47,8 @@
       },
       "goToDiagnostics": "Duba bincike",
       "viewStats": "Duba kididdigar kariya",
-      "trustedCount": "{{count}} masu aikowa amintattu"
+      "trustedCount": "{{count}} masu aikowa amintattu",
+      "pausedHelper": "An kashe garkuwar, kuma hare-haren yaudara na iya wucewa. Juya maɓallin domin ta sake kunnawa!"
     },
     "stats": {
       "title": "Kididdigar kariyarka",
@@ -103,6 +104,10 @@
       "developer": {
         "title": "Kayan aikin masu haɓakawa",
         "subtitle": "Sake saita koyarwar farko kuma sake duba izinoni."
+      },
+      "report": {
+        "title": "Ba da rahoton saƙo",
+        "subtitle": "Aika abun da ka zarga don taimaka wa garkuwa ta ƙara wayewa."
       }
     },
     "filtersTitle": "Matattara",
@@ -206,8 +211,8 @@
     },
     "report": {
       "title": "Ba da rahoton saƙo",
-      "subtitle": "Ba da daɗewa ba: raba saƙonnin da kake zargi ba tare da sunanka ba domin ƙarfafa samfurin.",
-      "cta": "Zai iso nan ba da jimawa ba",
+      "subtitle": "Raba saƙonnin da kake zargi ba tare da bayyana kai ba don ƙarfafa garkuwa.",
+      "cta": "Ba da rahoton saƙo",
       "modalTitle": "Report a suspicious message",
       "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
       "fields": {
@@ -464,7 +469,7 @@
         "title": "Tsarin kallo",
         "description": "Zaɓi yadda app ɗin zai bayyana.",
         "options": {
-          "dark": "Duhu (na asali)",
+          "dark": "Duhu",
           "light": "Haske",
           "system": "Bi tsarin na’ura"
         }
@@ -535,7 +540,7 @@
       },
       "notifications": {
         "title": "Sanarwa",
-        "description": "Saita sautin gargadi, jijjiga, da lokutan shiru.",
+        "description": "Saita sautin gargadi, jijjiga, da matsayin izini.",
         "badge": {
           "on": "Alerts on",
           "off": "Alerts off",

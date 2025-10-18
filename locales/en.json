@@ -18,7 +18,7 @@
   },
   "dashboard": {
     "title": "AI Phishing Shield",
-    "subtitle": "Here’s the latest snapshot of your mobile defenses.",
+    "subtitle": "Stay ahead of suspicious messages with real-time AI protection.",
     "statusCard": {
       "title": "You're protected",
       "description": "Real-time phishing detection is running silently in the background.",
@@ -45,6 +45,7 @@
         "activating": "Activating {{version}}",
         "removing": "Removing {{version}}"
       },
+      "pausedHelper": "Shield is deactivated, and phishing attacks can slip through. Toggle it back on!",
       "goToDiagnostics": "View diagnostics",
       "viewStats": "View protection stats",
       "trustedCount": "{{count}} trusted senders"
@@ -91,6 +92,10 @@
       "trusted": {
         "title": "Trusted senders",
         "subtitle": "Review and manage the contacts you’ve marked as safe."
+      },
+      "report": {
+        "title": "Report a message",
+        "subtitle": "Submit suspicious content to help train the shield."
       },
       "settings": {
         "title": "Manage settings",
@@ -464,7 +469,7 @@
         "title": "Appearance",
         "description": "Choose how the app adapts its colors.",
         "options": {
-          "dark": "Dark (default)",
+          "dark": "Dark",
           "light": "Light",
           "system": "Match system"
         }
@@ -535,7 +540,7 @@
       },
       "notifications": {
         "title": "Notification preferences",
-        "description": "Control alert sound, vibration, quiet hours, and permission status.",
+        "description": "Control alert sound, vibration, and permission status.",
         "badge": {
           "on": "Alerts on",
           "off": "Alerts off",
@@ -611,9 +616,9 @@
       "syncing": "Syncing updates...",
       "lastSynced": "Last synced {{time}}",
       "neverSynced": "Catalog never synced",
-      "availableTitle": "Available versions",
+      "availableTitle": "Available",
       "availableEmpty": "You're running the latest version.",
-      "installedTitle": "Installed versions",
+      "installedTitle": "Installed",
       "installedEmpty": "No models installed yet.",
       "detailsTitle": "Details",
       "downloadProgress": "Downloading… {{progress}}%",

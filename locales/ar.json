@@ -18,7 +18,7 @@
   },
   "dashboard": {
     "title": "درع التصيّد بالذكاء الاصطناعي",
-    "subtitle": "إليك آخر تحديث عن قوة حماية هاتفك المحمول.",
+    "subtitle": "ابق متقدمًا على الرسائل المشبوهة مع حماية ذكاء اصطناعي تعمل في الوقت الفعلي.",
     "statusCard": {
       "title": "أنت محمي",
       "description": "اكتشاف التصيّد يعمل بصمت في الخلفية لحمايتك على مدار الساعة.",
@@ -47,7 +47,8 @@
         "downloading": "جارٍ تنزيل {{version}}",
         "activating": "جارٍ تفعيل {{version}}",
         "removing": "جارٍ إزالة {{version}}"
-      }
+      },
+      "pausedHelper": "الدرع معطّل، ويمكن لمحاولات التصيّد أن تتسلّل. أعد تفعيله بالمفتاح!"
     },
     "stats": {
       "title": "إحصائيات الحماية الخاصة بك",
@@ -85,8 +86,8 @@
     },
     "report": {
       "title": "الإبلاغ عن رسالة",
-      "subtitle": "قريبًا: شارك الرسائل المشبوهة دون الكشف عن هويتك لتعزيز النموذج.",
-      "cta": "قريبًا",
+      "subtitle": "شارك الرسائل المشبوهة بشكل مجهول لتعزيز الدرع.",
+      "cta": "أبلغ عن رسالة",
       "modalTitle": "Report a suspicious message",
       "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
       "fields": {
@@ -227,6 +228,10 @@
       "developer": {
         "title": "أدوات المطور",
         "subtitle": "إعادة تعيين البدء وإعادة فحص الأذونات."
+      },
+      "report": {
+        "title": "أبلغ عن رسالة",
+        "subtitle": "أرسل المحتوى المشبوه للمساعدة في تدريب الدرع."
       }
     },
     "filtersTitle": "Filters",
@@ -464,7 +469,7 @@
         "title": "المظهر",
         "description": "اختر كيف سيعرض التطبيق ألوانه.",
         "options": {
-          "dark": "داكن (افتراضي)",
+          "dark": "داكن",
           "light": "فاتح",
           "system": "مطابقة إعداد النظام"
         }
@@ -529,7 +534,7 @@
       },
       "notifications": {
         "title": "الإشعارات",
-        "description": "تحكم في الصوت والاهتزاز وفترات الهدوء.",
+        "description": "تحكّم في صوت التنبيه والاهتزاز وحالة الأذونات.",
         "badge": {
           "on": "Alerts on",
           "off": "Alerts off",

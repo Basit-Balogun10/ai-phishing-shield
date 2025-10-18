@@ -1,15 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  ActivityIndicator,
-  Alert,
-  Platform,
-  ScrollView,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -33,15 +24,15 @@ export default function ModelManagementScreen() {
     lastSyncedAt,
     status,
     activeOperation,
-    catalogMode,
     downloadProgress,
-    isOfflineFallback,
-    setCatalogMode,
     syncCatalog,
   } = useModelManager();
   const [isSyncing, setIsSyncing] = useState(false);
-  const [activeTab, setActiveTab] = useState<'available' | 'installed' | 'details'>('available');
-  const [isChangingMode, setIsChangingMode] = useState(false);
+  const [activeTab, setActiveTab] = useState<'available' | 'installed'>('available');
+
+  const handleBack = useCallback(() => {
+    router.replace('/settings');
+  }, [router]);
 
   useEffect(() => {
     trackTelemetryEvent('model_manager.screen_viewed', {
@@ -69,17 +60,11 @@ export default function ModelManagementScreen() {
   }, [dateFormatter, lastSyncedAt, t]);
 
   const availableOnly = useMemo(() => {
-    const installedSet = new Set(installed.map((item) => item.version));
-    return available.filter((entry) => !installedSet.has(entry.version));
+    const installedSet = new Set(installed.map((item) => item.version).filter(Boolean));
+    return available
+      .filter((entry): entry is typeof entry & { version: string } => Boolean(entry?.version))
+      .filter((entry) => !installedSet.has(entry.version));
   }, [available, installed]);
-
-  const formatMegabytes = (bytes: number) => {
-    if (!Number.isFinite(bytes) || bytes <= 0) {
-      return 0;
-    }
-
-    return Number((bytes / (1024 * 1024)).toFixed(1));
-  };
 
   const tabOptions = useMemo(
     () => [
@@ -93,34 +78,9 @@ export default function ModelManagementScreen() {
         label: t('settings.model.installedTitle'),
         count: installed.length,
       },
-      {
-        key: 'details' as const,
-        label: t('settings.model.detailsTitle'),
-      },
     ],
     [availableOnly.length, installed.length, t]
   );
-
-  const totalFootprintMb = useMemo(() => {
-    if (!installed.length) {
-      return 0;
-    }
-
-    const totalBytes = installed.reduce((sum, item) => sum + (item.fileSizeBytes ?? 0), 0);
-    return formatMegabytes(totalBytes);
-  }, [installed]);
-
-  const currentInstalledAtLabel = useMemo(() => {
-    if (!current) {
-      return null;
-    }
-
-    try {
-      return dateFormatter.format(new Date(current.installedAt));
-    } catch {
-      return current.installedAt;
-    }
-  }, [current, dateFormatter]);
 
   const syncBusy = isSyncing || status === 'syncing';
 
@@ -343,27 +303,6 @@ export default function ModelManagementScreen() {
     );
   };
 
-  const handleCatalogModeToggle = async () => {
-    if (isChangingMode) {
-      return;
-    }
-
-    const nextMode: 'live' | 'dummy' = catalogMode === 'live' ? 'dummy' : 'live';
-
-    try {
-      setIsChangingMode(true);
-      await setCatalogMode(nextMode);
-    } catch (error) {
-      console.warn('[modelManager] Failed to toggle catalog mode', error);
-      Alert.alert(
-        t('settings.model.alerts.syncErrorTitle'),
-        t('settings.model.alerts.syncErrorBody')
-      );
-    } finally {
-      setIsChangingMode(false);
-    }
-  };
-
   const handleSync = async () => {
     setIsSyncing(true);
     trackTelemetryEvent('model_manager.sync_requested', undefined);
@@ -394,12 +333,12 @@ export default function ModelManagementScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-950">
-      <View className="px-6 pb-8 pt-6">
+      <View className="border-b border-slate-200/70 bg-slate-50 px-6 pb-6 pt-6 dark:border-slate-800 dark:bg-slate-950">
         <View className="relative flex-row items-center justify-center">
           <TouchableOpacity
             accessibilityRole="button"
             accessibilityLabel={t('settings.back')}
-            onPress={() => router.back()}
+            onPress={handleBack}
             activeOpacity={0.7}
             className="absolute left-0 rounded-full bg-slate-200 p-2 dark:bg-slate-800">
             <MaterialCommunityIcons name="chevron-left" size={28} color="#0f172a" />
@@ -415,195 +354,95 @@ export default function ModelManagementScreen() {
 
       <ScrollView
         className="flex-1"
-        contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 32 }}>
-        <View className="mb-6 rounded-xl border border-slate-200 bg-white px-4 py-4 dark:border-slate-800 dark:bg-slate-900">
-          <View className="flex-row items-center justify-between gap-3">
-            <View className="flex-1">
-              <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                {lastSyncedLabel}
-              </Text>
+        contentContainerStyle={{ paddingBottom: 32 }}
+        contentInsetAdjustmentBehavior="automatic">
+        <View className="px-6 pb-8" style={{ rowGap: 24 }}>
+          <View className="rounded-xl border border-slate-200 bg-white px-4 py-4 dark:border-slate-800 dark:bg-slate-900">
+            <View className="flex-row items-center justify-between gap-3">
+              <View className="flex-1">
+                <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  {lastSyncedLabel}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={handleSync}
+                disabled={syncBusy}
+                className={`rounded-full px-4 py-2 ${
+                  syncBusy ? 'bg-slate-300 dark:bg-slate-700' : 'bg-blue-600 dark:bg-blue-500'
+                }`}
+                activeOpacity={0.85}>
+                <Text className="text-xs font-semibold uppercase tracking-wide text-white">
+                  {syncBusy ? t('settings.model.syncing') : t('settings.model.syncButton')}
+                </Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              onPress={handleSync}
-              disabled={syncBusy}
-              className={`rounded-full px-4 py-2 ${
-                syncBusy ? 'bg-slate-300 dark:bg-slate-700' : 'bg-blue-600 dark:bg-blue-500'
-              }`}
-              activeOpacity={0.85}>
-              <Text className="text-xs font-semibold uppercase tracking-wide text-white">
-                {syncBusy ? t('settings.model.syncing') : t('settings.model.syncButton')}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
 
-        <View className="space-y-6">
-          {isOfflineFallback ? (
-            <View className="rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-500/40 dark:bg-amber-500/15">
-              <Text className="text-sm font-semibold text-amber-900 dark:text-amber-200">
-                {t('settings.model.offlineFallbackBanner')}
-              </Text>
-              <Text className="mt-1 text-xs text-amber-800/90 dark:text-amber-100/80">
-                {t('settings.model.catalogMode.description')}
-              </Text>
-            </View>
-          ) : null}
+            <View className="my-3 space-y-6">
+              <View className="mb-3 rounded-full bg-slate-100 p-1 dark:bg-slate-800">
+                <View className="flex-row items-center justify-between">
+                  {tabOptions.map((tab) => {
+                    const isActive = activeTab === tab.key;
 
-          <View className="rounded-full bg-slate-100 p-1 dark:bg-slate-800">
-            <View className="flex-row items-center justify-between">
-              {tabOptions.map((tab) => {
-                const isActive = activeTab === tab.key;
-                return (
-                  <TouchableOpacity
-                    key={tab.key}
-                    onPress={() => setActiveTab(tab.key)}
-                    activeOpacity={0.85}
-                    className={`flex-1 flex-row items-center justify-center gap-1 rounded-full px-3 py-2 ${
-                      isActive ? 'bg-white shadow-sm shadow-blue-500/10 dark:bg-slate-900' : ''
-                    }`}>
-                    <Text
-                      className={`text-xs font-semibold uppercase tracking-wide ${
-                        isActive
-                          ? 'text-blue-600 dark:text-blue-300'
-                          : 'text-slate-500 dark:text-slate-300'
-                      }`}>
-                      {tab.label}
-                    </Text>
-                    {typeof tab.count === 'number' ? (
-                      <Text
-                        className={`text-xs font-semibold ${
-                          isActive
-                            ? 'text-blue-600 dark:text-blue-200'
-                            : 'text-slate-500 dark:text-slate-400'
+                    return (
+                      <TouchableOpacity
+                        key={tab.key}
+                        onPress={() => setActiveTab(tab.key)}
+                        activeOpacity={0.85}
+                        className={`flex-1 flex-row items-center justify-center gap-1 rounded-full px-3 py-2 ${
+                          isActive ? 'bg-white dark:bg-slate-900' : 'bg-transparent'
                         }`}>
-                        {tab.count}
-                      </Text>
-                    ) : null}
-                  </TouchableOpacity>
-                );
-              })}
+                        <Text
+                          className={`text-xs font-semibold uppercase tracking-wide ${
+                            isActive
+                              ? 'text-blue-600 dark:text-blue-300'
+                              : 'text-slate-500 dark:text-slate-300'
+                          }`}>
+                          {tab.label}
+                        </Text>
+                        {typeof tab.count === 'number' ? (
+                          <Text
+                            className={`text-xs font-semibold ${
+                              isActive
+                                ? 'text-blue-600 dark:text-blue-200'
+                                : 'text-slate-500 dark:text-slate-400'
+                            }`}>
+                            {tab.count}
+                          </Text>
+                        ) : null}
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              </View>
+
+              {activeTab === 'available' ? (
+                <View>
+                  {availableOnly.length === 0 ? (
+                    <Text className="text-sm text-slate-500 dark:text-slate-300">
+                      {t('settings.model.availableEmpty')}
+                    </Text>
+                  ) : (
+                    availableOnly.map((item) => renderVersionCard(item.version))
+                  )}
+                </View>
+              ) : null}
+
+              {activeTab === 'installed' ? (
+                <View>
+                  {installed.length === 0 ? (
+                    <Text className="text-sm text-slate-500 dark:text-slate-300">
+                      {t('settings.model.installedEmpty')}
+                    </Text>
+                  ) : (
+                    installed
+                      .map((item) => item.version)
+                      .filter(Boolean)
+                      .map((version) => renderVersionCard(version))
+                  )}
+                </View>
+              ) : null}
             </View>
           </View>
-
-          {activeTab === 'available' ? (
-            <View>
-              {availableOnly.length === 0 ? (
-                <Text className="text-sm text-slate-500 dark:text-slate-300">
-                  {t('settings.model.availableEmpty')}
-                </Text>
-              ) : (
-                availableOnly.map((item) => renderVersionCard(item.version))
-              )}
-            </View>
-          ) : null}
-
-          {activeTab === 'installed' ? (
-            <View>
-              {installed.length === 0 ? (
-                <Text className="text-sm text-slate-500 dark:text-slate-300">
-                  {t('settings.model.installedEmpty')}
-                </Text>
-              ) : (
-                installed.map((item) => renderVersionCard(item.version))
-              )}
-            </View>
-          ) : null}
-
-          {activeTab === 'details' ? (
-            <View className="space-y-4">
-              <View className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-                <View className="flex-row items-center justify-between gap-3">
-                  <View className="flex-1">
-                    <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                      {t('settings.model.catalogMode.toggleLabel')}
-                    </Text>
-                    <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                      {t('settings.model.catalogMode.description')}
-                    </Text>
-                  </View>
-                  <Switch
-                    value={catalogMode === 'live'}
-                    onValueChange={() => void handleCatalogModeToggle()}
-                    disabled={isChangingMode || syncBusy || status === 'downloading'}
-                    trackColor={{ false: '#94a3b8', true: '#2563eb' }}
-                    thumbColor={
-                      Platform.OS === 'android'
-                        ? catalogMode === 'live'
-                          ? '#f8fafc'
-                          : '#e2e8f0'
-                        : undefined
-                    }
-                  />
-                </View>
-                <View className="mt-3 flex-row flex-wrap gap-2">
-                  <Text className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:bg-blue-500/20 dark:text-blue-200">
-                    {catalogMode === 'live'
-                      ? t('settings.model.catalogMode.live')
-                      : t('settings.model.catalogMode.dummy')}
-                  </Text>
-                  {isOfflineFallback ? (
-                    <Text className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-700 dark:bg-amber-500/20 dark:text-amber-200">
-                      {t('settings.model.catalogMode.offlineFallback')}
-                    </Text>
-                  ) : null}
-                </View>
-              </View>
-
-              <View className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-                <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                  {t('settings.model.details.activeVersion')}
-                </Text>
-                {current ? (
-                  <View className="mt-3 space-y-2">
-                    <Text className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
-                      {current.version}
-                    </Text>
-                    <View className="flex-row flex-wrap gap-2">
-                      {currentInstalledAtLabel ? (
-                        <Text className="rounded-full bg-slate-200 px-3 py-1 text-xs font-medium uppercase tracking-wide text-slate-700 dark:bg-slate-700/40 dark:text-slate-200">
-                          {t('settings.model.details.installedOn', {
-                            date: currentInstalledAtLabel,
-                          })}
-                        </Text>
-                      ) : null}
-                      <Text className="rounded-full bg-slate-200 px-3 py-1 text-xs font-medium uppercase tracking-wide text-slate-700 dark:bg-slate-700/40 dark:text-slate-200">
-                        {t('settings.model.details.storageFootprint', {
-                          size: formatMegabytes(current.fileSizeBytes ?? 0),
-                        })}
-                      </Text>
-                    </View>
-                    <Text className="text-sm text-slate-600 dark:text-slate-300">
-                      {t('settings.model.details.currentStatusActive')}
-                    </Text>
-                  </View>
-                ) : (
-                  <Text className="mt-3 text-sm text-slate-500 dark:text-slate-300">
-                    {t('settings.model.details.noActive')}
-                  </Text>
-                )}
-              </View>
-
-              <View className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-                <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                  {t('settings.model.details.summaryTitle')}
-                </Text>
-                <View className="mt-3 space-y-2">
-                  <Text className="text-xs text-slate-500 dark:text-slate-400">
-                    {t('settings.model.installedTitle')}: {installed.length}
-                  </Text>
-                  <Text className="text-xs text-slate-500 dark:text-slate-400">
-                    {t('settings.model.availableTitle')}: {available.length}
-                  </Text>
-                  <Text className="text-xs text-slate-500 dark:text-slate-400">
-                    {t('settings.model.details.storageFootprint', { size: totalFootprintMb })}
-                  </Text>
-                  <Text className="text-xs text-slate-500 dark:text-slate-400">
-                    {lastSyncedLabel}
-                  </Text>
-                </View>
-              </View>
-            </View>
-          ) : null}
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -26,41 +26,17 @@ import {
 } from '../../../lib/permissions';
 import { trackTelemetryEvent } from '../../../lib/services/telemetry';
 
-const formatRange = (start: string, end: string) => {
-  const toLabel = (value: string) => {
-    const [hours, minutes] = value.split(':');
-    const date = new Date();
-    date.setHours(Number.parseInt(hours ?? '0', 10));
-    date.setMinutes(Number.parseInt(minutes ?? '0', 10));
-    return date.toLocaleTimeString(undefined, {
-      hour: 'numeric',
-      minute: '2-digit',
-    });
-  };
-
-  return `${toLabel(start)} – ${toLabel(end)}`;
-};
-
-const QUIET_HOUR_PRESETS = [
-  { key: '21-07', start: '21:00', end: '07:00' },
-  { key: '22-06', start: '22:00', end: '06:00' },
-  { key: '23-05', start: '23:00', end: '05:00' },
-];
-
 export default function NotificationSettingsScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const { resolvedColorScheme } = useThemePreference();
+  const handleBack = useCallback(() => {
+    router.replace('/settings');
+  }, [router]);
+
   const {
     ready,
-    preferences: {
-      alertsEnabled,
-      soundEnabled,
-      vibrationEnabled,
-      quietHoursEnabled,
-      quietHoursStart,
-      quietHoursEnd,
-    },
+    preferences: { alertsEnabled, soundEnabled, vibrationEnabled },
   } = useNotificationPreferences();
   const [permissionStatus, setPermissionStatus] = useState<PermissionStatus | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -80,28 +56,14 @@ export default function NotificationSettingsScreen() {
       try {
         await notificationPreferencesStore.updatePreferences(updates);
 
-        const { preferences } = notificationPreferencesStore.getSnapshot();
-
         Object.entries(updates).forEach(([key, value]) => {
-          if (
-            key === 'alertsEnabled' ||
-            key === 'soundEnabled' ||
-            key === 'vibrationEnabled' ||
-            key === 'quietHoursEnabled'
-          ) {
+          if (key === 'alertsEnabled' || key === 'soundEnabled' || key === 'vibrationEnabled') {
             trackTelemetryEvent('settings.notifications_updated', {
               field: key,
               value: Boolean(value),
             });
           }
         });
-
-        if ('quietHoursStart' in updates || 'quietHoursEnd' in updates) {
-          trackTelemetryEvent('settings.notifications_updated', {
-            field: 'quietHoursRange',
-            value: `${preferences.quietHoursStart}-${preferences.quietHoursEnd}`,
-          });
-        }
       } catch (error) {
         console.warn('[settings] Failed to update notification preferences', error);
         Alert.alert(
@@ -116,21 +78,11 @@ export default function NotificationSettingsScreen() {
   );
 
   const handleToggle = useCallback(
-    (field: 'alertsEnabled' | 'soundEnabled' | 'vibrationEnabled' | 'quietHoursEnabled') =>
-      async (value: boolean) => {
-        await updatePreferences({ [field]: value });
-      },
+    (field: 'alertsEnabled' | 'soundEnabled' | 'vibrationEnabled') => async (value: boolean) => {
+      await updatePreferences({ [field]: value });
+    },
     [updatePreferences]
   );
-
-  const cycleQuietHours = useCallback(async () => {
-    const currentIndex = QUIET_HOUR_PRESETS.findIndex(
-      (preset) => preset.start === quietHoursStart && preset.end === quietHoursEnd
-    );
-    const nextPreset =
-      QUIET_HOUR_PRESETS[(currentIndex + 1) % QUIET_HOUR_PRESETS.length] ?? QUIET_HOUR_PRESETS[0];
-    await updatePreferences({ quietHoursStart: nextPreset.start, quietHoursEnd: nextPreset.end });
-  }, [quietHoursEnd, quietHoursStart, updatePreferences]);
 
   const requestPermission = useCallback(async () => {
     const result = await requestNotificationPermission();
@@ -146,11 +98,6 @@ export default function NotificationSettingsScreen() {
     await openSystemSettings();
     trackTelemetryEvent('settings.notifications_open_settings', undefined);
   }, []);
-
-  const quietHoursLabel = useMemo(
-    () => formatRange(quietHoursStart, quietHoursEnd),
-    [quietHoursEnd, quietHoursStart]
-  );
 
   if (!ready || !permissionStatus) {
     return (
@@ -168,12 +115,12 @@ export default function NotificationSettingsScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-950">
-      <View className="px-6 pb-6 pt-6">
+      <View className="border-b border-slate-200/70 bg-slate-50 px-6 pb-6 pt-6 dark:border-slate-800 dark:bg-slate-950">
         <View className="relative flex-row items-center justify-center">
           <TouchableOpacity
             accessibilityRole="button"
             accessibilityLabel={t('settings.back')}
-            onPress={() => router.back()}
+            onPress={handleBack}
             activeOpacity={0.7}
             className="absolute left-0 rounded-full bg-slate-200 p-2 dark:bg-slate-800">
             <MaterialCommunityIcons
@@ -193,8 +140,9 @@ export default function NotificationSettingsScreen() {
 
       <ScrollView
         className="flex-1"
-        contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 32 }}>
-        <View className="space-y-4">
+        contentContainerStyle={{ paddingBottom: 32 }}
+        contentInsetAdjustmentBehavior="automatic">
+        <View className="px-6 pb-8" style={{ rowGap: 16 }}>
           <View className="rounded-xl border border-slate-200 bg-white px-4 py-4 dark:border-slate-800 dark:bg-slate-900">
             <View className="flex-row items-center justify-between">
               <View className="flex-1 pr-4">
@@ -249,7 +197,7 @@ export default function NotificationSettingsScreen() {
             </View>
           </View>
 
-          <View className="space-y-3">
+          <View style={{ rowGap: 12 }}>
             <View className="rounded-xl border border-slate-200 bg-white px-4 py-4 dark:border-slate-800 dark:bg-slate-900">
               <View className="flex-row items-center justify-between">
                 <View className="flex-1 pr-4">
@@ -289,47 +237,6 @@ export default function NotificationSettingsScreen() {
                 />
               </View>
             </View>
-          </View>
-
-          <View className="rounded-xl border border-slate-200 bg-white px-4 py-4 dark:border-slate-800 dark:bg-slate-900">
-            <View className="flex-row items-center justify-between">
-              <View className="flex-1 pr-4">
-                <Text className="text-base font-semibold text-slate-900 dark:text-slate-100">
-                  {t('settings.entries.notifications.quietHours.title')}
-                </Text>
-                <Text className="mt-1 text-sm text-slate-500 dark:text-slate-300">
-                  {t('settings.entries.notifications.quietHours.description', {
-                    range: quietHoursLabel,
-                  })}
-                </Text>
-              </View>
-              <Switch
-                value={quietHoursEnabled}
-                onValueChange={handleToggle('quietHoursEnabled')}
-                disabled={!alertsEnabled || isSaving}
-                thumbColor={quietHoursEnabled ? '#2563eb' : undefined}
-                trackColor={{ false: '#94a3b8', true: '#bfdbfe' }}
-              />
-            </View>
-            {quietHoursEnabled ? (
-              <TouchableOpacity
-                onPress={cycleQuietHours}
-                activeOpacity={0.85}
-                disabled={isSaving}
-                className="mt-4 flex-row items-center justify-between rounded-lg bg-slate-100 px-4 py-3 dark:bg-slate-800">
-                <View>
-                  <Text className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-                    {t('settings.entries.notifications.quietHours.current', {
-                      range: quietHoursLabel,
-                    })}
-                  </Text>
-                  <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                    {t('settings.entries.notifications.quietHours.helper')}
-                  </Text>
-                </View>
-                <MaterialCommunityIcons name="refresh" size={22} color="#2563eb" />
-              </TouchableOpacity>
-            ) : null}
           </View>
         </View>
       </ScrollView>

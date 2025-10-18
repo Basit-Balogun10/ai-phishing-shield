@@ -18,7 +18,7 @@
   },
   "dashboard": {
     "title": "Bouclier Anti-Hameçonnage IA",
-    "subtitle": "Voici un aperçu instantané de l’état de votre protection mobile.",
+    "subtitle": "Gardez une longueur d’avance sur les messages suspects grâce à une protection IA en temps réel.",
     "statusCard": {
       "title": "Vous êtes protégé",
       "description": "La détection anti-hameçonnage fonctionne silencieusement en arrière-plan.",
@@ -46,7 +46,9 @@
         "downloading": "Téléchargement de {{version}}",
         "activating": "Activation de {{version}}",
         "removing": "Suppression de {{version}}"
-      }
+      },
+      "pausedDescription": "Accordez les autorisations manquantes pour que la détection du phishing reste active.",
+      "pausedHelper": "Le bouclier est désactivé et des tentatives de phishing peuvent passer. Réactivez-le tout de suite !"
     },
     "stats": {
       "title": "Vos statistiques de protection",
@@ -102,6 +104,10 @@
       "model": {
         "title": "Mises à jour du modèle",
         "subtitle": "Vérifiez les nouvelles versions du détecteur et gérez celles installées."
+      },
+      "report": {
+        "title": "Signaler un message",
+        "subtitle": "Envoyez un contenu suspect pour aider à entraîner le bouclier."
       }
     },
     "filtersTitle": "Filtres",
@@ -205,8 +211,8 @@
     },
     "report": {
       "title": "Signaler un message",
-      "subtitle": "Bientôt : partagez anonymement les messages suspects pour renforcer le modèle.",
-      "cta": "Bientôt disponible",
+      "subtitle": "Partagez anonymement les messages suspects pour renforcer le bouclier.",
+      "cta": "Signaler un message",
       "modalTitle": "Report a suspicious message",
       "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
       "fields": {
@@ -463,7 +469,7 @@
         "title": "Apparence",
         "description": "Choisissez comment l’application adapte ses couleurs.",
         "options": {
-          "dark": "Sombre (par défaut)",
+          "dark": "Sombre",
           "light": "Clair",
           "system": "Selon le système"
         }
@@ -528,7 +534,7 @@
       },
       "notifications": {
         "title": "Préférences de notification",
-        "description": "Contrôler le son des alertes, la vibration et les périodes de silence.",
+        "description": "Contrôlez le son des alertes, la vibration et l’état des autorisations.",
         "badge": {
           "on": "Alerts on",
           "off": "Alerts off",

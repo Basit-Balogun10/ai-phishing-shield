@@ -18,7 +18,7 @@
   },
   "dashboard": {
     "title": "AI Phishing Shield",
-    "subtitle": "Na the latest gist about how your phone dey protected be this.",
+    "subtitle": "Stay ahead of scam messages with real-time AI protection wey we tailor for you.",
     "statusCard": {
       "title": "You dey protected",
       "description": "Real-time phishing check dey run quietly for background.",
@@ -47,7 +47,8 @@
         "downloading": "We dey download {{version}}",
         "activating": "We dey activate {{version}}",
         "removing": "We dey remove {{version}}"
-      }
+      },
+      "pausedHelper": "Shield don deactivate, and phishing attack fit slip enter. Flip the toggle make e wake am back!"
     },
     "stats": {
       "title": "Your protection numbers",
@@ -103,6 +104,10 @@
       "model": {
         "title": "Model upgrades",
         "subtitle": "Check for fresh detector updates and manage the versions wey you already get."
+      },
+      "report": {
+        "title": "Report message",
+        "subtitle": "Send any message wey suspect to help train the shield more."
       }
     },
     "filtersTitle": "Filters",
@@ -206,8 +211,8 @@
     },
     "report": {
       "title": "Report message",
-      "subtitle": "Soon: Share suspicious message anonymous make the model strong pass.",
-      "cta": "Coming soon",
+      "subtitle": "Share suspicious message anonymous so the shield go strong dey protect you.",
+      "cta": "Report message",
       "modalTitle": "Report a suspicious message",
       "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
       "fields": {
@@ -464,7 +469,7 @@
         "title": "Appearance",
         "description": "Choose how the app go take show colours.",
         "options": {
-          "dark": "Dark (default)",
+          "dark": "Dark",
           "light": "Light",
           "system": "Follow system"
         }
@@ -529,7 +534,7 @@
       },
       "notifications": {
         "title": "Notification settings",
-        "description": "Control alert sound, vibration, and quiet time.",
+        "description": "Control alert sound, vibration, and permission status.",
         "badge": {
           "on": "Alerts on",
           "off": "Alerts off",

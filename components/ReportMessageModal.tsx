@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import type { MessageReportCategory } from '../lib/services/messageReports';
@@ -126,16 +127,31 @@ export function ReportMessageModal({ isVisible, onClose }: Props) {
   return (
     <AppModal isVisible={isVisible} onClose={onClose} avoidKeyboard testID="report-message-modal">
       <View className="flex-1 justify-end">
-        <View className="max-h-[90%] rounded-t-3xl bg-white px-6 pb-8 pt-6 dark:bg-slate-900">
+        <View className="max-h-[90%] rounded-t-3xl bg-white pb-8 pt-4 dark:bg-slate-900">
           <View className="mb-4 h-1 w-16 self-center rounded-full bg-slate-200 dark:bg-slate-700" />
-          <Text className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-            {t('dashboard.report.modalTitle')}
-          </Text>
-          <Text className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            {t('dashboard.report.modalSubtitle')}
-          </Text>
+          <View className="flex-row items-start justify-between px-6">
+            <View className="flex-1 pr-4">
+              <Text className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                {t('dashboard.report.modalTitle')}
+              </Text>
+              <Text className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                {t('dashboard.report.modalSubtitle')}
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={onClose}
+              accessibilityRole="button"
+              accessibilityLabel={t('dashboard.report.actions.close')}
+              activeOpacity={0.7}
+              className="h-10 w-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+              <MaterialCommunityIcons name="close" size={20} color="#475569" />
+            </TouchableOpacity>
+          </View>
 
-          <ScrollView className="mt-5" keyboardShouldPersistTaps="handled">
+          <ScrollView
+            className="mt-5 px-6"
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ paddingBottom: 24 }}>
             <View className="gap-4">
               <View>
                 <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
@@ -263,7 +279,7 @@ export function ReportMessageModal({ isVisible, onClose }: Props) {
             </View>
           </ScrollView>
 
-          <View className="mt-6 flex-row gap-3">
+          <View className="mt-6 flex-row gap-3 px-6">
             <TouchableOpacity
               onPress={onClose}
               activeOpacity={0.75}

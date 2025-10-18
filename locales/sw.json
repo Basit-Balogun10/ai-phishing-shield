@@ -18,7 +18,7 @@
   },
   "dashboard": {
     "title": "Ulinzi wa Phishing wa AI",
-    "subtitle": "Hapa unaona hali ya sasa ya ngao ya simu yako.",
+    "subtitle": "Baki mbele ya ulaghai kwa ulinzi wa AI wa papo hapo uliobinafsishwa kwa ajili yako.",
     "statusCard": {
       "title": "Uko salama",
       "description": "Uchunguzi wa phishing unaendelea kimyakimya nyuma ya pazia.",
@@ -47,7 +47,8 @@
         "downloading": "Inapakua {{version}}",
         "activating": "Inawezeshwa {{version}}",
         "removing": "Inaondoa {{version}}"
-      }
+      },
+      "pausedHelper": "Ngao imezimwa, na mashambulio ya ulaghai yanaweza kupenya. Geuza swichi uiwashe tena!"
     },
     "stats": {
       "title": "Takwimu za ulinzi wako",
@@ -103,6 +104,10 @@
       "model": {
         "title": "Masasisho ya mfano",
         "subtitle": "Angalia uboreshaji wa kigunduzi na dhibiti matoleo yaliyosakinishwa."
+      },
+      "report": {
+        "title": "Ripoti ujumbe",
+        "subtitle": "Tuma ujumbe wa kutiliwa shaka ili kusaidia kuimarisha ngao."
       }
     },
     "filtersTitle": "Vichujio",
@@ -206,8 +211,8 @@
     },
     "report": {
       "title": "Ripoti ujumbe",
-      "subtitle": "Hivi karibuni: shiriki ujumbe wa kutiliwa shaka bila kujitambulisha ili kuimarisha mfano.",
-      "cta": "Inakuja hivi karibuni",
+      "subtitle": "Shiriki ujumbe unaotia shaka bila kujulikana ili kuimarisha ngao.",
+      "cta": "Ripoti ujumbe",
       "modalTitle": "Report a suspicious message",
       "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
       "fields": {
@@ -464,7 +469,7 @@
         "title": "Muonekano",
         "description": "Chagua jinsi programu itakavyoonekana.",
         "options": {
-          "dark": "Giza (chaguo-msingi)",
+          "dark": "Giza",
           "light": "Mwanga",
           "system": "Fuata mfumo"
         }
@@ -529,7 +534,7 @@
       },
       "notifications": {
         "title": "Arifa",
-        "description": "Dhibiti sauti, mtetemo na muda wa utulivu.",
+        "description": "Dhibiti sauti ya tahadhari, mtetemo na hali ya ruhusa.",
         "badge": {
           "on": "Alerts on",
           "off": "Alerts off",
