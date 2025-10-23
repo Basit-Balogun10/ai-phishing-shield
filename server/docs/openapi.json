@@ -1,0 +1,46 @@
+{
+  "openapi": "3.0.3",
+  "info": { "title": "AI Phishing Shield Server", "version": "0.1.0" },
+  "paths": {
+    "/v1/outbox": {
+      "post": {
+        "summary": "Ingest outbox envelope",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Envelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": { "description": "Queued" },
+          "400": { "description": "Invalid payload" },
+          "409": { "description": "Conflict / duplicate" },
+          "413": { "description": "Payload too large" }
+        }
+      }
+    },
+    "/models/catalog.json": {
+      "get": { "summary": "Model catalog", "responses": { "200": { "description": "Catalog" } } }
+    },
+    "/v1/health": { "get": { "summary": "Health check" } },
+    "/v1/config": { "get": { "summary": "Configuration" } }
+  },
+  "components": {
+    "schemas": {
+      "Envelope": {
+        "type": "object",
+        "required": ["id", "channel", "payload", "createdAt"],
+        "properties": {
+          "id": { "type": "string" },
+          "channel": { "type": "string", "enum": ["feedback", "telemetry", "report"] },
+          "payload": { "type": "object" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

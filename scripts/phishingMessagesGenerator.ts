@@ -2,7 +2,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-type Language =
+type LanguageKey =
   | 'english'
   | 'yoruba'
   | 'igbo'
@@ -15,6 +15,17 @@ type Language =
 
 type ScamType = string;
 
+type LanguageCode =
+  | 'en'
+  | 'yo'
+  | 'ig'
+  | 'ha'
+  | 'sw'
+  | 'pcm'
+  | 'fr'
+  | 'ar'
+  | 'am';
+
 type Country = 'nigeria' | 'kenya' | 'tanzania' | 'senegal' | 'ivorycoast' | 'egypt' | 'ethiopia';
 
 type Currency = 'NGN' | 'KES' | 'XOF' | 'EGP' | 'ETB';
@@ -22,9 +33,12 @@ type Currency = 'NGN' | 'KES' | 'XOF' | 'EGP' | 'ETB';
 type DatasetRecord = {
   message: string;
   label: 'phishing' | 'legitimate';
-  language: Language;
+  language: LanguageCode;
   scam_type: ScamType;
-  source: 'synthetic';
+  source: string;
+  channel: 'sms';
+  sender: string;
+  received_at: string;
 };
 
 interface GenerateOptions {
@@ -38,7 +52,19 @@ interface SaveOptions {
 
 const DEFAULT_OUTPUT_DIR = 'phishing_dataset';
 
-const SERVICES: Record<Language, readonly string[]> = {
+const LANGUAGE_CODE_MAP: Record<LanguageKey, LanguageCode> = {
+  english: 'en',
+  yoruba: 'yo',
+  igbo: 'ig',
+  hausa: 'ha',
+  swahili: 'sw',
+  pidgin: 'pcm',
+  french: 'fr',
+  arabic: 'ar',
+  amharic: 'am',
+};
+
+const SERVICES: Record<LanguageKey, readonly string[]> = {
   english: [
     'MTN Mobile Money',
     'Airtel Money',
@@ -82,7 +108,7 @@ const PHONE_PREFIXES: Record<Country, readonly string[]> = {
   ethiopia: ['091', '092', '093', '094'],
 };
 
-const LANG_CONFIG: Record<Language, { country: Country; currency: Currency }> = {
+const LANG_CONFIG: Record<LanguageKey, { country: Country; currency: Currency }> = {
   yoruba: { country: 'nigeria', currency: 'NGN' },
   igbo: { country: 'nigeria', currency: 'NGN' },
   hausa: { country: 'nigeria', currency: 'NGN' },
@@ -117,13 +143,13 @@ function formatCsvValue(value: string): string {
 }
 
 export class PhishingDatasetGenerator {
-  private readonly templates: Record<Language, Record<ScamType, readonly string[]>>;
+  private readonly templates: Record<LanguageKey, Record<ScamType, readonly string[]>>;
 
   constructor() {
     this.templates = this.initializeTemplates();
   }
 
-  private initializeTemplates(): Record<Language, Record<ScamType, readonly string[]>> {
+  private initializeTemplates(): Record<LanguageKey, Record<ScamType, readonly string[]>> {
     return {
       english: this.getEnglishTemplates(),
       yoruba: this.getYorubaTemplates(),
@@ -438,7 +464,7 @@ export class PhishingDatasetGenerator {
     return Array.from({ length }, () => randomInt(0, 9)).join('');
   }
 
-  private formatTemplate(template: string, language: Language): string {
+  private formatTemplate(template: string, language: LanguageKey): string {
     const { country, currency } = LANG_CONFIG[language];
     return template
       .replaceAll('{service}', randomChoice(SERVICES[language]))
@@ -450,8 +476,8 @@ export class PhishingDatasetGenerator {
       .replaceAll('{hours}', String(randomChoice([2, 4, 12, 24] as const)));
   }
 
-  private getLegitimateTemplate(language: Language): string {
-    const templates: Record<Language, string> = {
+  private getLegitimateTemplate(language: LanguageKey): string {
+    const templates: Record<LanguageKey, string> = {
       english: 'You have received {amount} from {name}. Balance: {balance}. Ref: {ref}',
       french: 'Vous avez reçu {amount} de {name}. Solde: {balance}. Réf: {ref}',
       arabic: 'لقد استلمت {amount} من {name}. الرصيد: {balance}. المرجع: {ref}',
@@ -470,7 +496,7 @@ export class PhishingDatasetGenerator {
     return Array.from({ length: 10 }, () => alphabet[randomInt(0, alphabet.length - 1)]).join('');
   }
 
-  private generateLegitimateMessage(language: Language): string {
+  private generateLegitimateMessage(language: LanguageKey): string {
     const { currency } = LANG_CONFIG[language];
     const template = this.getLegitimateTemplate(language);
     const amount = this.generateAmount(currency);
@@ -484,11 +510,11 @@ export class PhishingDatasetGenerator {
       .replaceAll('{ref}', ref);
   }
 
-  private getScamTypes(language: Language): ScamType[] {
+  private getScamTypes(language: LanguageKey): ScamType[] {
     return Object.keys(this.templates[language]);
   }
 
-  generatePhishingMessage(language: Language, scamType: ScamType): string {
+  generatePhishingMessage(language: LanguageKey, scamType: ScamType): string {
     const templateGroup = this.templates[language][scamType];
     const templates = templateGroup?.length
       ? templateGroup
@@ -497,12 +523,33 @@ export class PhishingDatasetGenerator {
     return this.formatTemplate(template, language);
   }
 
-  generateDataset(language: Language, options: GenerateOptions = {}): DatasetRecord[] {
+  private resolveLanguageCode(language: LanguageKey): LanguageCode {
+    return LANGUAGE_CODE_MAP[language];
+  }
+
+  private generateSender(language: LanguageKey): string {
+    const { country } = LANG_CONFIG[language];
+    const prefix = randomChoice(PHONE_PREFIXES[country]);
+    const digitsNeeded = country === 'egypt' ? 7 : 6;
+    const suffix = Array.from({ length: digitsNeeded }, () => randomInt(0, 9)).join('');
+    return `${prefix}${suffix}`;
+  }
+
+  private generateReceivedAt(): string {
+    const now = new Date();
+    const deltaDays = randomInt(0, 180);
+    const deltaMinutes = randomInt(0, 24 * 60);
+    const date = new Date(now.getTime() - (deltaDays * 24 * 60 + deltaMinutes) * 60 * 1000);
+    return date.toISOString();
+  }
+
+  generateDataset(language: LanguageKey, options: GenerateOptions = {}): DatasetRecord[] {
     const { numPhishing = 1000, numLegitimate = 300 } = options;
     const dataset: DatasetRecord[] = [];
     const scamTypes = this.getScamTypes(language);
     const baseCount = Math.floor(numPhishing / scamTypes.length);
     const remainder = numPhishing % scamTypes.length;
+    const languageCode = this.resolveLanguageCode(language);
 
     scamTypes.forEach((scamType, index) => {
       const count = baseCount + (index < remainder ? 1 : 0);
@@ -512,9 +559,12 @@ export class PhishingDatasetGenerator {
           dataset.push({
             message,
             label: 'phishing',
-            language,
+            language: languageCode,
             scam_type: scamType,
-            source: 'synthetic',
+            source: 'synthetic_generator',
+            channel: 'sms',
+            sender: this.generateSender(language),
+            received_at: this.generateReceivedAt(),
           });
         } catch (error) {
           console.warn(`Skipping phishing message for ${language}/${scamType}:`, error);
@@ -528,9 +578,12 @@ export class PhishingDatasetGenerator {
         dataset.push({
           message,
           label: 'legitimate',
-          language,
-          scam_type: 'none',
-          source: 'synthetic',
+          language: languageCode,
+          scam_type: 'legitimate_general',
+          source: 'synthetic_generator',
+          channel: 'sms',
+          sender: this.generateSender(language),
+          received_at: this.generateReceivedAt(),
         });
       } catch (error) {
         console.warn(`Skipping legitimate message for ${language}:`, error);
@@ -579,7 +632,7 @@ export class PhishingDatasetGenerator {
     outputDir: string = DEFAULT_OUTPUT_DIR,
     options: GenerateOptions = {}
   ): Promise<void> {
-    const languages: Language[] = [
+    const languages: LanguageKey[] = [
       'english',
       'yoruba',
       'igbo',
@@ -620,11 +673,12 @@ export class PhishingDatasetGenerator {
     console.log(`Total messages: ${combined.length}`);
     console.log('\nBy language:');
     const languagesCount = languages.map((language) => {
-      const langData = combined.filter((item) => item.language === language);
+      const languageCode = this.resolveLanguageCode(language);
+      const langData = combined.filter((item) => item.language === languageCode);
       const phishing = langData.filter((item) => item.label === 'phishing').length;
       const legitimate = langData.filter((item) => item.label === 'legitimate').length;
       console.log(
-        `  ${language.charAt(0).toUpperCase()}${language.slice(1)}: ${langData.length} (${phishing} phishing, ${legitimate} legitimate)`
+        `  ${language.charAt(0).toUpperCase()}${language.slice(1)} [${languageCode}]: ${langData.length} (${phishing} phishing, ${legitimate} legitimate)`
       );
       return { language, count: langData.length };
     });

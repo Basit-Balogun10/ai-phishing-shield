@@ -9,25 +9,25 @@
 
 ## Input payload the model must accept
 
-| Group | Field | Type | Required | Notes |
-| --- | --- | --- | --- | --- |
-| Message | `messageId` | string | ✅ | Stable identifier for deduplication and feedback reconciliation. |
-|  | `channel` | `"sms" \| "whatsapp" \| "email" \| "push"` | ✅ | Expandable enum; model should be resilient to new channels. |
-|  | `sender` | string | ✅ | Raw sender number, email, or handle. |
-|  | `body` | string | ✅ | UTF-8 message content. Empty strings should short-circuit to `safe`. |
-|  | `subject` | string | ➖ | Optional email/push subject line. |
-|  | `receivedAt` | ISO-8601 string | ✅ | Used for sorting, latency metrics, and quiet-hour logic within the client. |
-|  | `attachments` | array of objects | ➖ | `{ type: "image" \| "file", uri: string }` for future OCR or file scans. |
-| Locale | `language` | BCP-47 string | ✅ | Selected in-app language (e.g., `en`, `fr`, `yo`). |
-|  | `deviceLocale` | BCP-47 string | ➖ | Native device locale for fallback translation. |
-| Context | `isTrustedSender` | boolean | ✅ | Set by client using trusted contacts list. |
-|  | `userRiskTolerance` | `"strict" \| "balanced" \| "lenient"` | ➖ | Derived from future settings; default `balanced`. |
-|  | `recentDetections` | array | ➖ | Last N detection IDs with severity; supports contextual tuning. |
-|  | `telemetryOptIn` | boolean | ✅ | Toggles the extra diagnostic details we log locally. |
-|  | `shieldPaused` | boolean | ✅ | Allows the client to short-circuit costly inference when the shield is paused. |
-| Device | `appVersion` | string | ✅ | For rollout gating and schema migrations. |
-|  | `osVersion` | string | ➖ | Optional; useful for platform-specific heuristics. |
-|  | `deviceModel` | string | ➖ | Useful for latency benchmarking. |
+| Group   | Field               | Type                                       | Required | Notes                                                                          |
+| ------- | ------------------- | ------------------------------------------ | -------- | ------------------------------------------------------------------------------ |
+| Message | `messageId`         | string                                     | ✅       | Stable identifier for deduplication and feedback reconciliation.               |
+|         | `channel`           | `"sms" \| "whatsapp" \| "email" \| "push"` | ✅       | Expandable enum; model should be resilient to new channels.                    |
+|         | `sender`            | string                                     | ✅       | Raw sender number, email, or handle.                                           |
+|         | `body`              | string                                     | ✅       | UTF-8 message content. Empty strings should short-circuit to `safe`.           |
+|         | `subject`           | string                                     | ➖       | Optional email/push subject line.                                              |
+|         | `receivedAt`        | ISO-8601 string                            | ✅       | Used for sorting, latency metrics, and quiet-hour logic within the client.     |
+|         | `attachments`       | array of objects                           | ➖       | `{ type: "image" \| "file", uri: string }` for future OCR or file scans.       |
+| Locale  | `language`          | BCP-47 string                              | ✅       | Selected in-app language (e.g., `en`, `fr`, `yo`).                             |
+|         | `deviceLocale`      | BCP-47 string                              | ➖       | Native device locale for fallback translation.                                 |
+| Context | `isTrustedSender`   | boolean                                    | ✅       | Set by client using trusted contacts list.                                     |
+|         | `userRiskTolerance` | `"strict" \| "balanced" \| "lenient"`      | ➖       | Derived from future settings; default `balanced`.                              |
+|         | `recentDetections`  | array                                      | ➖       | Last N detection IDs with severity; supports contextual tuning.                |
+|         | `telemetryOptIn`    | boolean                                    | ✅       | Toggles the extra diagnostic details we log locally.                           |
+|         | `shieldPaused`      | boolean                                    | ✅       | Allows the client to short-circuit costly inference when the shield is paused. |
+| Device  | `appVersion`        | string                                     | ✅       | For rollout gating and schema migrations.                                      |
+|         | `osVersion`         | string                                     | ➖       | Optional; useful for platform-specific heuristics.                             |
+|         | `deviceModel`       | string                                     | ➖       | Useful for latency benchmarking.                                               |
 
 ### Derived/optional inputs the client can supply when available
 
@@ -116,12 +116,12 @@ The on-device inference module should return the following JSON payload:
 
 ### Severity expectations
 
-| Severity | Score range | UI behaviour |
-| --- | --- | --- |
-| `safe` | 0.00 – 0.39 | Show “Safe” banner, no warning card. |
-| `low` | 0.40 – 0.59 | Neutral caution; display yellow tag. |
-| `medium` | 0.60 – 0.79 | Orange warning, eligible for push alert. |
-| `high` | 0.80 – 0.99 | Red banner, blocks by default, requests extra confirmation to dismiss. |
+| Severity | Score range | UI behaviour                                                           |
+| -------- | ----------- | ---------------------------------------------------------------------- |
+| `safe`   | 0.00 – 0.39 | Show “Safe” banner, no warning card.                                   |
+| `low`    | 0.40 – 0.59 | Neutral caution; display yellow tag.                                   |
+| `medium` | 0.60 – 0.79 | Orange warning, eligible for push alert.                               |
+| `high`   | 0.80 – 0.99 | Red banner, blocks by default, requests extra confirmation to dismiss. |
 
 If the model is uncertain or heuristics disagree, return `severity: "low"` with `confidence < 0.5` and populate `metadata.explanations` with the conflict reason.
 

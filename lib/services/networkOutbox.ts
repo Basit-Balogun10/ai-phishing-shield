@@ -2,7 +2,28 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STORAGE_KEY = '@ai-phishing-shield/network/outbox';
 const LEGACY_FEEDBACK_STORAGE_KEY = '@ai-phishing-shield/alerts/feedback/outbox';
-const MAX_RETRY_COUNT = 5;
+
+// Configurable runtime parameters (can be tweaked in app init)
+let MAX_RETRY_COUNT = 5;
+let BASE_BACKOFF_SECONDS = 2; // used as multiplier for exponential backoff
+let MAX_BACKOFF_SECONDS = 3600; // cap backoff at 1 hour
+
+// Optional auth and device headers
+let authToken: string | null = null;
+let deviceId: string | null = null;
+
+// Optional hook for telemetry when entries are dropped permanently
+let onDropCallback: ((entry: OutboxEntry, reason: string) => void) | null = null;
+
+export const setOutboxConfig = (opts: Partial<{ maxRetryCount: number; baseBackoffSeconds: number; maxBackoffSeconds: number }>) => {
+  if (typeof opts.maxRetryCount === 'number') MAX_RETRY_COUNT = opts.maxRetryCount;
+  if (typeof opts.baseBackoffSeconds === 'number') BASE_BACKOFF_SECONDS = opts.baseBackoffSeconds;
+  if (typeof opts.maxBackoffSeconds === 'number') MAX_BACKOFF_SECONDS = opts.maxBackoffSeconds;
+};
+
+export const setAuthToken = (token: string | null) => { authToken = token; };
+export const setDeviceId = (id: string | null) => { deviceId = id; };
+export const setOnDropCallback = (cb: ((entry: OutboxEntry, reason: string) => void) | null) => { onDropCallback = cb; };
 
 export type OutboxChannel = 'feedback' | 'telemetry' | 'report';
 
@@ -12,6 +33,8 @@ export type OutboxEntry = {
   payload: Record<string, unknown>;
   retryCount: number;
   createdAt: string;
+  // ISO timestamp when this entry becomes next eligible to send. If absent or in the past, it's eligible now.
+  nextAttemptAt?: string | null;
 };
 
 let hydrated = false;
@@ -125,13 +148,36 @@ const hydrate = async () => {
   await hydrating;
 };
 
-const sendEntry = async (endpoint: string, entry: OutboxEntry): Promise<boolean> => {
+const parseRetryAfter = (header?: string | null): number | null => {
+  if (!header) return null;
+  // If numeric seconds
+  const secs = Number(header);
+  if (!Number.isNaN(secs) && secs >= 0) return Math.floor(secs);
+
+  // Try parse HTTP-date
+  const date = Date.parse(header);
+  if (!Number.isNaN(date)) {
+    const diff = Math.floor((date - Date.now()) / 1000);
+    return diff > 0 ? diff : 0;
+  }
+  return null;
+};
+
+type SendResult =
+  | { status: 'success' }
+  | { status: 'permanent-failure' }
+  | { status: 'retry-later'; retryAfterSeconds?: number }
+  | { status: 'transient-failure' };
+
+const sendEntry = async (endpoint: string, entry: OutboxEntry): Promise<SendResult> => {
   try {
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+    if (deviceId) headers['X-Device-Id'] = deviceId;
+
     const response = await fetch(endpoint, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers,
       body: JSON.stringify({
         channel: entry.channel,
         payload: entry.payload,
@@ -140,19 +186,45 @@ const sendEntry = async (endpoint: string, entry: OutboxEntry): Promise<boolean>
       }),
     });
 
-    if (!response.ok) {
-      if (__DEV__) {
-        console.warn('[outbox] Server rejected entry', entry.channel, response.status);
-      }
-      return false;
+    // 2xx — success
+    if (response.ok) {
+      return { status: 'success' };
     }
 
-    return true;
+    const status = response.status;
+
+    // 409 — canonical duplicate: treat as success (server already has it)
+    if (status === 409) {
+      return { status: 'success' };
+    }
+
+    // 400 / 413 — permanent failure, drop the entry
+    if (status === 400 || status === 413) {
+      return { status: 'permanent-failure' };
+    }
+
+    // 429 — rate limited. Honor Retry-After header if present
+    if (status === 429) {
+      const ra = parseRetryAfter(response.headers.get('retry-after')) ?? parseRetryAfter(response.headers.get('Retry-After'));
+      if (ra !== null) {
+        return { status: 'retry-later', retryAfterSeconds: ra };
+      }
+      // Fallback to transient failure if no header
+      return { status: 'transient-failure' };
+    }
+
+    // 5xx — transient failure
+    if (status >= 500 && status < 600) {
+      return { status: 'transient-failure' };
+    }
+
+    // Other statuses — treat as transient by default
+    return { status: 'transient-failure' };
   } catch (error) {
     if (__DEV__) {
       console.warn('[outbox] Failed to submit entry', entry.channel, error);
     }
-    return false;
+    return { status: 'transient-failure' };
   }
 };
 
@@ -228,18 +300,54 @@ export const flushOutbox = async () => {
     const pending = [...queue];
     const retained: OutboxEntry[] = [];
 
+    const now = Date.now();
+
     for (const entry of pending) {
-      const sent = await sendEntry(endpoint, entry);
-      if (!sent) {
-        const retryCount = entry.retryCount + 1;
-        if (retryCount >= MAX_RETRY_COUNT) {
-          if (__DEV__) {
-            console.warn('[outbox] Dropping entry after max retries', entry.id);
-          }
+      // skip entries scheduled for later
+      if (entry.nextAttemptAt) {
+        const nextTs = Date.parse(entry.nextAttemptAt);
+        if (!Number.isNaN(nextTs) && nextTs > now) {
+          retained.push(entry);
           continue;
         }
-        retained.push({ ...entry, retryCount });
       }
+
+      const result = await sendEntry(endpoint, entry);
+
+      if (result.status === 'success') {
+        // dropped (succeeded)
+        continue;
+      }
+
+      if (result.status === 'permanent-failure') {
+        if (__DEV__) {
+          console.warn('[outbox] Dropping entry due to permanent failure', entry.id);
+        }
+        continue;
+      }
+
+      // transient or retry-later
+      const retryCount = entry.retryCount + 1;
+
+      // compute nextAttemptAt and decide whether to drop
+      let nextAttemptAt: string | null = null;
+
+      if (result.status === 'retry-later' && typeof result.retryAfterSeconds === 'number') {
+        nextAttemptAt = new Date(Date.now() + result.retryAfterSeconds * 1000).toISOString();
+      } else {
+        const capped = Math.min(MAX_BACKOFF_SECONDS, Math.pow(2, Math.min(retryCount, 10)) * BASE_BACKOFF_SECONDS);
+        nextAttemptAt = new Date(Date.now() + capped * 1000).toISOString();
+      }
+
+      if (retryCount >= MAX_RETRY_COUNT) {
+        if (__DEV__) {
+          console.warn('[outbox] Dropping entry after max retries', entry.id);
+        }
+        try { onDropCallback?.(entry, 'max-retries'); } catch { }
+        continue;
+      }
+
+      retained.push({ ...entry, retryCount, nextAttemptAt });
     }
 
     queue = retained;

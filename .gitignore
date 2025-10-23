@@ -23,3 +23,6 @@ android
 .metro-health-check*
 
 phishing_dataset/
+
+# Trained model artifacts (large binaries) — keep out of repo
+phishing_detector_package/

@@ -1,0 +1,91 @@
+{
+  "total_messages": 68118,
+  "label_distribution": {
+    "legitimate": 43567,
+    "phishing": 24551
+  },
+  "languages": [
+    {
+      "language": "am",
+      "count": 2600,
+      "phishing_ratio": 0.769
+    },
+    {
+      "language": "ar",
+      "count": 7504,
+      "phishing_ratio": 0.351
+    },
+    {
+      "language": "de",
+      "count": 5140,
+      "phishing_ratio": 0.124
+    },
+    {
+      "language": "en",
+      "count": 21904,
+      "phishing_ratio": 0.245
+    },
+    {
+      "language": "fr",
+      "count": 12858,
+      "phishing_ratio": 0.255
+    },
+    {
+      "language": "ha",
+      "count": 2600,
+      "phishing_ratio": 0.769
+    },
+    {
+      "language": "hi",
+      "count": 5112,
+      "phishing_ratio": 0.123
+    },
+    {
+      "language": "ig",
+      "count": 2600,
+      "phishing_ratio": 0.769
+    },
+    {
+      "language": "pcm",
+      "count": 2600,
+      "phishing_ratio": 0.769
+    },
+    {
+      "language": "sw",
+      "count": 2600,
+      "phishing_ratio": 0.769
+    },
+    {
+      "language": "yo",
+      "count": 2600,
+      "phishing_ratio": 0.769
+    }
+  ],
+  "sources": [
+    {
+      "source": "huggingface_augmented",
+      "count": 15180,
+      "share": 0.223
+    },
+    {
+      "source": "kaggle_multilingual",
+      "count": 20528,
+      "share": 0.301
+    },
+    {
+      "source": "nigeria_university_sms",
+      "count": 3860,
+      "share": 0.057
+    },
+    {
+      "source": "synthetic_generator",
+      "count": 23400,
+      "share": 0.344
+    },
+    {
+      "source": "uci_sms_spam",
+      "count": 5150,
+      "share": 0.076
+    }
+  ]
+}

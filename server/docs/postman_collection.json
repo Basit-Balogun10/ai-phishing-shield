@@ -1,0 +1,8 @@
+{
+  "info": { "name": "AI Phishing Shield Server", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "item": [
+    { "name": "POST /v1/outbox", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer devtoken123" }], "url": { "raw": "http://localhost:4000/v1/outbox" } } },
+    { "name": "GET /models/catalog.json", "request": { "method": "GET", "url": { "raw": "http://localhost:4000/models/catalog.json" } } },
+    { "name": "GET /v1/health", "request": { "method": "GET", "url": { "raw": "http://localhost:4000/v1/health" } } }
+  ]
+}

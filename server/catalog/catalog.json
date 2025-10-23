@@ -1,0 +1,10 @@
+[
+  {
+    "version": "v0.3.0",
+    "releasedAt": "2025-10-06T07:45:00Z",
+    "sizeMB": 18.5,
+    "checksum": "sha256-f32c9e12",
+    "changelog": ["Introduced WhatsApp embeddings"],
+    "downloadUrl": "https://download.afrihackbox.dev/models/v0.3.0/phishing-detector.tflite"
+  }
+]
