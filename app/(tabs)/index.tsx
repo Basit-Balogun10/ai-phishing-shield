@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Alert, Platform, ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import NotificationListener from '../../mobile/notifications/notificationListener';
+import { processIncomingNotification } from '../../lib/services/notificationHandler';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useOnboardingGate } from '../../lib/hooks/useOnboardingGate';
@@ -254,6 +256,41 @@ export default function DashboardScreen() {
       trackTelemetryEvent('dashboard.shield_toggled', {
         paused: nextPaused,
       });
+      // Start or stop the notification listener based on shield state
+      try {
+        if (!nextPaused) {
+          // enabling shield -> start listener
+          await NotificationListener.init();
+          const granted = await NotificationListener.isPermissionGranted();
+          if (!granted) {
+            // attempt to request permission; user may need to grant in OS settings
+            await NotificationListener.requestPermission();
+          }
+          // start listening; register a lightweight handler that logs telemetry.
+          await NotificationListener.start();
+          // register onNotification handler; ensure we unsubscribe any previous handler
+          // We create a local handler that will optionally trigger the mock detection in dev.
+          NotificationListener.onNotification(async (payload) => {
+            try {
+              // Process incoming notification: convert to detection format and run analysis.
+              await processIncomingNotification(payload as Record<string, any>);
+            } catch {
+              // ignore
+            }
+          });
+          // store unsubscribe on AsyncStorage so we can clear if needed; keep ephemeral here
+          // (we don't persist the callback between reloads)
+        } else {
+          // disabling shield -> stop listener
+          try {
+            await NotificationListener.stop();
+          } catch (e) {
+            // ignore
+          }
+        }
+      } catch (e) {
+        console.warn('[dashboard] Notification listener start/stop failed', e);
+      }
     } catch (error) {
       console.warn('[dashboard] Failed to toggle shield', error);
       setOptimisticShieldPaused(currentPaused);
@@ -262,6 +299,17 @@ export default function DashboardScreen() {
       setIsUpdatingShield(false);
     }
   }, [isUpdatingShield, optimisticShieldPaused, permissionsMissing, shieldPaused, shieldReady, t]);
+
+  useEffect(() => {
+    // initialize listener on mount (no-op on non-Android)
+    void (async () => {
+      try {
+        await NotificationListener.init();
+      } catch (e) {
+        // ignore
+      }
+    })();
+  }, []);
 
   const quickActions = useMemo(
     () => [

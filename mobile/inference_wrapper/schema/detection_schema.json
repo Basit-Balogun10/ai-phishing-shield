@@ -4,28 +4,28 @@
   "type": "object",
   "required": ["detectionId", "modelVersion", "createdAt", "latencyMs", "message", "risk"],
   "properties": {
-    "detectionId": {"type": "string"},
-    "modelVersion": {"type": "string"},
-    "createdAt": {"type": "string"},
-    "latencyMs": {"type": "number"},
+    "detectionId": { "type": "string" },
+    "modelVersion": { "type": "string" },
+    "createdAt": { "type": "string" },
+    "latencyMs": { "type": "number" },
     "message": {
       "type": "object",
       "properties": {
-        "messageId": {"type": "string"},
-        "channel": {"type": "string"},
-        "sender": {"type": ["string", "null"]},
-        "receivedAt": {"type": ["string", "null"]}
+        "messageId": { "type": "string" },
+        "channel": { "type": "string" },
+        "sender": { "type": ["string", "null"] },
+        "receivedAt": { "type": ["string", "null"] }
       }
     },
     "risk": {
       "type": "object",
       "required": ["score", "severity", "label", "confidence"],
       "properties": {
-        "score": {"type": "number", "minimum": 0, "maximum": 1},
-        "severity": {"type": "string"},
-        "label": {"type": "string"},
-        "confidence": {"type": "number"},
-        "factors": {"type": "array"}
+        "score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "severity": { "type": "string" },
+        "label": { "type": "string" },
+        "confidence": { "type": "number" },
+        "factors": { "type": "array" }
       }
     }
   }

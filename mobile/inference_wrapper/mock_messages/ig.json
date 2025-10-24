@@ -1,0 +1,23 @@
+[
+  {
+    "id": "mock-1",
+    "sender": "UBA Secure",
+    "channel": "sms",
+    "body": "NKWUPỤTA UBA: A ga-egbochi akaụntụ gị n'ime awa 24. Biko chọpụta akaụntụ gị ugbu a na http://uba-secure-check.com iji zere igbochi.",
+    "receivedAt": "2025-10-08T08:15:00Z"
+  },
+  {
+    "id": "mock-2",
+    "sender": "Tax Grant",
+    "channel": "sms",
+    "body": "Ekele! I nyere ikike maka ntghata ụtụ isi pụrụ iche. Pịa njikọ a iji nweta ya n'ime awa 12: https://bit.ly/rebatesafrica",
+    "receivedAt": "2025-10-08T09:02:00Z"
+  },
+  {
+    "id": "mock-3",
+    "sender": "MTN Nigeria",
+    "channel": "sms",
+    "body": "Ndị ahịa, a ga-akwụsị SIM gị taa. Biko kwadoo NIN gị ugbu a site na http://mtn-verify.ng ma tinye OTP gị.",
+    "receivedAt": "2025-10-08T09:45:00Z"
+  }
+]

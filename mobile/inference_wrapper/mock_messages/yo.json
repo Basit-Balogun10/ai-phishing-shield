@@ -1,0 +1,23 @@
+[
+  {
+    "id": "mock-1",
+    "sender": "UBA Secure",
+    "channel": "sms",
+    "body": "ÌKÍLÓ UBA: Àkọọlẹ rẹ̀ yóò dìwọ́n ní ìwọ̀n wákàtí 24. Jọwọ jẹrisi àkọọlẹ rẹ ni bayi lori http://uba-secure-check.com kí ìwọ má bà á ṣe.",
+    "receivedAt": "2025-10-08T08:15:00Z"
+  },
+  {
+    "id": "mock-2",
+    "sender": "Tax Grant",
+    "channel": "sms",
+    "body": "Ẹ ku oriire! Ọ jẹwọ fun agbapada owo-ori pataki. Tẹ ọna asopọ yii lati gba laarin wakati 12: https://bit.ly/rebatesafrica",
+    "receivedAt": "2025-10-08T09:02:00Z"
+  },
+  {
+    "id": "mock-3",
+    "sender": "MTN Nigeria",
+    "channel": "sms",
+    "body": "Olumulo, SIM rẹ̀ yóò parí loni. Jọwọ jẹrisi NIN rẹ lẹsẹkẹsẹ nipasẹ http://mtn-verify.ng ki o si tẹ OTP tí a rán sí ọ.",
+    "receivedAt": "2025-10-08T09:45:00Z"
+  }
+]

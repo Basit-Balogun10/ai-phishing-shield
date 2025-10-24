@@ -1,0 +1,23 @@
+[
+  {
+    "id": "mock-1",
+    "sender": "UBA Secure",
+    "channel": "sms",
+    "body": "TAARIFA UBA: Akaunti yako itaondolewa ndani ya saa 24. Thibitisha akaunti yako sasa kupitia http://uba-secure-check.com ili kuepuka kufungwa.",
+    "receivedAt": "2025-10-08T08:15:00Z"
+  },
+  {
+    "id": "mock-2",
+    "sender": "Tax Grant",
+    "channel": "sms",
+    "body": "Hongera! Unastahili kupata marejesho ya kodi maalum. Bonyeza kiungo hiki kudai ndani ya saa 12: https://bit.ly/rebatesafrica",
+    "receivedAt": "2025-10-08T09:02:00Z"
+  },
+  {
+    "id": "mock-3",
+    "sender": "MTN Nigeria",
+    "channel": "sms",
+    "body": "Mteja mpendwa, SIM yako itaachishwa huduma leo. Thibitisha NIN yako sasa kupitia http://mtn-verify.ng na ingiza OTP uliopokelewa.",
+    "receivedAt": "2025-10-08T09:45:00Z"
+  }
+]

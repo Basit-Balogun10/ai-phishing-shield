@@ -1,0 +1,14 @@
+{
+  "urgency_keywords": ["حالاً", "عاجل", "الآن", "خلال 24 ساعة", "إيقاف", "تحقق"],
+  "money_regex": "(بنك|حساب|تحويل|سحب|إيداع|رصيد|دفع|دولار|ريال|naira)",
+  "reward_regex": "(جائزة|يانصيب|فائز|تهانينا|مكافأة|هدية)",
+  "account_regex": "(تحقق|أكد|تحديث|إيقاف|تفعيل|إلغاء)",
+  "otp_pattern": "\\b\\d{4,6}\\b",
+  "urgency_weight": 0.25,
+  "short_link_weight": 0.18,
+  "link_weight": 0.05,
+  "money_keyword_weight": 0.2,
+  "reward_keyword_weight": 0.18,
+  "account_keyword_weight": 0.2,
+  "otp_weight": 0.12
+}

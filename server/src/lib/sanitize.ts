@@ -22,7 +22,7 @@ export const sanitizePayload = (payload: Record<string, unknown>): Record<string
     try {
       const s = JSON.stringify(v);
       clone[k] = s.length > 32768 ? `${s.slice(0, 32765)}...` : JSON.parse(s);
-    } catch (err) {
+    } catch {
       clone[k] = String(v);
     }
   }

@@ -1,0 +1,23 @@
+[
+  {
+    "id": "mock-1",
+    "sender": "UBA Secure",
+    "channel": "sms",
+    "body": "تنبيه من UBA: سيتم تعليق حسابك خلال 24 ساعة. تحقق من حسابك الآن على http://uba-secure-check.com لتجنب الإيقاف.",
+    "receivedAt": "2025-10-08T08:15:00Z"
+  },
+  {
+    "id": "mock-2",
+    "sender": "Tax Grant",
+    "channel": "sms",
+    "body": "تهانينا! أنت مؤهل للحصول على استرداد ضريبي خاص. اضغط على هذا الرابط للمطالبة خلال 12 ساعة: https://bit.ly/rebatesafrica",
+    "receivedAt": "2025-10-08T09:02:00Z"
+  },
+  {
+    "id": "mock-3",
+    "sender": "MTN Nigeria",
+    "channel": "sms",
+    "body": "عزيزي العميل، سيتم إلغاء تفعيل شريحة SIM الخاصة بك اليوم. قم بتأكيد NIN الخاص بك فورًا عبر http://mtn-verify.ng وأدخل رمز OTP.",
+    "receivedAt": "2025-10-08T09:45:00Z"
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "id": "mock-1",
+    "sender": "UBA Secure",
+    "channel": "sms",
+    "body": "UBA alert: Dem go stop your account for 24 hours. Make you confirm your account now for http://uba-secure-check.com make dem no block am.",
+    "receivedAt": "2025-10-08T08:15:00Z"
+  },
+  {
+    "id": "mock-2",
+    "sender": "Tax Grant",
+    "channel": "sms",
+    "body": "Congratulation! You fit collect special tax rebate. Click dis link to claim within 12 hours: https://bit.ly/rebatesafrica",
+    "receivedAt": "2025-10-08T09:02:00Z"
+  },
+  {
+    "id": "mock-3",
+    "sender": "MTN Nigeria",
+    "channel": "sms",
+    "body": "Dear customer, your SIM go off today. Confirm your NIN sharp sharp for http://mtn-verify.ng and put the OTP we send you.",
+    "receivedAt": "2025-10-08T09:45:00Z"
+  }
+]

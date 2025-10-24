@@ -123,6 +123,9 @@ export type TelemetryPayloads = {
   'dashboard.detection_cleared': {
     recordId: string;
   };
+  'dashboard.quick_action.alerts_opened': undefined;
+  'dashboard.quick_action.stats_opened': undefined;
+  'dashboard.quick_action.trusted_sources_opened': undefined;
   'stats.timeframe_changed': {
     timeframe: '24h' | '7d' | '30d' | 'all';
   };

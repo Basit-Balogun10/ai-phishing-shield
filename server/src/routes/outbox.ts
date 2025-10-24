@@ -2,7 +2,6 @@ import { FastifyPluginAsync } from 'fastify';
 import { z } from 'zod';
 import prisma from '../db/prisma';
 import { getQueue, enqueueOutbox } from '../queue/outboxQueue';
-import { Prisma } from '@prisma/client';
 import crypto from 'crypto';
 import { sanitizePayload } from '../lib/sanitize';
 import {

@@ -66,7 +66,6 @@ export default function TabsLayout() {
         tabBarActiveTintColor: themeStyles.activeTint,
         tabBarInactiveTintColor: themeStyles.inactiveTint,
         tabBarStyle: themeStyles.tabBarStyle,
-        tabBarLabelStyle: { display: 'none' },
         tabBarItemStyle: {
           alignItems: 'center',
           justifyContent: 'center',

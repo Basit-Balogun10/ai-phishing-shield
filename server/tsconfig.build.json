@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // build-time options: emit to dist (inherited), disable source maps for smaller builds
+    "sourceMap": false,
+    "declaration": false
+  },
+  "exclude": ["test", "**/*.test.ts", "**/*.spec.ts"]
+}

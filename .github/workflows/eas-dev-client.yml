@@ -1,0 +1,42 @@
+name: EAS Dev Client Build
+
+on:
+  workflow_dispatch:
+    inputs: {}
+
+jobs:
+  build-dev-client:
+    runs-on: ubuntu-latest
+    env:
+      EAS_BUILD_PROFILE: development
+      EAS_PLATFORM: android
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: |
+          pnpm install --frozen-lockfile
+
+      - name: Install EAS CLI
+        run: pnpm add -g eas-cli
+
+      - name: Start EAS build
+        env:
+          EAS_TOKEN: ${{ secrets.EAS_TOKEN }}
+        run: |
+          echo "Starting EAS build (development client)"
+          eas build --platform android --profile ${EAS_BUILD_PROFILE} --non-interactive
+
+      - name: Print build status
+        run: echo "EAS build step finished. Check the EAS build page for details."

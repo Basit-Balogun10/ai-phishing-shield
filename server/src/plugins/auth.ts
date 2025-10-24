@@ -5,7 +5,7 @@ export const authPlugin: FastifyPluginAsync = async (server) => {
   const raw = process.env.AUTH_TOKENS ?? '';
   const envTokens = raw
     .split(',')
-    .map((t) => t.trim())
+    .map((t: string) => t.trim())
     .filter(Boolean);
 
   // decorate request so downstream handlers can access token/claims
@@ -14,7 +14,7 @@ export const authPlugin: FastifyPluginAsync = async (server) => {
 
   server.addHook('onRequest', async (request, reply) => {
     // allow health and config to be read anonymously
-    if (request.routerPath === '/v1/health' || request.routerPath === '/v1/config') {
+    if ((request as any).routerPath === '/v1/health' || (request as any).routerPath === '/v1/config') {
       return;
     }
 
@@ -46,7 +46,7 @@ export const authPlugin: FastifyPluginAsync = async (server) => {
             'JWT verification failed, falling back to token lookup'
           );
         }
-      } catch (e) {
+      } catch {
         server.log.debug('jsonwebtoken not available, skipping JWT verification');
       }
     }
@@ -60,7 +60,7 @@ export const authPlugin: FastifyPluginAsync = async (server) => {
         return;
       }
     } catch (e) {
-      server.log.warn('Token lookup failed', e);
+      server.log.warn({ err: e }, 'Token lookup failed');
     }
 
     // Fallback to env tokens
