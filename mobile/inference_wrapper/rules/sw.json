@@ -1,0 +1,22 @@
+{
+  "urgency_keywords": [
+    "hivi sasa",
+    "haraka",
+    "sasa",
+    "masaa 24",
+    "kusitisha",
+    "thibitisha",
+    "thibitisho"
+  ],
+  "money_regex": "(benki|akaunti|uhamisho|kujiondoa|weka|salio|lipa|ngn|naira|dola)",
+  "reward_regex": "(zawadi|bingo|mshindi|hongera|zawadi|kuchaguliwa)",
+  "account_regex": "(thibitisha|hakiki|sasisha|sita|amilisha)",
+  "otp_pattern": "\\b\\d{4,6}\\b",
+  "urgency_weight": 0.25,
+  "short_link_weight": 0.18,
+  "link_weight": 0.05,
+  "money_keyword_weight": 0.2,
+  "reward_keyword_weight": 0.18,
+  "account_keyword_weight": 0.2,
+  "otp_weight": 0.12
+}

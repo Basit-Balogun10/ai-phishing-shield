@@ -20,7 +20,7 @@ export const modelsRoutes: FastifyPluginAsync = async (server) => {
 
       return reply.header('Cache-Control', 'public, max-age=60').send(parsed);
     } catch (err) {
-      server.log.warn('Failed to load catalog.json, returning 404', err);
+      server.log.warn({ err }, 'Failed to load catalog.json, returning 404');
       return reply.code(404).send({ error: 'catalog_unavailable' });
     }
   });
@@ -31,7 +31,7 @@ export const modelsRoutes: FastifyPluginAsync = async (server) => {
       try {
         const raw = await fs.readFile(sigFile, 'utf-8');
         return reply.type('text/plain').send(raw);
-      } catch (e) {
+      } catch {
         // not found, compute if secret available
       }
 
@@ -40,7 +40,7 @@ export const modelsRoutes: FastifyPluginAsync = async (server) => {
       const sig = await signCatalog(secret);
       return reply.type('text/plain').send(sig);
     } catch (err) {
-      server.log.warn('Failed to load or compute signature', err);
+      server.log.warn({ err }, 'Failed to load or compute signature');
       return reply.code(500).send({ error: 'signature_error' });
     }
   });
@@ -72,7 +72,7 @@ export const modelsRoutes: FastifyPluginAsync = async (server) => {
       const raw = await fs.readFile(file, 'utf-8');
       reply.header('Cache-Control', 'no-cache').type('application/json').send(JSON.parse(raw));
     } catch (err) {
-      server.log.warn('Failed to load openapi.json', err);
+      server.log.warn({ err }, 'Failed to load openapi.json');
       reply.code(404).send({ error: 'openapi_unavailable' });
     }
   });

@@ -18,28 +18,44 @@ import { submitDetectionFeedback } from '../../lib/services/alertFeedback';
 import { trackTelemetryEvent } from '../../lib/services/telemetry';
 import { getTrustedSourceForSender } from '../../lib/trustedSources';
 
-const getSeverityColor = (score: number) => {
-  if (score >= 0.85) {
-    return {
-      badge: 'bg-rose-100 dark:bg-rose-500/20',
-      text: 'text-rose-700 dark:text-rose-200',
-      iconColor: '#dc2626',
-    };
-  }
-
-  if (score >= 0.7) {
-    return {
-      badge: 'bg-amber-100 dark:bg-amber-500/20',
-      text: 'text-amber-700 dark:text-amber-200',
-      iconColor: '#d97706',
-    };
-  }
-
-  return {
+// Map severity string to UI styles. Prefer using `risk.severity` from the
+// detection object (emitted by the inference wrapper). If severity is
+// unavailable, callers may fall back to numeric score mapping.
+const SEVERITY_STYLE: Record<string, { badge: string; text: string; iconColor: string }> = {
+  high: {
+    badge: 'bg-rose-100 dark:bg-rose-500/20',
+    text: 'text-rose-700 dark:text-rose-200',
+    iconColor: '#dc2626',
+  },
+  medium: {
+    badge: 'bg-amber-100 dark:bg-amber-500/20',
+    text: 'text-amber-700 dark:text-amber-200',
+    iconColor: '#d97706',
+  },
+  low: {
     badge: 'bg-blue-100 dark:bg-blue-500/20',
     text: 'text-blue-700 dark:text-blue-200',
     iconColor: '#2563eb',
-  };
+  },
+  safe: {
+    badge: 'bg-slate-100 dark:bg-slate-800/20',
+    text: 'text-slate-600 dark:text-slate-400',
+    iconColor: '#64748b',
+  },
+};
+
+const getSeverityColorBySeverity = (sev?: string) => {
+  if (!sev) return SEVERITY_STYLE.safe;
+  const key = String(sev).toLowerCase();
+  return SEVERITY_STYLE[key] ?? SEVERITY_STYLE.safe;
+};
+
+// Fallback numeric -> severity mapping in case `risk.severity` is missing.
+const numericSeverityFromScore = (score: number) => {
+  if (score >= 0.75) return 'high';
+  if (score >= 0.6) return 'medium';
+  if (score >= 0.5) return 'low';
+  return 'safe';
 };
 
 const TIMEFRAME_THRESHOLDS = {
@@ -105,10 +121,10 @@ export default function AlertsScreen() {
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const severityOptions = useMemo(
     () => [
-      { key: 'all' as const, label: t('dashboard.recentAlerts.severity.all') },
-      { key: 'high' as const, label: t('dashboard.recentAlerts.severity.high') },
-      { key: 'medium' as const, label: t('dashboard.recentAlerts.severity.medium') },
-      { key: 'low' as const, label: t('dashboard.recentAlerts.severity.low') },
+  { key: 'all' as const, label: t('dashboard.alerts.severity.all') },
+  { key: 'high' as const, label: t('dashboard.alerts.severity.high') },
+  { key: 'medium' as const, label: t('dashboard.alerts.severity.medium') },
+  { key: 'low' as const, label: t('dashboard.alerts.severity.low') },
     ],
     [t]
   );
@@ -178,11 +194,12 @@ export default function AlertsScreen() {
     setFeedbackSubmitting(false);
   }, [selectedDetection?.recordId]);
 
+  // Match wrapper metadata thresholds: high >= 0.75, medium >= 0.60, low >= 0.50 && <0.60
   const severityMatchers: Record<SeverityFilter, (score: number) => boolean> = useMemo(
     () => ({
-      high: (score: number) => score >= 0.85,
-      medium: (score: number) => score >= 0.7 && score < 0.85,
-      low: (score: number) => score < 0.7,
+      high: (score: number) => score >= 0.75,
+      medium: (score: number) => score >= 0.6 && score < 0.75,
+      low: (score: number) => score >= 0.5 && score < 0.6,
     }),
     []
   );
@@ -218,6 +235,19 @@ export default function AlertsScreen() {
 
       if (trustedOnly && !isTrustedSource) {
         return false;
+      }
+
+      // By default (no explicit severity filters active) hide 'safe' alerts
+      // where the wrapper set risk.severity === 'safe' or numeric score < 0.5.
+      if (severityFilters.length === 0) {
+        const sev = record.result?.risk?.severity;
+        if (sev === 'safe') {
+          return false;
+        }
+        const s = typeof record.result?.score === 'number' ? record.result.score : 0;
+        if (s < 0.5) {
+          return false;
+        }
       }
 
       if (timeframeFilters.length) {
@@ -377,8 +407,13 @@ export default function AlertsScreen() {
     if (!selectedDetection) {
       return null;
     }
-
-    return getSeverityColor(selectedDetection.result.score);
+    const sev = (selectedDetection.result as any)?.risk?.severity as string | undefined;
+    const s =
+      typeof (selectedDetection.result as any)?.score === 'number'
+        ? (selectedDetection.result as any).score
+        : 0;
+    const chosen = sev ?? numericSeverityFromScore(s);
+    return getSeverityColorBySeverity(chosen);
   }, [selectedDetection]);
 
   useEffect(() => {
@@ -397,7 +432,7 @@ export default function AlertsScreen() {
     trackTelemetryEvent('alerts.search_changed', {
       queryLength: query.length,
       filters: filtersTelemetryPayload,
-    });
+    } as any);
   }, [filtersTelemetryPayload, query]);
 
   useEffect(() => {
@@ -414,7 +449,7 @@ export default function AlertsScreen() {
       return;
     }
 
-    trackTelemetryEvent('alerts.filter_changed', filtersTelemetryPayload);
+    trackTelemetryEvent('alerts.filter_changed', filtersTelemetryPayload as any);
   }, [filtersTelemetryPayload]);
 
   return (
@@ -519,7 +554,11 @@ export default function AlertsScreen() {
           </View>
         ) : (
           filteredDetections.map((entry) => {
-            const { badge, text: severityText } = getSeverityColor(entry.result.score);
+            const recSev = (entry.result as any)?.risk?.severity as string | undefined;
+            const recScore =
+              typeof (entry.result as any)?.score === 'number' ? (entry.result as any).score : 0;
+            const chosenSev = recSev ?? numericSeverityFromScore(recScore);
+            const { badge, text: severityText } = getSeverityColorBySeverity(chosenSev);
             const primaryMatch = entry.result.matches[0];
             const isTrustedSource = Boolean(
               getTrustedSourceForSender(entry.result.message.sender, entry.result.message.channel)

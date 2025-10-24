@@ -1,0 +1,13 @@
+id,category,mock_score,score_w0_5,sev_w0_5,detect_w0_5,flips
+mock-1,mock,0.7,0.7,medium,1,0
+mock-2,mock,0.45,0.45,safe,0,0
+mock-3,mock,0.65,0.65,medium,1,0
+mock-4,mock,0.6,0.6,medium,1,0
+mock-5,mock,0.68,0.68,medium,1,0
+mock-6,mock,0.55,0.55,low,1,0
+mock-7,mock,0.5,0.5,low,1,0
+benign-1,benign,0.25,0.25,safe,0,0
+benign-2,benign,0.15,0.15,safe,0,0
+benign-3,benign,0.25,0.25,safe,0,0
+benign-4,benign,0.2,0.2,safe,0,0
+benign-5,benign,0.15,0.15,safe,0,0

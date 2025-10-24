@@ -1,0 +1,26 @@
+name: Parity harness smoke
+
+on:
+  push:
+    branches: [development]
+  pull_request:
+    branches: [development]
+
+jobs:
+  parity-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Run parity harness (dummy wrapper)
+        run: |
+          mkdir -p ./artifacts
+          python mobile/inference_wrapper/run_on_mock.py --weights 0.5 --use-dummy-wrapper --out ./artifacts/ci_smoke.jsonl
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: parity-smoke-results
+          path: ./artifacts

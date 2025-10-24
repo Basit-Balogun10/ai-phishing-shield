@@ -22,8 +22,7 @@ export const initQueue = (processor: (job: Job) => Promise<void>) => {
   try { connection.on('error', (err: any) => { /* log at caller */ }); } catch {}
 
   worker.on('failed', (job, err) => {
-     
-    console.error('outbox job failed', job.id, err);
+    console.error('outbox job failed', job?.id, err);
   });
 
   return { queue, worker };
@@ -35,6 +34,6 @@ export const enqueueOutbox = async (payload: any) => {
 };
 
 export const closeQueue = async () => {
-  try { await worker?.close(); } catch (e) {}
-  try { await queue?.close(); } catch (e) {}
+  try { await worker?.close(); } catch {}
+  try { await queue?.close(); } catch {}
 };

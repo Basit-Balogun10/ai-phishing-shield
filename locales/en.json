@@ -120,10 +120,10 @@
       "title": "Latest activity",
       "empty": "No detections yet. Run a mock scan to preview alerts."
     },
-    "recentAlerts": {
-      "title": "Recent alerts",
-      "subtitle": "Latest suspicious messages flagged by the shield.",
-      "empty": "No alerts detected yet. Stay vigilant!",
+    "alerts": {
+      "title": "Alerts",
+      "subtitle": "Messages flagged by the shield.",
+      "empty": "No alerts detected yet.",
       "emptyWithFilters": "No alerts matched {{filters}}. Try changing your filters.",
       "filtersTitle": "Filters",
       "openFilters": "Open alert filters",

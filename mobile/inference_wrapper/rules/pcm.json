@@ -1,0 +1,21 @@
+{
+  "urgency_keywords": [
+    "now now",
+    "quick quick",
+    "immediately",
+    "within 24 hours",
+    "we go block",
+    "confirm"
+  ],
+  "money_regex": "(bank|account|transfer|withdraw|deposit|balance|pay|naira|dollar)",
+  "reward_regex": "(prize|lottery|winner|congratulations|reward|gift|selected)",
+  "account_regex": "(confirm|verify|update|suspend|activate|deactivate)",
+  "otp_pattern": "\\b\\d{4,6}\\b",
+  "urgency_weight": 0.25,
+  "short_link_weight": 0.18,
+  "link_weight": 0.05,
+  "money_keyword_weight": 0.2,
+  "reward_keyword_weight": 0.18,
+  "account_keyword_weight": 0.2,
+  "otp_weight": 0.12
+}

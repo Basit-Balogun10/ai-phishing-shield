@@ -147,6 +147,9 @@ importers:
       prom-client:
         specifier: ^14.0.0
         version: 14.2.0
+      react-native-android-notification-listener:
+        specifier: ^5.0.1
+        version: 5.0.1(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       zod:
         specifier: ^3.25.76
         version: 3.25.76
@@ -4716,6 +4719,12 @@ packages:
 
   react-is@19.2.0:
     resolution: {integrity: sha512-x3Ax3kNSMIIkyVYhWPyO09bu0uttcAIoecO/um/rKGQ4EltYWVYtyiGkS/3xMynrbVQdS69Jhlv8FXUEZehlzA==}
+
+  react-native-android-notification-listener@5.0.1:
+    resolution: {integrity: sha512-h36do70QKSSLY6b0LpYjcTLITE/x8yOg0JKCayt1DQvbQCnjwUv9VWCLhuY8NtCKbJ/xTezmPRYk20ZyyNdz9w==}
+    peerDependencies:
+      react: ^18.0.0
+      react-native: '>=0.69.0'
 
   react-native-css-interop@0.1.20:
     resolution: {integrity: sha512-afFcrXkFEv35pkMgc9R5k79d6KyZpTtDgci0tM9NTs76/0NZcQu2YuEXoC1r4Efg/2PsWI/1/GJKVXww7RQNDg==}
@@ -10934,6 +10943,11 @@ snapshots:
   react-is@18.3.1: {}
 
   react-is@19.2.0: {}
+
+  react-native-android-notification-listener@5.0.1(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0)
 
   react-native-css-interop@0.1.20(react-native-reanimated@4.1.2(@babel/core@7.28.4)(react-native-worklets@0.5.1(@babel/core@7.28.4)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.1(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.18(tsx@4.20.6)(yaml@2.8.1)):
     dependencies:

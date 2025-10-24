@@ -1,0 +1,23 @@
+[
+  {
+    "id": "mock-1",
+    "sender": "UBA Secure",
+    "channel": "sms",
+    "body": "UBA Alerte : Votre compte sera suspendu dans 24 heures. Vérifiez votre compte maintenant sur http://uba-secure-check.com pour éviter le blocage.",
+    "receivedAt": "2025-10-08T08:15:00Z"
+  },
+  {
+    "id": "mock-2",
+    "sender": "Tax Grant",
+    "channel": "sms",
+    "body": "Félicitations ! Vous êtes éligible à un remboursement d'impôt spécial. Cliquez sur ce lien pour réclamer dans les 12 heures : https://bit.ly/rebatesafrica",
+    "receivedAt": "2025-10-08T09:02:00Z"
+  },
+  {
+    "id": "mock-3",
+    "sender": "MTN Nigeria",
+    "channel": "sms",
+    "body": "Cher client, votre carte SIM sera désactivée aujourd'hui. Confirmez votre NIN immédiatement via http://mtn-verify.ng et saisissez votre OTP.",
+    "receivedAt": "2025-10-08T09:45:00Z"
+  }
+]

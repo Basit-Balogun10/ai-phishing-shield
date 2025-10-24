@@ -45,10 +45,10 @@
         "activating": "Ana kunna {{version}}",
         "removing": "Ana cire {{version}}"
       },
+      "pausedHelper": "An kashe garkuwar, kuma hare-haren yaudara na iya wucewa. Juya maɓallin domin ta sake kunnawa!",
       "goToDiagnostics": "Duba bincike",
       "viewStats": "Duba kididdigar kariya",
-      "trustedCount": "{{count}} masu aikowa amintattu",
-      "pausedHelper": "An kashe garkuwar, kuma hare-haren yaudara na iya wucewa. Juya maɓallin domin ta sake kunnawa!"
+      "trustedCount": "{{count}} masu aikowa amintattu"
     },
     "stats": {
       "title": "Kididdigar kariyarka",
@@ -93,6 +93,10 @@
         "title": "Masu aikowa amintattu",
         "subtitle": "Duba da sarrafa lambobin da ka ware a matsayin masu aminci."
       },
+      "report": {
+        "title": "Ba da rahoton saƙo",
+        "subtitle": "Aika abun da ka zarga don taimaka wa garkuwa ta ƙara wayewa."
+      },
       "settings": {
         "title": "Sarrafa saituna",
         "subtitle": "Daidaici harshe, sanarwa, da bincike."
@@ -104,10 +108,6 @@
       "developer": {
         "title": "Kayan aikin masu haɓakawa",
         "subtitle": "Sake saita koyarwar farko kuma sake duba izinoni."
-      },
-      "report": {
-        "title": "Ba da rahoton saƙo",
-        "subtitle": "Aika abun da ka zarga don taimaka wa garkuwa ta ƙara wayewa."
       }
     },
     "filtersTitle": "Matattara",
@@ -120,82 +120,82 @@
       "title": "Aikin kwanan nan",
       "empty": "Har yanzu babu ganowa. Gudanar da binciken kwaikwayo don ganin yadda gargadi zai fito."
     },
-    "recentAlerts": {
-      "title": "Gargadi na baya-bayan nan",
-      "subtitle": "Sabbin saƙonnin da garkuwa ta nuna akwai haɗari.",
-      "empty": "Babu gargadi a yanzu. Ka ci gaba da lura!",
-      "emptyWithFilters": "Ba a samu gargadin da ya dace da {{filters}} ba. Gwada sauya matattara.",
-      "filtersTitle": "Matattara",
-      "openFilters": "Buɗe matattara",
-      "editFilters": "Daidaice matattara",
+    "alerts": {
+      "title": "Faɗakarwa",
+      "subtitle": "Sakonan da Shield ya nuna.",
+      "empty": "Babu faɗakarwa da aka gano tukuna.",
+      "emptyWithFilters": "Babu faɗakarwa da suka dace da {{filters}}. Gwada canza filtanka.",
+      "filtersTitle": "Filtoci",
+      "openFilters": "Buɗe filtoci na faɗakarwa",
+      "editFilters": "Gyara filtoci",
       "clearFilters": "Share duka",
       "applyFilters": "An gama",
-      "noFiltersApplied": "Ba a saka matattara ba",
-      "viewAll": "Duba cikakken tarihi",
+      "noFiltersApplied": "Ba a sanya filtoci ba",
+      "viewAll": "Duba duk tarihin",
       "filters": {
-        "all": "Duk gargadi",
-        "historical": "Rumbun bayanan kai tsaye",
+        "all": "Duk faɗakarwa",
+        "historical": "Bayanan tarihi",
         "simulated": "Gwaje-gwajen ka",
-        "trusted": "Masu aiko amintattu"
+        "trusted": "Masu aikowa amintattu"
       },
       "timeframeLabel": "An gano a cikin",
       "timeframe": {
-        "all": "Kowane lokaci",
-        "24h": "Sa'o'i 24 da suka wuce",
-        "7d": "Kwanaki 7 da suka wuce",
-        "30d": "Kwanaki 30 da suka wuce"
+        "all": "Duk lokacin",
+        "24h": "Awanni 24 da suka gabata",
+        "7d": "Kwana 7 da suka gabata",
+        "30d": "Kwana 30 da suka gabata"
       },
       "severity": {
-        "all": "Duk matakin haɗari",
+        "all": "Duk matakan haɗari",
         "high": "Babban haɗari",
         "medium": "Matsakaicin haɗari",
         "low": "Ƙananan haɗari"
       },
       "channels": {
-        "all": "Duk wata hanya"
+        "all": "Duk tashoshi"
       },
-      "matchesHeading": "Alamomin da aka gano",
+      "matchesHeading": "Alamun da aka gano",
       "trustedToggle": {
-        "label": "Nuna masu aiko da kake yarda da su kaɗai",
-        "description": "Takaita sakamakon zuwa masu aiko da ka sa a matsayin masu aminci a cikin Saituna."
+        "label": "Nuna masu aikowa da aka yarda kawai",
+        "description": "Takaita sakamakon zuwa masu aikowa da ka sanya a matsayin amintattu a Saituna."
       },
-      "trustedOnlyBadge": "Masu aiko amintattu kaɗai",
+      "trustedOnlyBadge": "Masu aikowa amintattu kawai",
       "feedback": {
-        "title": "Shin wannan gargaɗi ya dace?",
-        "subtitle": "Faɗa mana ko harin phishing ne na gaske ko ƙararrawa ce ta ƙarya.",
+        "title": "Shin wannan faɗakarwa ta dace?",
+        "subtitle": "Faɗa mana ko wannan yunkurin phishing ne na gaske ko kuskuren gargadi ne.",
         "actions": {
-          "confirm": "Tabbatar da barazana",
-          "confirmHelper": "Harin phishing ne",
-          "dismiss": "Alamar lafiya",
-          "dismissHelper": "Saƙon gaskiya ne"
+          "confirm": "Tabbatar barazana",
+          "confirmHelper": "Yana da phishing",
+          "dismiss": "Alamta a matsayin lafiya",
+          "dismissHelper": "Yana da doka"
         },
         "status": {
-          "submitted": "Mun gode da taimakonka wajen inganta garkuwan.",
-          "confirmed": "An sanya shi a matsayin phishing",
-          "falsePositive": "An sanya shi a matsayin lafiya",
-          "pending": "Ana aikawa da ra'ayi..."
+          "submitted": "Na gode da taimaka wa inganta Shield.",
+          "confirmed": "An sanya alama a matsayin phishing",
+          "falsePositive": "An sanya alama a matsayin lafiya",
+          "pending": "Aika ra'ayi..."
         },
-        "error": "Ba mu iya aikawa da wannan ra'ayi ba. Ka sake gwadawa."
+        "error": "Ba za mu iya aika wannan ra'ayin ba. Gwada sake gwadawa."
       },
-      "searchPlaceholder": "Nemo gargadi ta mai aikowa, abun ciki, ko alama",
-      "trustedBadge": "An amince da mai aikowa",
-      "trustedDefault": "Ka saka wannan mai aiko cikin jerin masu aminci a Saituna.",
-      "historyAlertTitle": "Zai iso nan ba da jimawa ba",
-      "historyAlertBody": "Za ka iya duba cikakken tarihin gargadi a matakin gaba.",
+      "searchPlaceholder": "Bincika faɗakarwa ta mai aikawa, abun ciki, ko tag",
+      "trustedBadge": "Mai aikawa amintacce",
+      "trustedDefault": "Ka sanya wannan mai aikawa a matsayin amintacce a Saituna.",
+      "historyAlertTitle": "Nan ba da jimawa ba",
+      "historyAlertBody": "Zaka iya duba cikakken tarihin faɗakarwa a sigar da ke tafe.",
       "items": [
         {
-          "sender": "Lamba mara sani",
-          "preview": "Ka karɓi kuɗin haraji yanzu. Danna wannan mahaɗi…",
+          "sender": "Ba a sani ba",
+          "preview": "Nemi maido harajin ku yanzu. Danna mahaɗin...",
           "timestamp": "Awanni 2 da suka wuce"
         },
         {
-          "sender": "Hedikwatar Kuɗi",
-          "preview": "Gaggawa: Tabbatar da bayanan biyan kuɗinka don kar a dakatar da kai.",
+          "sender": "Finance HQ",
+          "preview": "Gaggawa: Tabbatar da bayanan albashin ka domin gujewa dakatarwa.",
           "timestamp": "Jiya"
         },
         {
           "sender": "+234 900 123 4567",
-          "preview": "Mun saka kuɗi a asusunka. Don Allah ka tabbatar nan da nan!",
+          "preview": "Mun saka kuɗi a asusunka. Tabbatar da shiga yanzu!",
           "timestamp": "Litinin"
         }
       ]
@@ -574,6 +574,10 @@
           "helper": "Tap to rotate through preset quiet-hour windows."
         }
       },
+      "diagnostics": {
+        "title": "Bincike",
+        "description": "Aika bayanai ba tare da suna ba domin taimaka wa ingancin ganowa."
+      },
       "trustedSources": {
         "title": "Masu aiko amintattu",
         "description": "Sarrafa lambobin waya ko masu aiko da imel da kake ganin sun dace.",
@@ -603,10 +607,6 @@
           "note": "Ƙara taƙaitaccen bayani (zaɓi)"
         },
         "saving": "Ana ajiye..."
-      },
-      "diagnostics": {
-        "title": "Bincike",
-        "description": "Aika bayanai ba tare da suna ba domin taimaka wa ingancin ganowa."
       }
     },
     "model": {

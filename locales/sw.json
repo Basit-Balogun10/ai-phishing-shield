@@ -39,16 +39,16 @@
         "ok": "Arifa na SMS ziko tayari",
         "missing": "Rekebisha ruhusa"
       },
-      "goToDiagnostics": "Angalia utambuzi",
-      "viewStats": "Tazama takwimu za ulinzi",
-      "trustedCount": "{{count}} watumaji wa kuaminika",
       "modelStatus": {
         "syncing": "Inalinganisha masasisho",
         "downloading": "Inapakua {{version}}",
         "activating": "Inawezeshwa {{version}}",
         "removing": "Inaondoa {{version}}"
       },
-      "pausedHelper": "Ngao imezimwa, na mashambulio ya ulaghai yanaweza kupenya. Geuza swichi uiwashe tena!"
+      "pausedHelper": "Ngao imezimwa, na mashambulio ya ulaghai yanaweza kupenya. Geuza swichi uiwashe tena!",
+      "goToDiagnostics": "Angalia utambuzi",
+      "viewStats": "Tazama takwimu za ulinzi",
+      "trustedCount": "{{count}} watumaji wa kuaminika"
     },
     "stats": {
       "title": "Takwimu za ulinzi wako",
@@ -93,21 +93,21 @@
         "title": "Watumaji wa kuaminika",
         "subtitle": "Kagua na dhibiti mawasiliano ulioweka kuwa salama."
       },
+      "report": {
+        "title": "Ripoti ujumbe",
+        "subtitle": "Tuma ujumbe wa kutiliwa shaka ili kusaidia kuimarisha ngao."
+      },
       "settings": {
         "title": "Simamia mipangilio",
         "subtitle": "Badilisha lugha, arifa, na utambuzi."
-      },
-      "developer": {
-        "title": "Zana za msanidi",
-        "subtitle": "Weka upya mwongozo wa kwanza na uangalie ruhusa tena."
       },
       "model": {
         "title": "Masasisho ya mfano",
         "subtitle": "Angalia uboreshaji wa kigunduzi na dhibiti matoleo yaliyosakinishwa."
       },
-      "report": {
-        "title": "Ripoti ujumbe",
-        "subtitle": "Tuma ujumbe wa kutiliwa shaka ili kusaidia kuimarisha ngao."
+      "developer": {
+        "title": "Zana za msanidi",
+        "subtitle": "Weka upya mwongozo wa kwanza na uangalie ruhusa tena."
       }
     },
     "filtersTitle": "Vichujio",
@@ -120,82 +120,82 @@
       "title": "Shughuli za hivi karibuni",
       "empty": "Bado hakuna ugunduzi. Endesha uchunguzi wa mfano kuona tahadhari zitakavyokuwa."
     },
-    "recentAlerts": {
-      "title": "Tahadhari za hivi karibuni",
-      "subtitle": "Ujumbe wa kutiliwa shaka uliovuliwa na ngao yako.",
-      "empty": "Hakuna tahadhari kwa sasa. Endelea kuwa makini!",
-      "emptyWithFilters": "Hakuna tahadhari zinazolingana na {{filters}}. Jaribu kubadilisha vichujio vyako.",
+    "alerts": {
+      "title": "Arifa",
+      "subtitle": "Ujumbe uliotajwa na Shield.",
+      "empty": "Hakuna arifa zilizogunduliwa bado.",
+      "emptyWithFilters": "Hakuna arifa zinazoendana na {{filters}}. Badilisha vichujio vyako.",
       "filtersTitle": "Vichujio",
       "openFilters": "Fungua vichujio vya tahadhari",
       "editFilters": "Badilisha vichujio",
       "clearFilters": "Futa vyote",
       "applyFilters": "Maliza",
       "noFiltersApplied": "Hakuna kichujio kilichotumika",
-      "viewAll": "Tazama historia yote",
+      "viewAll": "Angalia historia kamili",
       "filters": {
-        "all": "Tahadhari zote",
-        "historical": "Seti ya data ya moja kwa moja",
-        "simulated": "Jaribio lako",
-        "trusted": "Watumaji uliowaamini"
+        "all": "Arifa zote",
+        "historical": "Seti ya data ya zamani",
+        "simulated": "Matukio ya mfano",
+        "trusted": "Watumaji waliothibitishwa"
       },
-      "timeframeLabel": "Iligunduliwa ndani ya",
+      "timeframeLabel": "Imegunduliwa ndani ya",
       "timeframe": {
-        "all": "Wakati wowote",
+        "all": "Muda wote",
         "24h": "Masaa 24 yaliyopita",
         "7d": "Siku 7 zilizopita",
         "30d": "Siku 30 zilizopita"
       },
       "severity": {
-        "all": "Kiwango chochote",
+        "all": "Ngazi zote za hatari",
         "high": "Hatari kubwa",
         "medium": "Hatari ya kati",
         "low": "Hatari ndogo"
       },
       "channels": {
-        "all": "Njia yoyote"
+        "all": "Vyanzo vyote"
       },
-      "matchesHeading": "Ishara zilizogunduliwa",
+      "matchesHeading": "Ishara zilizotambuliwa",
       "trustedToggle": {
-        "label": "Onyesha watumaji uliowaamini pekee",
-        "description": "Chuja matokeo kwa watumaji ulioweka kuwa salama ndani ya Mipangilio."
+        "label": "Onyesha watumaji waliothibitishwa tu",
+        "description": "Punguza matokeo kwa watumaji ulioweka kuwa salama kwenye Mipangilio."
       },
-      "trustedOnlyBadge": "Watumaji uliowaamini pekee",
+      "trustedOnlyBadge": "Watumaji waliothibitishwa tu",
       "feedback": {
-        "title": "Je, onyo hili lilikuwa sahihi?",
-        "subtitle": "Tuambie kama hili lilikuwa jaribio halisi la ulaghai au tahadhari ya uongo.",
+        "title": "Je, tahadhari hii ilikuwa sahihi?",
+        "subtitle": "Tuambie kama ilikuwa jaribio la ulaghai au tahadhari ya uwongo.",
         "actions": {
           "confirm": "Thibitisha tishio",
           "confirmHelper": "Ilikuwa ulaghai",
-          "dismiss": "Weka kama salama",
-          "dismissHelper": "Ujumbe ulikuwa halali"
+          "dismiss": "Chagua kama salama",
+          "dismissHelper": "Ilikuwa halali"
         },
         "status": {
-          "submitted": "Asante kwa kusaidia kuboresha kinga.",
-          "confirmed": "Imewekwa alama kama ulaghai",
-          "falsePositive": "Imewekwa alama kama salama",
+          "submitted": "Asante kwa kusaidia kuboresha Shield.",
+          "confirmed": "Imekadiriwa kuwa phishing",
+          "falsePositive": "Imekadiriwa kuwa salama",
           "pending": "Inatuma maoni..."
         },
-        "error": "Hatukuweza kutuma maoni hayo. Jaribu tena."
+        "error": "Hatuwezi kutuma maoni hayo. Jaribu tena."
       },
-      "searchPlaceholder": "Tafuta tahadhari kwa mtumaji, maudhui, au tag",
-      "trustedBadge": "Mtumaji uliyemwamini",
-      "trustedDefault": "Uliweka mtumaji huyu kuwa salama kwenye Mipangilio.",
-      "historyAlertTitle": "Inakuja hivi karibuni",
-      "historyAlertBody": "Utaweza kuangalia historia yote ya tahadhari kwenye hatua inayofuata.",
+      "searchPlaceholder": "Tafuta arifa kwa mtumaji, maudhui, au tag",
+      "trustedBadge": "Mtumaji aliethibitishwa",
+      "trustedDefault": "Umeonyesha mtumaji huyu kuwa salama katika Mipangilio.",
+      "historyAlertTitle": "Hivi karibuni",
+      "historyAlertBody": "Utaweza kupitia historia kamili ya arifa katika toleo lijalo.",
       "items": [
         {
-          "sender": "Namba isiyojulikana",
-          "preview": "Dai marejesho yako ya kodi sasa. Bofya kiungo hiki…",
-          "timestamp": "Saa 2 zilizopita"
+          "sender": "Nambari isiyojulikana",
+          "preview": "Omba marejesho ya kodi sasa. Bonyeza kiunganisho...",
+          "timestamp": "Masaa 2 zilizopita"
         },
         {
-          "sender": "Makao ya Fedha",
-          "preview": "Haraka: Thibitisha maelezo yako ya malipo ili kuepuka kusimamishwa.",
+          "sender": "Finance HQ",
+          "preview": "Dhahiri: Thibitisha maelezo yako ya mshahara ili kuepuka kusimamishwa.",
           "timestamp": "Jana"
         },
         {
           "sender": "+234 900 123 4567",
-          "preview": "Tumeweka pesa kwenye akaunti yako. Tafadhali thibitisha mara moja!",
+          "preview": "Tumeweka mkopo kwenye akaunti yako. Thibitisha kuingia sasa!",
           "timestamp": "Jumatatu"
         }
       ]
@@ -484,6 +484,12 @@
         "errorTitle": "Sasisho limefeli",
         "errorBody": "Hatukuweza kuhifadhi mapendeleo yako. Tafadhali jaribu tena."
       },
+      "model": {
+        "title": "Masasisho ya mfano",
+        "description": "Sakinisha mifano mipya ya kugundua phishing na dhibiti matoleo.",
+        "manageButton": "Fungua msimamizi",
+        "currentBadge": "Toleo linalotumika {{version}}"
+      },
       "language": {
         "title": "Lugha",
         "description": "Badilisha kati ya Kiingereza, Kifaransa, Kiswahili, Kiyoruba, Kiigbo, Kihausa, Pidgin, Kiarabu na Kiamhari.",
@@ -568,6 +574,10 @@
           "helper": "Tap to rotate through preset quiet-hour windows."
         }
       },
+      "diagnostics": {
+        "title": "Utambuzi",
+        "description": "Tuma kumbukumbu zisizo na majina kusaidia kuboresha ugunduzi."
+      },
       "trustedSources": {
         "title": "Watumaji wa kuaminika",
         "description": "Simamia namba za simu au barua pepe unazoamini.",
@@ -597,19 +607,8 @@
           "note": "Ongeza tanbihi fupi (hiari)"
         },
         "saving": "Inahifadhi..."
-      },
-      "diagnostics": {
-        "title": "Utambuzi",
-        "description": "Tuma kumbukumbu zisizo na majina kusaidia kuboresha ugunduzi."
-      },
-      "model": {
-        "title": "Masasisho ya mfano",
-        "description": "Sakinisha mifano mipya ya kugundua phishing na dhibiti matoleo.",
-        "manageButton": "Fungua msimamizi",
-        "currentBadge": "Toleo linalotumika {{version}}"
       }
     },
-    "back": "← Rudi kwenye dashibodi",
     "model": {
       "title": "Usimamizi wa mfano",
       "subtitle": "Pakua masasisho, wezesha matoleo, na kagua historia ya usakinishaji.",
@@ -670,7 +669,8 @@
         "syncErrorTitle": "Kulinganisha kumeharibika",
         "syncErrorBody": "Hatukuweza kusasisha katalogi. Hakikisha una muunganisho kisha ujaribu tena."
       }
-    }
+    },
+    "back": "← Rudi kwenye dashibodi"
   },
   "developerTools": {
     "resetOnboarding": {

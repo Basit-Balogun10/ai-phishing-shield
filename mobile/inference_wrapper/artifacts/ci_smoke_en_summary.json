@@ -1,0 +1,8 @@
+[
+  {
+    "heuristic_weight": 0.5,
+    "mock_tp_rate": 0.8571428571428571,
+    "benign_fp_rate": 0.0,
+    "avg_mock_delta": 0.0
+  }
+]

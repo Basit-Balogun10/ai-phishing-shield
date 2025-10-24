@@ -1,0 +1,23 @@
+{
+  "urgency_keywords": [
+    "immédiatement",
+    "urgent",
+    "maintenant",
+    "dans 24 heures",
+    "suspendre",
+    "suspendu",
+    "vérifiez",
+    "confirmez"
+  ],
+  "money_regex": "(banque|compte|virement|retirer|déposer|solde|payer|naira|dollar|euro|carte)",
+  "reward_regex": "(prix|loterie|gagnant|félicitations|récompense|cadeau|sélectionné)",
+  "account_regex": "(vérifiez|confirmez|mettre à jour|suspendre|activer|désactiver|réactiver)",
+  "otp_pattern": "\\b\\d{4,6}\\b",
+  "urgency_weight": 0.25,
+  "short_link_weight": 0.18,
+  "link_weight": 0.05,
+  "money_keyword_weight": 0.2,
+  "reward_keyword_weight": 0.18,
+  "account_keyword_weight": 0.2,
+  "otp_weight": 0.12
+}

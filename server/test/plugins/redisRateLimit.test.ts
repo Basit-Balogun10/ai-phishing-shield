@@ -10,7 +10,7 @@ describe('redisRateLimit plugin', () => {
     await app.register(redisRateLimitPlugin);
     // return headers so tests can inspect them directly without relying on
     // inject's response header normalization.
-    app.get('/', async (req, reply) => reply.send(reply.getHeaders()));
+  app.get('/', async (req: any, reply: any) => reply.send(reply.getHeaders()));
     await app.ready();
   });
 

@@ -1,0 +1,21 @@
+{
+  "urgency_keywords": [
+    "da gaggawa",
+    "nan take",
+    "yanzu",
+    "a cikin awanni 24",
+    "dakatar",
+    "tabbatar"
+  ],
+  "money_regex": "(banki|asusu|canja wurin|cire|ajiye|ma'auni|biya|naira|dalar)",
+  "reward_regex": "(kyauta|jackpot|wani|taya murna|zabe)",
+  "account_regex": "(tabbatar|tabbatar da|sabunta|dakatar|kunna)",
+  "otp_pattern": "\\b\\d{4,6}\\b",
+  "urgency_weight": 0.25,
+  "short_link_weight": 0.18,
+  "link_weight": 0.05,
+  "money_keyword_weight": 0.2,
+  "reward_keyword_weight": 0.18,
+  "account_keyword_weight": 0.2,
+  "otp_weight": 0.12
+}

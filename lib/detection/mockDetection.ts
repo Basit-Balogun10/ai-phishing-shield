@@ -1,6 +1,7 @@
 export type MockMessage = {
   id: string;
   sender: string;
+  package?: string;
   channel: 'sms' | 'whatsapp' | 'email';
   body: string;
   receivedAt: string;
@@ -12,10 +13,15 @@ export type DetectionMatch = {
   weight: number;
 };
 
+export type Severity = 'high' | 'medium' | 'low' | 'safe';
+
 export type DetectionResult = {
   message: MockMessage;
   score: number;
   matches: DetectionMatch[];
+  risk?: {
+    severity: Severity;
+  };
 };
 
 type KeywordRule = {
@@ -156,10 +162,30 @@ export const analyzeMessage = (message: MockMessage): DetectionResult => {
     }
   }
 
+  const finalScore = clampScore(score);
+
+  // Derive a simple severity/risk label using common thresholds.
+  // These mirror the metadata thresholds used by the inference harness
+  // (low: 0.5, medium: 0.6, high: 0.75) but kept local so the mock
+  // analyzer remains self-contained for JS-only flows.
+  let severity: Severity = 'safe';
+  if (finalScore >= 0.75) {
+    severity = 'high';
+  } else if (finalScore >= 0.6) {
+    severity = 'medium';
+  } else if (finalScore >= 0.5) {
+    severity = 'low';
+  } else {
+    severity = 'safe';
+  }
+
   return {
     message,
-    score: clampScore(score),
+    score: finalScore,
     matches,
+    risk: {
+      severity,
+    },
   };
 };
 

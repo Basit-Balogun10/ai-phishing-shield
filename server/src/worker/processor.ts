@@ -1,5 +1,5 @@
 import prisma from '../db/prisma';
-import { getQueue, initQueue, closeQueue } from '../queue/outboxQueue';
+import { initQueue, closeQueue } from '../queue/outboxQueue';
 import axios from 'axios';
 
 const POLL_INTERVAL = Number(process.env.OUTBOX_POLL_INTERVAL_MS ?? 2000);

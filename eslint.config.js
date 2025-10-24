@@ -12,7 +12,10 @@ module.exports = defineConfig([
       'react/display-name': 'off',
       // Prevent accidental imports from server-side code or large model/dataset
       // folders into the mobile app. This runs during lint/time and will fail
-      // the build if any mobile code imports forbidden paths.
+      // the build if any mobile code imports forbidden paths. Keep the rule
+      // simple and compatible with the current ESLint schema by only using
+      // the `patterns` option (the schema does not allow a top-level
+      // `message` when `patterns` is present).
       'no-restricted-imports': [
         'error',
         {
@@ -25,9 +28,6 @@ module.exports = defineConfig([
             'data/**',
             'dataset/**',
           ],
-          // A short message helps developers quickly understand why the import
-          // is restricted.
-          message: 'Importing server-side or large dataset/model files into the mobile bundle is forbidden. Access server APIs via network calls instead.'
         }
       ],
     },

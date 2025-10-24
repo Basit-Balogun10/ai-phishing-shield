@@ -39,16 +39,16 @@
         "ok": "Notifications & SMS ready",
         "missing": "Fix permissions"
       },
-      "goToDiagnostics": "Open diagnostics",
-      "viewStats": "See protection stats",
-      "trustedCount": "{{count}} trusted senders",
       "modelStatus": {
         "syncing": "We dey sync updates",
         "downloading": "We dey download {{version}}",
         "activating": "We dey activate {{version}}",
         "removing": "We dey remove {{version}}"
       },
-      "pausedHelper": "Shield don deactivate, and phishing attack fit slip enter. Flip the toggle make e wake am back!"
+      "pausedHelper": "Shield don deactivate, and phishing attack fit slip enter. Flip the toggle make e wake am back!",
+      "goToDiagnostics": "Open diagnostics",
+      "viewStats": "See protection stats",
+      "trustedCount": "{{count}} trusted senders"
     },
     "stats": {
       "title": "Your protection numbers",
@@ -93,21 +93,21 @@
         "title": "Trusted senders",
         "subtitle": "Review and manage the contacts wey you don mark safe."
       },
+      "report": {
+        "title": "Report message",
+        "subtitle": "Send any message wey suspect to help train the shield more."
+      },
       "settings": {
         "title": "Manage settings",
         "subtitle": "Set languages, notifications, and diagnostics the way you want."
-      },
-      "developer": {
-        "title": "Developer tools",
-        "subtitle": "Reset onboarding and run permission check again."
       },
       "model": {
         "title": "Model upgrades",
         "subtitle": "Check for fresh detector updates and manage the versions wey you already get."
       },
-      "report": {
-        "title": "Report message",
-        "subtitle": "Send any message wey suspect to help train the shield more."
+      "developer": {
+        "title": "Developer tools",
+        "subtitle": "Reset onboarding and run permission check again."
       }
     },
     "filtersTitle": "Filters",
@@ -120,10 +120,10 @@
       "title": "Latest activity",
       "empty": "No detection yet. Run mock scan make you preview alerts."
     },
-    "recentAlerts": {
-      "title": "Recent alerts",
-      "subtitle": "Latest suspicious messages wey the shield don flag.",
-      "empty": "No alert show yet. Stay sharp!",
+    "alerts": {
+      "title": "Alert dem",
+      "subtitle": "Messages we Shield don mark.",
+      "empty": "No alert don show yet.",
       "emptyWithFilters": "No alert match {{filters}}. Try change your filters.",
       "filtersTitle": "Filters",
       "openFilters": "Open alert filters",
@@ -131,10 +131,10 @@
       "clearFilters": "Clear all",
       "applyFilters": "Done",
       "noFiltersApplied": "No filters applied",
-      "viewAll": "See full history",
+    "viewAll": "See full history",
       "filters": {
         "all": "All alerts",
-        "historical": "Live dataset",
+        "historical": "Old dataset",
         "simulated": "Your mock runs",
         "trusted": "Trusted senders"
       },
@@ -149,53 +149,53 @@
         "all": "Any risk",
         "high": "High risk",
         "medium": "Medium risk",
-        "low": "Low risk"
+        "low": "Lower risk"
       },
       "channels": {
         "all": "Any channel"
       },
-      "matchesHeading": "Signals we detect",
+      "matchesHeading": "Detected signals",
       "trustedToggle": {
-        "label": "Show trusted senders only",
-        "description": "Limit results to senders wey you mark safe inside Settings."
+        "label": "Only show trusted senders",
+        "description": "Limit results to senders you’ve marked as safe in Settings."
       },
       "trustedOnlyBadge": "Trusted senders only",
       "feedback": {
-        "title": "Na correct alert be this?",
-        "subtitle": "Tell us if na true phishing attempt or na false alarm.",
+        "title": "Was dis alert correct?",
+        "subtitle": "Tell us if na real phishing or na mistake.",
         "actions": {
           "confirm": "Confirm threat",
-          "confirmHelper": "E really be phishing",
-          "dismiss": "Mark am safe",
-          "dismissHelper": "Message dey legit"
+          "confirmHelper": "Na phishing",
+          "dismiss": "Mark as safe",
+          "dismissHelper": "Na correct"
         },
         "status": {
-          "submitted": "Thanks for helping make the shield better.",
+          "submitted": "Thanks for helping improve the shield.",
           "confirmed": "Marked as phishing",
           "falsePositive": "Marked as safe",
-          "pending": "Sending your feedback..."
+          "pending": "Sending feedback..."
         },
         "error": "We no fit send that feedback. Try again."
       },
-      "searchPlaceholder": "Search alerts by sender, content, or tag",
+  "searchPlaceholder": "Search alerts by sender, content, or tag",
       "trustedBadge": "Trusted sender",
-      "trustedDefault": "Na you mark this sender safe for Settings.",
-      "historyAlertTitle": "E go land soon",
-      "historyAlertBody": "Full alert history go show for the next milestone.",
+      "trustedDefault": "You mark this sender as safe for Settings.",
+      "historyAlertTitle": "Coming soon",
+      "historyAlertBody": "You go fit review full alert history for next milestone.",
       "items": [
         {
           "sender": "Unknown number",
-          "preview": "Claim your tax refund now. Click the link…",
+          "preview": "Collect your tax refund now. Click di link...",
           "timestamp": "2h ago"
         },
         {
           "sender": "Finance HQ",
-          "preview": "Urgent: Verify your payroll details make dem no suspend you.",
+          "preview": "Urgent: Verify your payroll details to avoid suspension.",
           "timestamp": "Yesterday"
         },
         {
           "sender": "+234 900 123 4567",
-          "preview": "We don credit your account. Confirm login sharp sharp!",
+          "preview": "We've credited your account. Confirm login immediately!",
           "timestamp": "Mon"
         }
       ]
@@ -484,6 +484,12 @@
         "errorTitle": "Update fail",
         "errorBody": "We no fit save your choice now. Abeg try again."
       },
+      "model": {
+        "title": "Model upgrades",
+        "description": "Put new phishing detector model and look after the versions wey dey your device.",
+        "manageButton": "Open model manager",
+        "currentBadge": "Now version {{version}}"
+      },
       "language": {
         "title": "Language",
         "description": "Switch between English, French, Swahili, Yoruba, Igbo, Hausa, Pidgin, Arabic, and Amharic.",
@@ -601,15 +607,8 @@
           "note": "Add short note (optional)"
         },
         "saving": "Saving..."
-      },
-      "model": {
-        "title": "Model upgrades",
-        "description": "Put new phishing detector model and look after the versions wey dey your device.",
-        "manageButton": "Open model manager",
-        "currentBadge": "Now version {{version}}"
       }
     },
-    "back": "← Go back to dashboard",
     "model": {
       "title": "Model control",
       "subtitle": "Download new updates, activate any version wey you choose, and check install history.",
@@ -670,7 +669,8 @@
         "syncErrorTitle": "Sync fail",
         "syncErrorBody": "We no fit refresh the catalog. Check your connection then try again."
       }
-    }
+    },
+    "back": "← Go back to dashboard"
   },
   "developerTools": {
     "resetOnboarding": {

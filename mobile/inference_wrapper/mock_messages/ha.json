@@ -1,0 +1,23 @@
+[
+  {
+    "id": "mock-1",
+    "sender": "UBA Secure",
+    "channel": "sms",
+    "body": "GARGADI UBA: Za a dakatar da asusunka cikin sa'o'i 24. Tabbatar da asusunka yanzu a http://uba-secure-check.com don gujewa rufewa.",
+    "receivedAt": "2025-10-08T08:15:00Z"
+  },
+  {
+    "id": "mock-2",
+    "sender": "Tax Grant",
+    "channel": "sms",
+    "body": "Taya murna! Kana da cancanci samun dawowar haraji na musamman. Danna wannan mahaɗin don karɓa cikin awanni 12: https://bit.ly/rebatesafrica",
+    "receivedAt": "2025-10-08T09:02:00Z"
+  },
+  {
+    "id": "mock-3",
+    "sender": "MTN Nigeria",
+    "channel": "sms",
+    "body": "Abokin ciniki, za a kashe SIM ɗinka yau. Tabbatar da NIN ɗinka yanzu ta http://mtn-verify.ng kuma shigar da OTP ɗinka.",
+    "receivedAt": "2025-10-08T09:45:00Z"
+  }
+]

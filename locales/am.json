@@ -45,10 +45,10 @@
         "activating": "{{version}} በማግበር ላይ",
         "removing": "{{version}} በማስወገድ ላይ"
       },
+      "pausedHelper": "ጋሻው ተሰናክሏል፣ የፊሺንግ ጥቃቶች ሊያልፉ ይችላሉ። ቶገሉን እንደገና ያንቁ!",
       "goToDiagnostics": "ምርመራን ይመልከቱ",
       "viewStats": "የጥበቃ ስታቲስቲክስን ይመልከቱ",
-      "trustedCount": "{{count}} ታማኝ ልኪዎች",
-      "pausedHelper": "ጋሻው ተሰናክሏል፣ የፊሺንግ ጥቃቶች ሊያልፉ ይችላሉ። ቶገሉን እንደገና ያንቁ!"
+      "trustedCount": "{{count}} ታማኝ ልኪዎች"
     },
     "stats": {
       "title": "የጥበቃ ስታቲስቲክስዎ",
@@ -93,6 +93,10 @@
         "title": "ታማኝ ልኪዎች",
         "subtitle": "የተሰናከሉትን እውቂያዎች ይቆጣጠሩ።"
       },
+      "report": {
+        "title": "መልዕክት ያመልክቱ",
+        "subtitle": "ጋሻውን ለማሻሻል ተጠራጣሪ ይዘትን ያቀርቡ።"
+      },
       "settings": {
         "title": "ቅንብሮችን ያቆጣጠሩ",
         "subtitle": "ቋንቋ፣ ማንቂያ ምርጫዎችን እና ምርመራዎችን ያስተካክሉ።"
@@ -104,10 +108,6 @@
       "developer": {
         "title": "የአበልጻጊ መሣሪያዎች",
         "subtitle": "መጀመሪያ መመሪያውን እንደገና ያስጀምሩ እና ፍቃዶችን ዳግም ይፈትሹ።"
-      },
-      "report": {
-        "title": "መልዕክት ያመልክቱ",
-        "subtitle": "ጋሻውን ለማሻሻል ተጠራጣሪ ይዘትን ያቀርቡ።"
       }
     },
     "filtersTitle": "Filters",
@@ -120,82 +120,82 @@
       "title": "የቅርብ እንቅስቃሴ",
       "empty": "እስካሁን መመርመር አልተካሄደም። ማስጠንቀቂያዎችን ለማየት ሞክር ምርመራ አሂዱ።"
     },
-    "recentAlerts": {
-      "title": "የቅርብ ማስጠንቀቂያዎች",
-      "subtitle": "ጋሻው የገደበውን የተጠርጣሪ መልዕክቶች ማስታወቂያ ነው።",
-      "empty": "አሁን ላይ ማስጠንቀቂያ የለም። ትኩረትዎን ይጠብቁ!",
-      "emptyWithFilters": "ምንም ማስጠንቀቂያ {{filters}} አልተገኘም። እባክዎ ማጣሪያዎቹን ይቀይሩ።",
-      "filtersTitle": "Filters",
-      "openFilters": "Open alert filters",
-      "editFilters": "Adjust filters",
-      "clearFilters": "Clear all",
-      "applyFilters": "Done",
-      "noFiltersApplied": "No filters applied",
-      "viewAll": "ሙሉ ታሪኩን ይመልከቱ",
+    "alerts": {
+      "title": "ማስጠንቀቂያዎች",
+      "subtitle": "በሸልድ የተለዩ መልዶች።",
+      "empty": "እስካሁን ምንም ማስጠንቀቂያ አልተገኘም።",
+      "emptyWithFilters": "ከ{{filters}} ጋር የተስማሙ ማስጠንቀቂያዎች የሉም። መለኪያዎችን ይቀይሩ።",
+      "filtersTitle": "መለኪያዎች",
+      "openFilters": "የማስጠንቀቂያ መለኪያዎችን ክፈት",
+      "editFilters": "መለኪያዎችን ማስተካከል",
+      "clearFilters": "ሁሉንም ሰርዝ",
+      "applyFilters": "ተጠቅመ",
+      "noFiltersApplied": "ምንም መለኪያ አልተተገበረም",
+      "viewAll": "ሙሉ ታሪኩን ተመልከት",
       "filters": {
         "all": "ሁሉም ማስጠንቀቂያዎች",
-        "historical": "የሙከራ መረጃ",
-        "simulated": "የሞክር ሙከራዎችዎ",
-        "trusted": "ታማኝ እርስዎ ያመኑት ልኪዎች"
+        "historical": "የታሪክ ዳታ",
+        "simulated": "የእርስዎ ሞክር ሩንስ",
+        "trusted": "የታመኑ መላኪያዎች"
       },
-      "timeframeLabel": "Detected within",
+      "timeframeLabel": "ከተገኘው ውስጥ",
       "timeframe": {
-        "all": "Any time",
-        "24h": "Last 24 hours",
-        "7d": "Last 7 days",
-        "30d": "Last 30 days"
+        "all": "ማንኛውም ጊዜ",
+        "24h": "ከዚህ የቀድሞ 24 ሰዓታት",
+        "7d": "ከዚህ የቀድሞ 7 ቀናት",
+        "30d": "ከዚህ የቀድሞ 30 ቀናት"
       },
       "severity": {
-        "all": "ሁሉም ደረጃ",
+        "all": "ማንኛውም የአደጋ ደረጃ",
         "high": "ከፍተኛ አደጋ",
         "medium": "መካከለኛ አደጋ",
-        "low": "ዝቅተኛ አደጋ"
+        "low": "ዝቅኛ አደጋ"
       },
       "channels": {
         "all": "ማንኛውም ቻናል"
       },
-      "matchesHeading": "Detected signals",
+      "matchesHeading": "የተገኙ ምልክቶች",
       "trustedToggle": {
-        "label": "ታማኝ ልኪዎችን ብቻ አሳይ",
-        "description": "በማስተካከያ ውስጥ ታማኝ ብለው ያመለከቱትን ውጤቶች ብቻ ያግኙ።"
+        "label": "የታመኑ መላኪያዎች ብቻ አሳይ",
+        "description": "ውጤቱን ለታመኑ መላኪያዎች ብቻ አገዝ።"
       },
-      "trustedOnlyBadge": "ታማኝ ልኪዎች ብቻ",
+      "trustedOnlyBadge": "የታመኑ መላኪያዎች ብቻ",
       "feedback": {
-        "title": "ይህ ማንቂያ ትክክል ነበር?",
-        "subtitle": "ይህ የእውነት የፊሺንግ ሙከራ ነበር ወይስ የተሳሳተ ማንቂያ እንደነበር ንገሩን።",
+        "title": "ይህ ማስጠንቀቂያ ትክክለኛ ነበር?",
+        "subtitle": "እባክዎ ይንገሩን ይህ የታሰረ ወይስ የውስጥ ስህተት ነበር።",
         "actions": {
-          "confirm": "አደጋን አረጋግጥ",
-          "confirmHelper": "የፊሺንግ ሙከራ ነበር",
-          "dismiss": "ደህና ሆነ ምልክት ላይ አድርግ",
-          "dismissHelper": "ትክክለኛ መልዕክት ነበር"
+          "confirm": "አረጋግጥ ሸርሽር",
+          "confirmHelper": "ይህ ፊሺንግ ነበር",
+          "dismiss": "እንደ አደረገ አስገባ",
+          "dismissHelper": "ይህ የተፈጥሮ መልእክት ነበር"
         },
         "status": {
-          "submitted": "ጋሻውን ለማሻሻል የሰጣችሁትን አስተያየት እናመሰግናለን።",
-          "confirmed": "እንደ ፊሺንግ ተሰናክሏል",
-          "falsePositive": "እንደ ደህና ተሰናክሏል",
-          "pending": "አስተያየቱን በመላክ ላይ..."
+          "submitted": "ለመሻሻል እናመሰግናለን።",
+          "confirmed": "እንደ ፊሺንግ ተስማሚ ተረጋግጧል",
+          "falsePositive": "እንደ አደረገ ተስማሚ ተረጋግጧል",
+          "pending": "እየላኩ ነው..."
         },
-        "error": "አስተያየቱን መላክ አልተቻለም። እባክዎን ዳግም ይሞክሩ።"
+        "error": "መልእክቱን ማስተላለፊያ አልቻልንም። እንደገና ይሞክሩ።"
       },
-      "searchPlaceholder": "ማስጠንቀቂያዎችን በልኪ፣ በይዘት ወይም በታግ ፈልግ",
-      "trustedBadge": "ታማኝ ልኪ",
-      "trustedDefault": "ይህን ልኪ በማስተካከያ ውስጥ እንደ ታማኝ ሰው ምልክት አድርጋችሁታል።",
-      "historyAlertTitle": "በቅርቡ",
-      "historyAlertBody": "ሙሉ የማስጠንቀቂያ ታሪክ በሚቀጥለው ማሻሻያ ይገናኛል።",
+      "searchPlaceholder": "በመላኪያ፣ ይዘት ወይም ምልክት ይፈልጉ",
+      "trustedBadge": "ታመነ መላኪያ",
+      "trustedDefault": "ይህን መላኪያ እርስዎ እንደ ሰላም በመለያየት ያስመዘገቡ።",
+      "historyAlertTitle": "በቅርብ ጊዜ",
+      "historyAlertBody": "በሚቀጥለው ምዕራፍ የማስጠንቀቂያ ሙሉ ታሪክ ይገኛል።",
       "items": [
         {
           "sender": "ያልታወቀ ቁጥር",
-          "preview": "የታክስ መመለሻዎን አሁን ይጠይቁ። አገናኝ ጠቅ ያድርጉ…",
-          "timestamp": "2 ሰዓታት በፊት"
+          "preview": "አሁን የግብር ቅናሽዎን ይጠይቁ። አገናኝን ይጫኑ...",
+          "timestamp": "2 ሰዓት በፊት"
         },
         {
-          "sender": "የፋይናንስ ማዕከል",
-          "preview": "አስቸኳይ፡ የደመወዝ መረጃዎን ያረጋግጡ ከተሰናከሉ በፊት።",
+          "sender": "የፋይናንስ ማእከል",
+          "preview": "አስቸኳይ፡ የደመወዝ ዝርዝሮችዎን ያረጋግጡ እንዳትቋረጥ።",
           "timestamp": "ትናንትና"
         },
         {
           "sender": "+234 900 123 4567",
-          "preview": "በመለያዎ ገንዘብ አኖርን። እባክዎን ወዲያውኑ ያረጋግጡ!",
+          "preview": "የእርስዎን መለያ እንደገና አረጋግጡ!",
           "timestamp": "ሰኞ"
         }
       ]

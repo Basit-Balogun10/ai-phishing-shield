@@ -15,12 +15,12 @@ export const redisRateLimitPlugin: FastifyPluginAsync = async (server) => {
       const IORedis = await import('ioredis');
       client = new IORedis.default(redisUrl, { lazyConnect: false });
       // avoid unhandled error events from ioredis bubbling up and failing tests
-      try {
-        client.on('error', (err: any) => server.log.warn('[rate-limit] redis error', err));
+        try {
+        client.on('error', (err: any) => server.log.warn({ err }, '[rate-limit] redis error'));
       } catch {}
       server.log.info('Redis rate limiter enabled');
     } catch (err) {
-      server.log.warn('ioredis not available — falling back to in-memory rate limiter', err);
+      server.log.warn({ err }, 'ioredis not available — falling back to in-memory rate limiter');
     }
   } else {
     server.log.info('No REDIS_URL configured — using in-memory rate limiter (best-effort)');
@@ -105,7 +105,7 @@ export const redisRateLimitPlugin: FastifyPluginAsync = async (server) => {
       }
     } catch (err) {
       // Never crash requests when rate-limit check fails; log and allow.
-      server.log.warn('[rate-limit] check failed, allowing request', err);
+      server.log.warn({ err }, '[rate-limit] check failed, allowing request');
     }
   });
 
@@ -117,7 +117,7 @@ export const redisRateLimitPlugin: FastifyPluginAsync = async (server) => {
         : reply.raw && reply.raw.getHeaders
           ? reply.raw.getHeaders()
           : {};
-      if (!headers || !headers['x-ratelimit-limit']) {
+      if (!headers || !(headers as any)['x-ratelimit-limit']) {
         const limitVal = String(max);
         const remainingVal = String(max);
         const resetVal = String(Date.now() + windowSeconds * 1000);
@@ -143,7 +143,7 @@ export const redisRateLimitPlugin: FastifyPluginAsync = async (server) => {
         }
       }
     } catch (e) {
-      server.log.debug('[rate-limit] onSend header set failed', e);
+      server.log.debug({ err: e }, '[rate-limit] onSend header set failed');
     }
     return payload;
   });

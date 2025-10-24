@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Alert, Platform, ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import NotificationListener from '../../mobile/notifications/notificationListener';
+import { processIncomingNotification } from '../../lib/services/notificationHandler';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useOnboardingGate } from '../../lib/hooks/useOnboardingGate';
@@ -25,6 +27,7 @@ import { clearOnboardingComplete } from '../../lib/storage';
 import { useTelemetryPreferences } from '../../lib/telemetryPreferences';
 import { shieldStateStore, useShieldState } from '../../lib/shieldState';
 import { formatDetectionTimestamp } from '../../lib/detection/formatters';
+import notificationFilter from '../../lib/services/notificationFilter';
 
 const MOCK_TOOLS_DISMISS_KEY = 'dashboard_mock_tools_dismissed_v1';
 
@@ -254,6 +257,41 @@ export default function DashboardScreen() {
       trackTelemetryEvent('dashboard.shield_toggled', {
         paused: nextPaused,
       });
+      // Start or stop the notification listener based on shield state
+      try {
+        if (!nextPaused) {
+          // enabling shield -> start listener
+          await NotificationListener.init();
+          const granted = await NotificationListener.isPermissionGranted();
+          if (!granted) {
+            // attempt to request permission; user may need to grant in OS settings
+            await NotificationListener.requestPermission();
+          }
+          // start listening; register a lightweight handler that logs telemetry.
+          await NotificationListener.start();
+          // register onNotification handler; ensure we unsubscribe any previous handler
+          // We create a local handler that will optionally trigger the mock detection in dev.
+          NotificationListener.onNotification(async (payload) => {
+            try {
+              // Process incoming notification: convert to detection format and run analysis.
+              await processIncomingNotification(payload as Record<string, any>);
+            } catch {
+              // ignore
+            }
+          });
+          // store unsubscribe on AsyncStorage so we can clear if needed; keep ephemeral here
+          // (we don't persist the callback between reloads)
+        } else {
+          // disabling shield -> stop listener
+          try {
+            await NotificationListener.stop();
+          } catch {
+            // ignore
+          }
+        }
+      } catch {
+        console.warn('[dashboard] Notification listener start/stop failed');
+      }
     } catch (error) {
       console.warn('[dashboard] Failed to toggle shield', error);
       setOptimisticShieldPaused(currentPaused);
@@ -262,6 +300,18 @@ export default function DashboardScreen() {
       setIsUpdatingShield(false);
     }
   }, [isUpdatingShield, optimisticShieldPaused, permissionsMissing, shieldPaused, shieldReady, t]);
+
+  useEffect(() => {
+    // initialize listener on mount (no-op on non-Android)
+    void (async () => {
+      try {
+        // prefer native bridge when available
+        await NotificationListener.init();
+      } catch {
+        // ignore
+      }
+    })();
+  }, []);
 
   const quickActions = useMemo(
     () => [
@@ -407,6 +457,30 @@ export default function DashboardScreen() {
         t('developerTools.resetOnboarding.errorBody')
       );
     }
+  }, [t]);
+
+  const handleIgnoreApp = useCallback(async (pkg?: string, sender?: string) => {
+    const target = pkg || sender;
+    if (!target) return;
+
+    Alert.alert(
+      t('dashboard.mockDetection.ignoreConfirmTitle'),
+      t('dashboard.mockDetection.ignoreConfirmBody', { app: target }),
+      [
+        { text: t('common.cancel'), style: 'cancel' },
+        {
+          text: t('common.ok'),
+          onPress: async () => {
+            try {
+              await notificationFilter.addIgnoredPackage(target);
+              Alert.alert(t('dashboard.mockDetection.ignoreSuccessTitle'), t('dashboard.mockDetection.ignoreSuccessBody'));
+            } catch (e) {
+              console.warn('[dashboard] Failed to ignore package', e);
+            }
+          },
+        },
+      ]
+    );
   }, [t]);
 
   return (
@@ -717,14 +791,22 @@ export default function DashboardScreen() {
                       {formatDetectedAt(selectedDetection.detectedAt)}
                     </Text>
                   </View>
-                  <TouchableOpacity
-                    onPress={() => setSelectedDetection(null)}
-                    activeOpacity={0.7}
-                    accessibilityRole="button"
-                    accessibilityLabel={t('dashboard.report.actions.close')}
-                    className="h-10 w-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
-                    <MaterialCommunityIcons name="close" size={20} color="#475569" />
-                  </TouchableOpacity>
+                    <View className="flex-row items-center gap-2">
+                      <TouchableOpacity
+                        onPress={() => handleIgnoreApp(selectedDetection.result.message.package, selectedDetection.result.message.sender)}
+                        activeOpacity={0.7}
+                        className="mr-2 rounded-full bg-slate-100 px-3 py-2 dark:bg-slate-800">
+                        <Text className="text-xs text-slate-700 dark:text-slate-200">{t('dashboard.mockDetection.ignoreApp')}</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => setSelectedDetection(null)}
+                        activeOpacity={0.7}
+                        accessibilityRole="button"
+                        accessibilityLabel={t('dashboard.report.actions.close')}
+                        className="h-10 w-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+                        <MaterialCommunityIcons name="close" size={20} color="#475569" />
+                      </TouchableOpacity>
+                    </View>
                 </View>
 
                 <View className="flex-row flex-wrap items-center gap-3">
