@@ -1,0 +1,685 @@
+{
+  "common": {
+    "continue": "Continue",
+    "back": "Back",
+    "loading": "Loading protection status...",
+    "cancel": "Cancel",
+    "save": "Save",
+    "clear": "Clear",
+    "comingSoonTitle": "Coming soon",
+    "comingSoonBody": "We’re finishing this option. Check back shortly."
+  },
+  "navigation": {
+    "tabs": {
+      "home": "Home",
+      "alerts": "Alerts",
+      "settings": "Settings"
+    }
+  },
+  "dashboard": {
+    "title": "AI Phishing Shield",
+    "subtitle": "Stay ahead of suspicious messages with real-time AI protection.",
+    "statusCard": {
+      "title": "You're protected",
+      "description": "Real-time phishing detection is running silently in the background.",
+      "model": "Model: {{model}}",
+      "lastScan": "Last check {{time}}"
+    },
+    "hero": {
+      "status": {
+        "active": "Active protection",
+        "paused": "Action required"
+      },
+      "activeDescription": "Real-time phishing detection is running silently in the background.",
+      "pausedDescription": "Grant the missing permissions so phishing detection stays active.",
+      "modelVersion": "Model {{version}}",
+      "lastScan": "Last scan {{time}}",
+      "lastScanFallback": "Waiting for first scan",
+      "permissions": {
+        "ok": "Notifications & SMS ready",
+        "missing": "Fix permissions"
+      },
+      "modelStatus": {
+        "syncing": "Syncing updates",
+        "downloading": "Downloading {{version}}",
+        "activating": "Activating {{version}}",
+        "removing": "Removing {{version}}"
+      },
+      "pausedHelper": "Shield is deactivated, and phishing attacks can slip through. Toggle it back on!",
+      "goToDiagnostics": "View diagnostics",
+      "viewStats": "View protection stats",
+      "trustedCount": "{{count}} trusted senders"
+    },
+    "stats": {
+      "title": "Your protection stats",
+      "messagesScanned": "Messages scanned",
+      "threatsBlocked": "Threats blocked",
+      "safeMessages": "Safe messages",
+      "since": "Since {{timeframe}}",
+      "defaultTimeframe": "the last 7 days",
+      "timeframes": {
+        "24h": "Last 24 hours",
+        "7d": "Last 7 days",
+        "30d": "Last 30 days",
+        "all": "All time"
+      },
+      "trend": {
+        "up": "{{value}}% vs previous period",
+        "down": "{{value}}% vs previous period",
+        "flat": "Steady vs previous period"
+      },
+      "trendBadges": {
+        "up": "{{value}}%",
+        "down": "{{value}}%",
+        "flat": "Steady"
+      },
+      "comparison": "vs previous period"
+    },
+    "quickActions": {
+      "title": "Quick actions",
+      "mockScan": {
+        "title": "Run mock scan",
+        "subtitle": "Jump to the simulator to trigger a sample detection."
+      },
+      "alerts": {
+        "title": "View alerts",
+        "subtitle": "Open your full detection history."
+      },
+      "stats": {
+        "title": "Protection stats",
+        "subtitle": "See trends for scanned messages and blocked threats."
+      },
+      "trusted": {
+        "title": "Trusted senders",
+        "subtitle": "Review and manage the contacts you’ve marked as safe."
+      },
+      "report": {
+        "title": "Report a message",
+        "subtitle": "Submit suspicious content to help train the shield."
+      },
+      "settings": {
+        "title": "Manage settings",
+        "subtitle": "Fine-tune appearance, alerts, and privacy controls without leaving the dashboard."
+      },
+      "model": {
+        "title": "Model updates",
+        "subtitle": "Check for detector upgrades and manage installed versions."
+      },
+      "developer": {
+        "title": "Developer tools",
+        "subtitle": "Reset onboarding and re-run permission checks."
+      }
+    },
+    "filtersTitle": "Filters",
+    "openFilters": "Open alert filters",
+    "editFilters": "Adjust filters",
+    "clearFilters": "Clear all",
+    "applyFilters": "Done",
+    "noFiltersApplied": "No filters applied",
+    "activity": {
+      "title": "Latest activity",
+      "empty": "No detections yet. Run a mock scan to preview alerts."
+    },
+    "recentAlerts": {
+      "title": "Recent alerts",
+      "subtitle": "Latest suspicious messages flagged by the shield.",
+      "empty": "No alerts detected yet. Stay vigilant!",
+      "emptyWithFilters": "No alerts matched {{filters}}. Try changing your filters.",
+      "filtersTitle": "Filters",
+      "openFilters": "Open alert filters",
+      "editFilters": "Adjust filters",
+      "clearFilters": "Clear all",
+      "applyFilters": "Done",
+      "noFiltersApplied": "No filters applied",
+      "viewAll": "View full history",
+      "filters": {
+        "all": "All alerts",
+        "historical": "Live dataset",
+        "simulated": "Your mock runs",
+        "trusted": "Trusted senders"
+      },
+      "timeframeLabel": "Detected within",
+      "timeframe": {
+        "all": "Any time",
+        "24h": "Last 24 hours",
+        "7d": "Last 7 days",
+        "30d": "Last 30 days"
+      },
+      "severity": {
+        "all": "Any risk",
+        "high": "High risk",
+        "medium": "Medium risk",
+        "low": "Lower risk"
+      },
+      "channels": {
+        "all": "Any channel"
+      },
+      "matchesHeading": "Detected signals",
+      "trustedToggle": {
+        "label": "Only show trusted senders",
+        "description": "Limit results to senders you’ve marked as safe in Settings."
+      },
+      "trustedOnlyBadge": "Trusted senders only",
+      "feedback": {
+        "title": "Was this alert accurate?",
+        "subtitle": "Tell us if this was a real phishing attempt or a false alarm.",
+        "actions": {
+          "confirm": "Confirm threat",
+          "confirmHelper": "It was phishing",
+          "dismiss": "Mark as safe",
+          "dismissHelper": "It was legitimate"
+        },
+        "status": {
+          "submitted": "Thanks for helping improve the shield.",
+          "confirmed": "Marked as phishing",
+          "falsePositive": "Marked as safe",
+          "pending": "Sending feedback..."
+        },
+        "error": "We couldn't send that feedback. Try again."
+      },
+      "searchPlaceholder": "Search alerts by sender, content, or tag",
+      "trustedBadge": "Trusted sender",
+      "trustedDefault": "You marked this sender as safe in Settings.",
+      "historyAlertTitle": "Coming soon",
+      "historyAlertBody": "You'll be able to review the full alert history in the next milestone.",
+      "items": [
+        {
+          "sender": "Unknown number",
+          "preview": "Claim your tax refund now. Click the link...",
+          "timestamp": "2h ago"
+        },
+        {
+          "sender": "Finance HQ",
+          "preview": "Urgent: Verify your payroll details to avoid suspension.",
+          "timestamp": "Yesterday"
+        },
+        {
+          "sender": "+234 900 123 4567",
+          "preview": "We've credited your account. Confirm login immediately!",
+          "timestamp": "Mon"
+        }
+      ]
+    },
+    "trustedSources": {
+      "title": "Trusted senders",
+      "subtitle": "Manage the contacts you’ve marked as safe.",
+      "cta": "Manage trusted senders",
+      "empty": "You haven’t added any trusted senders yet.",
+      "count": "{{count}} trusted",
+      "noteFallback": "Marked as safe",
+      "more": "+{{remaining}} more"
+    },
+    "report": {
+      "title": "Report a message",
+      "subtitle": "Share suspicious messages anonymously to strengthen the shield.",
+      "cta": "Report message",
+      "modalTitle": "Report a suspicious message",
+      "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
+      "fields": {
+        "channelLabel": "Message came from",
+        "senderLabel": "Sender (optional)",
+        "messageLabel": "Message content",
+        "categoryLabel": "What type of issue?",
+        "commentLabel": "Anything else to include? (optional)"
+      },
+      "placeholders": {
+        "sender": "e.g. +234 812 345 6789",
+        "message": "Paste or describe the suspicious message here...",
+        "comment": "Add context, e.g. why it looks risky."
+      },
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Email"
+      },
+      "categories": {
+        "phishing": "Likely phishing",
+        "suspicious": "Suspicious content",
+        "false_positive": "False alarm",
+        "other": "Something else"
+      },
+      "status": {
+        "heading": "Report status",
+        "idle": "Queued reports send automatically when a secure connection is available.",
+        "submitting": "Submitting report...",
+        "success": "Report queued successfully. Thanks for training the shield!",
+        "error": "We couldn't queue the report. Please try again.",
+        "errorTitle": "Submission failed"
+      },
+      "validation": {
+        "messageRequired": "Add the suspicious message so we know what to review."
+      },
+      "disabled": {
+        "title": "Manual reporting disabled",
+        "body": "Turn on manual reports in Settings → Data & telemetry to send suspicious messages."
+      },
+      "loadingTitle": "Preparing settings",
+      "loadingBody": "We're still loading your reporting preferences. Try again in a moment.",
+      "actions": {
+        "submit": "Submit report",
+        "cancel": "Cancel",
+        "close": "Close"
+      }
+    },
+    "expoGoNotice": {
+      "title": "Expo Go limitation",
+      "body": "Background scanning pauses in Expo Go. Build a development client or standalone app to keep the shield active when the app closes."
+    },
+    "permissionsReminder": {
+      "title": "Turn on required access",
+      "body": "Enable notifications and SMS so the shield can scan automatically.",
+      "cta": "Review permissions",
+      "reviewOnboarding": "Replay onboarding tour"
+    },
+    "modals": {
+      "messagesScanned": {
+        "title": "How scanning works",
+        "body": "Messages are analyzed on-device the moment they appear. This combines dataset samples and your mock runs to show how busy the shield has been."
+      },
+      "threatsBlocked": {
+        "title": "About blocked threats",
+        "body": "The shield flags anything that looks risky, whether it came from historical samples or your simulations. Use this to gauge how often phishing attempts are caught."
+      },
+      "safeMessages": {
+        "title": "Understanding safe messages",
+        "body": "Safe counts estimate how many messages passed inspection. It subtracts suspicious items from everything scanned, so you see when inboxes stay clear."
+      }
+    },
+    "mockDetection": {
+      "title": "Run a mock scan",
+      "subtitle": "Trigger the background scanner with sample messages to preview alerts.",
+      "cta": "Simulate detection",
+      "runningLabel": "Running mock scan...",
+      "helper": "If a sample threat is detected you'll see the details below and receive a local notification.",
+      "successTitle": "Mock alert triggered",
+      "successBody": "Check your notification shade to see how phishing alerts will appear.",
+      "noThreatTitle": "No suspicious samples",
+      "noThreatBody": "All sample messages looked safe this time. Try again in a bit!",
+      "errorTitle": "Mock scan unavailable",
+      "errorBody": "We couldn't run the mock detector. Please try again after reopening the app.",
+      "noResultPlaceholder": "Run the simulator to preview exactly how alerts will look in-app.",
+      "detectedAt": "Detected {{time}}",
+      "scoreLabel": "Risk score: {{score}}%",
+      "noMatches": "No specific phishing patterns matched, but the message still scored as risky.",
+      "viewSafeSample": "Preview safe sample",
+      "safePreviewTitle": "Safe message sample",
+      "safePreviewSubtitle": "Here’s how the scanner treats messages that look trustworthy.",
+      "safePreviewLabel": "Marked as safe",
+      "safeSampleUnavailableTitle": "No safe samples",
+      "safeSampleUnavailableBody": "We couldn’t find a low-risk sample at the moment. Try running a new scan.",
+      "clearLastDetection": "Clear mock result",
+      "clearedTitle": "Mock result cleared",
+      "clearedBody": "The mock detection card has been reset.",
+      "showTools": "Show developer mock tools",
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Email"
+      }
+    },
+    "navigateLabel": "Quick actions",
+    "links": {
+      "settings": {
+        "title": "Open Settings",
+        "description": "Manage localization, notification preferences, and diagnostics."
+      }
+    }
+  },
+  "onboarding": {
+    "badge": "Welcome",
+    "title": "Activate Your AI Phishing Shield",
+    "subtitle": "Breeze through these quick highlights so you know exactly what the app does and why permissions are needed.",
+    "skip": "Skip",
+    "next": "Next",
+    "start": "Start protecting",
+    "skipDialog": {
+      "title": "Skip required permissions?",
+      "body": "Without notifications and SMS access the shield can’t watch for phishing automatically. You can turn them on later from settings.",
+      "cancel": "Stay here",
+      "confirm": "Skip for now"
+    },
+    "permissionNoteTitle": "Before we launch the shield",
+    "permissionNoteBody": "You'll grant notification and SMS access right after this tour.",
+    "permissionStepsTitle": "You'll enable:",
+    "permissions": {
+      "title": "Keep the shield active",
+      "subtitle": "Enable these permissions so we can scan messages the moment they arrive.",
+      "notifications": {
+        "title": "Notification access",
+        "description": "Allow access so we can analyse WhatsApp, Messenger, Gmail, and more in real-time.",
+        "cta": "Enable notifications",
+        "grantedCta": "Notifications enabled",
+        "openSettings": "Open system settings"
+      },
+      "sms": {
+        "title": "SMS access",
+        "description": "Let us read incoming SMS locally to flag suspicious texts instantly.",
+        "cta": "Enable SMS access",
+        "grantedCta": "SMS enabled",
+        "openSettings": "Open system settings",
+        "unavailable": "SMS access isn’t required on this device."
+      },
+      "status": {
+        "requesting": "Requesting…",
+        "granted": "Enabled",
+        "blocked": "Turn on in settings",
+        "required": "Still required"
+      },
+      "finishCta": "Start protecting",
+      "checking": "Checking current permissions…",
+      "continueHelper": "Enable required access to continue",
+      "incompleteTitle": "Finish setting up access",
+      "incompleteBody": "Turn on notifications and SMS access to let the shield run automatically."
+    },
+    "slides": [
+      {
+        "title": "Stay Ahead of Phishing",
+        "description": "We analyze incoming SMS and notification content on your device to spot phishing attempts instantly.",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Your Privacy Matters",
+        "description": "All detection happens offline. Messages never leave your device, and no data is stored in the cloud.",
+        "icon": "lock-check"
+      },
+      {
+        "title": "Grant the Right Access",
+        "description": "Turn on SMS and notification access so the shield can keep watch quietly in the background.",
+        "icon": "cellphone-message",
+        "permissions": [
+          {
+            "title": "Notification access",
+            "description": "Scans app notifications like WhatsApp and Gmail the moment they arrive."
+          },
+          {
+            "title": "SMS read access",
+            "description": "Checks new texts locally to spot suspicious links before you tap."
+          }
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Customize appearance, alerts, language, and data sharing in one place.",
+    "language": {
+      "loading": "Preparing languages..."
+    },
+    "diagnostics": {
+      "loading": "Gathering anonymized diagnostics...",
+      "errorTitle": "Couldn't load diagnostics",
+      "errorBody": "We hit a snag generating the snapshot. Try again from a strong connection.",
+      "retry": "Try again",
+      "shareTitle": "Diagnostics snapshot",
+      "shareButton": "Share snapshot",
+      "shareErrorTitle": "Share failed",
+      "shareErrorBody": "We couldn't share the diagnostics snapshot. Please try again.",
+      "refreshButton": "Refresh snapshot",
+      "lastGenerated": "Generated {{date}}",
+      "disclaimer": "This export omits personal content. Share it only with trusted support staff.",
+      "sections": {
+        "environment": "Environment",
+        "localization": "Localization",
+        "theme": "Theme",
+        "notifications": "Notifications",
+        "sms": "SMS",
+        "detections": "Detections",
+        "trustedSources": "Trusted sources",
+        "telemetry": "Telemetry"
+      },
+      "fields": {
+        "platform": "Platform",
+        "appOwnership": "App ownership",
+        "appVersion": "App version",
+        "buildNumber": "Build",
+        "activeLocale": "Active locale",
+        "deviceLocale": "Device locale",
+        "storedLocale": "Stored override",
+        "storedPreference": "Stored preference",
+        "notificationPermission": "Notification permission",
+        "alertsEnabled": "Alerts enabled",
+        "soundEnabled": "Sound enabled",
+        "vibrationEnabled": "Vibration enabled",
+        "quietHoursEnabled": "Quiet hours",
+        "quietHoursActive": "Quiet hours active",
+        "quietHoursWindow": "Quiet hours window",
+        "smsPermission": "SMS permission",
+        "historicalCount": "Historical detections",
+        "simulatedCount": "Simulated detections",
+        "lastSimulatedAt": "Last simulated",
+        "trustedSourcesTotal": "Trusted senders",
+        "telemetryEvents": "Buffered events",
+        "telemetryLatest": "Latest event"
+      },
+      "values": {
+        "yes": "Yes",
+        "no": "No",
+        "none": "None",
+        "unknown": "Unknown",
+        "permission": {
+          "granted": "Granted",
+          "denied": "Denied",
+          "blocked": "Blocked",
+          "unavailable": "Unavailable"
+        }
+      }
+    },
+    "entries": {
+      "theme": {
+        "title": "Appearance",
+        "description": "Choose how the app adapts its colors.",
+        "options": {
+          "dark": "Dark",
+          "light": "Light",
+          "system": "Match system"
+        }
+      },
+      "telemetry": {
+        "title": "Threat sharing",
+        "description": "Control how alerts and reports are shared with AI Phishing Shield for future model training.",
+        "autoUploadTitle": "Send detections automatically",
+        "autoUploadSubtitle": "Share anonymized alert metadata when suspicious activity is flagged.",
+        "manualReportsTitle": "Allow manual reporting",
+        "manualReportsSubtitle": "Enable the report-a-message flow from the dashboard when you spot something suspicious.",
+        "errorTitle": "Update failed",
+        "errorBody": "We couldn’t save your preferences. Please try again."
+      },
+      "model": {
+        "title": "Model updates",
+        "description": "Install new phishing detector models and manage versions.",
+        "manageButton": "Open manager",
+        "currentBadge": "Current {{version}}"
+      },
+      "language": {
+        "title": "Language",
+        "description": "Switch between English, French, Swahili, Yoruba, Igbo, Hausa, Pidgin, Arabic, and Amharic.",
+        "activeBadge": "Active language",
+        "deviceDefault": {
+          "title": "Match device language",
+          "description": "Keep the app synced with your phone's primary language.",
+          "badge": "Following device default"
+        },
+        "options": {
+          "en": {
+            "title": "English",
+            "native": "English"
+          },
+          "fr": {
+            "title": "French",
+            "native": "Français"
+          },
+          "sw": {
+            "title": "Swahili",
+            "native": "Kiswahili"
+          },
+          "yo": {
+            "title": "Yoruba",
+            "native": "Yorùbá"
+          },
+          "ig": {
+            "title": "Igbo",
+            "native": "Ásụ̀sụ́ Ìgbò"
+          },
+          "ha": {
+            "title": "Hausa",
+            "native": "Hausa"
+          },
+          "pcm": {
+            "title": "Nigerian Pidgin",
+            "native": "Naijá"
+          },
+          "ar": {
+            "title": "Arabic",
+            "native": "العربية"
+          },
+          "am": {
+            "title": "Amharic",
+            "native": "አማርኛ"
+          }
+        }
+      },
+      "notifications": {
+        "title": "Notification preferences",
+        "description": "Control alert sound, vibration, and permission status.",
+        "badge": {
+          "on": "Alerts on",
+          "off": "Alerts off",
+          "quietHours": "Quiet hours {{start}}–{{end}}"
+        },
+        "loading": "Loading notification preferences...",
+        "errorTitle": "Update failed",
+        "errorBody": "We couldn't save these notification settings. Please try again.",
+        "permissionTitle": "Permission status",
+        "permissionGranted": "Notifications are enabled at the system level.",
+        "permissionMissing": "Turn on notification access to let the shield alert you instantly.",
+        "permissionButtonGranted": "Enabled",
+        "permissionButton": "Enable notifications",
+        "openSettings": "Open system settings",
+        "masterToggle": {
+          "title": "Alerts",
+          "description": "Turn phishing alerts on or off for this device."
+        },
+        "sound": {
+          "title": "Play sound",
+          "description": "Play a tone when a phishing alert is detected."
+        },
+        "vibration": {
+          "title": "Vibrate on alert",
+          "description": "Trigger vibration feedback when alerts fire."
+        },
+        "quietHours": {
+          "title": "Quiet hours",
+          "description": "Pause alert sounds between {{range}}.",
+          "current": "Currently {{range}}",
+          "helper": "Tap to rotate through preset quiet-hour windows."
+        }
+      },
+      "diagnostics": {
+        "title": "Diagnostics",
+        "description": "Export anonymized logs to help improve detection accuracy."
+      },
+      "trustedSources": {
+        "title": "Trusted senders",
+        "description": "Manage phone numbers or email senders you consider safe.",
+        "addButton": "Add sender",
+        "emptyState": "No trusted contacts yet. Add verified banking lines, HR contacts, or key partners you rely on.",
+        "removeTitle": "Remove trusted sender?",
+        "removeConfirm": "Remove",
+        "removeA11y": "Remove trusted sender {{name}}",
+        "validationTitle": "Missing sender",
+        "validationHandle": "Enter the exact sender name or number you want to trust.",
+        "duplicateTitle": "Already trusted",
+        "duplicateBody": "This sender is already marked as trusted for that channel.",
+        "successTitle": "Trusted sender saved",
+        "errorTitle": "Something went wrong",
+        "errorBody": "We couldn't update your trusted senders. Please try again.",
+        "modalTitle": "Add trusted sender",
+        "modalSubtitle": "Log an official contact so alerts remain contextual.",
+        "fields": {
+          "channel": "Channel",
+          "handle": "Sender",
+          "displayName": "Display name",
+          "note": "Notes"
+        },
+        "placeholders": {
+          "handle": "e.g. UBA Secure",
+          "displayName": "Friendly label (optional)",
+          "note": "Add a short note (optional)"
+        },
+        "saving": "Saving..."
+      }
+    },
+    "model": {
+      "title": "Model management",
+      "subtitle": "Download updates, activate versions, and review install history.",
+      "syncButton": "Sync updates",
+      "syncing": "Syncing updates...",
+      "lastSynced": "Last synced {{time}}",
+      "neverSynced": "Catalog never synced",
+      "availableTitle": "Available",
+      "availableEmpty": "You're running the latest version.",
+      "installedTitle": "Installed",
+      "installedEmpty": "No models installed yet.",
+      "detailsTitle": "Details",
+      "downloadProgress": "Downloading… {{progress}}%",
+      "offlineFallbackBanner": "Couldn't reach the live registry. Showing the built-in demo catalog for now.",
+      "badges": {
+        "current": "Active",
+        "installed": "Installed"
+      },
+      "sizeLabel": "{{size}} MB",
+      "releaseDate": "Released {{date}}",
+      "changelogTitle": "What's new",
+      "catalogMode": {
+        "toggleLabel": "Model catalog",
+        "description": "Switch between live registry updates and the offline demo catalog. Live mode downloads real model files.",
+        "live": "Live registry",
+        "dummy": "Demo catalog",
+        "offlineFallback": "Offline fallback"
+      },
+      "details": {
+        "activeVersion": "Active version",
+        "currentStatusActive": "This model is currently powering phishing detection.",
+        "noActive": "No model is active yet. Install and activate a version to start scanning.",
+        "installedOn": "Installed {{date}}",
+        "storageFootprint": "Storage: {{size}} MB",
+        "summaryTitle": "Shield snapshot"
+      },
+      "actions": {
+        "install": "Install",
+        "activate": "Activate",
+        "remove": "Remove"
+      },
+      "alerts": {
+        "installSuccessTitle": "Model installed",
+        "installSuccessBody": "Version {{version}} is now active on your device.",
+        "installErrorTitle": "Install failed",
+        "installErrorBody": "We couldn't add version {{version}}. Please try again shortly.",
+        "activateSuccessTitle": "Model activated",
+        "activateSuccessBody": "Version {{version}} is now the active detector.",
+        "activateErrorTitle": "Activation failed",
+        "activateErrorBody": "We couldn't switch models. Please try again.",
+        "removeConfirmTitle": "Remove model version?",
+        "removeConfirmBody": "Deleting version {{version}} frees up storage. You can reinstall it later if needed.",
+        "removeConfirmAction": "Remove",
+        "removeSuccessTitle": "Model removed",
+        "removeSuccessBody": "Version {{version}} was deleted from local storage.",
+        "removeErrorTitle": "Remove failed",
+        "removeErrorBody": "We couldn't remove version {{version}}. Try again after syncing.",
+        "syncErrorTitle": "Sync failed",
+        "syncErrorBody": "We couldn't refresh the catalog. Check your connection and try again."
+      }
+    },
+    "back": "\u2190 Back to dashboard"
+  },
+  "developerTools": {
+    "resetOnboarding": {
+      "title": "Reset onboarding flow",
+      "successTitle": "Onboarding reset",
+      "successBody": "We cleared the onboarding state. Reopen the app to start the tour.",
+      "errorTitle": "Reset failed",
+      "errorBody": "We couldn't clear the onboarding state. Try again.",
+      "restart": "Relaunch onboarding"
+    }
+  }
+}

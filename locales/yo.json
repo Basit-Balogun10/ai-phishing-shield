@@ -1,0 +1,685 @@
+{
+  "common": {
+    "continue": "Tẹsiwaju",
+    "back": "Pada",
+    "loading": "N ń ṣayẹwo ipo aabo…",
+    "cancel": "Fagilé",
+    "save": "Fi pamọ́",
+    "clear": "Mọ́ kúrò",
+    "comingSoonTitle": "N bọ laipẹ",
+    "comingSoonBody": "A ń pari aṣayan yii. Padà wá laipẹ."
+  },
+  "navigation": {
+    "tabs": {
+      "home": "Ilé",
+      "alerts": "Ìkìlọ̀",
+      "settings": "Ètò"
+    }
+  },
+  "dashboard": {
+    "title": "Aṣọ́ Ààbò lòdì sí Í-meèlì Olè",
+    "subtitle": "Ṣe ṣáájú àwọn ìránṣẹ́ olè pẹ̀lú ààbò AI ní àkókò gidi tí a ṣe tán fún ọ.",
+    "statusCard": {
+      "title": "O wa lábò",
+      "description": "Ètò ìmúlò ìmúlọ́nnà olè ń ṣiṣẹ́ ní kíkà ní abẹ́lẹ̀ láì fi ara hàn.",
+      "model": "Àwọ̀n: {{model}}",
+      "lastScan": "Ìbẹ̀wò to kẹ́yìn {{time}}"
+    },
+    "hero": {
+      "status": {
+        "active": "Aàbò ń ṣiṣẹ́",
+        "paused": "Ìgbésẹ̀ nílò"
+      },
+      "activeDescription": "Ètò ìmúlò ìmúlọ́nnà olè ń ṣiṣẹ́ ní kíkà ní abẹ́lẹ̀ láì fi ara hàn.",
+      "pausedDescription": "Fún wa ní ìyọ̀nda tó kù kí ìmúlò ìmúlọ́nnà olè máa ṣiṣẹ́ laifọwọyi.",
+      "modelVersion": "Àwoṣe {{version}}",
+      "lastScan": "Ìbẹ̀wò tó kẹ́yìn {{time}}",
+      "lastScanFallback": "A ń dúró de ìbẹ̀wò àkọ́kọ́",
+      "permissions": {
+        "ok": "Ìkìlọ̀ àti SMS ṣetán",
+        "missing": "Ṣètò ìyọ̀nda"
+      },
+      "goToDiagnostics": "Wo àyẹ̀wò",
+      "viewStats": "Wo ìtàn ààbò",
+      "trustedCount": "{{count}} olùránṣẹ́ tí o gbẹ́kẹ̀lé",
+      "modelStatus": {
+        "syncing": "N ṣe ìṣọ̀kan imúdójúìwọ̀n",
+        "downloading": "N ń gbasilẹ {{version}}",
+        "activating": "N ń mu {{version}} ṣiṣẹ́",
+        "removing": "N ń yọ {{version}} kúrò"
+      },
+      "pausedHelper": "Aṣọ ààbò ti pa mọ́, àti pé ìránṣẹ́ olè lè wọlé rọrùn. Yí tẹ́ẹ̀gìlì padà kí o tún un ṣiṣẹ́!"
+    },
+    "stats": {
+      "title": "Ìtàn ààbò rẹ",
+      "messagesScanned": "Ìrántí tí a ka",
+      "threatsBlocked": "Ìkìlọ̀ tí a dí",
+      "safeMessages": "Ìrántí aláìlera",
+      "since": "Látì {{timeframe}}",
+      "defaultTimeframe": "ọjọ́ meje to kọjá",
+      "timeframes": {
+        "24h": "Wákàtí 24 tó kọjá",
+        "7d": "Ọjọ́ meje tó kọjá",
+        "30d": "Ọjọ́ 30 tó kọjá",
+        "all": "Gbogbo àkókò"
+      },
+      "trend": {
+        "up": "{{value}}% ju àkókò tẹ́lẹ̀ lọ",
+        "down": "{{value}}% kere ju àkókò tẹ́lẹ̀",
+        "flat": "Kò yí padà sí àkókò tẹ́lẹ̀"
+      },
+      "trendBadges": {
+        "up": "{{value}}%",
+        "down": "{{value}}%",
+        "flat": "Dúró ṣinṣin"
+      },
+      "comparison": "afiwéra pẹ̀lú àkókò tẹ́lẹ̀"
+    },
+    "quickActions": {
+      "title": "Ìṣe kíákíá",
+      "mockScan": {
+        "title": "Ṣe àyẹ̀wò àpẹẹrẹ",
+        "subtitle": "Lọ sí afẹ́sẹ̀yìn láti dá ìmúlò àpẹẹrẹ sẹ́lẹ̀."
+      },
+      "alerts": {
+        "title": "Wo ìkìlọ̀",
+        "subtitle": "Ṣí ìtàn ìmúlò rẹ ní kíkún."
+      },
+      "stats": {
+        "title": "Ìtàn ààbò",
+        "subtitle": "Wo bí a ṣe ń kà ìránṣẹ́ àti bí a ṣe ń dí àwọn ewu."
+      },
+      "trusted": {
+        "title": "Olùránṣẹ́ tí o gbẹ́kẹ̀lé",
+        "subtitle": "Ṣàyẹ̀wò àti ṣàkóso àwọn olùránṣẹ́ tí o ti samisi gẹ́gẹ́ bí ẹni tí ó ní ààbò."
+      },
+      "settings": {
+        "title": "Ṣàkóso àtúnṣe",
+        "subtitle": "Mú èdè, ìkìlọ̀, àti àyẹ̀wò pọ̀."
+      },
+      "developer": {
+        "title": "Ọpa oníṣe",
+        "subtitle": "Tún ìkọ́ni ìbẹ̀rẹ̀ ṣe, kí o sì tún ìyẹ̀wò ìyọ̀nda ṣe."
+      },
+      "model": {
+        "title": "Imúdójúìwọ̀n àwoṣe",
+        "subtitle": "Ṣàyẹ̀wò àtúnṣe tuntun fún aṣàyàn ìfura, kí o ṣàkóso ẹ̀dá tí a fi sori ẹrọ."
+      },
+      "report": {
+        "title": "Jẹ́ kó rí i pé a mọ ìránṣẹ́",
+        "subtitle": "Rán ìránṣẹ́ tí o ṣiyemeji kí aṣọ ààbò lè kọ́ ẹ̀ síi."
+      }
+    },
+    "filtersTitle": "Àlẹ̀mọ́",
+    "openFilters": "Ṣí àlẹ̀mọ́ ìkìlọ̀",
+    "editFilters": "Ṣatunṣe àlẹ̀mọ́",
+    "clearFilters": "Pa gbogbo rẹ̀ kúrò",
+    "applyFilters": "Pari",
+    "noFiltersApplied": "Kò sí àlẹ̀mọ́ tí a fi sílẹ̀",
+    "activity": {
+      "title": "Ìṣe tuntun",
+      "empty": "Kò sí ìkìlọ̀ rárá sibẹ̀. Ṣe àdánwò ìmúlò láti rí ìkìlọ̀ àpẹẹrẹ."
+    },
+    "recentAlerts": {
+      "title": "Ìkìlọ̀ tuntun",
+      "subtitle": "Ìrántí tí a mọ̀ pé ó lèwu tí aṣọ ààbò ti mú ṣẹ̀ṣẹ̀ yìí.",
+      "empty": "Kò sí ìkìlọ̀ kankan sibẹ̀. Ṣọ́ra ṣùgbọ́n kéèyàn!",
+      "emptyWithFilters": "Kò sí ìkìlọ̀ tó bá {{filters}} mu. Gbìmọ̀ yí ìmúlò rẹ padà.",
+      "filtersTitle": "Àlẹ̀mọ́",
+      "openFilters": "Ṣí àlẹ̀mọ́ ìkìlọ̀",
+      "editFilters": "Ṣatunṣe àlẹ̀mọ́",
+      "clearFilters": "Pa gbogbo rẹ̀ kúrò",
+      "applyFilters": "Pari",
+      "noFiltersApplied": "Kò sí àlẹ̀mọ́ tí a fi sílẹ̀",
+      "viewAll": "Wo ìtàn gígùn",
+      "filters": {
+        "all": "Gbogbo ìkìlọ̀",
+        "historical": "Àkọọ́lẹ̀ àpẹẹrẹ",
+        "simulated": "Àdánwò tirẹ",
+        "trusted": "Olùránṣẹ́ tí o gbẹ́kẹ̀lé"
+      },
+      "timeframeLabel": "A rí i nínú àkókò",
+      "timeframe": {
+        "all": "Àkókò gbogbo",
+        "24h": "Wákàtí 24 tó kọjá",
+        "7d": "Ọjọ́ méje tó kọjá",
+        "30d": "Ọjọ́ 30 tó kọjá"
+      },
+      "severity": {
+        "all": "Ipele kankan",
+        "high": "Ewu gíga",
+        "medium": "Ewu àárín",
+        "low": "Ewu kékeré"
+      },
+      "channels": {
+        "all": "Ikanni kankan"
+      },
+      "matchesHeading": "Àmì tí a rí",
+      "trustedToggle": {
+        "label": "Ṣe afihan àwọn olùránṣẹ́ tí o gbẹ́kẹ̀lé nikan",
+        "description": "Dín abajade sí àwọn olùránṣẹ́ tí o ti samisi gẹ́gẹ́ bí ẹni tí ó ní ààbò ní Ètò."
+      },
+      "trustedOnlyBadge": "Olùránṣẹ́ tí a gbẹ́kẹ̀lé nikan",
+      "feedback": {
+        "title": "Ṣe ìkìlọ̀ yìí péye ni?",
+        "subtitle": "Jọ̀wọ́ sọ bóyá èyí jẹ́ ìgbìmọ̀ phishing gidi tàbí ìkìlọ̀ aṣiṣe.",
+        "actions": {
+          "confirm": "Mú ìkìlọ̀ náà dájú",
+          "confirmHelper": "Ó jẹ́ phishing gidi",
+          "dismiss": "Samisi gẹ́gẹ́ bí aàbò",
+          "dismissHelper": "Ìfiránṣẹ́ náà jẹ́ tòótọ́"
+        },
+        "status": {
+          "submitted": "Ọpẹ́ lọwọ rẹ fún ríràn wá lọ́wọ́ láti mú aṣọ ààbò dára sí i.",
+          "confirmed": "A samisi gẹ́gẹ́ bí phishing",
+          "falsePositive": "A samisi gẹ́gẹ́ bí aàbò",
+          "pending": "A ń rán èsì..."
+        },
+        "error": "A kò lè rán èsì yìí. Jọ̀wọ́ tún gbìyànjú."
+      },
+      "searchPlaceholder": "Wa ìkìlọ̀ nípasẹ̀ olùránṣẹ́, akọle, tàbí àmì",
+      "trustedBadge": "Olùránṣẹ́ tí o gbẹ́kẹ̀lé",
+      "trustedDefault": "O ti samisi olùránṣẹ́ yìí gẹ́gẹ́ bí ẹni tí ó ní ààbò ní Sísètò.",
+      "historyAlertTitle": "N bọ laipẹ",
+      "historyAlertBody": "Ìṣẹ̀lẹ̀ ìtàn gbogbo yóò wà ní ìpele tó kàn.",
+      "items": [
+        {
+          "sender": "Nọ́mbà tí a kò mọ̀",
+          "preview": "Gba owó-ori padà rẹ báyìí. Tẹ ìjápọ̀ náà…",
+          "timestamp": "Wákàtí méjì sẹ́yìn"
+        },
+        {
+          "sender": "Ile-iṣẹ́ owó",
+          "preview": "Pátá: Ṣàyẹ̀wò àlàyé owó-ọ́ya rẹ kí ìdádúró má bà ọ lórí.",
+          "timestamp": "Àná"
+        },
+        {
+          "sender": "+234 900 123 4567",
+          "preview": "A ti fi owó sí àkọọ́lẹ̀ rẹ. Jọ̀wọ́ jẹ́ kí o jẹrìí lẹ́sẹ̀kẹsẹ̀!",
+          "timestamp": "Òjọ́ Ajé"
+        }
+      ]
+    },
+    "trustedSources": {
+      "title": "Olùránṣẹ́ tí o gbẹ́kẹ̀lé",
+      "subtitle": "Ṣàkóso àwọn olùkànlé tí o ti fi àmì ààbò sí.",
+      "cta": "Ṣàkóso àwọn olùránṣẹ́ tí o gbẹ́kẹ̀lé",
+      "empty": "O ṣì kò fi olùránṣẹ́ gbẹ́kẹ̀lé kankan kun.",
+      "count": "{{count}} olùránṣẹ́ tí a gbẹ́kẹ̀lé",
+      "noteFallback": "A fi àmì ààbò sí",
+      "more": "+{{remaining}} míì"
+    },
+    "report": {
+      "title": "Jẹ́ kó rí i pé a mọ ìránṣẹ́",
+      "subtitle": "Pín ìránṣẹ́ tí o fura sí láìsí orúkọ kí aṣọ ààbò lè lágbára.",
+      "cta": "Jẹ́ kó rí i pé a mọ ìránṣẹ́",
+      "modalTitle": "Report a suspicious message",
+      "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
+      "fields": {
+        "channelLabel": "Message came from",
+        "senderLabel": "Sender (optional)",
+        "messageLabel": "Message content",
+        "categoryLabel": "What type of issue?",
+        "commentLabel": "Anything else to include? (optional)"
+      },
+      "placeholders": {
+        "sender": "e.g. +234 812 345 6789",
+        "message": "Paste or describe the suspicious message here...",
+        "comment": "Add context, e.g. why it looks risky."
+      },
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Email"
+      },
+      "categories": {
+        "phishing": "Likely phishing",
+        "suspicious": "Suspicious content",
+        "false_positive": "False alarm",
+        "other": "Something else"
+      },
+      "status": {
+        "heading": "Report status",
+        "idle": "Queued reports send automatically when a secure connection is available.",
+        "submitting": "Submitting report...",
+        "success": "Report queued successfully. Thanks for training the shield!",
+        "error": "We couldn't queue the report. Please try again.",
+        "errorTitle": "Submission failed"
+      },
+      "validation": {
+        "messageRequired": "Add the suspicious message so we know what to review."
+      },
+      "disabled": {
+        "title": "Manual reporting disabled",
+        "body": "Turn on manual reports in Settings → Data & telemetry to send suspicious messages."
+      },
+      "loadingTitle": "Preparing settings",
+      "loadingBody": "We're still loading your reporting preferences. Try again in a moment.",
+      "actions": {
+        "submit": "Submit report",
+        "cancel": "Cancel",
+        "close": "Close"
+      }
+    },
+    "expoGoNotice": {
+      "title": "Ìdìpọ̀ Expo Go",
+      "body": "Àyẹ̀wò abẹ́lẹ̀ máa dá dúró ní Expo Go. Kọ́ app àgbékalẹ̀ sílẹ̀ tàbí app alákọkọso kí aṣọ ààbò má bàjẹ́ nígbà tí o ba ti pa app náà."
+    },
+    "permissionsReminder": {
+      "title": "Tan ìwọlé tí ó ṣe pàtàkì",
+      "body": "Jẹ́ kí ìkìlọ̀ àti SMS ṣiṣẹ́ kí aṣọ ààbò lè ṣe àyẹ̀wò láìkọ́lọ́kọ́.",
+      "cta": "Ṣàyẹ̀wò ìyọ̀nda",
+      "reviewOnboarding": "Tun irin-àjò ìbẹ̀rẹ̀ ṣe"
+    },
+    "modals": {
+      "messagesScanned": {
+        "title": "Bí àyẹ̀wò ṣe ń ṣiṣẹ́",
+        "body": "A ń túpalẹ̀ àwọn ìránṣẹ́ níkàn lórí foonu rẹ nígbà tí wọ́n bá hàn. Àpapọ̀ yìí kó àwọn àpẹẹrẹ àti ìdánwò rẹ jọ láti fi hàn bí aṣọ ààbò ṣe ń ṣiṣẹ́."
+      },
+      "threatsBlocked": {
+        "title": "Nípa àwọn ewu tí a dí",
+        "body": "Aṣọ ààbò ń fi àmì sí ohunkóhun tí ó dà bí ewu, bóyá ó wá látinú àkọọ́lẹ̀ tàbí ìmúlò àpẹẹrẹ rẹ. Lo ìtọnisọna yìí láti mọ bí a ṣe ń mú ìmàlẹ̀ olè pọ̀."
+      },
+      "safeMessages": {
+        "title": "Ìtúpalẹ̀ àwọn ìránṣẹ́ aláàbò",
+        "body": "Ìṣirò aláàbò ń tọ́ka sí iye ìránṣẹ́ tí ó gba àyẹ̀wò kọjá. Ó yọ àwọn ohun tí ó fura kúrò nínú gbogbo ohun tí a ṣàyẹ̀wò, kí o lè mọ ìgbà tí àpótí rẹ fi mọ́ọ́mọ̀."
+      }
+    },
+    "mockDetection": {
+      "title": "Ṣe ìwádìí àpẹẹrẹ",
+      "subtitle": "Jẹ́ kí a ṣiṣẹ́ àlẹ́mọ́ pẹlu àwọn ìrántí àpẹẹrẹ láti rí bí ìkìlọ̀ ṣe máa hàn.",
+      "cta": "Ṣe àdánwò ìmúlò",
+      "runningLabel": "Ìwádìí àpẹẹrẹ ń lọ…",
+      "helper": "Tí a bá rí àmì ewu, ìtàn yóò hàn ní ìsàlẹ̀ yìí, ìrántí àgbépọ̀ yóò dé sí foonu rẹ.",
+      "successTitle": "Ìkìlọ̀ àpẹẹrẹ ti yọ",
+      "successBody": "Ṣàyẹwo bọ́ọ̀dì ìfìmọ̀lára rẹ láti rí bí ìrántí ìkìlọ̀ ṣe máa hàn.",
+      "noThreatTitle": "Kò sí ewu",
+      "noThreatBody": "Gbogbo ìrántí àpẹẹrẹ dà bí ẹni pé ó dájú. Gbìmọ̀ sí lẹ́ẹ̀kansi nígbà mìíràn!",
+      "errorTitle": "Ìwádìí àpẹẹrẹ kò sí lọ́wọ́",
+      "errorBody": "A kò lè ṣe ìmúlò yìí báyìí. Jọ̀wọ́ tún app náà bẹ̀rẹ̀ kí o tún gbìmọ̀.",
+      "noResultPlaceholder": "Ṣe àdánwò aṣáyẹ̀wò láti rí gẹ́gẹ́ bí ìkìlọ̀ ṣe máa hàn nínú app.",
+      "detectedAt": "Ìmúlẹ̀ ní {{time}}",
+      "scoreLabel": "Ìwọn ewu: {{score}}%",
+      "noMatches": "A kò rí àpẹẹrẹ ìmàlẹ̀ olè kankan, ṣùgbọ́n ìrántí náà ṣi ń fi ewu hàn.",
+      "viewSafeSample": "Wo àpẹẹrẹ aláàbò",
+      "safePreviewTitle": "Àpẹẹrẹ ìrántí aláàbò",
+      "safePreviewSubtitle": "Bí aṣàwákiri ṣe ń túpalẹ̀ ìrántí tí ó dà bí ẹni pé ó dájú.",
+      "safePreviewLabel": "A fi àmì pé ó dájú",
+      "safeSampleUnavailableTitle": "Kò sí àpẹẹrẹ aláàbò",
+      "safeSampleUnavailableBody": "A kò rí ìrántí tó ní ewu kékeré báyìí. Ṣe ìwádìí mìíràn.",
+      "clearLastDetection": "Pa abajade àdánwò rẹ mọ́",
+      "clearedTitle": "A ti pa abajade àdánwò mọ́",
+      "clearedBody": "A tún kárìkítà ìmúlò àpẹẹrẹ ṣe.",
+      "showTools": "Fi ọpa oníṣe hàn",
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Imeeli"
+      }
+    },
+    "navigateLabel": "Ìṣẹ́ kíákíá",
+    "links": {
+      "settings": {
+        "title": "Ṣí àtúnṣe",
+        "description": "Ṣàkóso èdè, ìkìlọ̀, àti àyẹ̀wò amóye."
+      }
+    }
+  },
+  "onboarding": {
+    "badge": "Ẹ kú àbọ",
+    "title": "Ṣíṣe Aṣọ Ààbò AI rẹ",
+    "subtitle": "Ṣe àyẹ̀wò àwọn ìlànà kí o mọ ohun tí app náà ṣe àti ìdí tí a fi nílò ìyọ̀nda.",
+    "skip": "Fọkàn tán",
+    "next": "Tẹ̀síwájú",
+    "start": "Bẹrẹ ààbò",
+    "skipDialog": {
+      "title": "Ṣe o fẹ fo ìyọ̀nda pataki sílẹ?",
+      "body": "Láìsí ìwọlé ìkìlọ̀ àti SMS, aṣọ ààbò kò lè tọ́ ọ ṣọ́ laifọwọyi. O lè tan wọn sílẹ̀ nigbamii lára àwọn àtúnṣe.",
+      "cancel": "Dúró níbí",
+      "confirm": "Foju kọ fún báyìí"
+    },
+    "permissionNoteTitle": "Kí a tó bẹ̀rẹ̀",
+    "permissionNoteBody": "Ìbòwọ̀n ìkìlọ̀ àti SMS yóò wá lẹ́yìn ìrìnàjò kéékèèké yìí.",
+    "permissionStepsTitle": "Ìwọ yóò fún ní ààyè sí:",
+    "permissions": {
+      "title": "Jẹ́ kí aṣọ ààbò máa ṣiṣẹ́",
+      "subtitle": "Tan àwọn ìyọ̀nda wọ̀nyí sílẹ̀ kí a lè ṣayẹwo ìránṣẹ́ nígbà tí wọ́n bá dé.",
+      "notifications": {
+        "title": "Ìwọlé ìkìlọ̀",
+        "description": "Fún wa ní ìwọlé kí a lè túpalẹ̀ WhatsApp, Messenger, Gmail àti ẹlòmíí lẹ́sẹ̀kẹsẹ̀.",
+        "cta": "Tan ìkìlọ̀ sílẹ̀",
+        "grantedCta": "Ìkìlọ̀ ti ṣiṣẹ́",
+        "openSettings": "Ṣí àtúnṣe foonu"
+      },
+      "sms": {
+        "title": "Ìwọlé SMS",
+        "description": "Jẹ́ kí a ka SMS tó ń wáyé ní abẹ́lẹ̀ kí a lè sọ̀rọ̀ ní kíákíá.",
+        "cta": "Tan ìwọlé SMS sílẹ̀",
+        "grantedCta": "Ìwọlé SMS ti ṣiṣẹ́",
+        "openSettings": "Ṣí àtúnṣe foonu",
+        "unavailable": "Ìwọlé SMS kò ṣe dandan lórí ẹ̀rọ yìí."
+      },
+      "status": {
+        "requesting": "A ń bẹbẹ…",
+        "granted": "Ti ṣiṣẹ́",
+        "blocked": "Tan án ní àtúnṣe",
+        "required": "Ṣì nílò rẹ"
+      },
+      "finishCta": "Bẹrẹ ìdábòbọ",
+      "checking": "A ń ṣàyẹ̀wò ìyọ̀nda lọwọlọwọ…",
+      "continueHelper": "Tan ìwọlé tó yẹ sílẹ̀ kí o tẹ̀síwájú",
+      "incompleteTitle": "Parí ìtọ́nisọ́nà ìwọlé",
+      "incompleteBody": "Tan ìkìlọ̀ àti ìwọlé SMS sílẹ̀ kí aṣọ ààbò lè ṣiṣẹ́ laifọwọyi."
+    },
+    "slides": [
+      {
+        "title": "Ṣáàbò sí ìmàlẹ̀ olè",
+        "description": "A ń túbọ̀ ṣàlàyé gbogbo SMS àti ìfìmọ̀lára tó wọlé lórí foonu rẹ láì fi wọn ránṣẹ́ síta.",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Àṣírí rẹ ṣe pàtàkì",
+        "description": "Gbogbo ìtúpalẹ̀ ń ṣẹlẹ̀ nílẹ̀. A kò fi data rẹ ránṣẹ́ sí orí àwọ̀n.",
+        "icon": "lock-check"
+      },
+      {
+        "title": "Fún wa ní ààyè tó pé",
+        "description": "A ó bẹ̀rẹ̀ ìbòwọ̀n SMS àti ìkìlọ̀ kí a lè wò ó ní abẹ́lẹ̀.",
+        "icon": "cellphone-message",
+        "permissions": [
+          {
+            "title": "Ìwọlé ìkìlọ̀",
+            "description": "Kí a lè ṣe àyẹ̀wò WhatsApp, Messenger, Gmail àti bẹ́ẹ̀ bẹ́ẹ̀ lọ ní kíákíá."
+          },
+          {
+            "title": "Ìwọlé kika SMS",
+            "description": "Pátá fún àyẹ̀wò ìrántí tí o lèwu nígbà tí wọ́n bá dé."
+          }
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "title": "Àtúnṣe",
+    "subtitle": "Ṣètò èdè, ìkìlọ̀, àti àyẹ̀wò. Aṣà yìí ṣi jẹ́ àfikún títí di àsìkò tí a ó dá àtúnṣe gidi sílẹ̀.",
+    "language": {
+      "loading": "N ń ṣètọ̀ àwọn èdè..."
+    },
+    "diagnostics": {
+      "loading": "A ń kó àtẹ̀jáde àyẹ̀wò tí a fi orúkọ pamọ́...",
+      "errorTitle": "A kò lè kó àyẹ̀wò jọ",
+      "errorBody": "A ní ìṣòro nígbà tá a ń dá àwòrán àkótán pọ̀. Gbìmọ̀ pẹ̀lú ìbánisọ̀rọ̀ tó dára.",
+      "retry": "Gbìmọ̀ lẹ́ẹ̀kansi",
+      "shareTitle": "Àwòrán àyẹ̀wò",
+      "shareButton": "Pín àwòrán",
+      "shareErrorTitle": "Pípín kò ṣàṣeyọrí",
+      "shareErrorBody": "A kò lè pín àwòrán àyẹ̀wò. Jọ̀wọ́ tún gbìmọ̀.",
+      "refreshButton": "Ṣe àtúnṣe àwòrán",
+      "lastGenerated": "A dá sílẹ̀ ní {{date}}",
+      "disclaimer": "A kò fi akoonu ikọkọ rẹ sílẹ̀ nínú àkójọ yìí. Pín án pẹ̀lú ẹnikẹ́ni tí o gbẹ́kẹ̀lé nìkan.",
+      "sections": {
+        "environment": "Ayika",
+        "localization": "Ìtúmọ̀ èdè",
+        "theme": "Arọ̀pọ̀ awọ̀",
+        "notifications": "Ìkìlọ̀",
+        "sms": "SMS",
+        "detections": "Ìmúlò",
+        "trustedSources": "Olùránṣẹ́ tí a gbẹ́kẹ̀lé",
+        "telemetry": "Télẹ́mẹ́tírì"
+      },
+      "fields": {
+        "platform": "Sókèta",
+        "appOwnership": "Ènìyàn tó ní app",
+        "appVersion": "Àtúnṣe app",
+        "buildNumber": "Nọ́mbà ìtẹ̀jáde",
+        "activeLocale": "Èdè tí ń ṣiṣẹ́",
+        "deviceLocale": "Èdè ẹrọ",
+        "storedLocale": "Èdè tí a fipamọ̀",
+        "storedPreference": "Ààyè tí a yan",
+        "notificationPermission": "Ìyọ̀nda ìkìlọ̀",
+        "alertsEnabled": "Ìkìlọ̀ ṣiṣẹ́",
+        "soundEnabled": "Ohun ṣiṣẹ́",
+        "vibrationEnabled": "Ìrìnrawọ̀sẹ̀ ṣiṣẹ́",
+        "quietHoursEnabled": "Àkókò ìsinmi",
+        "quietHoursActive": "Àkókò ìsinmi ń ṣiṣẹ́",
+        "quietHoursWindow": "Àago ìsinmi",
+        "smsPermission": "Ìyọ̀nda SMS",
+        "historicalCount": "Ìmúlò àtijọ́",
+        "simulatedCount": "Ìmúlò àpẹẹrẹ",
+        "lastSimulatedAt": "Akókò ìmúlò àpẹẹrẹ to kẹ́yìn",
+        "trustedSourcesTotal": "Olùránṣẹ́ tí a gbẹ́kẹ̀lé",
+        "telemetryEvents": "Àwọn iṣẹlẹ̀ télẹ́mẹ́tírì",
+        "telemetryLatest": "Ìṣẹ̀lẹ̀ tuntun"
+      },
+      "values": {
+        "yes": "Bẹ́ẹ̀ni",
+        "no": "Rárá",
+        "none": "Kò sí",
+        "unknown": "Àìmọ̀",
+        "permission": {
+          "granted": "Fúnni",
+          "denied": "Kò gba",
+          "blocked": "Ti dì",
+          "unavailable": "Kò sí"
+        }
+      }
+    },
+    "entries": {
+      "theme": {
+        "title": "Àwọ̀ ara",
+        "description": "Yan bí app ṣe yẹ kí ó farahàn.",
+        "options": {
+          "dark": "Okunkun",
+          "light": "Imọlẹ̀",
+          "system": "Bọ̀ọ̀lù ètò"
+        }
+      },
+      "telemetry": {
+        "title": "Pín ìkìlọ̀",
+        "description": "Ṣakoso bí a ṣe máa pín ìkìlọ̀ àti ìròyìn pẹ̀lú AI Phishing Shield láti túbọ̀ mú amúlétutù pọ̀ síi.",
+        "autoUploadTitle": "Rán àwárí laifọwọyi",
+        "autoUploadSubtitle": "Pín àlàyé ìkìlọ̀ tí a ti pa mọ́ orúkọ rẹ̀ nígbà gbogbo tí a bá rí ohun aláìlera.",
+        "manualReportsTitle": "Jẹ́ kí ìròyìn ọwọ́ ṣiṣẹ́",
+        "manualReportsSubtitle": "Jẹ́ kí bọ́tìnì ìròyìn wà ní dásibọ́ọ̀du kí o lè fi ránṣẹ́ nígbà tí o bá rí ìfiranṣẹ́ amuyẹ.",
+        "errorTitle": "Ìmúdójúìwọ̀n kò yẹ",
+        "errorBody": "A kò lè fipamọ́ ààyè tí o yan. Jọ̀wọ́ tún gbìyànjú."
+      },
+      "language": {
+        "title": "Èdè",
+        "description": "Yan láàrín Gẹẹsi, Faranse, Suwahili, Pidgin, Yorùbá, Ìgbò, Hausa, Árábììkì àti Amaríkì.",
+        "activeBadge": "Èdè tó wà lọ́wọ́lọ́wọ́",
+        "deviceDefault": {
+          "title": "Tọ́ sójú èdè ẹrọ",
+          "description": "Jẹ́ kí app bá èdè àkọ́kọ́ foonu rẹ mu.",
+          "badge": "Ń tẹ̀lé ẹrọ"
+        },
+        "options": {
+          "en": {
+            "title": "Gẹẹsi",
+            "native": "English"
+          },
+          "fr": {
+            "title": "Faranse",
+            "native": "Français"
+          },
+          "sw": {
+            "title": "Suwahili",
+            "native": "Kiswahili"
+          },
+          "yo": {
+            "title": "Yorùbá",
+            "native": "Yorùbá"
+          },
+          "ig": {
+            "title": "Ìgbò",
+            "native": "Ásụ̀sụ́ Ìgbò"
+          },
+          "ha": {
+            "title": "Hausa",
+            "native": "Hausa"
+          },
+          "pcm": {
+            "title": "Pidgin Naijíríà",
+            "native": "Naijá"
+          },
+          "ar": {
+            "title": "Árábììkì",
+            "native": "العربية"
+          },
+          "am": {
+            "title": "Ámáríkì",
+            "native": "አማርኛ"
+          }
+        }
+      },
+      "notifications": {
+        "title": "Ìkìlọ̀",
+        "description": "Ṣètò ohun ìkìlọ̀, gígùn, àti ipo ìyọ̀nda.",
+        "badge": {
+          "on": "Alerts on",
+          "off": "Alerts off",
+          "quietHours": "Quiet hours {{start}}–{{end}}"
+        },
+        "loading": "Loading notification preferences...",
+        "errorTitle": "Update failed",
+        "errorBody": "We couldn't save these notification settings. Please try again.",
+        "permissionTitle": "Permission status",
+        "permissionGranted": "Notifications are enabled at the system level.",
+        "permissionMissing": "Turn on notification access to let the shield alert you instantly.",
+        "permissionButtonGranted": "Enabled",
+        "permissionButton": "Enable notifications",
+        "openSettings": "Open system settings",
+        "masterToggle": {
+          "title": "Alerts",
+          "description": "Turn phishing alerts on or off for this device."
+        },
+        "sound": {
+          "title": "Play sound",
+          "description": "Play a tone when a phishing alert is detected."
+        },
+        "vibration": {
+          "title": "Vibrate on alert",
+          "description": "Trigger vibration feedback when alerts fire."
+        },
+        "quietHours": {
+          "title": "Quiet hours",
+          "description": "Pause alert sounds between {{range}}.",
+          "current": "Currently {{range}}",
+          "helper": "Tap to rotate through preset quiet-hour windows."
+        }
+      },
+      "trustedSources": {
+        "title": "Olùránṣẹ́ tí o gbẹ́kẹ̀lé",
+        "description": "Ṣàkóso àwọn nómọ́ba tàbí imeeli tí o ráyè gbẹ́kẹ̀lé.",
+        "addButton": "Ṣafikun olùránṣẹ́",
+        "emptyState": "Kò sí ẹni tí o gbẹ́kẹ̀lé sibẹ̀. Ṣafikun àwọn laini ilé-ifowópa wé tí a fọwọ́sí tàbí ẹlẹgbẹ́ pàtàkì.",
+        "removeTitle": "Yọ olùránṣẹ́ tí o gbẹ́kẹ̀lé kúrò?",
+        "removeConfirm": "Yọ kúrò",
+        "removeA11y": "Yọ olùránṣẹ́ tí o gbẹ́kẹ̀lé {{name}}",
+        "validationTitle": "Olùránṣẹ́ ò tí ì sí",
+        "validationHandle": "Tẹ orúkọ tàbí nọ́mbà gangan tí o fẹ́ gbẹ́kẹ̀lé sílẹ̀.",
+        "duplicateTitle": "Ti gbẹ́kẹ̀lé tẹ́lẹ̀",
+        "duplicateBody": "Olùránṣẹ́ yìí ti ní àmì ààbò fún ikanni yẹn tẹ́lẹ̀.",
+        "successTitle": "A tọju olùránṣẹ́ tí o gbẹ́kẹ̀lé",
+        "errorTitle": "Wọ́n rí ìṣòro kan",
+        "errorBody": "A kò lè ṣe ìmúdójúìwọ̀n àwọn olùránṣẹ́ tí o gbẹ́kẹ̀lé. Jọ̀wọ́ tún gbìmọ̀.",
+        "modalTitle": "Ṣafikun olùránṣẹ́ tí o gbẹ́kẹ̀lé",
+        "modalSubtitle": "Fi ẹni tí o fẹ́ gbẹ́kẹ̀lé kún ìmúlò kí ìkìlọ̀ lè ní àfihàn tó yẹ.",
+        "fields": {
+          "channel": "Ikanni",
+          "handle": "Olùránṣẹ́",
+          "displayName": "Orúkọ àfihàn",
+          "note": "Akọsilẹ̀"
+        },
+        "placeholders": {
+          "handle": "àpẹẹrẹ: UBA Secure",
+          "displayName": "Àmi ọ̀rẹ́ (àṣàyàn)",
+          "note": "Ṣafikun akọsilẹ̀ kéékèèké (àṣàyàn)"
+        },
+        "saving": "Ní ìpamọ́..."
+      },
+      "diagnostics": {
+        "title": "Ìtẹ̀síwájú",
+        "description": "Rán àwọn àkọọ́lẹ̀ tí a dá ní àfiyèsí ranṣẹ́ láti ran wá lọ́wọ́ láti mú àfọ̀mọ̀kan pọ̀ si."
+      },
+      "model": {
+        "title": "Imúdójúìwọ̀n àwoṣe",
+        "description": "Fi awoṣe olùṣàyẹ̀wò tuntun sílẹ̀ kí o ṣètò ẹ̀dá tí ó wà.",
+        "manageButton": "Ṣí aṣàkóso",
+        "currentBadge": "Àwoṣe lọwọlọwọ {{version}}"
+      }
+    },
+    "back": "← Pada sí dasibodu",
+    "model": {
+      "title": "Ìṣàkóso àwoṣe",
+      "subtitle": "Ṣe igbasilẹ imúdójúìwọ̀n, mu àwọn ẹ̀dá ṣiṣẹ́, kí o wo ìtàn fifi sori ẹrọ.",
+      "syncButton": "Ṣọ̀pọ̀ imúdójúìwọ̀n",
+      "syncing": "N ṣe ìṣọ̀kan imúdójúìwọ̀n...",
+      "lastSynced": "Ìṣọ̀kan tó kẹ́yìn {{time}}",
+      "neverSynced": "A kò tíì sọ àkójọpọ̀ pọ̀",
+      "availableTitle": "Àwọn ẹ̀dá tí ó wà",
+      "availableEmpty": "O ti ń lò ẹ̀dá tuntun jù lọ báyìí.",
+      "installedTitle": "Àwọn ẹ̀dá tí a fi sílẹ̀",
+      "installedEmpty": "Kò sí àwoṣe tí a fi sílẹ̀ sibẹ̀.",
+      "detailsTitle": "Details",
+      "downloadProgress": "Downloading… {{progress}}%",
+      "offlineFallbackBanner": "Couldn't reach the live registry. Showing the built-in demo catalog for now.",
+      "badges": {
+        "current": "Tí ń ṣiṣẹ́",
+        "installed": "Ti fi sílẹ̀"
+      },
+      "sizeLabel": "{{size}} MB",
+      "releaseDate": "Ti jáde {{date}}",
+      "changelogTitle": "Kí ni tuntun",
+      "catalogMode": {
+        "toggleLabel": "Model catalog",
+        "description": "Switch between live registry updates and the offline demo catalog. Live mode downloads real model files.",
+        "live": "Live registry",
+        "dummy": "Demo catalog",
+        "offlineFallback": "Offline fallback"
+      },
+      "details": {
+        "activeVersion": "Active version",
+        "currentStatusActive": "This model is currently powering phishing detection.",
+        "noActive": "No model is active yet. Install and activate a version to start scanning.",
+        "installedOn": "Installed {{date}}",
+        "storageFootprint": "Storage: {{size}} MB",
+        "summaryTitle": "Shield snapshot"
+      },
+      "actions": {
+        "install": "Fi sori ẹrọ",
+        "activate": "Mu ṣiṣẹ́",
+        "remove": "Yọ kúrò"
+      },
+      "alerts": {
+        "installSuccessTitle": "Àwoṣe ti fi sílẹ̀",
+        "installSuccessBody": "Àwoṣe {{version}} ti di ẹni tí ń ṣiṣẹ́ lórí ẹrọ rẹ.",
+        "installErrorTitle": "Fifi sori ẹrọ kò ṣaṣeyọri",
+        "installErrorBody": "A kò lè fi ẹ̀dá {{version}} kún un. Jọ̀wọ́ gbìmọ̀ sí lẹ́ẹ̀kansi lẹ́yìn ìgbà díẹ̀.",
+        "activateSuccessTitle": "Àwoṣe ti mu ṣiṣẹ́",
+        "activateSuccessBody": "Àwoṣe {{version}} ni olùdétẹ́ tó ń ṣiṣẹ́ báyìí.",
+        "activateErrorTitle": "Ìṣíṣiṣẹ́ kò ṣaṣeyọri",
+        "activateErrorBody": "A kò lè yí àwoṣe padà. Jọ̀wọ́ tún gbìmọ̀.",
+        "removeConfirmTitle": "Yọ ẹ̀dá àwoṣe kúrò?",
+        "removeConfirmBody": "Yiyọ́ àwoṣe {{version}} máa ṣí ààyè pamọ́. O lè fi í sílẹ̀ lẹ́yìnna bí o bá fẹ́.",
+        "removeConfirmAction": "Yọ kúrò",
+        "removeSuccessTitle": "Àwoṣe ti yọ kúrò",
+        "removeSuccessBody": "Àwoṣe {{version}} ni a ti pa kúrò ní ibi ìpamọ́.",
+        "removeErrorTitle": "Ìyọkúrò kò ṣaṣeyọri",
+        "removeErrorBody": "A kò lè yọ àwoṣe {{version}}. Gbìmọ̀ lẹ́yìn tí o bá tún sọ̀pọ̀.",
+        "syncErrorTitle": "Ìṣọ̀kan kò ṣaṣeyọri",
+        "syncErrorBody": "A kò lè tún àkójọpọ̀ ṣe. Ṣàyẹ̀wò asopọ rẹ kí o tún gbìmọ̀."
+      }
+    }
+  },
+  "developerTools": {
+    "resetOnboarding": {
+      "title": "Tun ìrìnàjò ìmọ̀ràn ṣe",
+      "successTitle": "Ìrìnàjò ìmọ̀ràn tún ṣẹ",
+      "successBody": "A ti pa ìpo ìkọ́ni ìbẹ̀rẹ̀ mọ́. Pa app náà mọ́ kí o tún ṣí i láti bẹ̀rẹ̀ ìrìnàjò náà.",
+      "errorTitle": "Ìtúnṣe kò ṣàṣeyọrí",
+      "errorBody": "A kò lè pa ìpo ìkọ́ni ìbẹ̀rẹ̀ mọ́. Jọ̀wọ́ tún gbìmọ̀.",
+      "restart": "Tún ìrìnàjò bẹ̀rẹ̀"
+    }
+  }
+}

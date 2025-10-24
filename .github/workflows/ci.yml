@@ -1,0 +1,132 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Enable corepack and prepare pnpm
+        run: corepack enable && corepack prepare pnpm@latest --activate
+
+      - name: Restore pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pnpm-store
+            .pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Install root dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run root lint
+        run: pnpm lint
+
+      - name: Install server dependencies only
+        working-directory: server
+        run: pnpm --filter "@aphish/server..." install --frozen-lockfile
+
+      - name: Setup SQLite DB
+        run: |
+          mkdir -p server/prisma
+          # ensure a file DB exists for prisma migrate
+          touch server/dev.db || true
+
+      - name: Generate Prisma client
+        working-directory: server
+        run: pnpm prisma generate
+
+      - name: Run migrations
+        working-directory: server
+        env:
+          DATABASE_URL: file:./dev.db
+        run: pnpm prisma migrate deploy || true
+
+      - name: Run tests
+        working-directory: server
+        env:
+          DATABASE_URL: file:./dev.db
+          AUTH_TOKENS: devtoken
+        run: pnpm test --reporter=dot
+
+  test-postgres:
+    runs-on: ubuntu-latest
+    needs: test
+    strategy:
+      matrix:
+        node-version: [20.x]
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: aphish_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Enable corepack and prepare pnpm
+        run: corepack enable && corepack prepare pnpm@latest --activate
+
+      - name: Restore pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pnpm-store
+            .pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Install server dependencies only
+        working-directory: server
+        run: pnpm --filter "@aphish/server..." install --frozen-lockfile
+
+      - name: Wait for Postgres
+        run: |
+          for i in {1..30}; do
+            pg_isready -h localhost -p 5432 -U postgres && break || sleep 1
+          done
+
+      - name: Generate Prisma client
+        working-directory: server
+        run: pnpm prisma generate
+
+      - name: Run migrations against Postgres
+        working-directory: server
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/aphish_db?schema=public
+        run: pnpm prisma migrate deploy
+
+      - name: Run tests against Postgres
+        working-directory: server
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/aphish_db?schema=public
+          AUTH_TOKENS: devtoken
+        run: pnpm test --reporter=dot

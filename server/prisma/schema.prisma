@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model OutboxEvent {
+  id         String  @id
+  channel    String
+  // payload stored as JSON string for SQLite compatibility
+  payload    String
+  createdAt  DateTime
+  receivedAt DateTime @default(now())
+  status     String   @default("queued")
+  hash       String
+  attempts   Int      @default(0)
+  lastError  String?
+  // when the event becomes available for the next processing attempt
+  availableAt DateTime @default(now())
+}
+
+model ModelCatalogEntry {
+  id         Int      @id @default(autoincrement())
+  version    String   @unique
+  releasedAt DateTime
+  sizeMB     Float
+  checksum   String
+  // changelog stored as JSON string for SQLite compatibility
+  changelog  String
+  downloadUrl String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  route     String
+  method    String
+  token     String?
+  ip        String?
+  body      String?
+  createdAt DateTime @default(now())
+}
+
+model Token {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  revokedAt DateTime?
+}

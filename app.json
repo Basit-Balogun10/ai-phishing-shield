@@ -1,38 +1,53 @@
 {
   "expo": {
-    "name": "ai-phishing-shield",
+    "name": "AI Phishing Shield",
     "slug": "ai-phishing-shield",
     "version": "1.0.0",
-
+    "scheme": "aiphishingshield",
     "web": {
       "favicon": "./assets/favicon.png"
     },
-
     "experiments": {
       "tsconfigPaths": true
     },
-
-    "plugins": [],
-
+    "plugins": [
+      "expo-router",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#ffffff"
+        }
+      ],
+      "expo-background-task"
+    ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-
-    "userInterfaceStyle": "light",
-
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#f9fafb",
+      "dark": {
+        "image": "./assets/splash.png",
+        "backgroundColor": "#020617"
+      }
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": ["fetch"]
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
+    },
+    "extra": {
+      "modelRegistryUrl": "https://download.afrihackbox.dev/models/catalog.json"
     }
   }
 }

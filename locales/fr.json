@@ -1,0 +1,685 @@
+{
+  "common": {
+    "continue": "Continuer",
+    "back": "Retour",
+    "loading": "Chargement de l’état de protection...",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "clear": "Effacer",
+    "comingSoonTitle": "Bientôt disponible",
+    "comingSoonBody": "Cette option sera activée très bientôt. Revenez d’ici peu."
+  },
+  "navigation": {
+    "tabs": {
+      "home": "Accueil",
+      "alerts": "Alertes",
+      "settings": "Réglages"
+    }
+  },
+  "dashboard": {
+    "title": "Bouclier Anti-Hameçonnage IA",
+    "subtitle": "Gardez une longueur d’avance sur les messages suspects grâce à une protection IA en temps réel.",
+    "statusCard": {
+      "title": "Vous êtes protégé",
+      "description": "La détection anti-hameçonnage fonctionne silencieusement en arrière-plan.",
+      "model": "Modèle : {{model}}",
+      "lastScan": "Dernier contrôle {{time}}"
+    },
+    "hero": {
+      "status": {
+        "active": "Protection active",
+        "paused": "Action requise"
+      },
+      "activeDescription": "La détection anti-hameçonnage fonctionne silencieusement en arrière-plan.",
+      "viewStats": "Consulter les statistiques",
+      "trustedCount": "{{count}} expéditeurs sûrs",
+      "modelVersion": "Modèle {{version}}",
+      "lastScan": "Dernière analyse {{time}}",
+      "lastScanFallback": "En attente de la première analyse",
+      "permissions": {
+        "ok": "Notifications et SMS prêts",
+        "missing": "Corriger les permissions"
+      },
+      "goToDiagnostics": "Voir le diagnostic",
+      "modelStatus": {
+        "syncing": "Synchronisation des mises à jour",
+        "downloading": "Téléchargement de {{version}}",
+        "activating": "Activation de {{version}}",
+        "removing": "Suppression de {{version}}"
+      },
+      "pausedDescription": "Accordez les autorisations manquantes pour que la détection du phishing reste active.",
+      "pausedHelper": "Le bouclier est désactivé et des tentatives de phishing peuvent passer. Réactivez-le tout de suite !"
+    },
+    "stats": {
+      "title": "Vos statistiques de protection",
+      "messagesScanned": "Messages analysés",
+      "threatsBlocked": "Menaces bloquées",
+      "safeMessages": "Messages sûrs",
+      "since": "Depuis {{timeframe}}",
+      "defaultTimeframe": "les 7 derniers jours",
+      "timeframes": {
+        "24h": "Dernières 24 heures",
+        "7d": "7 derniers jours",
+        "30d": "30 derniers jours",
+        "all": "Toute la période"
+      },
+      "trend": {
+        "up": "{{value}} % vs période précédente",
+        "down": "{{value}} % vs période précédente",
+        "flat": "Stable vs période précédente"
+      },
+      "trendBadges": {
+        "up": "{{value}} %",
+        "down": "{{value}} %",
+        "flat": "Stable"
+      },
+      "comparison": "vs période précédente"
+    },
+    "quickActions": {
+      "title": "Actions rapides",
+      "mockScan": {
+        "title": "Lancer une simulation",
+        "subtitle": "Ouvrir le simulateur pour déclencher une détection exemple."
+      },
+      "alerts": {
+        "title": "Voir les alertes",
+        "subtitle": "Ouvrir tout l’historique des détections."
+      },
+      "stats": {
+        "title": "Statistiques de protection",
+        "subtitle": "Consultez les tendances des messages analysés et menaces bloquées."
+      },
+      "trusted": {
+        "title": "Expéditeurs sûrs",
+        "subtitle": "Vérifiez et gérez les contacts marqués comme fiables."
+      },
+      "settings": {
+        "title": "Gérer les réglages",
+        "subtitle": "Configurer la langue, les notifications et le diagnostic."
+      },
+      "developer": {
+        "title": "Outils développeur",
+        "subtitle": "Réinitialiser l’onboarding et relancer les vérifications."
+      },
+      "model": {
+        "title": "Mises à jour du modèle",
+        "subtitle": "Vérifiez les nouvelles versions du détecteur et gérez celles installées."
+      },
+      "report": {
+        "title": "Signaler un message",
+        "subtitle": "Envoyez un contenu suspect pour aider à entraîner le bouclier."
+      }
+    },
+    "filtersTitle": "Filtres",
+    "openFilters": "Ouvrir les filtres",
+    "editFilters": "Ajuster les filtres",
+    "clearFilters": "Tout effacer",
+    "applyFilters": "Terminer",
+    "noFiltersApplied": "Aucun filtre appliqué",
+    "activity": {
+      "title": "Dernière activité",
+      "empty": "Aucune détection pour l’instant. Lancez une simulation pour prévisualiser les alertes."
+    },
+    "recentAlerts": {
+      "title": "Alertes récentes",
+      "subtitle": "Derniers messages suspects signalés par le bouclier.",
+      "empty": "Aucune alerte détectée pour le moment. Restez vigilant !",
+      "emptyWithFilters": "Aucune alerte ne correspond à {{filters}}. Ajustez vos filtres.",
+      "filtersTitle": "Filtres",
+      "openFilters": "Ouvrir les filtres",
+      "editFilters": "Ajuster les filtres",
+      "clearFilters": "Tout effacer",
+      "applyFilters": "Terminer",
+      "noFiltersApplied": "Aucun filtre appliqué",
+      "viewAll": "Voir tout l’historique",
+      "filters": {
+        "all": "Toutes les alertes",
+        "historical": "Jeu de données",
+        "simulated": "Vos simulations",
+        "trusted": "Expéditeurs sûrs"
+      },
+      "timeframeLabel": "Détecté dans",
+      "timeframe": {
+        "all": "Toute période",
+        "24h": "Dernières 24 heures",
+        "7d": "Derniers 7 jours",
+        "30d": "Derniers 30 jours"
+      },
+      "severity": {
+        "all": "Tout niveau",
+        "high": "Risque élevé",
+        "medium": "Risque moyen",
+        "low": "Risque faible"
+      },
+      "channels": {
+        "all": "Tous canaux"
+      },
+      "matchesHeading": "Signaux détectés",
+      "trustedToggle": {
+        "label": "Afficher seulement les expéditeurs sûrs",
+        "description": "Limiter aux contacts marqués comme sûrs dans les paramètres."
+      },
+      "trustedOnlyBadge": "Expéditeurs sûrs uniquement",
+      "feedback": {
+        "title": "Cette alerte était-elle pertinente ?",
+        "subtitle": "Dites-nous s’il s’agissait d’une véritable tentative de phishing ou d’une fausse alerte.",
+        "actions": {
+          "confirm": "Confirmer la menace",
+          "confirmHelper": "C’était du phishing",
+          "dismiss": "Marquer comme sûr",
+          "dismissHelper": "Le message était légitime"
+        },
+        "status": {
+          "submitted": "Merci d’aider à améliorer le bouclier.",
+          "confirmed": "Marqué comme phishing",
+          "falsePositive": "Marqué comme sûr",
+          "pending": "Envoi du retour..."
+        },
+        "error": "Impossible d’envoyer ce retour. Réessayez."
+      },
+      "searchPlaceholder": "Rechercher par expéditeur, contenu ou tag",
+      "trustedBadge": "Expéditeur de confiance",
+      "trustedDefault": "Vous avez marqué cet expéditeur comme sûr dans les paramètres.",
+      "historyAlertTitle": "Bientôt disponible",
+      "historyAlertBody": "Vous pourrez consulter l’historique complet des alertes lors de la prochaine étape.",
+      "items": [
+        {
+          "sender": "Numéro inconnu",
+          "preview": "Réclamez votre remboursement d’impôts. Cliquez sur le lien...",
+          "timestamp": "Il y a 2 h"
+        },
+        {
+          "sender": "Siège Finance",
+          "preview": "Urgent : vérifiez vos informations de paie pour éviter une suspension.",
+          "timestamp": "Hier"
+        },
+        {
+          "sender": "+234 900 123 4567",
+          "preview": "Nous avons crédité votre compte. Confirmez la connexion immédiatement !",
+          "timestamp": "Lun"
+        }
+      ]
+    },
+    "trustedSources": {
+      "title": "Expéditeurs sûrs",
+      "subtitle": "Gérez les contacts que vous avez marqués comme fiables.",
+      "cta": "Gérer les expéditeurs sûrs",
+      "empty": "Vous n’avez pas encore ajouté d’expéditeur sûr.",
+      "count": "{{count}} fiables",
+      "noteFallback": "Marqué comme sûr",
+      "more": "+{{remaining}} de plus"
+    },
+    "report": {
+      "title": "Signaler un message",
+      "subtitle": "Partagez anonymement les messages suspects pour renforcer le bouclier.",
+      "cta": "Signaler un message",
+      "modalTitle": "Report a suspicious message",
+      "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
+      "fields": {
+        "channelLabel": "Message came from",
+        "senderLabel": "Sender (optional)",
+        "messageLabel": "Message content",
+        "categoryLabel": "What type of issue?",
+        "commentLabel": "Anything else to include? (optional)"
+      },
+      "placeholders": {
+        "sender": "e.g. +234 812 345 6789",
+        "message": "Paste or describe the suspicious message here...",
+        "comment": "Add context, e.g. why it looks risky."
+      },
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Email"
+      },
+      "categories": {
+        "phishing": "Likely phishing",
+        "suspicious": "Suspicious content",
+        "false_positive": "False alarm",
+        "other": "Something else"
+      },
+      "status": {
+        "heading": "Report status",
+        "idle": "Queued reports send automatically when a secure connection is available.",
+        "submitting": "Submitting report...",
+        "success": "Report queued successfully. Thanks for training the shield!",
+        "error": "We couldn't queue the report. Please try again.",
+        "errorTitle": "Submission failed"
+      },
+      "validation": {
+        "messageRequired": "Add the suspicious message so we know what to review."
+      },
+      "disabled": {
+        "title": "Manual reporting disabled",
+        "body": "Turn on manual reports in Settings → Data & telemetry to send suspicious messages."
+      },
+      "loadingTitle": "Preparing settings",
+      "loadingBody": "We're still loading your reporting preferences. Try again in a moment.",
+      "actions": {
+        "submit": "Submit report",
+        "cancel": "Cancel",
+        "close": "Close"
+      }
+    },
+    "expoGoNotice": {
+      "title": "Limitation Expo Go",
+      "body": "La surveillance en arrière-plan s’interrompt dans Expo Go. Créez un client de développement ou une application autonome pour garder le bouclier actif lorsque l’app est fermée."
+    },
+    "permissionsReminder": {
+      "title": "Activez les accès requis",
+      "body": "Activez les notifications et les SMS pour que le bouclier analyse automatiquement.",
+      "cta": "Vérifier les autorisations",
+      "reviewOnboarding": "Revoir l’introduction"
+    },
+    "modals": {
+      "messagesScanned": {
+        "title": "Comment fonctionne l’analyse",
+        "body": "Les messages sont analysés sur l’appareil dès qu’ils apparaissent. Cela combine les échantillons du jeu de données et vos simulations pour montrer la charge du bouclier."
+      },
+      "threatsBlocked": {
+        "title": "À propos des menaces bloquées",
+        "body": "Le bouclier signale tout ce qui semble risqué, qu’il s’agisse d’exemples historiques ou de vos simulations. Utilisez ce chiffre pour estimer la fréquence de détection."
+      },
+      "safeMessages": {
+        "title": "Comprendre les messages sûrs",
+        "body": "Ce compteur estime combien de messages ont passé l’inspection. Il soustrait les éléments suspects de tout ce qui a été analysé pour indiquer si vos boîtes de réception restent propres."
+      }
+    },
+    "mockDetection": {
+      "title": "Lancer une analyse fictive",
+      "subtitle": "Déclenchez l’analyseur en arrière-plan avec des messages fictifs pour voir les alertes.",
+      "cta": "Simuler une détection",
+      "runningLabel": "Analyse fictive en cours...",
+      "helper": "Si une menace fictive est détectée, les détails s’afficheront ci-dessous et vous recevrez une notification locale.",
+      "successTitle": "Alerte fictive envoyée",
+      "successBody": "Ouvrez vos notifications pour découvrir comment les alertes s’afficheront.",
+      "noThreatTitle": "Aucune menace trouvée",
+      "noThreatBody": "Tous les messages fictifs semblent sûrs cette fois. Réessayez plus tard !",
+      "errorTitle": "Analyse fictive indisponible",
+      "errorBody": "Impossible de lancer l’analyse fictive. Réessayez après avoir relancé l’application.",
+      "noResultPlaceholder": "Lancez le simulateur pour prévisualiser exactement l’apparence des alertes dans l’application.",
+      "detectedAt": "Détecté à {{time}}",
+      "scoreLabel": "Score de risque : {{score}}%",
+      "noMatches": "Aucun motif précis d’hameçonnage détecté, mais le message reste considéré comme risqué.",
+      "viewSafeSample": "Prévisualiser un message sûr",
+      "safePreviewTitle": "Exemple de message sûr",
+      "safePreviewSubtitle": "Voici comment l’analyseur évalue un message considéré comme fiable.",
+      "safePreviewLabel": "Marqué comme sûr",
+      "safeSampleUnavailableTitle": "Aucun exemple sûr",
+      "safeSampleUnavailableBody": "Aucun message à faible risque n’est disponible pour l’instant. Relancez une analyse fictive.",
+      "clearLastDetection": "Réinitialiser la simulation",
+      "clearedTitle": "Simulation réinitialisée",
+      "clearedBody": "La carte de détection fictive a été effacée.",
+      "showTools": "Afficher les outils développeur",
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "E-mail"
+      }
+    },
+    "navigateLabel": "Actions rapides",
+    "links": {
+      "settings": {
+        "title": "Ouvrir les paramètres",
+        "description": "Gérer la langue, les notifications et les diagnostics."
+      }
+    }
+  },
+  "onboarding": {
+    "badge": "Bienvenue",
+    "title": "Activez votre bouclier anti-hameçonnage IA",
+    "subtitle": "Parcourez ces points clés pour comprendre ce que fait l’application et pourquoi les permissions sont nécessaires.",
+    "skip": "Passer",
+    "next": "Suivant",
+    "start": "Activer la protection",
+    "skipDialog": {
+      "title": "Ignorer les autorisations requises ?",
+      "body": "Sans l’accès aux notifications et aux SMS, le bouclier ne peut pas surveiller automatiquement les tentatives d’hameçonnage. Vous pourrez les activer plus tard depuis les paramètres.",
+      "cancel": "Rester ici",
+      "confirm": "Ignorer pour l’instant"
+    },
+    "permissionNoteTitle": "Avant d’activer le bouclier",
+    "permissionNoteBody": "Vous accorderez l’accès aux notifications et aux SMS juste après cette introduction.",
+    "permissionStepsTitle": "Vous activerez :",
+    "permissions": {
+      "title": "Maintenez le bouclier actif",
+      "subtitle": "Activez ces autorisations pour que nous analysions les messages dès leur arrivée.",
+      "notifications": {
+        "title": "Accès aux notifications",
+        "description": "Autorisez-nous à analyser WhatsApp, Messenger, Gmail et d’autres services en temps réel.",
+        "cta": "Activer les notifications",
+        "grantedCta": "Notifications activées",
+        "openSettings": "Ouvrir les paramètres système"
+      },
+      "sms": {
+        "title": "Accès aux SMS",
+        "description": "Permettez-nous de lire localement les SMS entrants pour signaler immédiatement les messages suspects.",
+        "cta": "Activer l’accès SMS",
+        "grantedCta": "SMS activés",
+        "openSettings": "Ouvrir les paramètres système",
+        "unavailable": "L’accès aux SMS n’est pas nécessaire sur cet appareil."
+      },
+      "status": {
+        "requesting": "Demande…",
+        "granted": "Activé",
+        "blocked": "Activer dans les paramètres",
+        "required": "Toujours requis"
+      },
+      "finishCta": "Activer la protection",
+      "checking": "Vérification des autorisations en cours…",
+      "continueHelper": "Activez les accès requis pour continuer",
+      "incompleteTitle": "Terminez la configuration des accès",
+      "incompleteBody": "Activez les notifications et l’accès aux SMS pour que le bouclier fonctionne automatiquement."
+    },
+    "slides": [
+      {
+        "title": "Restez en avance sur les arnaques",
+        "description": "Nous analysons les SMS et notifications reçus sur votre appareil pour détecter immédiatement les tentatives d’hameçonnage.",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Votre vie privée compte",
+        "description": "Toute l’analyse se fait hors ligne. Les messages ne quittent jamais votre appareil et aucune donnée n’est stockée dans le cloud.",
+        "icon": "lock-check"
+      },
+      {
+        "title": "Autorisez les accès nécessaires",
+        "description": "Nous demanderons l’accès aux SMS et notifications afin de surveiller discrètement en arrière-plan.",
+        "icon": "cellphone-message",
+        "permissions": [
+          {
+            "title": "Accès aux notifications",
+            "description": "Pour analyser instantanément WhatsApp, Messenger, Gmail et bien plus encore."
+          },
+          {
+            "title": "Accès à la lecture des SMS",
+            "description": "Nécessaire pour analyser les SMS suspects dès leur arrivée."
+          }
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "title": "Paramètres",
+    "subtitle": "Configurez la localisation, les alertes et les diagnostics. Il s’agit d’un écran temporaire en attendant les véritables options.",
+    "language": {
+      "loading": "Préparation des langues..."
+    },
+    "diagnostics": {
+      "loading": "Collecte de diagnostics anonymisés...",
+      "errorTitle": "Impossible de charger les diagnostics",
+      "errorBody": "Une erreur est survenue lors de la génération de l’instantané. Réessayez avec une connexion stable.",
+      "retry": "Réessayer",
+      "shareTitle": "Instantané des diagnostics",
+      "shareButton": "Partager l’instantané",
+      "shareErrorTitle": "Échec du partage",
+      "shareErrorBody": "Impossible de partager l’instantané des diagnostics. Veuillez réessayer.",
+      "refreshButton": "Actualiser l’instantané",
+      "lastGenerated": "Généré le {{date}}",
+      "disclaimer": "Cette exportation n’inclut aucun contenu personnel. Partagez-la uniquement avec une équipe de support de confiance.",
+      "sections": {
+        "environment": "Environnement",
+        "localization": "Langue",
+        "theme": "Apparence",
+        "notifications": "Notifications",
+        "sms": "SMS",
+        "detections": "Détections",
+        "trustedSources": "Expéditeurs fiables",
+        "telemetry": "Télémétrie"
+      },
+      "fields": {
+        "platform": "Plateforme",
+        "appOwnership": "Propriété de l’app",
+        "appVersion": "Version de l’app",
+        "buildNumber": "Version de build",
+        "activeLocale": "Locale active",
+        "deviceLocale": "Locale de l’appareil",
+        "storedLocale": "Langue enregistrée",
+        "storedPreference": "Préférence enregistrée",
+        "notificationPermission": "Autorisation de notification",
+        "alertsEnabled": "Alertes activées",
+        "soundEnabled": "Son activé",
+        "vibrationEnabled": "Vibration activée",
+        "quietHoursEnabled": "Plages silencieuses",
+        "quietHoursActive": "Plages silencieuses actives",
+        "quietHoursWindow": "Plage silencieuse",
+        "smsPermission": "Autorisation SMS",
+        "historicalCount": "Détections historiques",
+        "simulatedCount": "Détections simulées",
+        "lastSimulatedAt": "Dernière simulation",
+        "trustedSourcesTotal": "Nombre d’expéditeurs fiables",
+        "telemetryEvents": "Événements en mémoire",
+        "telemetryLatest": "Dernier événement"
+      },
+      "values": {
+        "yes": "Oui",
+        "no": "Non",
+        "none": "Aucun",
+        "unknown": "Inconnu",
+        "permission": {
+          "granted": "Autorisée",
+          "denied": "Refusée",
+          "blocked": "Bloquée",
+          "unavailable": "Indisponible"
+        }
+      }
+    },
+    "entries": {
+      "theme": {
+        "title": "Apparence",
+        "description": "Choisissez comment l’application adapte ses couleurs.",
+        "options": {
+          "dark": "Sombre",
+          "light": "Clair",
+          "system": "Selon le système"
+        }
+      },
+      "telemetry": {
+        "title": "Partage des menaces",
+        "description": "Contrôlez comment les alertes et les signalements sont partagés avec AI Phishing Shield pour améliorer le modèle.",
+        "autoUploadTitle": "Envoyer les détections automatiquement",
+        "autoUploadSubtitle": "Partager des métadonnées anonymisées lorsqu’une activité suspecte est détectée.",
+        "manualReportsTitle": "Autoriser les signalements manuels",
+        "manualReportsSubtitle": "Activez le flux de signalement depuis le tableau de bord quand vous repérez un message suspect.",
+        "errorTitle": "Échec de la mise à jour",
+        "errorBody": "Impossible d’enregistrer vos préférences. Veuillez réessayer."
+      },
+      "language": {
+        "title": "Langue",
+        "description": "Basculer entre l’anglais, le français, le swahili, le yoruba, l’igbo, le haoussa, le pidgin, l’arabe et l’amharique.",
+        "activeBadge": "Langue active",
+        "deviceDefault": {
+          "title": "Suivre la langue de l’appareil",
+          "description": "Garder l’application alignée sur la langue principale de votre téléphone.",
+          "badge": "Synchronisée avec l’appareil"
+        },
+        "options": {
+          "en": {
+            "title": "Anglais",
+            "native": "English"
+          },
+          "fr": {
+            "title": "Français",
+            "native": "Français"
+          },
+          "sw": {
+            "title": "Swahili",
+            "native": "Kiswahili"
+          },
+          "yo": {
+            "title": "Yoruba",
+            "native": "Yorùbá"
+          },
+          "ig": {
+            "title": "Igbo",
+            "native": "Ásụ̀sụ́ Ìgbò"
+          },
+          "ha": {
+            "title": "Haoussa",
+            "native": "Hausa"
+          },
+          "pcm": {
+            "title": "Pidgin nigérian",
+            "native": "Naijá"
+          },
+          "ar": {
+            "title": "Arabe",
+            "native": "العربية"
+          },
+          "am": {
+            "title": "Amharique",
+            "native": "አማርኛ"
+          }
+        }
+      },
+      "notifications": {
+        "title": "Préférences de notification",
+        "description": "Contrôlez le son des alertes, la vibration et l’état des autorisations.",
+        "badge": {
+          "on": "Alerts on",
+          "off": "Alerts off",
+          "quietHours": "Quiet hours {{start}}–{{end}}"
+        },
+        "loading": "Loading notification preferences...",
+        "errorTitle": "Update failed",
+        "errorBody": "We couldn't save these notification settings. Please try again.",
+        "permissionTitle": "Permission status",
+        "permissionGranted": "Notifications are enabled at the system level.",
+        "permissionMissing": "Turn on notification access to let the shield alert you instantly.",
+        "permissionButtonGranted": "Enabled",
+        "permissionButton": "Enable notifications",
+        "openSettings": "Open system settings",
+        "masterToggle": {
+          "title": "Alerts",
+          "description": "Turn phishing alerts on or off for this device."
+        },
+        "sound": {
+          "title": "Play sound",
+          "description": "Play a tone when a phishing alert is detected."
+        },
+        "vibration": {
+          "title": "Vibrate on alert",
+          "description": "Trigger vibration feedback when alerts fire."
+        },
+        "quietHours": {
+          "title": "Quiet hours",
+          "description": "Pause alert sounds between {{range}}.",
+          "current": "Currently {{range}}",
+          "helper": "Tap to rotate through preset quiet-hour windows."
+        }
+      },
+      "diagnostics": {
+        "title": "Diagnostics",
+        "description": "Exporter des journaux anonymisés pour améliorer la précision de détection."
+      },
+      "trustedSources": {
+        "title": "Expéditeurs fiables",
+        "description": "Gérez les numéros ou adresses que vous considérez comme sûrs.",
+        "addButton": "Ajouter un expéditeur",
+        "emptyState": "Aucun contact fiable pour l’instant. Ajoutez des numéros bancaires vérifiés, des RH ou des partenaires essentiels.",
+        "removeTitle": "Supprimer l’expéditeur fiable ?",
+        "removeConfirm": "Supprimer",
+        "removeA11y": "Supprimer l’expéditeur fiable {{name}}",
+        "validationTitle": "Expéditeur manquant",
+        "validationHandle": "Saisissez le nom ou numéro exact de l’expéditeur que vous souhaitez approuver.",
+        "duplicateTitle": "Déjà marqué comme fiable",
+        "duplicateBody": "Cet expéditeur est déjà enregistré comme fiable pour ce canal.",
+        "successTitle": "Expéditeur fiable enregistré",
+        "errorTitle": "Un problème est survenu",
+        "errorBody": "Impossible de mettre à jour vos expéditeurs fiables. Veuillez réessayer.",
+        "modalTitle": "Ajouter un expéditeur fiable",
+        "modalSubtitle": "Enregistrez un contact officiel pour que les alertes restent contextualisées.",
+        "fields": {
+          "channel": "Canal",
+          "handle": "Expéditeur",
+          "displayName": "Nom d’affichage",
+          "note": "Notes"
+        },
+        "placeholders": {
+          "handle": "ex. UBA Secure",
+          "displayName": "Libellé convivial (facultatif)",
+          "note": "Ajoutez une courte note (facultatif)"
+        },
+        "saving": "Enregistrement..."
+      },
+      "model": {
+        "title": "Mises à jour du modèle",
+        "description": "Installez les nouveaux modèles de détection d’hameçonnage et gérez les versions.",
+        "manageButton": "Ouvrir le gestionnaire",
+        "currentBadge": "Version active {{version}}"
+      }
+    },
+    "back": "← Retour au tableau de bord",
+    "model": {
+      "title": "Gestion du modèle",
+      "subtitle": "Téléchargez les mises à jour, activez des versions et consultez l’historique des installations.",
+      "syncButton": "Synchroniser les mises à jour",
+      "syncing": "Synchronisation en cours...",
+      "lastSynced": "Dernière synchronisation {{time}}",
+      "neverSynced": "Catalogue jamais synchronisé",
+      "availableTitle": "Versions disponibles",
+      "availableEmpty": "Vous utilisez déjà la dernière version.",
+      "installedTitle": "Versions installées",
+      "installedEmpty": "Aucune version installée pour l’instant.",
+      "detailsTitle": "Details",
+      "downloadProgress": "Downloading… {{progress}}%",
+      "offlineFallbackBanner": "Couldn't reach the live registry. Showing the built-in demo catalog for now.",
+      "badges": {
+        "current": "Active",
+        "installed": "Installée"
+      },
+      "sizeLabel": "{{size}} Mo",
+      "releaseDate": "Publié le {{date}}",
+      "changelogTitle": "Nouveautés",
+      "catalogMode": {
+        "toggleLabel": "Model catalog",
+        "description": "Switch between live registry updates and the offline demo catalog. Live mode downloads real model files.",
+        "live": "Live registry",
+        "dummy": "Demo catalog",
+        "offlineFallback": "Offline fallback"
+      },
+      "details": {
+        "activeVersion": "Active version",
+        "currentStatusActive": "This model is currently powering phishing detection.",
+        "noActive": "No model is active yet. Install and activate a version to start scanning.",
+        "installedOn": "Installed {{date}}",
+        "storageFootprint": "Storage: {{size}} MB",
+        "summaryTitle": "Shield snapshot"
+      },
+      "actions": {
+        "install": "Installer",
+        "activate": "Activer",
+        "remove": "Supprimer"
+      },
+      "alerts": {
+        "installSuccessTitle": "Modèle installé",
+        "installSuccessBody": "La version {{version}} est maintenant active sur votre appareil.",
+        "installErrorTitle": "Échec de l’installation",
+        "installErrorBody": "Impossible d’ajouter la version {{version}}. Veuillez réessayer dans un instant.",
+        "activateSuccessTitle": "Modèle activé",
+        "activateSuccessBody": "La version {{version}} est désormais le détecteur actif.",
+        "activateErrorTitle": "Échec de l’activation",
+        "activateErrorBody": "Impossible de changer de modèle. Veuillez réessayer.",
+        "removeConfirmTitle": "Supprimer cette version du modèle ?",
+        "removeConfirmBody": "Supprimer la version {{version}} libère de l’espace. Vous pourrez la réinstaller plus tard si nécessaire.",
+        "removeConfirmAction": "Supprimer",
+        "removeSuccessTitle": "Modèle supprimé",
+        "removeSuccessBody": "La version {{version}} a été supprimée du stockage local.",
+        "removeErrorTitle": "Échec de la suppression",
+        "removeErrorBody": "Impossible de supprimer la version {{version}}. Réessayez après une synchronisation.",
+        "syncErrorTitle": "Synchronisation échouée",
+        "syncErrorBody": "Impossible d’actualiser le catalogue. Vérifiez votre connexion et retentez."
+      }
+    }
+  },
+  "developerTools": {
+    "resetOnboarding": {
+      "title": "Réinitialiser l’onboarding",
+      "successTitle": "Onboarding réinitialisé",
+      "successBody": "Nous avons effacé l’état d’onboarding. Rouvrez l’app pour redémarrer le parcours.",
+      "errorTitle": "Échec de la réinitialisation",
+      "errorBody": "Impossible d’effacer l’état d’onboarding. Réessayez.",
+      "restart": "Relancer l’onboarding"
+    }
+  }
+}

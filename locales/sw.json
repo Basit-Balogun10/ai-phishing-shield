@@ -1,0 +1,685 @@
+{
+  "common": {
+    "continue": "Endelea",
+    "back": "Rudi",
+    "loading": "Inakagua hali ya ulinzi…",
+    "cancel": "Ghairi",
+    "save": "Hifadhi",
+    "clear": "Futa",
+    "comingSoonTitle": "Inakuja hivi karibuni",
+    "comingSoonBody": "Tunamalizia kipengele hiki. Tafadhali rudi baada ya muda mfupi."
+  },
+  "navigation": {
+    "tabs": {
+      "home": "Nyumbani",
+      "alerts": "Tahadhari",
+      "settings": "Mipangilio"
+    }
+  },
+  "dashboard": {
+    "title": "Ulinzi wa Phishing wa AI",
+    "subtitle": "Baki mbele ya ulaghai kwa ulinzi wa AI wa papo hapo uliobinafsishwa kwa ajili yako.",
+    "statusCard": {
+      "title": "Uko salama",
+      "description": "Uchunguzi wa phishing unaendelea kimyakimya nyuma ya pazia.",
+      "model": "Mfano: {{model}}",
+      "lastScan": "Ukaguzi wa mwisho {{time}}"
+    },
+    "hero": {
+      "status": {
+        "active": "Ulinzi unaendelea",
+        "paused": "Inahitaji hatua"
+      },
+      "activeDescription": "Uchunguzi wa phishing unaendelea kimyakimya nyuma ya pazia.",
+      "pausedDescription": "Idhinisha ruhusa zilizokosekana ili kugundua udanganyifu kuendelee.",
+      "modelVersion": "Mfano {{version}}",
+      "lastScan": "Ukaguzi wa mwisho {{time}}",
+      "lastScanFallback": "Inasubiri ukaguzi wa kwanza",
+      "permissions": {
+        "ok": "Arifa na SMS ziko tayari",
+        "missing": "Rekebisha ruhusa"
+      },
+      "goToDiagnostics": "Angalia utambuzi",
+      "viewStats": "Tazama takwimu za ulinzi",
+      "trustedCount": "{{count}} watumaji wa kuaminika",
+      "modelStatus": {
+        "syncing": "Inalinganisha masasisho",
+        "downloading": "Inapakua {{version}}",
+        "activating": "Inawezeshwa {{version}}",
+        "removing": "Inaondoa {{version}}"
+      },
+      "pausedHelper": "Ngao imezimwa, na mashambulio ya ulaghai yanaweza kupenya. Geuza swichi uiwashe tena!"
+    },
+    "stats": {
+      "title": "Takwimu za ulinzi wako",
+      "messagesScanned": "Ujumbe uliokaguliwa",
+      "threatsBlocked": "Vitisho vilivyokataliwa",
+      "safeMessages": "Ujumbe salama",
+      "since": "Tangu {{timeframe}}",
+      "defaultTimeframe": "siku 7 zilizopita",
+      "timeframes": {
+        "24h": "Masaa 24 yaliyopita",
+        "7d": "Siku 7 zilizopita",
+        "30d": "Siku 30 zilizopita",
+        "all": "Muda wote"
+      },
+      "trend": {
+        "up": "{{value}}% ikilinganishwa na kipindi kilichopita",
+        "down": "{{value}}% ikilinganishwa na kipindi kilichopita",
+        "flat": "Bado iko sawasawa na kipindi kilichopita"
+      },
+      "trendBadges": {
+        "up": "{{value}}%",
+        "down": "{{value}}%",
+        "flat": "Imara"
+      },
+      "comparison": "ikilinganishwa na kipindi kilichopita"
+    },
+    "quickActions": {
+      "title": "Vitendo vya haraka",
+      "mockScan": {
+        "title": "Endesha uchunguzi wa mfano",
+        "subtitle": "Nenda kwenye kithibiti ili kuanzisha kugundua kwa sampuli."
+      },
+      "alerts": {
+        "title": "Tazama tahadhari",
+        "subtitle": "Fungua historia yako yote ya ugunduzi."
+      },
+      "stats": {
+        "title": "Takwimu za ulinzi",
+        "subtitle": "Angalia mwenendo wa ujumbe uliokaguliwa na vitisho vilivyokataliwa."
+      },
+      "trusted": {
+        "title": "Watumaji wa kuaminika",
+        "subtitle": "Kagua na dhibiti mawasiliano ulioweka kuwa salama."
+      },
+      "settings": {
+        "title": "Simamia mipangilio",
+        "subtitle": "Badilisha lugha, arifa, na utambuzi."
+      },
+      "developer": {
+        "title": "Zana za msanidi",
+        "subtitle": "Weka upya mwongozo wa kwanza na uangalie ruhusa tena."
+      },
+      "model": {
+        "title": "Masasisho ya mfano",
+        "subtitle": "Angalia uboreshaji wa kigunduzi na dhibiti matoleo yaliyosakinishwa."
+      },
+      "report": {
+        "title": "Ripoti ujumbe",
+        "subtitle": "Tuma ujumbe wa kutiliwa shaka ili kusaidia kuimarisha ngao."
+      }
+    },
+    "filtersTitle": "Vichujio",
+    "openFilters": "Fungua vichujio vya tahadhari",
+    "editFilters": "Badilisha vichujio",
+    "clearFilters": "Futa vyote",
+    "applyFilters": "Maliza",
+    "noFiltersApplied": "Hakuna kichujio kilichotumika",
+    "activity": {
+      "title": "Shughuli za hivi karibuni",
+      "empty": "Bado hakuna ugunduzi. Endesha uchunguzi wa mfano kuona tahadhari zitakavyokuwa."
+    },
+    "recentAlerts": {
+      "title": "Tahadhari za hivi karibuni",
+      "subtitle": "Ujumbe wa kutiliwa shaka uliovuliwa na ngao yako.",
+      "empty": "Hakuna tahadhari kwa sasa. Endelea kuwa makini!",
+      "emptyWithFilters": "Hakuna tahadhari zinazolingana na {{filters}}. Jaribu kubadilisha vichujio vyako.",
+      "filtersTitle": "Vichujio",
+      "openFilters": "Fungua vichujio vya tahadhari",
+      "editFilters": "Badilisha vichujio",
+      "clearFilters": "Futa vyote",
+      "applyFilters": "Maliza",
+      "noFiltersApplied": "Hakuna kichujio kilichotumika",
+      "viewAll": "Tazama historia yote",
+      "filters": {
+        "all": "Tahadhari zote",
+        "historical": "Seti ya data ya moja kwa moja",
+        "simulated": "Jaribio lako",
+        "trusted": "Watumaji uliowaamini"
+      },
+      "timeframeLabel": "Iligunduliwa ndani ya",
+      "timeframe": {
+        "all": "Wakati wowote",
+        "24h": "Masaa 24 yaliyopita",
+        "7d": "Siku 7 zilizopita",
+        "30d": "Siku 30 zilizopita"
+      },
+      "severity": {
+        "all": "Kiwango chochote",
+        "high": "Hatari kubwa",
+        "medium": "Hatari ya kati",
+        "low": "Hatari ndogo"
+      },
+      "channels": {
+        "all": "Njia yoyote"
+      },
+      "matchesHeading": "Ishara zilizogunduliwa",
+      "trustedToggle": {
+        "label": "Onyesha watumaji uliowaamini pekee",
+        "description": "Chuja matokeo kwa watumaji ulioweka kuwa salama ndani ya Mipangilio."
+      },
+      "trustedOnlyBadge": "Watumaji uliowaamini pekee",
+      "feedback": {
+        "title": "Je, onyo hili lilikuwa sahihi?",
+        "subtitle": "Tuambie kama hili lilikuwa jaribio halisi la ulaghai au tahadhari ya uongo.",
+        "actions": {
+          "confirm": "Thibitisha tishio",
+          "confirmHelper": "Ilikuwa ulaghai",
+          "dismiss": "Weka kama salama",
+          "dismissHelper": "Ujumbe ulikuwa halali"
+        },
+        "status": {
+          "submitted": "Asante kwa kusaidia kuboresha kinga.",
+          "confirmed": "Imewekwa alama kama ulaghai",
+          "falsePositive": "Imewekwa alama kama salama",
+          "pending": "Inatuma maoni..."
+        },
+        "error": "Hatukuweza kutuma maoni hayo. Jaribu tena."
+      },
+      "searchPlaceholder": "Tafuta tahadhari kwa mtumaji, maudhui, au tag",
+      "trustedBadge": "Mtumaji uliyemwamini",
+      "trustedDefault": "Uliweka mtumaji huyu kuwa salama kwenye Mipangilio.",
+      "historyAlertTitle": "Inakuja hivi karibuni",
+      "historyAlertBody": "Utaweza kuangalia historia yote ya tahadhari kwenye hatua inayofuata.",
+      "items": [
+        {
+          "sender": "Namba isiyojulikana",
+          "preview": "Dai marejesho yako ya kodi sasa. Bofya kiungo hiki…",
+          "timestamp": "Saa 2 zilizopita"
+        },
+        {
+          "sender": "Makao ya Fedha",
+          "preview": "Haraka: Thibitisha maelezo yako ya malipo ili kuepuka kusimamishwa.",
+          "timestamp": "Jana"
+        },
+        {
+          "sender": "+234 900 123 4567",
+          "preview": "Tumeweka pesa kwenye akaunti yako. Tafadhali thibitisha mara moja!",
+          "timestamp": "Jumatatu"
+        }
+      ]
+    },
+    "trustedSources": {
+      "title": "Watumaji wa kuaminika",
+      "subtitle": "Simamia watu au anwani ulizoweka kuwa salama.",
+      "cta": "Simamia watumaji wa kuaminika",
+      "empty": "Bado hujaongeza mtumaji wa kuaminika.",
+      "count": "{{count}} wa kuaminiwa",
+      "noteFallback": "Imetiwa alama kuwa salama",
+      "more": "+{{remaining}} zaidi"
+    },
+    "report": {
+      "title": "Ripoti ujumbe",
+      "subtitle": "Shiriki ujumbe unaotia shaka bila kujulikana ili kuimarisha ngao.",
+      "cta": "Ripoti ujumbe",
+      "modalTitle": "Report a suspicious message",
+      "modalSubtitle": "Paste details of anything that looks risky. We'll sync it once you're back online.",
+      "fields": {
+        "channelLabel": "Message came from",
+        "senderLabel": "Sender (optional)",
+        "messageLabel": "Message content",
+        "categoryLabel": "What type of issue?",
+        "commentLabel": "Anything else to include? (optional)"
+      },
+      "placeholders": {
+        "sender": "e.g. +234 812 345 6789",
+        "message": "Paste or describe the suspicious message here...",
+        "comment": "Add context, e.g. why it looks risky."
+      },
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Email"
+      },
+      "categories": {
+        "phishing": "Likely phishing",
+        "suspicious": "Suspicious content",
+        "false_positive": "False alarm",
+        "other": "Something else"
+      },
+      "status": {
+        "heading": "Report status",
+        "idle": "Queued reports send automatically when a secure connection is available.",
+        "submitting": "Submitting report...",
+        "success": "Report queued successfully. Thanks for training the shield!",
+        "error": "We couldn't queue the report. Please try again.",
+        "errorTitle": "Submission failed"
+      },
+      "validation": {
+        "messageRequired": "Add the suspicious message so we know what to review."
+      },
+      "disabled": {
+        "title": "Manual reporting disabled",
+        "body": "Turn on manual reports in Settings → Data & telemetry to send suspicious messages."
+      },
+      "loadingTitle": "Preparing settings",
+      "loadingBody": "We're still loading your reporting preferences. Try again in a moment.",
+      "actions": {
+        "submit": "Submit report",
+        "cancel": "Cancel",
+        "close": "Close"
+      }
+    },
+    "expoGoNotice": {
+      "title": "Kikomo cha Expo Go",
+      "body": "Uchunguzi wa nyuma husimama kwenye Expo Go. Tengeneza mteja wa maendeleo au programu huru ili ngao iendelee kufanya kazi hata ukifunga programu."
+    },
+    "permissionsReminder": {
+      "title": "Washa ruhusa muhimu",
+      "body": "Washa arifa na SMS ili ngao ichanganue ujumbe kiotomatiki.",
+      "cta": "Kagua ruhusa",
+      "reviewOnboarding": "Rudia mwongozo wa kwanza"
+    },
+    "modals": {
+      "messagesScanned": {
+        "title": "Jinsi ukaguzi unavyofanya kazi",
+        "body": "Ujumbe unachambuliwa mara moja ndani ya kifaa unapoonekana. Hii inachanganya sampuli za data na majaribio yako ili kuonyesha jinsi ngao ilivyokuwa ikifanya kazi."
+      },
+      "threatsBlocked": {
+        "title": "Kuhusu vitisho vilivyozuiliwa",
+        "body": "Ngao hutangaza chochote kinachoonekana kuwa na hatari, iwe ni kutoka kwa sampuli za zamani au majaribio yako. Tumia hili kupima mara ngapi wajaribu wanaonekana."
+      },
+      "safeMessages": {
+        "title": "Kuelewa ujumbe salama",
+        "body": "Hesabu za usalama hukadiria ni ujumbe mingapi imepitia ukaguzi. Huondoa vilivyotiliwa shaka kutoka kwa vyote vilivyokaguliwa ili uone wakati kikasha chako kinabaki safi."
+      }
+    },
+    "mockDetection": {
+      "title": "Fanya uchunguzi wa mfano",
+      "subtitle": "Washa kaguzi ya nyuma kwa kutumia ujumbe wa sampuli ili kuona tahadhari zitakavyoonekana.",
+      "cta": "Jaribu kugundua",
+      "runningLabel": "Jaribio la mfano linaendelea…",
+      "helper": "Kama tishio la mfano litatambuliwa, maelezo yataonekana hapa na utapokea arifa ya ndani.",
+      "successTitle": "Tahadhari ya mfano imewashwa",
+      "successBody": "Angalia eneo la arifa ili kuona jinsi itakavyoonekana moja kwa moja.",
+      "noThreatTitle": "Hakuna tishio",
+      "noThreatBody": "Sampuli zote kwa sasa zinaonekana salama. Jaribu tena baadaye!",
+      "errorTitle": "Jaribio la mfano halipatikani",
+      "errorBody": "Hatukuweza kuendesha kaguzi ya mfano sasa. Funga programu na uifungue tena kisha ujaribu upya.",
+      "noResultPlaceholder": "Endesha kaguzi ya mfano ili uone jinsi tahadhari zitakavyokuwa ndani ya programu.",
+      "detectedAt": "Iligunduliwa saa {{time}}",
+      "scoreLabel": "Alama ya hatari: {{score}}%",
+      "noMatches": "Hakuna kiolezo mahususi cha phishing kilicholingana, lakini ujumbe bado unaonekana kuwa na hatari.",
+      "viewSafeSample": "Tazama sampuli salama",
+      "safePreviewTitle": "Sampuli ya ujumbe salama",
+      "safePreviewSubtitle": "Hivi ndivyo kaguzi inavyotafsiri ujumbe unaoonekana kuwa wa kuaminika.",
+      "safePreviewLabel": "Imetiwa alama kuwa salama",
+      "safeSampleUnavailableTitle": "Hakuna sampuli salama",
+      "safeSampleUnavailableBody": "Hatukupata sampuli yenye hatari ndogo kwa sasa. Jaribu uchunguzi mwingine.",
+      "clearLastDetection": "Futa matokeo ya mfano",
+      "clearedTitle": "Matokeo ya mfano yamefutwa",
+      "clearedBody": "Kadi ya kugundua mfano imewekwa upya.",
+      "showTools": "Onyesha zana za msanidi",
+      "channels": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "email": "Barua pepe"
+      }
+    },
+    "navigateLabel": "Vitendo vya haraka",
+    "links": {
+      "settings": {
+        "title": "Fungua mipangilio",
+        "description": "Dhibiti lugha, arifa, na utambuzi."
+      }
+    }
+  },
+  "onboarding": {
+    "badge": "Karibu",
+    "title": "Washa Ngao yako ya AI",
+    "subtitle": "Pitia maelezo mafupi ili ujue programu inafanya nini na kwa nini tunahitaji ruhusa.",
+    "skip": "Ruka",
+    "next": "Endelea",
+    "start": "Anza kulinda",
+    "skipDialog": {
+      "title": "Unataka kuruka ruhusa muhimu?",
+      "body": "Bila arifa na SMS, ngao haiwezi kufuatilia mashambulio kiotomatiki. Unaweza kuwasha baadaye kupitia mipangilio.",
+      "cancel": "Baki hapa",
+      "confirm": "Ruka kwa sasa"
+    },
+    "permissionNoteTitle": "Kabla hatujaanza",
+    "permissionNoteBody": "Baada ya mwongozo huu mfupi utaruhusu arifa na SMS.",
+    "permissionStepsTitle": "Utaruhusu:",
+    "permissions": {
+      "title": "Weka ngao ikiendelea",
+      "subtitle": "Washa ruhusa hizi ili tuchanganue ujumbe mara tu unapowasili.",
+      "notifications": {
+        "title": "Ruhusa ya arifa",
+        "description": "Turuhusu kuchanganua WhatsApp, Messenger, Gmail na zingine papo hapo.",
+        "cta": "Washa arifa",
+        "grantedCta": "Arifa zimewashwa",
+        "openSettings": "Fungua mipangilio ya mfumo"
+      },
+      "sms": {
+        "title": "Ruhusa ya SMS",
+        "description": "Turuhusu tusome SMS zinazoingia ili kupata ujumbe wa shaka mara moja.",
+        "cta": "Washa ruhusa ya SMS",
+        "grantedCta": "SMS imewashwa",
+        "openSettings": "Fungua mipangilio ya mfumo",
+        "unavailable": "Ruhusa ya SMS si lazima kwenye kifaa hiki."
+      },
+      "status": {
+        "requesting": "Inaombwa…",
+        "granted": "Imethibitishwa",
+        "blocked": "Washa kupitia mipangilio",
+        "required": "Bado inahitajika"
+      },
+      "finishCta": "Anza kulinda",
+      "checking": "Inakagua ruhusa zilizopo…",
+      "continueHelper": "Washa ruhusa zinazotakiwa ili kuendelea",
+      "incompleteTitle": "Kamilisha usanidi wa ruhusa",
+      "incompleteBody": "Washa arifa na SMS ili ngao ifanye kazi kiotomatiki."
+    },
+    "slides": [
+      {
+        "title": "Kaa mbele ya walaghai",
+        "description": "Tunachanganua SMS na arifa kwenye kifaa chako ili kugundua udukuzi papo hapo.",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Faragha yako ni muhimu",
+        "description": "Uchambuzi wote hufanyika nje ya mtandao. Ujumbe hauondoki kwenye kifaa chako wala kuhifadhiwa kwenye wingu.",
+        "icon": "lock-check"
+      },
+      {
+        "title": "Tu ruhusu upatikanaji sahihi",
+        "description": "Tutaomba ruhusa za SMS na arifa ili tuweze kukulinda kimyakimya nyuma ya pazia.",
+        "icon": "cellphone-message",
+        "permissions": [
+          {
+            "title": "Ruhusa ya arifa",
+            "description": "Ili tuchanganue WhatsApp, Messenger, Gmail na nyingine mara moja."
+          },
+          {
+            "title": "Ruhusa ya kusoma SMS",
+            "description": "Inahitajika kuchanganua ujumbe wa shaka mara unapoingia."
+          }
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "title": "Mipangilio",
+    "subtitle": "Dhibiti lugha, arifa na utambuzi. Huu ni ukurasa wa muda hadi tuunganishe mipangilio kamili.",
+    "language": {
+      "loading": "Inaandaa lugha..."
+    },
+    "diagnostics": {
+      "loading": "Inakusanya takwimu zilizofichwa majina...",
+      "errorTitle": "Imeshindikana kupakia utambuzi",
+      "errorBody": "Tumepata hitilafu tukitengeneza picha elekezi. Jaribu tena ukiwa na muunganisho thabiti.",
+      "retry": "Jaribu tena",
+      "shareTitle": "Picha ya utambuzi",
+      "shareButton": "Shiriki picha",
+      "shareErrorTitle": "Kushiriki kumeharibiwa",
+      "shareErrorBody": "Hatukuweza kushiriki picha elekezi. Tafadhali jaribu tena.",
+      "refreshButton": "Sasisha picha",
+      "lastGenerated": "Imetengenezwa {{date}}",
+      "disclaimer": "Upakuaji huu hauna maudhui ya kibinafsi. Shiriki tu na wahudumu unaowaamini.",
+      "sections": {
+        "environment": "Mazingira",
+        "localization": "Ujanibishaji",
+        "theme": "Mandhari",
+        "notifications": "Arifa",
+        "sms": "SMS",
+        "detections": "Ugunduzi",
+        "trustedSources": "Watumaji wa kuaminika",
+        "telemetry": "Telemetria"
+      },
+      "fields": {
+        "platform": "Jukwaa",
+        "appOwnership": "Mmiliki wa programu",
+        "appVersion": "Toleo la programu",
+        "buildNumber": "Nambari ya toleo",
+        "activeLocale": "Lugha inayotumika",
+        "deviceLocale": "Lugha ya kifaa",
+        "storedLocale": "Lugha iliyohifadhiwa",
+        "storedPreference": "Kipaumbele kilichohifadhiwa",
+        "notificationPermission": "Ruhusa ya arifa",
+        "alertsEnabled": "Tahadhari zimewashwa",
+        "soundEnabled": "Sauti imewashwa",
+        "vibrationEnabled": "Mtikisiko umewezeshwa",
+        "quietHoursEnabled": "Nyakati za kimya",
+        "quietHoursActive": "Nyakati za kimya zinafanya kazi",
+        "quietHoursWindow": "Dirisha la kimya",
+        "smsPermission": "Ruhusa ya SMS",
+        "historicalCount": "Ugunduzi wa kihistoria",
+        "simulatedCount": "Ugunduzi wa mfano",
+        "lastSimulatedAt": "Jaribio la mwisho",
+        "trustedSourcesTotal": "Jumla ya watumaji wa kuaminika",
+        "telemetryEvents": "Matukio yaliyohifadhiwa",
+        "telemetryLatest": "Tukio la mwisho"
+      },
+      "values": {
+        "yes": "Ndiyo",
+        "no": "Hapana",
+        "none": "Hakuna",
+        "unknown": "Hajulikani",
+        "permission": {
+          "granted": "Imeidhinishwa",
+          "denied": "Imekataliwa",
+          "blocked": "Imekatizwa",
+          "unavailable": "Haipatikani"
+        }
+      }
+    },
+    "entries": {
+      "theme": {
+        "title": "Muonekano",
+        "description": "Chagua jinsi programu itakavyoonekana.",
+        "options": {
+          "dark": "Giza",
+          "light": "Mwanga",
+          "system": "Fuata mfumo"
+        }
+      },
+      "telemetry": {
+        "title": "Ushirikiano wa vitisho",
+        "description": "Dhibiti jinsi tahadhari na ripoti zinavyoshirikiwa na AI Phishing Shield ili kuboresha modeli.",
+        "autoUploadTitle": "Tuma matokeo kiotomatiki",
+        "autoUploadSubtitle": "Shiriki metadata isiyo na utambulisho pale tunapogundua kitu kinachotia shaka.",
+        "manualReportsTitle": "Ruhusu ripoti za mkono",
+        "manualReportsSubtitle": "Washa njia ya kuripoti kutoka dashibodi unapogundua ujumbe wa shaka.",
+        "errorTitle": "Sasisho limefeli",
+        "errorBody": "Hatukuweza kuhifadhi mapendeleo yako. Tafadhali jaribu tena."
+      },
+      "language": {
+        "title": "Lugha",
+        "description": "Badilisha kati ya Kiingereza, Kifaransa, Kiswahili, Kiyoruba, Kiigbo, Kihausa, Pidgin, Kiarabu na Kiamhari.",
+        "activeBadge": "Lugha inayotumika",
+        "deviceDefault": {
+          "title": "Linganishwa na lugha ya kifaa",
+          "description": "Hakikisha programu inafuata lugha kuu ya kifaa chako.",
+          "badge": "Inafuata kifaa"
+        },
+        "options": {
+          "en": {
+            "title": "Kiingereza",
+            "native": "English"
+          },
+          "fr": {
+            "title": "Kifaransa",
+            "native": "Français"
+          },
+          "sw": {
+            "title": "Kiswahili",
+            "native": "Kiswahili"
+          },
+          "yo": {
+            "title": "Kiyoruba",
+            "native": "Yorùbá"
+          },
+          "ig": {
+            "title": "Kiigbo",
+            "native": "Ásụ̀sụ́ Ìgbò"
+          },
+          "ha": {
+            "title": "Kihausa",
+            "native": "Hausa"
+          },
+          "pcm": {
+            "title": "Pidgin ya Nigeria",
+            "native": "Naijá"
+          },
+          "ar": {
+            "title": "Kiarabu",
+            "native": "العربية"
+          },
+          "am": {
+            "title": "Kiamhari",
+            "native": "አማርኛ"
+          }
+        }
+      },
+      "notifications": {
+        "title": "Arifa",
+        "description": "Dhibiti sauti ya tahadhari, mtetemo na hali ya ruhusa.",
+        "badge": {
+          "on": "Alerts on",
+          "off": "Alerts off",
+          "quietHours": "Quiet hours {{start}}–{{end}}"
+        },
+        "loading": "Loading notification preferences...",
+        "errorTitle": "Update failed",
+        "errorBody": "We couldn't save these notification settings. Please try again.",
+        "permissionTitle": "Permission status",
+        "permissionGranted": "Notifications are enabled at the system level.",
+        "permissionMissing": "Turn on notification access to let the shield alert you instantly.",
+        "permissionButtonGranted": "Enabled",
+        "permissionButton": "Enable notifications",
+        "openSettings": "Open system settings",
+        "masterToggle": {
+          "title": "Alerts",
+          "description": "Turn phishing alerts on or off for this device."
+        },
+        "sound": {
+          "title": "Play sound",
+          "description": "Play a tone when a phishing alert is detected."
+        },
+        "vibration": {
+          "title": "Vibrate on alert",
+          "description": "Trigger vibration feedback when alerts fire."
+        },
+        "quietHours": {
+          "title": "Quiet hours",
+          "description": "Pause alert sounds between {{range}}.",
+          "current": "Currently {{range}}",
+          "helper": "Tap to rotate through preset quiet-hour windows."
+        }
+      },
+      "trustedSources": {
+        "title": "Watumaji wa kuaminika",
+        "description": "Simamia namba za simu au barua pepe unazoamini.",
+        "addButton": "Ongeza mtumaji",
+        "emptyState": "Bado hakuna mawasiliano ya kuaminika. Ongeza mistari ya benki, mawasiliano ya HR au washirika muhimu unaotegemea.",
+        "removeTitle": "Uondoee mtumaji wa kuaminika?",
+        "removeConfirm": "Ondoa",
+        "removeA11y": "Ondoa mtumaji wa kuaminika {{name}}",
+        "validationTitle": "Mtumaji amekosekana",
+        "validationHandle": "Weka jina au nambari kamili ya mtumaji unayetaka kuamini.",
+        "duplicateTitle": "Tayari umeweka",
+        "duplicateBody": "Mtumaji huyu tayari amewekwa kuwa wa kuaminika kwa njia hiyo.",
+        "successTitle": "Mtumaji wa kuaminika ameokolewa",
+        "errorTitle": "Kuna hitilafu",
+        "errorBody": "Hatukuweza kusasisha watumaji wa kuaminika. Tafadhali jaribu tena.",
+        "modalTitle": "Ongeza mtumaji wa kuaminika",
+        "modalSubtitle": "Hifadhi anwani rasmi ili tahadhari ziwe na muktadha sahihi.",
+        "fields": {
+          "channel": "Njia",
+          "handle": "Mtumaji",
+          "displayName": "Jina litakaloonekana",
+          "note": "Tanbihi"
+        },
+        "placeholders": {
+          "handle": "mf. UBA Secure",
+          "displayName": "Lebele ya kirafiki (hiari)",
+          "note": "Ongeza tanbihi fupi (hiari)"
+        },
+        "saving": "Inahifadhi..."
+      },
+      "diagnostics": {
+        "title": "Utambuzi",
+        "description": "Tuma kumbukumbu zisizo na majina kusaidia kuboresha ugunduzi."
+      },
+      "model": {
+        "title": "Masasisho ya mfano",
+        "description": "Sakinisha mifano mipya ya kugundua phishing na dhibiti matoleo.",
+        "manageButton": "Fungua msimamizi",
+        "currentBadge": "Toleo linalotumika {{version}}"
+      }
+    },
+    "back": "← Rudi kwenye dashibodi",
+    "model": {
+      "title": "Usimamizi wa mfano",
+      "subtitle": "Pakua masasisho, wezesha matoleo, na kagua historia ya usakinishaji.",
+      "syncButton": "Linganishi masasisho",
+      "syncing": "Inalinganisha masasisho...",
+      "lastSynced": "Ililinganishwa mwisho {{time}}",
+      "neverSynced": "Katalogi haijawahi kulinganishwa",
+      "availableTitle": "Matoleo yaliyopo",
+      "availableEmpty": "Unatumia toleo jipya zaidi tayari.",
+      "installedTitle": "Matoleo yaliyosakinishwa",
+      "installedEmpty": "Hakuna mfano uliosakinishwa bado.",
+      "detailsTitle": "Details",
+      "downloadProgress": "Downloading… {{progress}}%",
+      "offlineFallbackBanner": "Couldn't reach the live registry. Showing the built-in demo catalog for now.",
+      "badges": {
+        "current": "Inatumika",
+        "installed": "Imesakinishwa"
+      },
+      "sizeLabel": "{{size}} MB",
+      "releaseDate": "Imetolewa {{date}}",
+      "changelogTitle": "Kipi kipya",
+      "catalogMode": {
+        "toggleLabel": "Model catalog",
+        "description": "Switch between live registry updates and the offline demo catalog. Live mode downloads real model files.",
+        "live": "Live registry",
+        "dummy": "Demo catalog",
+        "offlineFallback": "Offline fallback"
+      },
+      "details": {
+        "activeVersion": "Active version",
+        "currentStatusActive": "This model is currently powering phishing detection.",
+        "noActive": "No model is active yet. Install and activate a version to start scanning.",
+        "installedOn": "Installed {{date}}",
+        "storageFootprint": "Storage: {{size}} MB",
+        "summaryTitle": "Shield snapshot"
+      },
+      "actions": {
+        "install": "Sakinisha",
+        "activate": "Wezesha",
+        "remove": "Ondoa"
+      },
+      "alerts": {
+        "installSuccessTitle": "Mfano umesakinishwa",
+        "installSuccessBody": "Toleo {{version}} sasa linafanya kazi kwenye kifaa chako.",
+        "installErrorTitle": "Usakinishaji umeshindikana",
+        "installErrorBody": "Hatukuweza kuongeza toleo {{version}}. Tafadhali jaribu tena muda mfupi baadaye.",
+        "activateSuccessTitle": "Mfano umewezeshwa",
+        "activateSuccessBody": "Toleo {{version}} sasa ndilo kigunduzi kinachofanya kazi.",
+        "activateErrorTitle": "Uwezeshaji umeshindikana",
+        "activateErrorBody": "Hatukuweza kubadilisha mfano. Tafadhali jaribu tena.",
+        "removeConfirmTitle": "Kuondoa toleo la mfano?",
+        "removeConfirmBody": "Kuondoa toleo {{version}} kunatoa nafasi ya hifadhi. Unaweza kulisakinisha tena ukihitaji.",
+        "removeConfirmAction": "Ondoa",
+        "removeSuccessTitle": "Mfano umeondolewa",
+        "removeSuccessBody": "Toleo {{version}} limefutwa kutoka kwenye hifadhi ya ndani.",
+        "removeErrorTitle": "Kuondoa kumeharibika",
+        "removeErrorBody": "Hatukuweza kuondoa toleo {{version}}. Jaribu tena baada ya kulinganisha.",
+        "syncErrorTitle": "Kulinganisha kumeharibika",
+        "syncErrorBody": "Hatukuweza kusasisha katalogi. Hakikisha una muunganisho kisha ujaribu tena."
+      }
+    }
+  },
+  "developerTools": {
+    "resetOnboarding": {
+      "title": "Weka upya mwongozo wa kwanza",
+      "successTitle": "Mwongozo umewekwa upya",
+      "successBody": "Tumefuta hali ya mwongozo. Fungua programu tena ili kuanza safari upya.",
+      "errorTitle": "Imeshindikana kuweka upya",
+      "errorBody": "Hatukuweza kufuta hali ya mwongozo. Jaribu tena.",
+      "restart": "Anzisha mwongozo upya"
+    }
+  }
+}

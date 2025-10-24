@@ -1,0 +1,90 @@
+flowchart LR
+    classDef screen fill:#e0f2ff,stroke:#2b6cb0,color:#1a365d,font-weight:bold;
+    classDef service fill:#fef3c7,stroke:#c05621,color:#7b341e;
+    classDef storage fill:#ede9fe,stroke:#553c9a,color:#322659;
+    classDef outbox fill:#dcfce7,stroke:#047857,color:#065f46,font-weight:bold;
+    classDef external fill:#fef2f2,stroke:#c53030,color:#742a2a;
+    classDef background fill:#f0fff4,stroke:#276749,color:#22543d;
+
+    subgraph Entry[User Entry Flow]
+        direction TB
+        Splash[[App Launch]]:::screen --> Onboarding{Completed Onboarding?}
+        Onboarding -.no.-> OnboardingScreen[Onboarding Carousel & Permissions]:::screen
+        OnboardingScreen -->|grants permissions| OnboardingComplete[Save gate & preferences]:::service
+        OnboardingComplete -->|trackTelemetryEvent| TelemetryAdapter
+        Onboarding -->|yes| Tabs[Bottom Tabs Layout]:::screen
+    end
+
+    subgraph Dashboards[Primary Screens]
+        direction TB
+        Tabs --> AlertsScreen[Alerts List & Detail Sheet]:::screen
+        Tabs --> DashboardQuickActions[Dashboard Quick Actions]:::screen
+        Tabs --> SettingsRoot[Settings Root]:::screen
+
+        AlertsScreen --> FeedbackModal[Alert Feedback Buttons]:::screen
+        DashboardQuickActions --> ReportModal[Report Message Modal]:::screen
+        SettingsRoot --> SettingsLanguage[Language Settings]:::screen
+        SettingsRoot --> SettingsNotifications[Notification Preferences]:::screen
+        SettingsRoot --> SettingsTelemetry[Telemetry Preferences]:::screen
+        SettingsRoot --> SettingsDiagnostics[Diagnostics Panel]:::screen
+    end
+
+    subgraph Services[Client Services]
+        direction TB
+        DetectionHistory[(Detection History Store)]:::storage
+        FeedbackStore[(Feedback Store)]:::storage
+        TrustedSources[(Trusted Sources)]:::storage
+        NotificationPrefs[(Notification Prefs)]:::storage
+        TelemetryPrefs[(Telemetry Prefs)]:::storage
+        LanguagePrefs[(Language Prefs)]:::storage
+        NetworkOutbox[[Network Outbox]]:::outbox
+        TelemetryAdapter[[Telemetry Adapter]]:::service
+        MessageReports[[Message Reports Service]]:::service
+        AlertFeedback[[Alert Feedback Service]]:::service
+    end
+
+    subgraph BackgroundOps[Background & Notifications]
+        direction TB
+        MockDetection[[Mock Detection Sweep]]:::background
+        NotificationScheduler[[Local Notification Scheduler]]:::background
+    end
+
+    ExternalEndpoint[(Optional Feedback Endpoint)]:::external
+
+    %% Screen interactions with stores/services
+    AlertsScreen -->|load| DetectionHistory
+    AlertsScreen -->|submit feedback| AlertFeedback
+    FeedbackModal --> AlertFeedback
+    AlertFeedback --> FeedbackStore
+    AlertFeedback --> NetworkOutbox
+
+    ReportModal --> MessageReports
+    MessageReports --> NetworkOutbox
+
+    DashboardQuickActions --> MockDetection
+    MockDetection --> DetectionHistory
+    MockDetection --> NotificationScheduler
+    NotificationScheduler --> AlertsScreen
+
+    SettingsLanguage --> LanguagePrefs
+    SettingsLanguage --> TelemetryAdapter
+    SettingsNotifications --> NotificationPrefs
+    SettingsTelemetry --> TelemetryPrefs
+
+    SettingsDiagnostics --> DetectionHistory
+    SettingsDiagnostics --> FeedbackStore
+    SettingsDiagnostics --> NetworkOutbox
+
+    TelemetryAdapter --> NetworkOutbox
+    Tabs --> TelemetryAdapter
+    OnboardingScreen --> TelemetryAdapter
+
+    NetworkOutbox -->|flush| ExternalEndpoint
+    ExternalEndpoint -->|response| NetworkOutbox
+
+    class Tabs,AlertsScreen,DashboardQuickActions,SettingsRoot,FeedbackModal,ReportModal,SettingsLanguage,SettingsNotifications,SettingsTelemetry,SettingsDiagnostics,Splash,OnboardingScreen screen
+    class DetectionHistory,FeedbackStore,TrustedSources,NotificationPrefs,TelemetryPrefs,LanguagePrefs storage
+    class AlertFeedback,TelemetryAdapter,MessageReports,OnboardingComplete service
+    class NetworkOutbox outbox
+    class ExternalEndpoint external
+    class MockDetection,NotificationScheduler background
