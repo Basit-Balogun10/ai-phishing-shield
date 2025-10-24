@@ -1,6 +1,7 @@
 export type MockMessage = {
   id: string;
   sender: string;
+  package?: string;
   channel: 'sms' | 'whatsapp' | 'email';
   body: string;
   receivedAt: string;

@@ -190,25 +190,7 @@ export default function DiagnosticsSettingsScreen() {
               yesLabel,
               noLabel
             ),
-          },
-          {
-            label: t('settings.diagnostics.fields.quietHoursEnabled'),
-            value: formatBoolean(
-              snapshot.notifications.preferences.quietHoursEnabled,
-              yesLabel,
-              noLabel
-            ),
-          },
-          {
-            label: t('settings.diagnostics.fields.quietHoursActive'),
-            value: formatBoolean(snapshot.notifications.quietHoursActive, yesLabel, noLabel),
-          },
-          {
-            label: t('settings.diagnostics.fields.quietHoursWindow'),
-            value: snapshot.notifications.preferences.quietHoursEnabled
-              ? `${snapshot.notifications.preferences.quietHoursStart} – ${snapshot.notifications.preferences.quietHoursEnd}`
-              : noneLabel,
-          },
+          }
         ],
       },
       {

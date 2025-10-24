@@ -39,16 +39,16 @@
         "ok": "Ìkìlọ̀ àti SMS ṣetán",
         "missing": "Ṣètò ìyọ̀nda"
       },
-      "goToDiagnostics": "Wo àyẹ̀wò",
-      "viewStats": "Wo ìtàn ààbò",
-      "trustedCount": "{{count}} olùránṣẹ́ tí o gbẹ́kẹ̀lé",
       "modelStatus": {
         "syncing": "N ṣe ìṣọ̀kan imúdójúìwọ̀n",
         "downloading": "N ń gbasilẹ {{version}}",
         "activating": "N ń mu {{version}} ṣiṣẹ́",
         "removing": "N ń yọ {{version}} kúrò"
       },
-      "pausedHelper": "Aṣọ ààbò ti pa mọ́, àti pé ìránṣẹ́ olè lè wọlé rọrùn. Yí tẹ́ẹ̀gìlì padà kí o tún un ṣiṣẹ́!"
+      "pausedHelper": "Aṣọ ààbò ti pa mọ́, àti pé ìránṣẹ́ olè lè wọlé rọrùn. Yí tẹ́ẹ̀gìlì padà kí o tún un ṣiṣẹ́!",
+      "goToDiagnostics": "Wo àyẹ̀wò",
+      "viewStats": "Wo ìtàn ààbò",
+      "trustedCount": "{{count}} olùránṣẹ́ tí o gbẹ́kẹ̀lé"
     },
     "stats": {
       "title": "Ìtàn ààbò rẹ",
@@ -93,21 +93,21 @@
         "title": "Olùránṣẹ́ tí o gbẹ́kẹ̀lé",
         "subtitle": "Ṣàyẹ̀wò àti ṣàkóso àwọn olùránṣẹ́ tí o ti samisi gẹ́gẹ́ bí ẹni tí ó ní ààbò."
       },
+      "report": {
+        "title": "Jẹ́ kó rí i pé a mọ ìránṣẹ́",
+        "subtitle": "Rán ìránṣẹ́ tí o ṣiyemeji kí aṣọ ààbò lè kọ́ ẹ̀ síi."
+      },
       "settings": {
         "title": "Ṣàkóso àtúnṣe",
         "subtitle": "Mú èdè, ìkìlọ̀, àti àyẹ̀wò pọ̀."
-      },
-      "developer": {
-        "title": "Ọpa oníṣe",
-        "subtitle": "Tún ìkọ́ni ìbẹ̀rẹ̀ ṣe, kí o sì tún ìyẹ̀wò ìyọ̀nda ṣe."
       },
       "model": {
         "title": "Imúdójúìwọ̀n àwoṣe",
         "subtitle": "Ṣàyẹ̀wò àtúnṣe tuntun fún aṣàyàn ìfura, kí o ṣàkóso ẹ̀dá tí a fi sori ẹrọ."
       },
-      "report": {
-        "title": "Jẹ́ kó rí i pé a mọ ìránṣẹ́",
-        "subtitle": "Rán ìránṣẹ́ tí o ṣiyemeji kí aṣọ ààbò lè kọ́ ẹ̀ síi."
+      "developer": {
+        "title": "Ọpa oníṣe",
+        "subtitle": "Tún ìkọ́ni ìbẹ̀rẹ̀ ṣe, kí o sì tún ìyẹ̀wò ìyọ̀nda ṣe."
       }
     },
     "filtersTitle": "Àlẹ̀mọ́",
@@ -120,83 +120,83 @@
       "title": "Ìṣe tuntun",
       "empty": "Kò sí ìkìlọ̀ rárá sibẹ̀. Ṣe àdánwò ìmúlò láti rí ìkìlọ̀ àpẹẹrẹ."
     },
-    "recentAlerts": {
-      "title": "Ìkìlọ̀ tuntun",
-      "subtitle": "Ìrántí tí a mọ̀ pé ó lèwu tí aṣọ ààbò ti mú ṣẹ̀ṣẹ̀ yìí.",
-      "empty": "Kò sí ìkìlọ̀ kankan sibẹ̀. Ṣọ́ra ṣùgbọ́n kéèyàn!",
-      "emptyWithFilters": "Kò sí ìkìlọ̀ tó bá {{filters}} mu. Gbìmọ̀ yí ìmúlò rẹ padà.",
+    "alerts": {
+      "title": "Ìkìlọ̀",
+      "subtitle": "Àwọn ifiranṣẹ tí Shield ti samisi.",
+      "empty": "Kò tíì rí ìkìlọ̀ kankan.",
+      "emptyWithFilters": "Kò sí ìkìlọ̀ tó bá {{filters}} mu. Gbìmọ̀ yí àwọn àlẹ̀mọ́ rẹ padà.",
       "filtersTitle": "Àlẹ̀mọ́",
       "openFilters": "Ṣí àlẹ̀mọ́ ìkìlọ̀",
       "editFilters": "Ṣatunṣe àlẹ̀mọ́",
       "clearFilters": "Pa gbogbo rẹ̀ kúrò",
       "applyFilters": "Pari",
       "noFiltersApplied": "Kò sí àlẹ̀mọ́ tí a fi sílẹ̀",
-      "viewAll": "Wo ìtàn gígùn",
+      "viewAll": "Wo gbogbo ìtàn",
       "filters": {
         "all": "Gbogbo ìkìlọ̀",
-        "historical": "Àkọọ́lẹ̀ àpẹẹrẹ",
-        "simulated": "Àdánwò tirẹ",
+        "historical": "Àkópọ̀ ìtàn",
+        "simulated": "Ìdánwò àpẹẹrẹ rẹ",
         "trusted": "Olùránṣẹ́ tí o gbẹ́kẹ̀lé"
       },
-      "timeframeLabel": "A rí i nínú àkókò",
+      "timeframeLabel": "A ṣe awari laarin",
       "timeframe": {
-        "all": "Àkókò gbogbo",
+        "all": "Gbogbo àkókò",
         "24h": "Wákàtí 24 tó kọjá",
-        "7d": "Ọjọ́ méje tó kọjá",
+        "7d": "Ọjọ́ meje tó kọjá",
         "30d": "Ọjọ́ 30 tó kọjá"
       },
       "severity": {
-        "all": "Ipele kankan",
+        "all": "Gbogbo ewu",
         "high": "Ewu gíga",
         "medium": "Ewu àárín",
-        "low": "Ewu kékeré"
+        "low": "Ewu kéré"
       },
       "channels": {
-        "all": "Ikanni kankan"
+        "all": "Gbogbo ikanni"
       },
       "matchesHeading": "Àmì tí a rí",
       "trustedToggle": {
-        "label": "Ṣe afihan àwọn olùránṣẹ́ tí o gbẹ́kẹ̀lé nikan",
-        "description": "Dín abajade sí àwọn olùránṣẹ́ tí o ti samisi gẹ́gẹ́ bí ẹni tí ó ní ààbò ní Ètò."
+        "label": "Fihan awọn olùránṣẹ́ tí o gbẹ́kẹ̀lé nìkan",
+        "description": "Dín abajade sí awọn olùránṣẹ́ tí o ti samisi gẹ́gẹ́ bí aláàbò ní Àtúnṣe."
       },
-      "trustedOnlyBadge": "Olùránṣẹ́ tí a gbẹ́kẹ̀lé nikan",
+      "trustedOnlyBadge": "Awọn olùránṣẹ́ tí a gbẹ́kẹ̀lé nìkan",
       "feedback": {
-        "title": "Ṣe ìkìlọ̀ yìí péye ni?",
-        "subtitle": "Jọ̀wọ́ sọ bóyá èyí jẹ́ ìgbìmọ̀ phishing gidi tàbí ìkìlọ̀ aṣiṣe.",
+        "title": "Ṣe ìkìlọ̀ yìí dáa?",
+        "subtitle": "Sọ fún wa bóyá èyí jẹ́ ìfura gidi tàbí aṣìṣe.",
         "actions": {
-          "confirm": "Mú ìkìlọ̀ náà dájú",
-          "confirmHelper": "Ó jẹ́ phishing gidi",
-          "dismiss": "Samisi gẹ́gẹ́ bí aàbò",
-          "dismissHelper": "Ìfiránṣẹ́ náà jẹ́ tòótọ́"
+          "confirm": "Jẹ́ kó dájú",
+          "confirmHelper": "Ó jẹ́ ìmàlẹ̀ olè",
+          "dismiss": "Samisi gẹ́gẹ́ bí aláàbò",
+          "dismissHelper": "Ó jẹ́ ìrántí tòótọ́"
         },
         "status": {
-          "submitted": "Ọpẹ́ lọwọ rẹ fún ríràn wá lọ́wọ́ láti mú aṣọ ààbò dára sí i.",
-          "confirmed": "A samisi gẹ́gẹ́ bí phishing",
-          "falsePositive": "A samisi gẹ́gẹ́ bí aàbò",
-          "pending": "A ń rán èsì..."
+          "submitted": "Ẹ ṣé fún fífi ìmúdájú ranṣẹ́.",
+          "confirmed": "A samisi gẹ́gẹ́ bí ìmàlẹ̀ olè",
+          "falsePositive": "A samisi gẹ́gẹ́ bí aláàbò",
+          "pending": "N rán ìmúdájú…"
         },
-        "error": "A kò lè rán èsì yìí. Jọ̀wọ́ tún gbìyànjú."
+        "error": "A kò lè rán ìmúdájú yẹn. Gbìmọ̀ lẹ́ẹ̀kansi."
       },
-      "searchPlaceholder": "Wa ìkìlọ̀ nípasẹ̀ olùránṣẹ́, akọle, tàbí àmì",
-      "trustedBadge": "Olùránṣẹ́ tí o gbẹ́kẹ̀lé",
-      "trustedDefault": "O ti samisi olùránṣẹ́ yìí gẹ́gẹ́ bí ẹni tí ó ní ààbò ní Sísètò.",
+      "searchPlaceholder": "Ṣawari ìkìlọ̀ ní orúkọ olùránṣẹ́, akoonu, tàbí tag",
+      "trustedBadge": "Olùránṣẹ́ tí a gbẹ́kẹ̀lé",
+      "trustedDefault": "O ti samisi olùránṣẹ́ yìí gẹ́gẹ́ bí aláàbò ní Àtúnṣe.",
       "historyAlertTitle": "N bọ laipẹ",
-      "historyAlertBody": "Ìṣẹ̀lẹ̀ ìtàn gbogbo yóò wà ní ìpele tó kàn.",
+      "historyAlertBody": "Iwọ yóò lè wo gbogbo ìtàn ìkìlọ̀ ní ìpele tókàn ní ìpele tó ń bọ.",
       "items": [
         {
-          "sender": "Nọ́mbà tí a kò mọ̀",
-          "preview": "Gba owó-ori padà rẹ báyìí. Tẹ ìjápọ̀ náà…",
-          "timestamp": "Wákàtí méjì sẹ́yìn"
+          "sender": "Nọ́mbà aimọ̀",
+          "preview": "Beere ìsanwó owó-ori rẹ báyìí. Tẹ̀ lori ìjápọ̀…",
+          "timestamp": "Wákàtí 2 sẹ́yìn"
         },
         {
-          "sender": "Ile-iṣẹ́ owó",
-          "preview": "Pátá: Ṣàyẹ̀wò àlàyé owó-ọ́ya rẹ kí ìdádúró má bà ọ lórí.",
-          "timestamp": "Àná"
+          "sender": "Finance HQ",
+          "preview": "Pátápátá: Ṣayẹwo àlàyé oṣù rẹ kí o má bà a dá",
+          "timestamp": "Lana"
         },
         {
           "sender": "+234 900 123 4567",
-          "preview": "A ti fi owó sí àkọọ́lẹ̀ rẹ. Jọ̀wọ́ jẹ́ kí o jẹrìí lẹ́sẹ̀kẹsẹ̀!",
-          "timestamp": "Òjọ́ Ajé"
+          "preview": "A ti fi owó sí àkọọ́ rẹ. Jẹ́ kó jẹ́risi ìwọlé lẹsẹkẹsẹ!",
+          "timestamp": "Mọ́ń"
         }
       ]
     },
@@ -484,6 +484,12 @@
         "errorTitle": "Ìmúdójúìwọ̀n kò yẹ",
         "errorBody": "A kò lè fipamọ́ ààyè tí o yan. Jọ̀wọ́ tún gbìyànjú."
       },
+      "model": {
+        "title": "Imúdójúìwọ̀n àwoṣe",
+        "description": "Fi awoṣe olùṣàyẹ̀wò tuntun sílẹ̀ kí o ṣètò ẹ̀dá tí ó wà.",
+        "manageButton": "Ṣí aṣàkóso",
+        "currentBadge": "Àwoṣe lọwọlọwọ {{version}}"
+      },
       "language": {
         "title": "Èdè",
         "description": "Yan láàrín Gẹẹsi, Faranse, Suwahili, Pidgin, Yorùbá, Ìgbò, Hausa, Árábììkì àti Amaríkì.",
@@ -568,6 +574,10 @@
           "helper": "Tap to rotate through preset quiet-hour windows."
         }
       },
+      "diagnostics": {
+        "title": "Ìtẹ̀síwájú",
+        "description": "Rán àwọn àkọọ́lẹ̀ tí a dá ní àfiyèsí ranṣẹ́ láti ran wá lọ́wọ́ láti mú àfọ̀mọ̀kan pọ̀ si."
+      },
       "trustedSources": {
         "title": "Olùránṣẹ́ tí o gbẹ́kẹ̀lé",
         "description": "Ṣàkóso àwọn nómọ́ba tàbí imeeli tí o ráyè gbẹ́kẹ̀lé.",
@@ -597,19 +607,8 @@
           "note": "Ṣafikun akọsilẹ̀ kéékèèké (àṣàyàn)"
         },
         "saving": "Ní ìpamọ́..."
-      },
-      "diagnostics": {
-        "title": "Ìtẹ̀síwájú",
-        "description": "Rán àwọn àkọọ́lẹ̀ tí a dá ní àfiyèsí ranṣẹ́ láti ran wá lọ́wọ́ láti mú àfọ̀mọ̀kan pọ̀ si."
-      },
-      "model": {
-        "title": "Imúdójúìwọ̀n àwoṣe",
-        "description": "Fi awoṣe olùṣàyẹ̀wò tuntun sílẹ̀ kí o ṣètò ẹ̀dá tí ó wà.",
-        "manageButton": "Ṣí aṣàkóso",
-        "currentBadge": "Àwoṣe lọwọlọwọ {{version}}"
       }
     },
-    "back": "← Pada sí dasibodu",
     "model": {
       "title": "Ìṣàkóso àwoṣe",
       "subtitle": "Ṣe igbasilẹ imúdójúìwọ̀n, mu àwọn ẹ̀dá ṣiṣẹ́, kí o wo ìtàn fifi sori ẹrọ.",
@@ -670,7 +669,8 @@
         "syncErrorTitle": "Ìṣọ̀kan kò ṣaṣeyọri",
         "syncErrorBody": "A kò lè tún àkójọpọ̀ ṣe. Ṣàyẹ̀wò asopọ rẹ kí o tún gbìmọ̀."
       }
-    }
+    },
+    "back": "← Pada sí dasibodu"
   },
   "developerTools": {
     "resetOnboarding": {

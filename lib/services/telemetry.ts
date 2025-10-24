@@ -11,8 +11,7 @@ type NotificationPreferenceField =
   | 'alertsEnabled'
   | 'soundEnabled'
   | 'vibrationEnabled'
-  | 'quietHoursEnabled'
-  | 'quietHoursRange';
+  ;
 
 type ManualReportSource = 'quick_action' | 'alert_detail' | 'settings';
 

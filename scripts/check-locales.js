@@ -3,7 +3,9 @@
 const { readFile, readdir } = require('node:fs/promises');
 const path = require('node:path');
 
-const LOCALES_DIR = path.resolve(process.cwd(), 'locales');
+// Resolve locales directory relative to this script so the checker works
+// regardless of the current working directory when invoked.
+const LOCALES_DIR = process.env.LOCALES_DIR || path.resolve(__dirname, '..', 'locales');
 const REFERENCE_LOCALE = process.env.LOCALE_REFERENCE ?? 'en.json';
 
 async function getLocaleFiles() {

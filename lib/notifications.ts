@@ -9,38 +9,7 @@ import {
 const ALERT_CHANNEL_ID = 'phishing-alerts';
 let handlerConfigured = false;
 
-const parseTimeToMinutes = (value: string): number => {
-  const [hoursString, minutesString] = value.split(':');
-  const hours = Number.parseInt(hoursString ?? '0', 10);
-  const minutes = Number.parseInt(minutesString ?? '0', 10);
-  const normalizedHours = Number.isNaN(hours) ? 0 : Math.min(Math.max(hours, 0), 23);
-  const normalizedMinutes = Number.isNaN(minutes) ? 0 : Math.min(Math.max(minutes, 0), 59);
-  return normalizedHours * 60 + normalizedMinutes;
-};
-
-const isWithinQuietHours = (preferences: NotificationPreferences): boolean => {
-  if (!preferences.quietHoursEnabled) {
-    return false;
-  }
-
-  const start = parseTimeToMinutes(preferences.quietHoursStart);
-  const end = parseTimeToMinutes(preferences.quietHoursEnd);
-  const now = new Date();
-  const currentMinutes = now.getHours() * 60 + now.getMinutes();
-
-  if (start === end) {
-    return false;
-  }
-
-  if (start < end) {
-    return currentMinutes >= start && currentMinutes < end;
-  }
-
-  return currentMinutes >= start || currentMinutes < end;
-};
-
-export const isQuietHoursActive = (preferences: NotificationPreferences): boolean =>
-  isWithinQuietHours(preferences);
+// Quiet-hours feature removed: always treat as not active.
 
 export const configureNotificationHandling = () => {
   if (handlerConfigured) {
@@ -53,9 +22,8 @@ export const configureNotificationHandling = () => {
     handleNotification: async () => {
       await notificationPreferencesStore.initialize();
       const { preferences } = notificationPreferencesStore.getSnapshot();
-      const quietHoursActive = isWithinQuietHours(preferences);
-      const shouldShowAlert = preferences.alertsEnabled;
-      const shouldPlaySound = shouldShowAlert && preferences.soundEnabled && !quietHoursActive;
+  const shouldShowAlert = preferences.alertsEnabled;
+  const shouldPlaySound = shouldShowAlert && preferences.soundEnabled;
 
       return {
         shouldShowAlert,
@@ -97,12 +65,12 @@ export const scheduleDetectionNotificationAsync = async (
 ): Promise<string> => {
   await notificationPreferencesStore.initialize();
   const { preferences } = notificationPreferencesStore.getSnapshot();
-  const quietHoursActive = isWithinQuietHours(preferences);
-  const shouldPlaySound = preferences.soundEnabled && !quietHoursActive;
-  const shouldVibrate = preferences.vibrationEnabled && !quietHoursActive;
-
+  const shouldPlaySound = preferences.soundEnabled;
+  const shouldVibrate = preferences.vibrationEnabled;
   if (!preferences.alertsEnabled) {
     console.warn('[notifications] Suppressing alert because user disabled phishing alerts.');
+    // Respect the master toggle by not scheduling a local notification when alerts are disabled.
+    return Promise.resolve('');
   }
 
   return Notifications.scheduleNotificationAsync({

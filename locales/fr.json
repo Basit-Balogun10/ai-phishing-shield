@@ -31,8 +31,7 @@
         "paused": "Action requise"
       },
       "activeDescription": "La détection anti-hameçonnage fonctionne silencieusement en arrière-plan.",
-      "viewStats": "Consulter les statistiques",
-      "trustedCount": "{{count}} expéditeurs sûrs",
+      "pausedDescription": "Accordez les autorisations manquantes pour que la détection du phishing reste active.",
       "modelVersion": "Modèle {{version}}",
       "lastScan": "Dernière analyse {{time}}",
       "lastScanFallback": "En attente de la première analyse",
@@ -40,15 +39,16 @@
         "ok": "Notifications et SMS prêts",
         "missing": "Corriger les permissions"
       },
-      "goToDiagnostics": "Voir le diagnostic",
       "modelStatus": {
         "syncing": "Synchronisation des mises à jour",
         "downloading": "Téléchargement de {{version}}",
         "activating": "Activation de {{version}}",
         "removing": "Suppression de {{version}}"
       },
-      "pausedDescription": "Accordez les autorisations manquantes pour que la détection du phishing reste active.",
-      "pausedHelper": "Le bouclier est désactivé et des tentatives de phishing peuvent passer. Réactivez-le tout de suite !"
+      "pausedHelper": "Le bouclier est désactivé et des tentatives de phishing peuvent passer. Réactivez-le tout de suite !",
+      "goToDiagnostics": "Voir le diagnostic",
+      "viewStats": "Consulter les statistiques",
+      "trustedCount": "{{count}} expéditeurs sûrs"
     },
     "stats": {
       "title": "Vos statistiques de protection",
@@ -93,21 +93,21 @@
         "title": "Expéditeurs sûrs",
         "subtitle": "Vérifiez et gérez les contacts marqués comme fiables."
       },
+      "report": {
+        "title": "Signaler un message",
+        "subtitle": "Envoyez un contenu suspect pour aider à entraîner le bouclier."
+      },
       "settings": {
         "title": "Gérer les réglages",
         "subtitle": "Configurer la langue, les notifications et le diagnostic."
-      },
-      "developer": {
-        "title": "Outils développeur",
-        "subtitle": "Réinitialiser l’onboarding et relancer les vérifications."
       },
       "model": {
         "title": "Mises à jour du modèle",
         "subtitle": "Vérifiez les nouvelles versions du détecteur et gérez celles installées."
       },
-      "report": {
-        "title": "Signaler un message",
-        "subtitle": "Envoyez un contenu suspect pour aider à entraîner le bouclier."
+      "developer": {
+        "title": "Outils développeur",
+        "subtitle": "Réinitialiser l’onboarding et relancer les vérifications."
       }
     },
     "filtersTitle": "Filtres",
@@ -120,33 +120,33 @@
       "title": "Dernière activité",
       "empty": "Aucune détection pour l’instant. Lancez une simulation pour prévisualiser les alertes."
     },
-    "recentAlerts": {
-      "title": "Alertes récentes",
-      "subtitle": "Derniers messages suspects signalés par le bouclier.",
-      "empty": "Aucune alerte détectée pour le moment. Restez vigilant !",
-      "emptyWithFilters": "Aucune alerte ne correspond à {{filters}}. Ajustez vos filtres.",
+    "alerts": {
+      "title": "Alertes",
+      "subtitle": "Messages signalés par le bouclier.",
+      "empty": "Aucune alerte détectée pour le moment.",
+      "emptyWithFilters": "Aucune alerte ne correspond à {{filters}}. Essayez d'ajuster vos filtres.",
       "filtersTitle": "Filtres",
-      "openFilters": "Ouvrir les filtres",
+      "openFilters": "Ouvrir les filtres d'alerte",
       "editFilters": "Ajuster les filtres",
       "clearFilters": "Tout effacer",
       "applyFilters": "Terminer",
       "noFiltersApplied": "Aucun filtre appliqué",
-      "viewAll": "Voir tout l’historique",
+      "viewAll": "Voir tout l'historique",
       "filters": {
         "all": "Toutes les alertes",
-        "historical": "Jeu de données",
+        "historical": "Données historiques",
         "simulated": "Vos simulations",
-        "trusted": "Expéditeurs sûrs"
+        "trusted": "Expéditeurs fiables"
       },
       "timeframeLabel": "Détecté dans",
       "timeframe": {
-        "all": "Toute période",
+        "all": "Toute la période",
         "24h": "Dernières 24 heures",
-        "7d": "Derniers 7 jours",
-        "30d": "Derniers 30 jours"
+        "7d": "7 derniers jours",
+        "30d": "30 derniers jours"
       },
       "severity": {
-        "all": "Tout niveau",
+        "all": "Tous niveaux de risque",
         "high": "Risque élevé",
         "medium": "Risque moyen",
         "low": "Risque faible"
@@ -156,41 +156,41 @@
       },
       "matchesHeading": "Signaux détectés",
       "trustedToggle": {
-        "label": "Afficher seulement les expéditeurs sûrs",
-        "description": "Limiter aux contacts marqués comme sûrs dans les paramètres."
+        "label": "Afficher uniquement les expéditeurs fiables",
+        "description": "Limiter les résultats aux expéditeurs que vous avez marqués comme fiables dans les paramètres."
       },
-      "trustedOnlyBadge": "Expéditeurs sûrs uniquement",
+      "trustedOnlyBadge": "Expéditeurs fiables uniquement",
       "feedback": {
-        "title": "Cette alerte était-elle pertinente ?",
-        "subtitle": "Dites-nous s’il s’agissait d’une véritable tentative de phishing ou d’une fausse alerte.",
+        "title": "Cette alerte était-elle précise ?",
+        "subtitle": "Dites-nous s'il s'agissait d'une tentative de phishing réelle ou d'une fausse alerte.",
         "actions": {
           "confirm": "Confirmer la menace",
-          "confirmHelper": "C’était du phishing",
+          "confirmHelper": "C'était du phishing",
           "dismiss": "Marquer comme sûr",
-          "dismissHelper": "Le message était légitime"
+          "dismissHelper": "C'était légitime"
         },
         "status": {
-          "submitted": "Merci d’aider à améliorer le bouclier.",
+          "submitted": "Merci d'aider à améliorer le bouclier.",
           "confirmed": "Marqué comme phishing",
           "falsePositive": "Marqué comme sûr",
           "pending": "Envoi du retour..."
         },
-        "error": "Impossible d’envoyer ce retour. Réessayez."
+        "error": "Nous n'avons pas pu envoyer ce retour. Réessayez."
       },
-      "searchPlaceholder": "Rechercher par expéditeur, contenu ou tag",
-      "trustedBadge": "Expéditeur de confiance",
-      "trustedDefault": "Vous avez marqué cet expéditeur comme sûr dans les paramètres.",
+      "searchPlaceholder": "Rechercher des alertes par expéditeur, contenu ou tag",
+      "trustedBadge": "Expéditeur fiable",
+      "trustedDefault": "Vous avez marqué cet expéditeur comme fiable dans les paramètres.",
       "historyAlertTitle": "Bientôt disponible",
-      "historyAlertBody": "Vous pourrez consulter l’historique complet des alertes lors de la prochaine étape.",
+      "historyAlertBody": "Vous pourrez consulter l'historique complet des alertes dans la prochaine version.",
       "items": [
         {
           "sender": "Numéro inconnu",
-          "preview": "Réclamez votre remboursement d’impôts. Cliquez sur le lien...",
-          "timestamp": "Il y a 2 h"
+          "preview": "Demandez votre remboursement d'impôt maintenant. Cliquez sur le lien...",
+          "timestamp": "Il y a 2h"
         },
         {
-          "sender": "Siège Finance",
-          "preview": "Urgent : vérifiez vos informations de paie pour éviter une suspension.",
+          "sender": "Finance HQ",
+          "preview": "Urgent : Vérifiez vos informations de paie pour éviter une suspension.",
           "timestamp": "Hier"
         },
         {
@@ -484,6 +484,12 @@
         "errorTitle": "Échec de la mise à jour",
         "errorBody": "Impossible d’enregistrer vos préférences. Veuillez réessayer."
       },
+      "model": {
+        "title": "Mises à jour du modèle",
+        "description": "Installez les nouveaux modèles de détection d’hameçonnage et gérez les versions.",
+        "manageButton": "Ouvrir le gestionnaire",
+        "currentBadge": "Version active {{version}}"
+      },
       "language": {
         "title": "Langue",
         "description": "Basculer entre l’anglais, le français, le swahili, le yoruba, l’igbo, le haoussa, le pidgin, l’arabe et l’amharique.",
@@ -601,15 +607,8 @@
           "note": "Ajoutez une courte note (facultatif)"
         },
         "saving": "Enregistrement..."
-      },
-      "model": {
-        "title": "Mises à jour du modèle",
-        "description": "Installez les nouveaux modèles de détection d’hameçonnage et gérez les versions.",
-        "manageButton": "Ouvrir le gestionnaire",
-        "currentBadge": "Version active {{version}}"
       }
     },
-    "back": "← Retour au tableau de bord",
     "model": {
       "title": "Gestion du modèle",
       "subtitle": "Téléchargez les mises à jour, activez des versions et consultez l’historique des installations.",
@@ -670,7 +669,8 @@
         "syncErrorTitle": "Synchronisation échouée",
         "syncErrorBody": "Impossible d’actualiser le catalogue. Vérifiez votre connexion et retentez."
       }
-    }
+    },
+    "back": "← Retour au tableau de bord"
   },
   "developerTools": {
     "resetOnboarding": {

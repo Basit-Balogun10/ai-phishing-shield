@@ -27,6 +27,7 @@ import { clearOnboardingComplete } from '../../lib/storage';
 import { useTelemetryPreferences } from '../../lib/telemetryPreferences';
 import { shieldStateStore, useShieldState } from '../../lib/shieldState';
 import { formatDetectionTimestamp } from '../../lib/detection/formatters';
+import notificationFilter from '../../lib/services/notificationFilter';
 
 const MOCK_TOOLS_DISMISS_KEY = 'dashboard_mock_tools_dismissed_v1';
 
@@ -284,12 +285,12 @@ export default function DashboardScreen() {
           // disabling shield -> stop listener
           try {
             await NotificationListener.stop();
-          } catch (e) {
+          } catch {
             // ignore
           }
         }
-      } catch (e) {
-        console.warn('[dashboard] Notification listener start/stop failed', e);
+      } catch {
+        console.warn('[dashboard] Notification listener start/stop failed');
       }
     } catch (error) {
       console.warn('[dashboard] Failed to toggle shield', error);
@@ -304,8 +305,9 @@ export default function DashboardScreen() {
     // initialize listener on mount (no-op on non-Android)
     void (async () => {
       try {
+        // prefer native bridge when available
         await NotificationListener.init();
-      } catch (e) {
+      } catch {
         // ignore
       }
     })();
@@ -455,6 +457,30 @@ export default function DashboardScreen() {
         t('developerTools.resetOnboarding.errorBody')
       );
     }
+  }, [t]);
+
+  const handleIgnoreApp = useCallback(async (pkg?: string, sender?: string) => {
+    const target = pkg || sender;
+    if (!target) return;
+
+    Alert.alert(
+      t('dashboard.mockDetection.ignoreConfirmTitle'),
+      t('dashboard.mockDetection.ignoreConfirmBody', { app: target }),
+      [
+        { text: t('common.cancel'), style: 'cancel' },
+        {
+          text: t('common.ok'),
+          onPress: async () => {
+            try {
+              await notificationFilter.addIgnoredPackage(target);
+              Alert.alert(t('dashboard.mockDetection.ignoreSuccessTitle'), t('dashboard.mockDetection.ignoreSuccessBody'));
+            } catch (e) {
+              console.warn('[dashboard] Failed to ignore package', e);
+            }
+          },
+        },
+      ]
+    );
   }, [t]);
 
   return (
@@ -765,14 +791,22 @@ export default function DashboardScreen() {
                       {formatDetectedAt(selectedDetection.detectedAt)}
                     </Text>
                   </View>
-                  <TouchableOpacity
-                    onPress={() => setSelectedDetection(null)}
-                    activeOpacity={0.7}
-                    accessibilityRole="button"
-                    accessibilityLabel={t('dashboard.report.actions.close')}
-                    className="h-10 w-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
-                    <MaterialCommunityIcons name="close" size={20} color="#475569" />
-                  </TouchableOpacity>
+                    <View className="flex-row items-center gap-2">
+                      <TouchableOpacity
+                        onPress={() => handleIgnoreApp(selectedDetection.result.message.package, selectedDetection.result.message.sender)}
+                        activeOpacity={0.7}
+                        className="mr-2 rounded-full bg-slate-100 px-3 py-2 dark:bg-slate-800">
+                        <Text className="text-xs text-slate-700 dark:text-slate-200">{t('dashboard.mockDetection.ignoreApp')}</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => setSelectedDetection(null)}
+                        activeOpacity={0.7}
+                        accessibilityRole="button"
+                        accessibilityLabel={t('dashboard.report.actions.close')}
+                        className="h-10 w-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+                        <MaterialCommunityIcons name="close" size={20} color="#475569" />
+                      </TouchableOpacity>
+                    </View>
                 </View>
 
                 <View className="flex-row flex-wrap items-center gap-3">

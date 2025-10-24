@@ -39,16 +39,16 @@
         "ok": "الإشعارات والرسائل القصيرة جاهزة",
         "missing": "إصلاح الأذونات"
       },
-      "goToDiagnostics": "عرض التشخيصات",
-      "viewStats": "عرض إحصاءات الحماية",
-      "trustedCount": "{{count}} مرسل موثوق",
       "modelStatus": {
         "syncing": "جارٍ مزامنة التحديثات",
         "downloading": "جارٍ تنزيل {{version}}",
         "activating": "جارٍ تفعيل {{version}}",
         "removing": "جارٍ إزالة {{version}}"
       },
-      "pausedHelper": "الدرع معطّل، ويمكن لمحاولات التصيّد أن تتسلّل. أعد تفعيله بالمفتاح!"
+      "pausedHelper": "الدرع معطّل، ويمكن لمحاولات التصيّد أن تتسلّل. أعد تفعيله بالمفتاح!",
+      "goToDiagnostics": "عرض التشخيصات",
+      "viewStats": "عرض إحصاءات الحماية",
+      "trustedCount": "{{count}} مرسل موثوق"
     },
     "stats": {
       "title": "إحصائيات الحماية الخاصة بك",
@@ -74,6 +74,131 @@
         "flat": "ثابت"
       },
       "comparison": "مقارنة بالفترة السابقة"
+    },
+    "quickActions": {
+      "title": "إجراءات سريعة",
+      "mockScan": {
+        "title": "تشغيل فحص تجريبي",
+        "subtitle": "انتقل إلى المحاكي لتشغيل اكتشاف تجريبي."
+      },
+      "alerts": {
+        "title": "عرض التنبيهات",
+        "subtitle": "افتح سجل الاكتشاف الكامل لديك."
+      },
+      "stats": {
+        "title": "إحصاءات الحماية",
+        "subtitle": "اطلع على اتجاهات الرسائل المفحوصة والتهديدات المحجوبة."
+      },
+      "trusted": {
+        "title": "المرسلون الموثوقون",
+        "subtitle": "راجع وأدر جهات الاتصال التي صنفتها كآمنة."
+      },
+      "report": {
+        "title": "أبلغ عن رسالة",
+        "subtitle": "أرسل المحتوى المشبوه للمساعدة في تدريب الدرع."
+      },
+      "settings": {
+        "title": "إدارة الإعدادات",
+        "subtitle": "اضبط اللغة والإشعارات والتشخيصات."
+      },
+      "model": {
+        "title": "تحديثات النموذج",
+        "subtitle": "تحقق من تحسينات الكاشف وأدر الإصدارات المثبتة."
+      },
+      "developer": {
+        "title": "أدوات المطور",
+        "subtitle": "إعادة تعيين البدء وإعادة فحص الأذونات."
+      }
+    },
+    "filtersTitle": "Filters",
+    "openFilters": "Open alert filters",
+    "editFilters": "Adjust filters",
+    "clearFilters": "Clear all",
+    "applyFilters": "Done",
+    "noFiltersApplied": "No filters applied",
+    "activity": {
+      "title": "Latest activity",
+      "empty": "No detections yet. Run a mock scan to preview alerts."
+    },
+    "alerts": {
+      "title": "التنبيهات",
+      "subtitle": "الرسائل التي وضعها الدرع تحت المراقبة.",
+      "empty": "لا توجد تنبيهات حتى الآن.",
+      "emptyWithFilters": "لا توجد تنبيهات مطابقة لـ {{filters}}. جرّب تغيير المرشحات.",
+      "filtersTitle": "المرشحات",
+      "openFilters": "افتح مرشحات التنبيهات",
+      "editFilters": "تعديل المرشحات",
+      "clearFilters": "مسح الكل",
+      "applyFilters": "تم",
+      "noFiltersApplied": "لا توجد مرشحات مفعّلة",
+      "viewAll": "عرض السجل الكامل",
+      "filters": {
+        "all": "كل التنبيهات",
+        "historical": "البيانات التاريخية",
+        "simulated": "محاكياتك",
+        "trusted": "المرسلون الموثوقون"
+      },
+      "timeframeLabel": "تم الاكتشاف خلال",
+      "timeframe": {
+        "all": "أي وقت",
+        "24h": "آخر 24 ساعة",
+        "7d": "آخر 7 أيام",
+        "30d": "آخر 30 يومًا"
+      },
+      "severity": {
+        "all": "أي مستوى خطورة",
+        "high": "خطر عالٍ",
+        "medium": "خطر متوسط",
+        "low": "خطر منخفض"
+      },
+      "channels": {
+        "all": "أي قناة"
+      },
+      "matchesHeading": "الإشارات المكتشفة",
+      "trustedToggle": {
+        "label": "عرض المرسلين الموثوقين فقط",
+        "description": "اقتصار النتائج على المرسلين الذين وسمتهم كآمنين في الإعدادات."
+      },
+      "trustedOnlyBadge": "المرسلون الموثوقون فقط",
+      "feedback": {
+        "title": "هل كان هذا التنبيه دقيقًا؟",
+        "subtitle": "أخبرنا إن كانت محاولة تصيّد حقيقية أم إنذارًا خاطئًا.",
+        "actions": {
+          "confirm": "تأكيد التهديد",
+          "confirmHelper": "كانت محاولة تصيّد",
+          "dismiss": "وصفها كآمنة",
+          "dismissHelper": "كانت رسالة مشروعة"
+        },
+        "status": {
+          "submitted": "شكرًا لمساعدتك في تحسين الدرع.",
+          "confirmed": "تم وسمها كتصيّد",
+          "falsePositive": "تم وسمها آمنة",
+          "pending": "جارٍ إرسال الملاحظات..."
+        },
+        "error": "تعذّر إرسال الملاحظة. حاول مرة أخرى."
+      },
+      "searchPlaceholder": "ابحث في التنبيهات بالمرسل أو المحتوى أو العلامة",
+      "trustedBadge": "مرسل موثوق",
+      "trustedDefault": "وُسم هذا المرسل كآمن في الإعدادات.",
+      "historyAlertTitle": "قريبًا",
+      "historyAlertBody": "ستتمكن من مراجعة السجل الكامل للتنبيهات في الإصدار القادم.",
+      "items": [
+        {
+          "sender": "رقم غير معروف",
+          "preview": "اطالب باسترداد ضريبي الآن. انقر على الرابط...",
+          "timestamp": "منذ ساعتين"
+        },
+        {
+          "sender": "المصلحة المالية",
+          "preview": "عاجل: تحقق من بيانات الراتب لتجنب التوقيف.",
+          "timestamp": "أمس"
+        },
+        {
+          "sender": "+234 900 123 4567",
+          "preview": "لقد رصدنا إيداعًا في حسابك. أكد تسجيل الدخول فورًا!",
+          "timestamp": "الإثنين"
+        }
+      ]
     },
     "trustedSources": {
       "title": "المرسلون الموثوقون",
@@ -198,131 +323,6 @@
         "title": "فتح الإعدادات",
         "description": "أدِر اللغة وتفضيلات الإشعارات والتشخيصات."
       }
-    },
-    "quickActions": {
-      "title": "إجراءات سريعة",
-      "mockScan": {
-        "title": "تشغيل فحص تجريبي",
-        "subtitle": "انتقل إلى المحاكي لتشغيل اكتشاف تجريبي."
-      },
-      "alerts": {
-        "title": "عرض التنبيهات",
-        "subtitle": "افتح سجل الاكتشاف الكامل لديك."
-      },
-      "stats": {
-        "title": "إحصاءات الحماية",
-        "subtitle": "اطلع على اتجاهات الرسائل المفحوصة والتهديدات المحجوبة."
-      },
-      "trusted": {
-        "title": "المرسلون الموثوقون",
-        "subtitle": "راجع وأدر جهات الاتصال التي صنفتها كآمنة."
-      },
-      "settings": {
-        "title": "إدارة الإعدادات",
-        "subtitle": "اضبط اللغة والإشعارات والتشخيصات."
-      },
-      "model": {
-        "title": "تحديثات النموذج",
-        "subtitle": "تحقق من تحسينات الكاشف وأدر الإصدارات المثبتة."
-      },
-      "developer": {
-        "title": "أدوات المطور",
-        "subtitle": "إعادة تعيين البدء وإعادة فحص الأذونات."
-      },
-      "report": {
-        "title": "أبلغ عن رسالة",
-        "subtitle": "أرسل المحتوى المشبوه للمساعدة في تدريب الدرع."
-      }
-    },
-    "filtersTitle": "Filters",
-    "openFilters": "Open alert filters",
-    "editFilters": "Adjust filters",
-    "clearFilters": "Clear all",
-    "applyFilters": "Done",
-    "noFiltersApplied": "No filters applied",
-    "activity": {
-      "title": "Latest activity",
-      "empty": "No detections yet. Run a mock scan to preview alerts."
-    },
-    "recentAlerts": {
-      "title": "Recent alerts",
-      "subtitle": "Latest suspicious messages flagged by the shield.",
-      "empty": "No alerts detected yet. Stay vigilant!",
-      "emptyWithFilters": "No alerts matched {{filters}}. Try changing your filters.",
-      "filtersTitle": "Filters",
-      "openFilters": "Open alert filters",
-      "editFilters": "Adjust filters",
-      "clearFilters": "Clear all",
-      "applyFilters": "Done",
-      "noFiltersApplied": "No filters applied",
-      "viewAll": "View full history",
-      "filters": {
-        "all": "All alerts",
-        "historical": "Live dataset",
-        "simulated": "Your mock runs",
-        "trusted": "Trusted senders"
-      },
-      "timeframeLabel": "Detected within",
-      "timeframe": {
-        "all": "Any time",
-        "24h": "Last 24 hours",
-        "7d": "Last 7 days",
-        "30d": "Last 30 days"
-      },
-      "severity": {
-        "all": "Any risk",
-        "high": "High risk",
-        "medium": "Medium risk",
-        "low": "Lower risk"
-      },
-      "channels": {
-        "all": "Any channel"
-      },
-      "matchesHeading": "Detected signals",
-      "trustedToggle": {
-        "label": "Only show trusted senders",
-        "description": "Limit results to senders you’ve marked as safe in Settings."
-      },
-      "trustedOnlyBadge": "Trusted senders only",
-      "feedback": {
-        "title": "Was this alert accurate?",
-        "subtitle": "Tell us if this was a real phishing attempt or a false alarm.",
-        "actions": {
-          "confirm": "Confirm threat",
-          "confirmHelper": "It was phishing",
-          "dismiss": "Mark as safe",
-          "dismissHelper": "It was legitimate"
-        },
-        "status": {
-          "submitted": "Thanks for helping improve the shield.",
-          "confirmed": "Marked as phishing",
-          "falsePositive": "Marked as safe",
-          "pending": "Sending feedback..."
-        },
-        "error": "We couldn't send that feedback. Try again."
-      },
-      "searchPlaceholder": "Search alerts by sender, content, or tag",
-      "trustedBadge": "Trusted sender",
-      "trustedDefault": "You marked this sender as safe in Settings.",
-      "historyAlertTitle": "Coming soon",
-      "historyAlertBody": "You'll be able to review the full alert history in the next milestone.",
-      "items": [
-        {
-          "sender": "Unknown number",
-          "preview": "Claim your tax refund now. Click the link...",
-          "timestamp": "2h ago"
-        },
-        {
-          "sender": "Finance HQ",
-          "preview": "Urgent: Verify your payroll details to avoid suspension.",
-          "timestamp": "Yesterday"
-        },
-        {
-          "sender": "+234 900 123 4567",
-          "preview": "We've credited your account. Confirm login immediately!",
-          "timestamp": "Mon"
-        }
-      ]
     }
   },
   "onboarding": {
@@ -484,6 +484,12 @@
         "errorTitle": "فشل التحديث",
         "errorBody": "تعذر حفظ تفضيلاتك. حاول مجددًا."
       },
+      "model": {
+        "title": "تحديثات النموذج",
+        "description": "ثبّت نماذج جديدة لاكتشاف التصيّد وأدِر الإصدارات.",
+        "manageButton": "فتح مدير النماذج",
+        "currentBadge": "الإصدار الحالي {{version}}"
+      },
       "language": {
         "title": "اللغة",
         "description": "بدّل بين العربية والإنجليزية والفرنسية والسواحيلية واليوروبا والإيبو والهوسا والبيجن والأمهرية.",
@@ -601,15 +607,8 @@
           "note": "أضف ملاحظة قصيرة (اختياري)"
         },
         "saving": "جارٍ الحفظ..."
-      },
-      "model": {
-        "title": "تحديثات النموذج",
-        "description": "ثبّت نماذج جديدة لاكتشاف التصيّد وأدِر الإصدارات.",
-        "manageButton": "فتح مدير النماذج",
-        "currentBadge": "الإصدار الحالي {{version}}"
       }
     },
-    "back": "← الرجوع إلى لوحة التحكم",
     "model": {
       "title": "إدارة النموذج",
       "subtitle": "نزّل التحديثات، فعّل الإصدارات، واستعرض سجل التثبيت.",
@@ -670,7 +669,8 @@
         "syncErrorTitle": "فشلت المزامنة",
         "syncErrorBody": "لم نتمكن من تحديث الكتالوج. تحقّق من الاتصال ثم أعد المحاولة."
       }
-    }
+    },
+    "back": "← الرجوع إلى لوحة التحكم"
   },
   "developerTools": {
     "resetOnboarding": {

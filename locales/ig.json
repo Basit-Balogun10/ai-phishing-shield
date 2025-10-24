@@ -39,16 +39,16 @@
         "ok": "Nkwupụta na SMS dị njikere",
         "missing": "Dozie ikike"
       },
-      "goToDiagnostics": "Lelee nnyocha",
-      "viewStats": "Lelee nchịkọta nchebe",
-      "trustedCount": "{{count}} ndị zipụrụ a tụkwasịrị obi",
       "modelStatus": {
         "syncing": "Na-eme ka mmelite kwekọọ",
         "downloading": "Na-ebudata {{version}}",
         "activating": "Na-akpali {{version}}",
         "removing": "Na-ewepu {{version}}"
       },
-      "pausedHelper": "E gbanyụrụ garkwa ahụ, ma ozi aghụghọ nwere ike ịgabiga. Gbagharịa bọtịnụ toggle ka ọ laghachi n’ọrụ!"
+      "pausedHelper": "E gbanyụrụ garkwa ahụ, ma ozi aghụghọ nwere ike ịgabiga. Gbagharịa bọtịnụ toggle ka ọ laghachi n’ọrụ!",
+      "goToDiagnostics": "Lelee nnyocha",
+      "viewStats": "Lelee nchịkọta nchebe",
+      "trustedCount": "{{count}} ndị zipụrụ a tụkwasịrị obi"
     },
     "stats": {
       "title": "Nchịkọta nchebe gị",
@@ -93,21 +93,21 @@
         "title": "Ndị zipụrụ a tụkwasịrị obi",
         "subtitle": "Lelee ma jikwaa kọntaktị ị debara dịka ndị dị nchebe."
       },
+      "report": {
+        "title": "Kọpụta ozi",
+        "subtitle": "Zipu ọdịnaya ị na-enyo enyo ka o nyere garkwa mụta."
+      },
       "settings": {
         "title": "Hazi ntọala",
         "subtitle": "Hazie asụsụ, nkwupụta, na nnyocha."
-      },
-      "developer": {
-        "title": "Ngwaọrụ mmepe",
-        "subtitle": "Tọgharịa onboarding ma nyochaa ikike ọzọ."
       },
       "model": {
         "title": "Mmelite nlereanya",
         "subtitle": "Lelee ụdị ọhụụ nke ngwaọrụ nchọpụta ma jikwaa ụdị etinyere."
       },
-      "report": {
-        "title": "Kọpụta ozi",
-        "subtitle": "Zipu ọdịnaya ị na-enyo enyo ka o nyere garkwa mụta."
+      "developer": {
+        "title": "Ngwaọrụ mmepe",
+        "subtitle": "Tọgharịa onboarding ma nyochaa ikike ọzọ."
       }
     },
     "filtersTitle": "Ntacha",
@@ -120,82 +120,82 @@
       "title": "Ọrụ kacha ọhụrụ",
       "empty": "Enweghị nchọpụta ugbu a. Gbaa nyocha atụ ka ị hụ ka ozi si pụta."
     },
-    "recentAlerts": {
-      "title": "Nche ọhụrụ",
-      "subtitle": "Ozi ndị ihe mgbochi ahụ hụrụ dị ize ndụ kacha ọhụrụ.",
-      "empty": "Enweghị nche ugbu a. Nọgide na-ele anya!",
-      "emptyWithFilters": "Enweghị nche dabara na {{filters}}. Gbalịa gbanwee ntacha gị.",
-      "filtersTitle": "Ntacha",
-      "openFilters": "Mepee ntacha",
-      "editFilters": "Hazie ntacha",
+    "alerts": {
+      "title": "Mgbaàmà",
+      "subtitle": "Ozi ndị Shield gosipụtara.",
+      "empty": "Enweghị mgbaàmà e chọpụtara ruo ugbu a.",
+      "emptyWithFilters": "Enweghị mgbaàmà kwekọrọ na {{filters}}. Gbalịa gbanwee nzacha gị.",
+      "filtersTitle": "Nzacha",
+      "openFilters": "Meghee nzacha mgbaàmà",
+      "editFilters": "Hazie nzacha",
       "clearFilters": "Hichapụ niile",
-      "applyFilters": "Emechara",
-      "noFiltersApplied": "Enweghị ntacha etinyere",
-      "viewAll": "Lelee akụkọ zuru ezu",
+      "applyFilters": "Rụchaa",
+      "noFiltersApplied": "Enweghị nzacha etinyere",
+      "viewAll": "Lee akụkọ zuru ezu",
       "filters": {
-        "all": "Gosi nche niile",
-        "historical": "Ndekọ ndụ",
-        "simulated": "Nchọpụta atụ gị",
-        "trusted": "Ndị zipụrụ a tụkwasịrị obi"
+        "all": "Mgbaàmà niile",
+        "historical": "Nseta data nke gara aga",
+        "simulated": "Nnwale gị",
+        "trusted": "Ndị zitere a tụkwasịrị obi"
       },
-      "timeframeLabel": "Achọpụtara n'ime",
+      "timeframeLabel": "Chọpụtara n'ime",
       "timeframe": {
-        "all": "Oge ọ bụla",
+        "all": "Oge niile",
         "24h": "Awa 24 gara aga",
         "7d": "Ụbọchị 7 gara aga",
         "30d": "Ụbọchị 30 gara aga"
       },
       "severity": {
-        "all": "Ọkwa ọ bụla",
-        "high": "Ihe ize ndụ dị elu",
-        "medium": "Ihe ize ndụ nkezi",
-        "low": "Ihe ize ndụ dị ala"
+        "all": "Ụdị ize ndụ niile",
+        "high": "Ike ize ndụ dị elu",
+        "medium": "Ike ize ndụ etiti",
+        "low": "Ike ize ndụ dị ala"
       },
       "channels": {
-        "all": "Ụzọ ọ bụla"
+        "all": "Ọnụ ụzọ niile"
       },
-      "matchesHeading": "Mgbaàmà achọpụtara",
+      "matchesHeading": "Mgbaàmà e chọpụtara",
       "trustedToggle": {
-        "label": "Gosi naanị ndị zipụrụ ị tụkwasịrị obi",
-        "description": "Họrọ naanị ndị ị debara dị ka ndị a tụkwasịrị obi na Ntọala."
+        "label": "Gosi naanị ndị zitere a kwenyere",
+        "description": "Belata nsonaazụ naanị na ndị ị kpọrọ ndị dị nchebe na Ntọala."
       },
-      "trustedOnlyBadge": "Ndị zipụrụ a tụkwasịrị obi naanị",
+      "trustedOnlyBadge": "Ndị zitere a tụkwasịrị obi naanị",
       "feedback": {
-        "title": "Ọ bụ nche a ziri ezi?",
-        "subtitle": "Gwa anyị ma ọ bụ nnwale phishing n’ezie ma ọ bụ mgbagha efu.",
+        "title": "Nke a bụ ezi mgbaàmà?",
+        "subtitle": "Gwa anyị ma nke a bụ mbọ phishing ma ọ bụ njehie.",
         "actions": {
-          "confirm": "Kwado egwu",
+          "confirm": "Kwenye ihe ize ndụ",
           "confirmHelper": "Ọ bụ phishing",
-          "dismiss": "Kpọọ ya ka ọ dị mma",
-          "dismissHelper": "Ozi ahụ bụ nke ziri ezi"
+          "dismiss": "Dọpụta dị ka dị nchebe",
+          "dismissHelper": "Ọ bụ nke iwu"
         },
         "status": {
-          "submitted": "Daalụ maka inyere anyị aka ime ka nche sie ike.",
-          "confirmed": "Edere ya dịka phishing",
-          "falsePositive": "Edere ya dịka nchekwa",
+          "submitted": "Daalụ maka inyere aka melite Shield.",
+          "confirmed": "A gbara ya akara dị ka phishing",
+          "falsePositive": "A gbara ya akara dị ka dị nchebe",
           "pending": "Na-eziga nzaghachi..."
         },
-        "error": "Anyị enweghị ike iziga nzaghachi a. Gbalịa ọzọ."
+        "error": "Anyị enweghi ike iziga nzaghachi ahụ. Gbalịa ọzọ."
       },
-      "searchPlaceholder": "Chọọ nche site n’aha onye zipụrụ, ọdịnaya, ma ọ bụ tag",
-      "trustedBadge": "Onye zipụrụ a tụkwasịrị obi",
-      "trustedDefault": "Ị debara onye zipụrụ a dị ka onye a tụkwasịrị obi na Ntọala.",
+      "searchPlaceholder": "Chọọ mgbaàmà site na onye zitere, ọdịnaya, ma ọ bụ tag",
+      "trustedBadge": "Onye zitere a tụkwasịrị obi",
+      "trustedDefault": "Ị kọwara onye zitere a dị ka onye dị nchebe na Ntọala.",
       "historyAlertTitle": "Na-abịa ngwa ngwa",
-      "historyAlertBody": "Ị ga-enwe ike ilele akụkọ zuru ezu n’ọgbọ na-abịa.",
+      "historyAlertBody": "Ị ga-enwe ike nyochaa akụkọ zuru ezu nke mgbaàmà na nso nso a.",
       "items": [
         {
-          "sender": "Nọmba amaghị",
-          "preview": "Napụta ụtụ isi gị ugbu a. Pịa njikọ a…",
-          "timestamp": "Oge elekere abụọ gara aga"
+          "sender": "Agaghị amata nọmba",
+          "preview": "Chọọ mmeghachi ụgwọ ụtụ isi gị ugbu a. Pịa njikọ...",
+          "timestamp": "Awa 2 gara aga"
         },
         {
-          "sender": "Isi Ụlọ Ọrụ Ego",
-          "preview": "Ọsọ! Kwenye ozi ụgwọ gị ka a ghara ịkwụsị gị.",
-          "timestamp": "Ụnyaahụ"
+          "sender": "Finance HQ",
+          "preview": "Nnọọ: Lelee nkọwa ụgwọ gị iji zere ịkwụsị ọrụ.",
+          "timestamp": "Nkeji gara aga"
         },
         {
           "sender": "+234 900 123 4567",
-          "preview": "Anyị tinyere ego n’akaụntụ gị. Biko gosi ya ozugbo!",
+          "preview": "Anyị etinyela ego na akaụntụ gị. Kwenye nbanye ugbu a!",
           "timestamp": "Mọnde"
         }
       ]
@@ -484,6 +484,12 @@
         "errorTitle": "Ịmelite adịghị eme",
         "errorBody": "Enweghị ike ịchekwa nhọrọ gị. Biko nwaa ọzọ."
       },
+      "model": {
+        "title": "Mmelite nlereanya",
+        "description": "Tinye nlereanya nchọpụta phishing ọhụrụ ma jikwaa ụdị dị.",
+        "manageButton": "Mepee onye njikwa",
+        "currentBadge": "Ụdị ugbu a {{version}}"
+      },
       "language": {
         "title": "Asụsụ",
         "description": "Họrọ n’etiti Bekee, French, Swahili, Yorùbá, Igbo, Hausa, Pidgin, Arabic, na Amharic.",
@@ -568,6 +574,10 @@
           "helper": "Tap to rotate through preset quiet-hour windows."
         }
       },
+      "diagnostics": {
+        "title": "Nnyocha",
+        "description": "Zipu ndekọ na-enweghị aha iji nyere aka kwalite nchọpụta."
+      },
       "trustedSources": {
         "title": "Ndị zipụrụ a tụkwasịrị obi",
         "description": "Jikwaa nọmba ekwentị ma ọ bụ ozi email ị na-atụkwasị obi.",
@@ -597,19 +607,8 @@
           "note": "Tinye obere nkọwa (nhọrọ)"
         },
         "saving": "Na-echekwa..."
-      },
-      "diagnostics": {
-        "title": "Nnyocha",
-        "description": "Zipu ndekọ na-enweghị aha iji nyere aka kwalite nchọpụta."
-      },
-      "model": {
-        "title": "Mmelite nlereanya",
-        "description": "Tinye nlereanya nchọpụta phishing ọhụrụ ma jikwaa ụdị dị.",
-        "manageButton": "Mepee onye njikwa",
-        "currentBadge": "Ụdị ugbu a {{version}}"
       }
     },
-    "back": "← Laghachi na dashboard",
     "model": {
       "title": "Njikwa nlereanya",
       "subtitle": "Budata mmelite, kpalie ụdị, na nyochaa akụkọ ntinye.",
@@ -670,7 +669,8 @@
         "syncErrorTitle": "Mmegharị dara",
         "syncErrorBody": "Anyị enweghị ike imelite katalọgụ. Lelee njikọ gị ma gbalịa ọzọ."
       }
-    }
+    },
+    "back": "← Laghachi na dashboard"
   },
   "developerTools": {
     "resetOnboarding": {

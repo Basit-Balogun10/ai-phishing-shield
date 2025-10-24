@@ -2,16 +2,17 @@ import { analyzeMessage, explainDetection, type MockMessage, type DetectionResul
 import { addSimulatedDetection } from '../detection/detectionHistory';
 import { ensureAlertNotificationChannelAsync, scheduleDetectionNotificationAsync } from '../notifications';
 import { trackTelemetryEvent } from './telemetry';
+import * as notificationFilter from './notificationFilter';
+import { analyzeNotificationNative } from './inference';
 
 // Attempt to load severity thresholds from the packaged metadata; fall back to 0.5
 let SEVERITY_THRESHOLD_LOW = 0.5;
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const meta = require('../../phishing_detector_package/model-metadata.json');
   if (meta && meta.severity_thresholds && typeof meta.severity_thresholds.low === 'number') {
     SEVERITY_THRESHOLD_LOW = meta.severity_thresholds.low;
   }
-} catch (e) {
+} catch {
   // ignore
 }
 
@@ -23,15 +24,42 @@ export const processIncomingNotification = async (payload: Record<string, any>) 
       (payload.bigText as string) || (payload.text as string) || (payload.summaryText as string) || (payload.title as string) || '';
     const receivedAt = new Date().toISOString();
 
+    const pkg = (payload.package as string) || (payload.app as string) || '';
+
+    // Respect user ignore list: if the package is ignored, skip processing.
+    try {
+      if (pkg && (await notificationFilter.isPackageIgnored(pkg))) {
+        if (__DEV__) {
+          console.info('[notificationHandler] Ignoring notification from', pkg);
+        }
+        return;
+      }
+    } catch {
+      // ignore errors from filter
+    }
+
     const message: MockMessage = {
       id,
       sender,
+      package: pkg,
       channel: 'sms',
       body,
       receivedAt,
     };
 
-    const result: DetectionResult = analyzeMessage(message);
+    // Try native inference first, fall back to mock analyzer if native not available or fails
+    let result: DetectionResult;
+    try {
+      const native = await analyzeNotificationNative(message.body);
+      result = {
+        message,
+        score: Math.min(0.99, typeof native.score === 'number' ? native.score : 0),
+        matches: (native.matches || []) as any,
+        risk: native.risk as any,
+      } as DetectionResult;
+    } catch {
+      result = analyzeMessage(message);
+    }
 
     // Emit a telemetry event aligned with existing schema. Use the mock_detection_triggered
     // event so we can observe that a notification triggered analysis in background/dev.

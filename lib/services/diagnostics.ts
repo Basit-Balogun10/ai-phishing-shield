@@ -12,11 +12,7 @@ import {
   type ThemePreference,
   type StoredLocale,
 } from '../storage';
-import {
-  notificationPreferencesStore,
-  type NotificationPreferences,
-} from '../notificationPreferences';
-import { isQuietHoursActive } from '../notifications';
+import { notificationPreferencesStore, type NotificationPreferences } from '../notificationPreferences';
 import { resolveTrustedSources } from '../trustedSources';
 import {
   detectionHistoryStore,
@@ -45,7 +41,6 @@ export type DiagnosticsSnapshot = {
   notifications: {
     permission: PermissionStatus;
     preferences: NotificationPreferences;
-    quietHoursActive: boolean;
   };
   sms: {
     permission: PermissionStatus;
@@ -115,7 +110,6 @@ export const buildDiagnosticsSnapshot = async (): Promise<DiagnosticsSnapshot> =
     notifications: {
       permission: notificationPermission,
       preferences,
-      quietHoursActive: isQuietHoursActive(preferences),
     },
     sms: {
       permission: smsPermission,

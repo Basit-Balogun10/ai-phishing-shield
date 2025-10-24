@@ -121,10 +121,10 @@ export default function AlertsScreen() {
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const severityOptions = useMemo(
     () => [
-      { key: 'all' as const, label: t('dashboard.recentAlerts.severity.all') },
-      { key: 'high' as const, label: t('dashboard.recentAlerts.severity.high') },
-      { key: 'medium' as const, label: t('dashboard.recentAlerts.severity.medium') },
-      { key: 'low' as const, label: t('dashboard.recentAlerts.severity.low') },
+  { key: 'all' as const, label: t('dashboard.alerts.severity.all') },
+  { key: 'high' as const, label: t('dashboard.alerts.severity.high') },
+  { key: 'medium' as const, label: t('dashboard.alerts.severity.medium') },
+  { key: 'low' as const, label: t('dashboard.alerts.severity.low') },
     ],
     [t]
   );

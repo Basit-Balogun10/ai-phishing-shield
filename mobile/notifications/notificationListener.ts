@@ -18,7 +18,7 @@ export type NotificationPayload = {
 	summaryText?: string;
 	bigText?: string;
 	extraInfoText?: string;
-	groupedMessages?: Array<{ title?: string; text?: string }>;
+	groupedMessages?: { title?: string; text?: string }[];
 	icon?: string;
 	image?: string;
 	[k: string]: any;
@@ -33,20 +33,33 @@ let initialized = false;
 async function _loadNative(): Promise<void> {
 	if (nativeModule || Platform.OS !== 'android') return;
 	try {
-		// dynamic require so projects without the native dep still run JS-only flows
-		// eslint-disable-next-line @typescript-eslint/no-var-requires
-		const mod = require('react-native-android-notification-listener');
-		nativeModule = mod && (mod.default || mod);
-		// create an event emitter bound to the native module (if present)
-		// eslint-disable-next-line @typescript-eslint/no-var-requires
-		const RN = require('react-native');
-		if (nativeModule && RN && RN.NativeEventEmitter) {
-			eventEmitter = new RN.NativeEventEmitter(nativeModule);
+		// Try the recommended external native package first (dynamic import)
+		const mod = await import('react-native-android-notification-listener');
+		nativeModule = (mod && (mod.default || mod)) || mod;
+		if (nativeModule) {
+			eventEmitter = new NativeEventEmitter(nativeModule);
+			return;
 		}
 	} catch (err) {
-		nativeModule = null;
-		eventEmitter = null;
+		console.debug('[notificationListener] external native module not available', err);
 	}
+
+	try {
+		// Fallback: use an in-repo/native module registered on NativeModules
+		const RN = await import('react-native');
+		const { NativeModules } = RN as any;
+		const bridge = NativeModules && (NativeModules.NotificationBridge || NativeModules.NotificationListener);
+		if (bridge) {
+			nativeModule = bridge;
+			eventEmitter = new NativeEventEmitter(nativeModule);
+			return;
+		}
+	} catch (err) {
+		console.debug('[notificationListener] fallback native bridge not available', err);
+	}
+
+	nativeModule = null;
+	eventEmitter = null;
 }
 
 function _forwardEvent(raw: any) {
@@ -56,7 +69,6 @@ function _forwardEvent(raw: any) {
 			cb(payload);
 		} catch (err) {
 			// swallow listener errors to avoid crashing host app
-			// eslint-disable-next-line no-console
 			console.warn('[notificationListener] listener error', err);
 		}
 	});
@@ -77,6 +89,7 @@ const NotificationListener = {
 			const status = await nativeModule.getPermissionStatus();
 			return status === 'authorized' || status === 'granted' || status === 'allowed';
 		} catch (err) {
+			console.debug('[notificationListener] isPermissionGranted error', err);
 			return false;
 		}
 	},
@@ -88,7 +101,7 @@ const NotificationListener = {
 			if (!nativeModule || typeof nativeModule.requestPermission !== 'function') return;
 			await nativeModule.requestPermission();
 		} catch (err) {
-			// ignore
+			console.debug('[notificationListener] requestPermission error', err);
 		}
 	},
 
@@ -98,7 +111,26 @@ const NotificationListener = {
 		if (!nativeModule || !eventEmitter) return;
 
 		if (!subscription) {
-			subscription = eventEmitter.addListener('notification', _forwardEvent);
+			// subscribe to both common event names so we interoperate with different native implementations
+			try {
+				eventEmitter.addListener('notification', _forwardEvent);
+				eventEmitter.addListener('NotificationPosted', _forwardEvent);
+			} catch (err) {
+				console.debug('[notificationListener] failed to add listeners', err);
+			}
+
+			subscription = {
+				remove: () => {
+					try {
+						if (eventEmitter && typeof (eventEmitter as any).removeAllListeners === 'function') {
+							(eventEmitter as any).removeAllListeners('notification');
+							(eventEmitter as any).removeAllListeners('NotificationPosted');
+						}
+					} catch (err) {
+						console.debug('[notificationListener] remove listeners failed', err);
+					}
+				},
+			};
 		}
 
 		try {
@@ -106,7 +138,7 @@ const NotificationListener = {
 				await nativeModule.start();
 			}
 		} catch (err) {
-			// ignore start errors from native side
+			console.debug('[notificationListener] native start failed', err);
 		}
 	},
 
@@ -120,7 +152,7 @@ const NotificationListener = {
 				await nativeModule.stop();
 			}
 		} catch (err) {
-			// ignore
+			console.debug('[notificationListener] stop failed', err);
 		}
 	},
 
@@ -145,11 +177,11 @@ try {
 				void NotificationListener.stop();
 			}
 		} catch (e) {
-			// ignore
+			console.debug('[notificationListener] AppState handler error', e);
 		}
 	});
 } catch (e) {
-	// older RN versions may not support AppState.addEventListener in the same way
+	console.debug('[notificationListener] AppState.addEventListener not supported', e);
 }
 
 export default NotificationListener;
