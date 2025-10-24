@@ -1,0 +1,36 @@
+# Render deployment manifest (starter). This defines a web service that builds and
+# runs the Node server found in the `server/` subfolder of this monorepo.
+#
+# Notes:
+# - Fill in `env` secrets in Render's dashboard (DATABASE_URL, AUTH_JWT_SECRET, REDIS_URL, etc.)
+# - Adjust `plan`, `region`, and `buildCommand` to match your workflow.
+
+services:
+  - name: aphish-server
+    type: web
+    env: node
+    plan: free
+    region: oregon
+    repo: ""
+    branch: main
+    buildCommand: |
+      # Install root toolchain (pnpm) then build inside server/
+      pnpm install --frozen-lockfile
+      cd server
+      pnpm install --frozen-lockfile
+      pnpm build
+    startCommand: |
+      cd server
+      node dist/index.js
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase: false
+      - key: AUTH_JWT_SECRET
+        fromDatabase: false
+      - key: REDIS_URL
+        fromDatabase: false
+
+# The `repo` field can be left empty for manual setup via the Render dashboard. If
+# you connect Render to this repository, Render will detect this file and create a
+# matching service. Tweak `plan`, `region`, and commands as needed.

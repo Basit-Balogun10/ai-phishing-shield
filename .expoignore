@@ -1,0 +1,12 @@
+# Exclude server and large artifacts from Expo uploads and packaging
+server/
+phishing_detector_package/
+dataset/
+data/
+logs/
+notebooks/
+
+# Node deps and caches
+node_modules/
+.expo/
+dist/
