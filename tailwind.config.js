@@ -10,7 +10,12 @@ module.exports = {
   presets: [require('nativewind/preset')],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        // Inter is provided at runtime on Android; other platforms will fall back to system fonts.
+        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial'],
+      },
+    },
   },
   plugins: [],
 };

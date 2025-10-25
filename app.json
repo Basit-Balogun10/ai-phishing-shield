@@ -25,12 +25,12 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/ai-phishing-shield-logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#f9fafb",
+      "backgroundColor": "#2563eb",
       "dark": {
-        "image": "./assets/splash.png",
-        "backgroundColor": "#020617"
+        "image": "./assets/ai-phishing-shield-logo.png",
+        "backgroundColor": "#2563eb"
       }
     },
     "assetBundlePatterns": [

@@ -121,17 +121,17 @@ export default function AlertsScreen() {
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const severityOptions = useMemo(
     () => [
-  { key: 'all' as const, label: t('dashboard.alerts.severity.all') },
-  { key: 'high' as const, label: t('dashboard.alerts.severity.high') },
-  { key: 'medium' as const, label: t('dashboard.alerts.severity.medium') },
-  { key: 'low' as const, label: t('dashboard.alerts.severity.low') },
+      { key: 'all' as const, label: t('dashboard.alerts.severity.all') },
+      { key: 'high' as const, label: t('dashboard.alerts.severity.high') },
+      { key: 'medium' as const, label: t('dashboard.alerts.severity.medium') },
+      { key: 'low' as const, label: t('dashboard.alerts.severity.low') },
     ],
     [t]
   );
 
   const channelOptions = useMemo(
     () => [
-      { key: 'all' as const, label: t('dashboard.recentAlerts.channels.all') },
+      { key: 'all' as const, label: t('dashboard.alerts.channels.all') },
       { key: 'sms' as const, label: t('dashboard.mockDetection.channels.sms') },
       { key: 'whatsapp' as const, label: t('dashboard.mockDetection.channels.whatsapp') },
       { key: 'email' as const, label: t('dashboard.mockDetection.channels.email') },
@@ -143,25 +143,25 @@ export default function AlertsScreen() {
     () => [
       {
         key: 'all' as const,
-        label: t('dashboard.recentAlerts.timeframe.all', {
+        label: t('dashboard.alerts.timeframe.all', {
           defaultValue: 'Any time',
         }),
       },
       {
         key: '24h' as const,
-        label: t('dashboard.recentAlerts.timeframe.24h', {
+        label: t('dashboard.alerts.timeframe.24h', {
           defaultValue: 'Last 24 hours',
         }),
       },
       {
         key: '7d' as const,
-        label: t('dashboard.recentAlerts.timeframe.7d', {
+        label: t('dashboard.alerts.timeframe.7d', {
           defaultValue: 'Last 7 days',
         }),
       },
       {
         key: '30d' as const,
-        label: t('dashboard.recentAlerts.timeframe.30d', {
+        label: t('dashboard.alerts.timeframe.30d', {
           defaultValue: 'Last 30 days',
         }),
       },
@@ -323,7 +323,7 @@ export default function AlertsScreen() {
 
     if (severityFilters.length) {
       severityFilters.forEach((filter) => {
-        parts.push(t(`dashboard.recentAlerts.severity.${filter}`));
+        parts.push(t(`dashboard.alerts.severity.${filter}`));
       });
     }
 
@@ -336,7 +336,7 @@ export default function AlertsScreen() {
     if (timeframeFilters.length) {
       timeframeFilters.forEach((filter) => {
         parts.push(
-          t(`dashboard.recentAlerts.timeframe.${filter}`, {
+          t(`dashboard.alerts.timeframe.${filter}`, {
             defaultValue:
               filter === '24h' ? 'Last 24 hours' : filter === '7d' ? 'Last 7 days' : 'Last 30 days',
           })
@@ -345,7 +345,7 @@ export default function AlertsScreen() {
     }
 
     if (trustedOnly) {
-      parts.push(t('dashboard.recentAlerts.trustedOnlyBadge'));
+      parts.push(t('dashboard.alerts.trustedOnlyBadge'));
     }
 
     return parts.filter(Boolean).join(' • ');
@@ -378,7 +378,7 @@ export default function AlertsScreen() {
         if (__DEV__) {
           console.warn('[alerts] Failed to submit feedback', error);
         }
-        setFeedbackError(t('dashboard.recentAlerts.feedback.error'));
+        setFeedbackError(t('dashboard.alerts.feedback.error'));
       } finally {
         setFeedbackSubmitting(false);
       }
@@ -457,12 +457,12 @@ export default function AlertsScreen() {
       <View className="px-6 pb-3 pt-6">
         <View className="flex-row items-center justify-between">
           <Text className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
-            {t('dashboard.recentAlerts.title')}
+            {t('dashboard.alerts.title')}
           </Text>
           <TouchableOpacity
             onPress={() => setIsFilterModalVisible(true)}
             accessibilityRole="button"
-            accessibilityLabel={t('dashboard.recentAlerts.openFilters', {
+            accessibilityLabel={t('dashboard.alerts.openFilters', {
               defaultValue: 'Open alert filters',
             })}
             className="h-11 w-11 items-center justify-center rounded-full bg-blue-500/10 dark:bg-blue-400/10">
@@ -470,7 +470,7 @@ export default function AlertsScreen() {
           </TouchableOpacity>
         </View>
         <Text className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-          {t('dashboard.recentAlerts.subtitle')}
+          {t('dashboard.alerts.subtitle')}
         </Text>
       </View>
 
@@ -480,7 +480,7 @@ export default function AlertsScreen() {
           <TextInput
             value={searchInput}
             onChangeText={setSearchInput}
-            placeholder={t('dashboard.recentAlerts.searchPlaceholder')}
+            placeholder={t('dashboard.alerts.searchPlaceholder')}
             placeholderTextColor="#94a3b8"
             autoCapitalize="none"
             autoCorrect={false}
@@ -500,20 +500,20 @@ export default function AlertsScreen() {
         <View className="mt-3 flex-row items-center justify-between">
           <Text className="text-xs text-slate-500 dark:text-slate-400">
             {appliedFiltersSummary ||
-              t('dashboard.recentAlerts.noFiltersApplied', {
+              t('dashboard.alerts.noFiltersApplied', {
                 defaultValue: 'No filters applied',
               })}
           </Text>
           <TouchableOpacity
             onPress={() => setIsFilterModalVisible(true)}
             accessibilityRole="button"
-            accessibilityLabel={t('dashboard.recentAlerts.editFilters', {
+            accessibilityLabel={t('dashboard.alerts.editFilters', {
               defaultValue: 'Adjust alert filters',
             })}
             className="flex-row items-center gap-1">
             <MaterialCommunityIcons name="tune-variant" size={16} color="#2563eb" />
             <Text className="text-xs font-semibold text-blue-600 dark:text-blue-300">
-              {t('dashboard.recentAlerts.editFilters', { defaultValue: 'Adjust filters' })}
+              {t('dashboard.alerts.editFilters', { defaultValue: 'Adjust filters' })}
             </Text>
           </TouchableOpacity>
         </View>
@@ -525,17 +525,15 @@ export default function AlertsScreen() {
             <MaterialCommunityIcons name="check-circle" size={40} color="#22c55e" />
             <Text className="mt-4 text-center text-sm text-slate-500 dark:text-slate-300">
               {query || hasActiveFilters
-                ? t('dashboard.recentAlerts.emptyWithFilters', {
+                ? t('dashboard.alerts.emptyWithFilters', {
                     filters: [
                       query ? `“${searchInput.trim()}”` : null,
-                      ...severityFilters.map((filter) =>
-                        t(`dashboard.recentAlerts.severity.${filter}`)
-                      ),
+                      ...severityFilters.map((filter) => t(`dashboard.alerts.severity.${filter}`)),
                       ...channelFilters.map((filter) =>
                         t(`dashboard.mockDetection.channels.${filter}`)
                       ),
                       ...timeframeFilters.map((filter) =>
-                        t(`dashboard.recentAlerts.timeframe.${filter}`, {
+                        t(`dashboard.alerts.timeframe.${filter}`, {
                           defaultValue:
                             filter === '24h'
                               ? 'Last 24 hours'
@@ -544,12 +542,12 @@ export default function AlertsScreen() {
                                 : 'Last 30 days',
                         })
                       ),
-                      trustedOnly ? t('dashboard.recentAlerts.trustedOnlyBadge') : null,
+                      trustedOnly ? t('dashboard.alerts.trustedOnlyBadge') : null,
                     ]
                       .filter(Boolean)
                       .join(' · '),
                   })
-                : t('dashboard.recentAlerts.empty')}
+                : t('dashboard.alerts.empty')}
             </Text>
           </View>
         ) : (
@@ -614,7 +612,7 @@ export default function AlertsScreen() {
                   {isTrustedSource ? (
                     <View className="rounded-full bg-emerald-100 px-3 py-1 dark:bg-emerald-500/20">
                       <Text className="text-xs font-medium text-emerald-600 dark:text-emerald-200">
-                        {t('dashboard.recentAlerts.trustedBadge')}
+                        {t('dashboard.alerts.trustedBadge')}
                       </Text>
                     </View>
                   ) : null}
@@ -634,12 +632,12 @@ export default function AlertsScreen() {
             <View className="flex-row items-start justify-between border-b border-slate-200 px-6 pb-4 pt-5 dark:border-slate-800">
               <View className="flex-1 pr-4">
                 <Text className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-                  {t('dashboard.recentAlerts.filtersTitle', { defaultValue: 'Filters' })}
+                  {t('dashboard.alerts.filtersTitle', { defaultValue: 'Filters' })}
                 </Text>
                 <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                   {hasActiveFilters
                     ? appliedFiltersSummary
-                    : t('dashboard.recentAlerts.noFiltersApplied', {
+                    : t('dashboard.alerts.noFiltersApplied', {
                         defaultValue: 'No filters applied',
                       })}
                 </Text>
@@ -664,7 +662,7 @@ export default function AlertsScreen() {
                       ? 'text-blue-600 dark:text-blue-300'
                       : 'text-slate-400 dark:text-slate-500'
                   }`}>
-                  {t('dashboard.recentAlerts.clearFilters', { defaultValue: 'Clear all' })}
+                  {t('dashboard.alerts.clearFilters', { defaultValue: 'Clear all' })}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -672,7 +670,7 @@ export default function AlertsScreen() {
             <ScrollView className="px-6" contentContainerStyle={{ paddingBottom: 24 }}>
               <View className="mt-6">
                 <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                  {t('dashboard.recentAlerts.severityLabel', { defaultValue: 'Severity' })}
+                  {t('dashboard.alerts.severityLabel', { defaultValue: 'Severity' })}
                 </Text>
                 <ScrollView
                   horizontal
@@ -716,7 +714,7 @@ export default function AlertsScreen() {
 
               <View className="mt-6">
                 <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                  {t('dashboard.recentAlerts.channelLabel', { defaultValue: 'Channel' })}
+                  {t('dashboard.alerts.channelLabel', { defaultValue: 'Channel' })}
                 </Text>
                 <ScrollView
                   horizontal
@@ -760,7 +758,7 @@ export default function AlertsScreen() {
 
               <View className="mt-6">
                 <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                  {t('dashboard.recentAlerts.timeframeLabel', { defaultValue: 'Detected within' })}
+                  {t('dashboard.alerts.timeframeLabel', { defaultValue: 'Detected within' })}
                 </Text>
                 <ScrollView
                   horizontal
@@ -804,16 +802,16 @@ export default function AlertsScreen() {
 
               <View className="mt-6">
                 <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                  {t('dashboard.recentAlerts.trustedToggle.label')}
+                  {t('dashboard.alerts.trustedToggle.label')}
                 </Text>
                 <View className="mt-3 rounded-2xl border border-slate-200 bg-white px-4 py-4 dark:border-slate-800 dark:bg-slate-900">
                   <View className="flex-row items-center justify-between">
                     <View className="flex-1 pr-4">
                       <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                        {t('dashboard.recentAlerts.trustedToggle.label')}
+                        {t('dashboard.alerts.trustedToggle.label')}
                       </Text>
                       <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                        {t('dashboard.recentAlerts.trustedToggle.description')}
+                        {t('dashboard.alerts.trustedToggle.description')}
                       </Text>
                     </View>
                     <Switch
@@ -824,6 +822,7 @@ export default function AlertsScreen() {
                       ios_backgroundColor="#cbd5f5"
                     />
                   </View>
+                  retu
                 </View>
               </View>
             </ScrollView>
@@ -834,7 +833,7 @@ export default function AlertsScreen() {
                 activeOpacity={0.85}
                 className="items-center justify-center rounded-full bg-blue-600 py-3 dark:bg-blue-500">
                 <Text className="text-sm font-semibold text-white">
-                  {t('dashboard.recentAlerts.applyFilters', { defaultValue: 'Done' })}
+                  {t('dashboard.alerts.applyFilters', { defaultValue: 'Done' })}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -869,7 +868,7 @@ export default function AlertsScreen() {
 
                 <ScrollView className="px-6" contentContainerStyle={{ paddingBottom: 32 }}>
                   <View className="mt-6 space-y-6">
-                    <View className="flex-row flex-wrap items-center gap-3">
+                    <View className="mb-4 flex-row flex-wrap items-center gap-3">
                       {selectedSeverityStyles ? (
                         <View className={`rounded-full px-3 py-1 ${selectedSeverityStyles.badge}`}>
                           <Text
@@ -897,7 +896,7 @@ export default function AlertsScreen() {
                       {selectedDetectionTrusted ? (
                         <View className="rounded-full bg-emerald-100 px-3 py-1 dark:bg-emerald-500/20">
                           <Text className="text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-200">
-                            {t('dashboard.recentAlerts.trustedBadge')}
+                            {t('dashboard.alerts.trustedBadge')}
                           </Text>
                         </View>
                       ) : null}
@@ -905,18 +904,18 @@ export default function AlertsScreen() {
 
                     <View className="rounded-3xl border border-slate-200 bg-white/90 p-6 dark:border-slate-800 dark:bg-slate-900/70">
                       <Text className="text-sm text-slate-700 dark:text-slate-200">
-                        “{selectedDetection.result.message.body}”
+                        {selectedDetection.result.message.body}
                       </Text>
                     </View>
                   </View>
 
                   <View className="mt-8">
                     <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                      {t('dashboard.recentAlerts.matchesHeading', {
+                      {t('dashboard.alerts.matchesHeading', {
                         defaultValue: 'Detected signals',
                       })}
                     </Text>
-                    <View className="mt-5 space-y-5">
+                    <View className="mt-4 gap-y-3">
                       {selectedDetection.result.matches.length ? (
                         selectedDetection.result.matches.map((match, index) => (
                           <View
@@ -942,13 +941,13 @@ export default function AlertsScreen() {
 
                   <View className="mt-8 rounded-3xl border border-slate-200 bg-slate-50/80 p-6 dark:border-slate-700 dark:bg-slate-900/60">
                     <Text className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                      {t('dashboard.recentAlerts.feedback.title')}
+                      {t('dashboard.alerts.feedback.title')}
                     </Text>
                     <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                      {t('dashboard.recentAlerts.feedback.subtitle')}
+                      {t('dashboard.alerts.feedback.subtitle')}
                     </Text>
 
-                    <View className="mt-6 space-y-5">
+                    <View className="mt-6 gap-y-3">
                       <TouchableOpacity
                         accessibilityRole="button"
                         onPress={() => handleFeedback('confirmed')}
@@ -964,10 +963,10 @@ export default function AlertsScreen() {
                         <View className="flex-row items-center justify-between">
                           <View className="flex-1 pr-3">
                             <Text className="text-sm font-semibold text-rose-700 dark:text-rose-200">
-                              {t('dashboard.recentAlerts.feedback.actions.confirm')}
+                              {t('dashboard.alerts.feedback.actions.confirm')}
                             </Text>
                             <Text className="mt-1 text-xs text-rose-600/80 dark:text-rose-200/80">
-                              {t('dashboard.recentAlerts.feedback.actions.confirmHelper')}
+                              {t('dashboard.alerts.feedback.actions.confirmHelper')}
                             </Text>
                           </View>
                           <MaterialCommunityIcons name="check-decagram" size={20} color="#fb7185" />
@@ -993,10 +992,10 @@ export default function AlertsScreen() {
                         <View className="flex-row items-center justify-between">
                           <View className="flex-1 pr-3">
                             <Text className="text-sm font-semibold text-emerald-700 dark:text-emerald-200">
-                              {t('dashboard.recentAlerts.feedback.actions.dismiss')}
+                              {t('dashboard.alerts.feedback.actions.dismiss')}
                             </Text>
                             <Text className="mt-1 text-xs text-emerald-600/80 dark:text-emerald-200/80">
-                              {t('dashboard.recentAlerts.feedback.actions.dismissHelper')}
+                              {t('dashboard.alerts.feedback.actions.dismissHelper')}
                             </Text>
                           </View>
                           <MaterialCommunityIcons name="shield-check" size={20} color="#22c55e" />
@@ -1008,7 +1007,7 @@ export default function AlertsScreen() {
                       <View className="mt-3 flex-row items-center gap-2">
                         <ActivityIndicator size="small" color="#2563eb" />
                         <Text className="text-xs text-slate-500 dark:text-slate-400">
-                          {t('dashboard.recentAlerts.feedback.status.pending')}
+                          {t('dashboard.alerts.feedback.status.pending')}
                         </Text>
                       </View>
                     ) : null}
@@ -1017,11 +1016,11 @@ export default function AlertsScreen() {
                       <View className="mt-3 rounded-2xl border border-slate-200 bg-white/90 p-3 dark:border-slate-700 dark:bg-slate-900/70">
                         <Text className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                           {feedback.status === 'confirmed'
-                            ? t('dashboard.recentAlerts.feedback.status.confirmed')
-                            : t('dashboard.recentAlerts.feedback.status.falsePositive')}
+                            ? t('dashboard.alerts.feedback.status.confirmed')
+                            : t('dashboard.alerts.feedback.status.falsePositive')}
                         </Text>
                         <Text className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                          {t('dashboard.recentAlerts.feedback.status.submitted')}
+                          {t('dashboard.alerts.feedback.status.submitted')}
                         </Text>
                       </View>
                     ) : null}

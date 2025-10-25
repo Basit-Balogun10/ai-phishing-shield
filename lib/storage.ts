@@ -22,6 +22,9 @@ export type StoredNotificationPreferences = {
   alertsEnabled: boolean;
   soundEnabled: boolean;
   vibrationEnabled: boolean;
+  quietHoursEnabled: boolean;
+  quietHoursStart: string;
+  quietHoursEnd: string;
 };
 
 export type StoredTelemetryPreferences = {
@@ -99,14 +102,17 @@ export async function getNotificationPreferencesFromStorage(): Promise<StoredNot
     const parsed = JSON.parse(raw);
 
     if (
-        typeof parsed === 'object' &&
-        parsed !== null &&
-        typeof parsed.alertsEnabled === 'boolean' &&
-        typeof parsed.soundEnabled === 'boolean' &&
-        typeof parsed.vibrationEnabled === 'boolean'
-      ) {
-        return parsed as StoredNotificationPreferences;
-      }
+      typeof parsed === 'object' &&
+      parsed !== null &&
+      typeof parsed.alertsEnabled === 'boolean' &&
+      typeof parsed.soundEnabled === 'boolean' &&
+      typeof parsed.vibrationEnabled === 'boolean' &&
+      typeof parsed.quietHoursEnabled === 'boolean' &&
+      typeof parsed.quietHoursStart === 'string' &&
+      typeof parsed.quietHoursEnd === 'string'
+    ) {
+      return parsed as StoredNotificationPreferences;
+    }
   } catch (error) {
     console.warn('[storage] Failed to parse notification preferences', error);
   }

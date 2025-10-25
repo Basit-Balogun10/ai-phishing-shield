@@ -121,82 +121,82 @@
       "empty": "Aucune détection pour l’instant. Lancez une simulation pour prévisualiser les alertes."
     },
     "alerts": {
-      "title": "Alertes",
-      "subtitle": "Messages signalés par le bouclier.",
-      "empty": "Aucune alerte détectée pour le moment.",
-      "emptyWithFilters": "Aucune alerte ne correspond à {{filters}}. Essayez d'ajuster vos filtres.",
-      "filtersTitle": "Filtres",
-      "openFilters": "Ouvrir les filtres d'alerte",
-      "editFilters": "Ajuster les filtres",
-      "clearFilters": "Tout effacer",
-      "applyFilters": "Terminer",
-      "noFiltersApplied": "Aucun filtre appliqué",
-      "viewAll": "Voir tout l'historique",
+      "title": "Alerts",
+      "subtitle": "Messages flagged by the shield.",
+      "empty": "No alerts detected yet.",
+      "emptyWithFilters": "No alerts matched {{filters}}. Try changing your filters.",
+      "filtersTitle": "Filters",
+      "openFilters": "Open alert filters",
+      "editFilters": "Adjust filters",
+      "clearFilters": "Clear all",
+      "applyFilters": "Done",
+      "noFiltersApplied": "No filters applied",
+      "viewAll": "View full history",
       "filters": {
-        "all": "Toutes les alertes",
-        "historical": "Données historiques",
-        "simulated": "Vos simulations",
-        "trusted": "Expéditeurs fiables"
+        "all": "All alerts",
+        "historical": "Live dataset",
+        "simulated": "Your mock runs",
+        "trusted": "Trusted senders"
       },
-      "timeframeLabel": "Détecté dans",
+      "timeframeLabel": "Detected within",
       "timeframe": {
-        "all": "Toute la période",
-        "24h": "Dernières 24 heures",
-        "7d": "7 derniers jours",
-        "30d": "30 derniers jours"
+        "all": "Any time",
+        "24h": "Last 24 hours",
+        "7d": "Last 7 days",
+        "30d": "Last 30 days"
       },
       "severity": {
-        "all": "Tous niveaux de risque",
-        "high": "Risque élevé",
-        "medium": "Risque moyen",
-        "low": "Risque faible"
+        "all": "Any risk",
+        "high": "High risk",
+        "medium": "Medium risk",
+        "low": "Lower risk"
       },
       "channels": {
-        "all": "Tous canaux"
+        "all": "Any channel"
       },
-      "matchesHeading": "Signaux détectés",
+      "matchesHeading": "Detected signals",
       "trustedToggle": {
-        "label": "Afficher uniquement les expéditeurs fiables",
-        "description": "Limiter les résultats aux expéditeurs que vous avez marqués comme fiables dans les paramètres."
+        "label": "Only show trusted senders",
+        "description": "Limit results to senders you’ve marked as safe in Settings."
       },
-      "trustedOnlyBadge": "Expéditeurs fiables uniquement",
+      "trustedOnlyBadge": "Trusted senders only",
       "feedback": {
-        "title": "Cette alerte était-elle précise ?",
-        "subtitle": "Dites-nous s'il s'agissait d'une tentative de phishing réelle ou d'une fausse alerte.",
+        "title": "Was this alert accurate?",
+        "subtitle": "Tell us if this was a real phishing attempt or a false alarm.",
         "actions": {
-          "confirm": "Confirmer la menace",
-          "confirmHelper": "C'était du phishing",
-          "dismiss": "Marquer comme sûr",
-          "dismissHelper": "C'était légitime"
+          "confirm": "Confirm threat",
+          "confirmHelper": "It was phishing",
+          "dismiss": "Mark as safe",
+          "dismissHelper": "It was legitimate"
         },
         "status": {
-          "submitted": "Merci d'aider à améliorer le bouclier.",
-          "confirmed": "Marqué comme phishing",
-          "falsePositive": "Marqué comme sûr",
-          "pending": "Envoi du retour..."
+          "submitted": "Thanks for helping improve the shield.",
+          "confirmed": "Marked as phishing",
+          "falsePositive": "Marked as safe",
+          "pending": "Sending feedback..."
         },
-        "error": "Nous n'avons pas pu envoyer ce retour. Réessayez."
+        "error": "We couldn't send that feedback. Try again."
       },
-      "searchPlaceholder": "Rechercher des alertes par expéditeur, contenu ou tag",
-      "trustedBadge": "Expéditeur fiable",
-      "trustedDefault": "Vous avez marqué cet expéditeur comme fiable dans les paramètres.",
-      "historyAlertTitle": "Bientôt disponible",
-      "historyAlertBody": "Vous pourrez consulter l'historique complet des alertes dans la prochaine version.",
+      "searchPlaceholder": "Search alerts by sender, content, or tag",
+      "trustedBadge": "Trusted sender",
+      "trustedDefault": "You marked this sender as safe in Settings.",
+      "historyAlertTitle": "Coming soon",
+      "historyAlertBody": "You'll be able to review the full alert history in the next milestone.",
       "items": [
         {
-          "sender": "Numéro inconnu",
-          "preview": "Demandez votre remboursement d'impôt maintenant. Cliquez sur le lien...",
-          "timestamp": "Il y a 2h"
+          "sender": "Unknown number",
+          "preview": "Claim your tax refund now. Click the link...",
+          "timestamp": "2h ago"
         },
         {
           "sender": "Finance HQ",
-          "preview": "Urgent : Vérifiez vos informations de paie pour éviter une suspension.",
-          "timestamp": "Hier"
+          "preview": "Urgent: Verify your payroll details to avoid suspension.",
+          "timestamp": "Yesterday"
         },
         {
           "sender": "+234 900 123 4567",
-          "preview": "Nous avons crédité votre compte. Confirmez la connexion immédiatement !",
-          "timestamp": "Lun"
+          "preview": "We've credited your account. Confirm login immediately!",
+          "timestamp": "Mon"
         }
       ]
     },

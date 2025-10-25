@@ -19,12 +19,10 @@ import { useTranslation } from 'react-i18next';
 import { markOnboardingComplete } from '../lib/storage';
 import {
   checkNotificationPermission,
-  checkSmsPermission,
-  openSystemSettings,
   PermissionRequestResult,
   PermissionStatus,
   requestNotificationPermission,
-  requestSmsPermission,
+  openSystemSettings,
 } from '../lib/permissions';
 import { useOnboardingGate } from '../lib/hooks/useOnboardingGate';
 import { initializeMockBackgroundDetectionAsync } from '../lib/services/backgroundDetection';
@@ -62,7 +60,6 @@ export default function OnboardingScreen() {
   const [permissionState, setPermissionState] = useState<PermissionRequestResult | null>(null);
   const [checkingPermissions, setCheckingPermissions] = useState(true);
   const [requestingNotifications, setRequestingNotifications] = useState(false);
-  const [requestingSms, setRequestingSms] = useState(false);
   const lastTrackedSlideIndex = useRef<number | null>(null);
   const permissionStepTracked = useRef(false);
   const slideWidth = useMemo(() => width - 48, [width]);
@@ -81,11 +78,13 @@ export default function OnboardingScreen() {
 
   const loadPermissions = useCallback(async () => {
     setCheckingPermissions(true);
-    const [notifications, sms] = await Promise.all([
-      checkNotificationPermission(),
-      checkSmsPermission(),
-    ]);
-    setPermissionState({ notifications, sms });
+    const notifications = await checkNotificationPermission();
+    // preserve a minimal sms shape on the PermissionRequestResult so
+    // existing code that references the type doesn't break elsewhere
+    setPermissionState({
+      notifications,
+      sms: { granted: false, blocked: false, canAskAgain: true },
+    });
     setCheckingPermissions(false);
   }, []);
 
@@ -99,23 +98,13 @@ export default function OnboardingScreen() {
     }, [i18n.language, loadPermissions])
   );
 
-  const smsIsRequired = useMemo(() => {
-    if (!permissionState) {
-      return true;
-    }
-    return !(permissionState.sms.unavailable ?? false);
-  }, [permissionState]);
-
   const allRequiredPermissionsGranted = useMemo(() => {
     if (!permissionState) {
       return false;
     }
 
-    const notificationsGranted = permissionState.notifications.granted;
-    const smsGranted = smsIsRequired ? permissionState.sms.granted : true;
-
-    return notificationsGranted && smsGranted;
-  }, [permissionState, smsIsRequired]);
+    return permissionState.notifications.granted;
+  }, [permissionState]);
 
   const handleSkip = useCallback(() => {
     trackTelemetryEvent('onboarding.skip_pressed', undefined);
@@ -125,22 +114,20 @@ export default function OnboardingScreen() {
         text: t('onboarding.skipDialog.confirm'),
         style: 'destructive',
         onPress: async () => {
-          try {
-            setIsCompleting(true);
-            await markOnboardingComplete();
-            trackTelemetryEvent('onboarding.completed', {
-              notificationsGranted: permissionState?.notifications.granted ?? false,
-              smsGranted: permissionState?.sms.granted ?? false,
-              smsRequired: smsIsRequired,
-            });
-            router.replace('/');
-          } finally {
-            setIsCompleting(false);
-          }
+            try {
+              setIsCompleting(true);
+              await markOnboardingComplete();
+              trackTelemetryEvent('onboarding.completed', {
+                notificationsGranted: permissionState?.notifications.granted ?? false,
+              });
+              router.replace('/');
+            } finally {
+              setIsCompleting(false);
+            }
         },
       },
     ]);
-  }, [permissionState, router, smsIsRequired, t]);
+  }, [permissionState, router, t]);
 
   const handleAdvance = useCallback(async () => {
     if (currentIndex < slides.length - 1) {
@@ -164,8 +151,6 @@ export default function OnboardingScreen() {
       setIsCompleting(true);
       trackTelemetryEvent('onboarding.completed', {
         notificationsGranted: permissionState?.notifications.granted ?? false,
-        smsGranted: permissionState?.sms.granted ?? false,
-        smsRequired: smsIsRequired,
       });
       await markOnboardingComplete();
       await initializeMockBackgroundDetectionAsync();
@@ -179,7 +164,6 @@ export default function OnboardingScreen() {
     permissionState,
     router,
     slides.length,
-    smsIsRequired,
     t,
   ]);
 
@@ -205,30 +189,7 @@ export default function OnboardingScreen() {
     }
   }, [loadPermissions]);
 
-  const requestSms = useCallback(async () => {
-    if (!smsIsRequired) {
-      return;
-    }
-    try {
-      setRequestingSms(true);
-      trackTelemetryEvent('onboarding.permission_request_started', {
-        permission: 'sms',
-      });
-      const status = await requestSmsPermission();
-      trackTelemetryEvent('onboarding.permission_request_completed', {
-        permission: 'sms',
-        outcome: derivePermissionOutcome(status),
-        canAskAgain: status.canAskAgain,
-      });
-      setPermissionState((prev) => ({
-        notifications: prev?.notifications ?? { granted: false, blocked: false, canAskAgain: true },
-        sms: status,
-      }));
-      await loadPermissions();
-    } finally {
-      setRequestingSms(false);
-    }
-  }, [loadPermissions, smsIsRequired]);
+  // SMS removed: no-op; we only request notification permission on onboarding.
 
   const renderStatusPill = useCallback(
     (status: PermissionStatus, isLoading: boolean) => {
@@ -377,15 +338,13 @@ export default function OnboardingScreen() {
       if (!permissionStepTracked.current) {
         trackTelemetryEvent('onboarding.permission_step_viewed', {
           notificationsGranted: permissionState.notifications.granted,
-          smsGranted: permissionState.sms.granted,
-          smsRequired: smsIsRequired,
         });
         permissionStepTracked.current = true;
       }
     } else {
       permissionStepTracked.current = false;
     }
-  }, [isPermissionStep, permissionState, smsIsRequired]);
+  }, [isPermissionStep, permissionState]);
 
   const renderPermissionStep = () => {
     if (!permissionState) {
@@ -454,10 +413,18 @@ export default function OnboardingScreen() {
               {permissionState.notifications.blocked && (
                 <TouchableOpacity
                   onPress={() => {
-                    trackTelemetryEvent('onboarding.system_settings_opened', {
-                      permission: 'notifications',
-                    });
-                    openSystemSettings();
+                    // If the system reports the user can no longer be prompted
+                    // (canAskAgain === false), open system settings. Otherwise
+                    // re-attempt the permission request so the native prompt may
+                    // appear again.
+                    if (permissionState.notifications.canAskAgain === false) {
+                      trackTelemetryEvent('onboarding.system_settings_opened', {
+                        permission: 'notifications',
+                      });
+                      openSystemSettings();
+                    } else {
+                      requestNotifications();
+                    }
                   }}
                   activeOpacity={0.8}
                   className="mt-2 items-center">
@@ -467,68 +434,7 @@ export default function OnboardingScreen() {
                 </TouchableOpacity>
               )}
             </View>
-
-            <View className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/60">
-              <View className="flex-row items-start justify-between">
-                <View className="flex-1 pr-4">
-                  <Text className="text-base font-semibold text-slate-900 dark:text-white">
-                    {t('onboarding.permissions.sms.title')}
-                  </Text>
-                  <Text className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-                    {smsIsRequired
-                      ? t('onboarding.permissions.sms.description')
-                      : t('onboarding.permissions.sms.unavailable')}
-                  </Text>
-                </View>
-                {renderStatusPill(permissionState.sms, requestingSms)}
-              </View>
-
-              {smsIsRequired ? (
-                <TouchableOpacity
-                  onPress={requestSms}
-                  disabled={permissionState.sms.granted || requestingSms}
-                  activeOpacity={0.85}
-                  className={`mt-4 flex-row items-center justify-center rounded-full px-4 py-3 ${
-                    permissionState.sms.granted
-                      ? 'bg-emerald-100 dark:bg-emerald-500/20'
-                      : 'bg-blue-500 dark:bg-blue-500'
-                  }`}>
-                  {requestingSms ? (
-                    <ActivityIndicator
-                      size="small"
-                      color={permissionState.sms.granted ? '#047857' : '#e2e8f0'}
-                    />
-                  ) : (
-                    <Text
-                      className={`text-sm font-semibold uppercase tracking-wide ${
-                        permissionState.sms.granted
-                          ? 'text-emerald-700 dark:text-emerald-100'
-                          : 'text-slate-50'
-                      }`}>
-                      {permissionState.sms.granted
-                        ? t('onboarding.permissions.sms.grantedCta')
-                        : t('onboarding.permissions.sms.cta')}
-                    </Text>
-                  )}
-                </TouchableOpacity>
-              ) : null}
-
-              {smsIsRequired && permissionState.sms.blocked && (
-                <TouchableOpacity
-                  onPress={() => {
-                    trackTelemetryEvent('onboarding.system_settings_opened', {
-                      permission: 'sms',
-                    });
-                    openSystemSettings();
-                  }}
-                  activeOpacity={0.8}
-                  className="mt-2 items-center">
-                  <Text className="text-xs font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-300">
-                    {t('onboarding.permissions.sms.openSettings')}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </View>
+            
 
             <View className="rounded-2xl border border-slate-200 bg-slate-100 p-4 dark:border-slate-800/60 dark:bg-slate-950/40">
               <Text className="text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-300">

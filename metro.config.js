@@ -1,6 +1,5 @@
 const { getDefaultConfig } = require('expo/metro-config');
 const { withNativeWind } = require('nativewind/metro');
-const exclusionList = require('metro-config/src/defaults/exclusionList');
 
 const config = getDefaultConfig(__dirname);
 
@@ -8,9 +7,9 @@ const config = getDefaultConfig(__dirname);
 // artifacts accidentally. This is a safety guard for monorepos where the
 // server lives alongside the mobile app.
 config.resolver = config.resolver || {};
-config.resolver.blockList = exclusionList([
-	/server\/.*$/,
-	/phishing_detector_package\/.*$/,
-]);
+// Avoid importing metro-config private internals (exclusionList) which
+// aren't exported under newer package.json `exports` fields. Use a
+// direct RegExp that matches paths we want Metro to ignore.
+config.resolver.blockList = /server\/.*$|phishing_detector_package\/.*$/;
 
 module.exports = withNativeWind(config, { input: './global.css' });
