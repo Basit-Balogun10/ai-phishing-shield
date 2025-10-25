@@ -198,14 +198,14 @@ export default function StatsScreen() {
               ))}
               {!statsSummary.breakdown.length ? (
                 <Text className="text-xs text-slate-500 dark:text-slate-400">
-                  {t('dashboard.recentAlerts.empty')}
+                  {t('dashboard.alerts.empty')}
                 </Text>
               ) : null}
             </View>
           </View>
 
           <View className={SECTION_WRAPPER}>
-            <Text className={SECTION_TITLE}>{t('dashboard.recentAlerts.title')}</Text>
+            <Text className={SECTION_TITLE}>{t('dashboard.alerts.title')}</Text>
             <View className="mt-4 space-y-3">
               {recentDetections.map((item) => (
                 <View
@@ -240,7 +240,7 @@ export default function StatsScreen() {
               ))}
               {!recentDetections.length ? (
                 <Text className="text-xs text-slate-500 dark:text-slate-400">
-                  {t('dashboard.recentAlerts.empty')}
+                  {t('dashboard.alerts.empty')}
                 </Text>
               ) : null}
             </View>

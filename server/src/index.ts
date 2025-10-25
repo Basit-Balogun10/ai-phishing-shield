@@ -15,10 +15,14 @@ import prisma from './db/prisma.js';
 import { startProcessor } from './worker/processor.js';
 import pino from 'pino';
 import fs from 'fs';
-import path from 'path';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 // prom-client will be dynamically imported so the package is optional in tests
 import type { Registry as PromRegistryType } from 'prom-client';
 import { tokenRoutes } from './routes/tokens.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Use Fastify's built-in pino configuration object
 export const buildServer = async () => {
@@ -221,7 +225,4 @@ const start = async () => {
   }
 };
 
-// ES modules entry check
-if (import.meta.url === `file://${process.argv[1]}`) {
-  void start();
-}
+void start()

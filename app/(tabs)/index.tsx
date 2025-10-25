@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Alert, Platform, ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import NotificationListener from '../../mobile/notifications/notificationListener';
+import NotificationListener from '../../model-inference/notifications/notificationListener';
 import { processIncomingNotification } from '../../lib/services/notificationHandler';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -131,7 +131,7 @@ export default function DashboardScreen() {
     : shieldSwitchValue
       ? 'shield-check'
       : 'shield-off-outline';
-  const heroSwitchOnColor = 'rgba(59, 130, 246, 0.55)';
+  const heroSwitchOnColor = '#3971ed';
   const heroSwitchOffColor = '#f59e0b';
   const disabledSwitchColor = 'rgba(148, 163, 184, 0.35)';
   const switchTrackColors = permissionsMissing
@@ -459,29 +459,35 @@ export default function DashboardScreen() {
     }
   }, [t]);
 
-  const handleIgnoreApp = useCallback(async (pkg?: string, sender?: string) => {
-    const target = pkg || sender;
-    if (!target) return;
+  const handleIgnoreApp = useCallback(
+    async (pkg?: string, sender?: string) => {
+      const target = pkg || sender;
+      if (!target) return;
 
-    Alert.alert(
-      t('dashboard.mockDetection.ignoreConfirmTitle'),
-      t('dashboard.mockDetection.ignoreConfirmBody', { app: target }),
-      [
-        { text: t('common.cancel'), style: 'cancel' },
-        {
-          text: t('common.ok'),
-          onPress: async () => {
-            try {
-              await notificationFilter.addIgnoredPackage(target);
-              Alert.alert(t('dashboard.mockDetection.ignoreSuccessTitle'), t('dashboard.mockDetection.ignoreSuccessBody'));
-            } catch (e) {
-              console.warn('[dashboard] Failed to ignore package', e);
-            }
+      Alert.alert(
+        t('dashboard.mockDetection.ignoreConfirmTitle'),
+        t('dashboard.mockDetection.ignoreConfirmBody', { app: target }),
+        [
+          { text: t('common.cancel'), style: 'cancel' },
+          {
+            text: t('common.ok'),
+            onPress: async () => {
+              try {
+                await notificationFilter.addIgnoredPackage(target);
+                Alert.alert(
+                  t('dashboard.mockDetection.ignoreSuccessTitle'),
+                  t('dashboard.mockDetection.ignoreSuccessBody')
+                );
+              } catch (e) {
+                console.warn('[dashboard] Failed to ignore package', e);
+              }
+            },
           },
-        },
-      ]
-    );
-  }, [t]);
+        ]
+      );
+    },
+    [t]
+  );
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-950">
@@ -498,7 +504,7 @@ export default function DashboardScreen() {
         contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 32 }}>
         <View className="gap-6">
           <View className={`${HERO_BASE_CONTAINER} ${heroBgClass}`}>
-            <View className="gap-5">
+            <View className="gap-2">
               <View className="flex-row flex-wrap items-center justify-between gap-3">
                 <View className="flex-row flex-wrap items-center gap-2">
                   <View className={HERO_BADGE_CONTAINER}>
@@ -535,13 +541,13 @@ export default function DashboardScreen() {
               </View>
 
               <View className="gap-3">
-                <Text className="text-lg font-semibold text-white">{heroMessage}</Text>
+                <Text className="text-base font-semibold text-white">{heroMessage}</Text>
                 {permissionsMissing ? (
                   <Link href="/settings" asChild>
                     <TouchableOpacity
                       activeOpacity={0.85}
-                      className="w-full max-w-[240px] rounded-full bg-white/15 px-4 py-2">
-                      <Text className="text-center text-xs font-semibold uppercase tracking-wide text-white">
+                      className="w-full rounded-full bg-white/15 px-4 py-2">
+                      <Text className="text-center text-sm font-semibold uppercase tracking-wide text-white">
                         {t('dashboard.permissionsReminder.cta')}
                       </Text>
                     </TouchableOpacity>
@@ -791,22 +797,29 @@ export default function DashboardScreen() {
                       {formatDetectedAt(selectedDetection.detectedAt)}
                     </Text>
                   </View>
-                    <View className="flex-row items-center gap-2">
-                      <TouchableOpacity
-                        onPress={() => handleIgnoreApp(selectedDetection.result.message.package, selectedDetection.result.message.sender)}
-                        activeOpacity={0.7}
-                        className="mr-2 rounded-full bg-slate-100 px-3 py-2 dark:bg-slate-800">
-                        <Text className="text-xs text-slate-700 dark:text-slate-200">{t('dashboard.mockDetection.ignoreApp')}</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => setSelectedDetection(null)}
-                        activeOpacity={0.7}
-                        accessibilityRole="button"
-                        accessibilityLabel={t('dashboard.report.actions.close')}
-                        className="h-10 w-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
-                        <MaterialCommunityIcons name="close" size={20} color="#475569" />
-                      </TouchableOpacity>
-                    </View>
+                  <View className="flex-row items-center gap-2">
+                    <TouchableOpacity
+                      onPress={() =>
+                        handleIgnoreApp(
+                          selectedDetection.result.message.package,
+                          selectedDetection.result.message.sender
+                        )
+                      }
+                      activeOpacity={0.7}
+                      className="mr-2 rounded-full bg-slate-100 px-3 py-2 dark:bg-slate-800">
+                      <Text className="text-xs text-slate-700 dark:text-slate-200">
+                        {t('dashboard.mockDetection.ignoreApp')}
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => setSelectedDetection(null)}
+                      activeOpacity={0.7}
+                      accessibilityRole="button"
+                      accessibilityLabel={t('dashboard.report.actions.close')}
+                      className="h-10 w-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+                      <MaterialCommunityIcons name="close" size={20} color="#475569" />
+                    </TouchableOpacity>
+                  </View>
                 </View>
 
                 <View className="flex-row flex-wrap items-center gap-3">

@@ -10,6 +10,8 @@ module.exports = defineConfig([
   {
     rules: {
       'react/display-name': 'off',
+    },
+  },
       // Prevent accidental imports from server-side code or large model/dataset
       // folders into the mobile app. This runs during lint/time and will fail
       // the build if any mobile code imports forbidden paths. Keep the rule
@@ -30,6 +32,4 @@ module.exports = defineConfig([
           ],
         }
       ],
-    },
-  },
 ]);

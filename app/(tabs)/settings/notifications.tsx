@@ -139,7 +139,7 @@ export default function NotificationSettingsScreen() {
       </View>
 
       <ScrollView
-        className="flex-1"
+        className="mt-4 flex-1"
         contentContainerStyle={{ paddingBottom: 32 }}
         contentInsetAdjustmentBehavior="automatic">
         <View className="px-6 pb-8" style={{ rowGap: 16 }}>

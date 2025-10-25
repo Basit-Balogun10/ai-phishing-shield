@@ -12,8 +12,12 @@ export const redisRateLimitPlugin: FastifyPluginAsync = async (server) => {
     try {
       // dynamic import keeps this optional for environments without ioredis
 
-  const IORedisMod: any = await import('ioredis');
-  client = new IORedisMod.default(redisUrl, { lazyConnect: false });
+  const IORedis = await import('ioredis');
+  // ioredis ESM import shape can expose a default property or be callable.
+  // Normalize both shapes for TypeScript and runtime.
+  // Prefer the constructed export if available, otherwise use the module itself.
+  const RedisCtor = (IORedis as any).default ?? (IORedis as any);
+  client = new RedisCtor(redisUrl, { lazyConnect: false });
       // avoid unhandled error events from ioredis bubbling up and failing tests
         try {
         client.on('error', (err: any) => server.log.warn({ err }, '[rate-limit] redis error'));

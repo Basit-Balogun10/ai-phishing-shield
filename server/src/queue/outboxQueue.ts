@@ -1,5 +1,6 @@
 import { Queue, Worker, Job } from 'bullmq';
-import IORedis from 'ioredis';
+// Delay importing ioredis at runtime to avoid build-time typing issues.
+// We'll import dynamically in initQueue if needed.
 
 const redisUrl = process.env.REDIS_URL;
 
@@ -8,10 +9,13 @@ let worker: Worker | null = null;
 
 export const getQueue = () => queue;
 
-export const initQueue = (processor: (job: Job) => Promise<void>) => {
+export const initQueue = async (processor: (job: Job) => Promise<void>) => {
   if (!redisUrl) return null;
 
-  const connection = new (IORedis as any)(redisUrl);
+  // dynamic import to support optional redis and different ESM shapes
+  const IORedisMod = await import('ioredis');
+  const RedisCtor = (IORedisMod as any).default ?? (IORedisMod as any);
+  const connection = new RedisCtor(redisUrl);
   queue = new Queue('outbox', { connection });
 
   worker = new Worker('outbox', async (job) => {

@@ -4,6 +4,8 @@ import { Stack } from 'expo-router';
 import { I18nextProvider } from 'react-i18next';
 import { View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
+import { Platform } from 'react-native';
+import { useFonts, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 
 import i18n from '../lib/i18n';
 import { configureNotificationHandling } from '../lib/notifications';
@@ -19,6 +21,10 @@ export default function RootLayout() {
     () => (resolvedColorScheme === 'light' ? '#f9fafb' : '#020617'),
     [resolvedColorScheme]
   );
+
+  // Load Inter fonts but only gate app readiness on Android devices.
+  const [fontsLoaded] = useFonts({ Inter_400Regular, Inter_500Medium, Inter_700Bold });
+  const isAndroid = Platform.OS === 'android';
 
   useEffect(() => {
     SplashScreen.preventAutoHideAsync().catch(() => {
@@ -38,24 +44,27 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    if (ready) {
+    // On Android we wait for both theme readiness and fonts to load before hiding the splash.
+    if (ready && (!isAndroid || fontsLoaded)) {
       SplashScreen.hideAsync().catch(() => {
         // ignore if splash screen already hidden
       });
     }
-  }, [ready]);
+  }, [ready, fontsLoaded, isAndroid]);
 
-  if (!ready) {
+  // If the theme is not ready, or on Android if fonts haven't loaded yet, keep the splash visible.
+  if (!ready || (isAndroid && !fontsLoaded)) {
     return <View style={{ flex: 1, backgroundColor }} />;
   }
 
   return (
     <I18nextProvider i18n={i18n}>
-      <StatusBar
+      <View style={{ flex: 1, backgroundColor }} className={isAndroid && fontsLoaded ? 'font-sans' : ''}>
+        <StatusBar
         style={resolvedColorScheme === 'light' ? 'dark' : 'light'}
         backgroundColor={backgroundColor}
       />
-      <Stack
+        <Stack
         initialRouteName="(tabs)"
         screenOptions={{
           headerShown: false,
@@ -65,7 +74,8 @@ export default function RootLayout() {
         }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding" options={{ presentation: 'modal' }} />
-      </Stack>
+        </Stack>
+      </View>
     </I18nextProvider>
   );
 }
