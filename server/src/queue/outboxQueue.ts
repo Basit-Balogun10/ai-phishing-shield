@@ -11,7 +11,7 @@ export const getQueue = () => queue;
 export const initQueue = (processor: (job: Job) => Promise<void>) => {
   if (!redisUrl) return null;
 
-  const connection = new IORedis(redisUrl);
+  const connection = new (IORedis as any)(redisUrl);
   queue = new Queue('outbox', { connection });
 
   worker = new Worker('outbox', async (job) => {

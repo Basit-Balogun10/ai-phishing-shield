@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify';
-import prisma from '../db/prisma';
+import prisma from '../db/prisma.js';
 
 export const authPlugin: FastifyPluginAsync = async (server) => {
   const raw = process.env.AUTH_TOKENS ?? '';

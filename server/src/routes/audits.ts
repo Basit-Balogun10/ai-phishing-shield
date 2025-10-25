@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify';
-import prisma from '../db/prisma';
+import prisma from '../db/prisma.js';
 
 export const auditsRoutes: FastifyPluginAsync = async (server) => {
   // list recent audit logs (admin)
