@@ -1,14 +1,14 @@
 import { FastifyPluginAsync } from 'fastify';
 import { z } from 'zod';
-import prisma from '../db/prisma';
-import { getQueue, enqueueOutbox } from '../queue/outboxQueue';
+import prisma from '../db/prisma.js';
+import { getQueue, enqueueOutbox } from '../queue/outboxQueue.js';
 import crypto from 'crypto';
-import { sanitizePayload } from '../lib/sanitize';
+import { sanitizePayload } from '../lib/sanitize.js';
 import {
   FeedbackPayloadSchema,
   TelemetryPayloadSchema,
   ReportPayloadSchema,
-} from '../lib/channelSchemas';
+} from '../lib/channelSchemas.js';
 // Metrics are provided by the server via Fastify decorators if available.
 // These helpers will no-op if the decorators are not present (e.g., some test environments).
 const getCounters = (server: any) => ({

@@ -2,23 +2,23 @@ import Fastify from 'fastify';
 import helmet from '@fastify/helmet';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
-import { outboxRoutes } from './routes/outbox';
-import { modelsRoutes } from './routes/models';
-import { healthRoutes } from './routes/health';
-import { configRoutes } from './routes/config';
-import { metricsRoutes } from './routes/metrics';
-import { auditsRoutes } from './routes/audits';
-import { authPlugin } from './plugins/auth';
-import { auditPlugin } from './plugins/audit';
-import { redisRateLimitPlugin } from './plugins/redisRateLimit';
-import prisma from './db/prisma';
-import { startProcessor } from './worker/processor';
+import { outboxRoutes } from './routes/outbox.js';
+import { modelsRoutes } from './routes/models.js';
+import { healthRoutes } from './routes/health.js';
+import { configRoutes } from './routes/config.js';
+import { metricsRoutes } from './routes/metrics.js';
+import { auditsRoutes } from './routes/audits.js';
+import { authPlugin } from './plugins/auth.js';
+import { auditPlugin } from './plugins/audit.js';
+import { redisRateLimitPlugin } from './plugins/redisRateLimit.js';
+import prisma from './db/prisma.js';
+import { startProcessor } from './worker/processor.js';
 import pino from 'pino';
 import fs from 'fs';
 import path from 'path';
 // prom-client will be dynamically imported so the package is optional in tests
 import type { Registry as PromRegistryType } from 'prom-client';
-import { tokenRoutes } from './routes/tokens';
+import { tokenRoutes } from './routes/tokens.js';
 
 // Use Fastify's built-in pino configuration object
 export const buildServer = async () => {

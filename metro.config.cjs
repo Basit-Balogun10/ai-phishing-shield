@@ -1,7 +1,6 @@
 const { getDefaultConfig } = require('expo/metro-config');
 const { withNativeWind } = require('nativewind/metro');
 const exclusionList = require('metro-config/src/defaults/exclusionList');
-const path = require('path');
 
 // Use process.cwd() instead of __dirname so Windows absolute paths are handled
 // consistently when EAS/Node uses the ESM loader (avoids 'Received protocol c:' errors).

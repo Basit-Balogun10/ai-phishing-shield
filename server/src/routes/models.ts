@@ -2,7 +2,7 @@ import { FastifyPluginAsync } from 'fastify';
 import fs from 'fs/promises';
 import path from 'path';
 import crypto from 'crypto';
-import { signCatalog } from '../lib/catalogSigner';
+import { signCatalog } from '../lib/catalogSigner.js';
 
 export const modelsRoutes: FastifyPluginAsync = async (server) => {
   server.get('/catalog.json', async (request, reply) => {

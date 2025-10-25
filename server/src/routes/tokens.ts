@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify';
-import prisma from '../db/prisma';
+import prisma from '../db/prisma.js';
 import crypto from 'crypto';
 
 export const tokenRoutes: FastifyPluginAsync = async (server) => {

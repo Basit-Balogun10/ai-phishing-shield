@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify';
-import prisma from '../db/prisma';
+import prisma from '../db/prisma.js';
 
 export const auditPlugin: FastifyPluginAsync = async (server) => {
   server.addHook('onResponse', async (request, reply) => {
