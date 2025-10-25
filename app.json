@@ -33,21 +33,30 @@
         "backgroundColor": "#020617"
       }
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": ["fetch"]
+        "UIBackgroundModes": [
+          "fetch"
+        ]
       }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.basitbalogun10.aiphishingshield"
     },
     "extra": {
-      "modelRegistryUrl": "https://download.afrihackbox.dev/models/catalog.json"
+      "modelRegistryUrl": "https://download.afrihackbox.dev/models/catalog.json",
+      "router": {},
+      "eas": {
+        "projectId": "403df2e8-5c08-4382-8131-2453bd284058"
+      }
     }
   }
 }
