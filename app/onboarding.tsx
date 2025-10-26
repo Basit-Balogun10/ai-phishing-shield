@@ -79,12 +79,8 @@ export default function OnboardingScreen() {
   const loadPermissions = useCallback(async () => {
     setCheckingPermissions(true);
     const notifications = await checkNotificationPermission();
-    // preserve a minimal sms shape on the PermissionRequestResult so
-    // existing code that references the type doesn't break elsewhere
-    setPermissionState({
-      notifications,
-      sms: { granted: false, blocked: false, canAskAgain: true },
-    });
+    // Only notifications are requested — SMS permission removed.
+    setPermissionState({ notifications });
     setCheckingPermissions(false);
   }, []);
 
@@ -179,10 +175,7 @@ export default function OnboardingScreen() {
         outcome: derivePermissionOutcome(status),
         canAskAgain: status.canAskAgain,
       });
-      setPermissionState((prev) => ({
-        notifications: status,
-        sms: prev?.sms ?? { granted: false, blocked: false, canAskAgain: true },
-      }));
+      setPermissionState({ notifications: status });
       await loadPermissions();
     } finally {
       setRequestingNotifications(false);
@@ -260,10 +253,7 @@ export default function OnboardingScreen() {
           </Text>
 
           {item.permissions?.length ? (
-            <View className="mt-5 space-y-3">
-              <Text className="text-sm font-medium uppercase tracking-wide text-blue-600 dark:text-blue-300">
-                {t('onboarding.permissionStepsTitle')}
-              </Text>
+            <View className="mt-5 gap-y-3">
               {item.permissions.map((permission) => (
                 <View
                   key={permission.title}

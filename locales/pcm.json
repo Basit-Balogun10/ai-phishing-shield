@@ -340,7 +340,6 @@
     },
     "permissionNoteTitle": "Before we kick off",
     "permissionNoteBody": "Immediately after this tour you go grant notification and SMS access.",
-    "permissionStepsTitle": "You go allow:",
     "permissions": {
       "title": "Keep the shield awake",
       "subtitle": "On these permissions make we fit scan message once e land.",
@@ -401,7 +400,7 @@
   },
   "settings": {
     "title": "Settings",
-    "subtitle": "Manage language, alerts, and diagnostics. This screen na placeholder till full settings wire finish.",
+    "subtitle": "Manage language, alerts, and diagnostics.",
     "language": {
       "loading": "We dey prepare language list..."
     },

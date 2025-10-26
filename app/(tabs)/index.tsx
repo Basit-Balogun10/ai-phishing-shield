@@ -608,7 +608,7 @@ export default function DashboardScreen() {
             </TouchableOpacity>
           </View>
 
-          {mockToolsEnabled ? (
+          {/* {mockToolsEnabled ? (
             showMockTools ? (
               <View className="space-y-3 rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
                 <View className="flex-row items-start justify-between gap-3">
@@ -777,7 +777,7 @@ export default function DashboardScreen() {
                 </Text>
               </TouchableOpacity>
             )
-          ) : null}
+          ) : null} */}
         </View>
       </ScrollView>
       <AppModal
