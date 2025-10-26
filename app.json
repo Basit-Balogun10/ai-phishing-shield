@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "AI Phishing Shield",
-    "slug": "ai-phishing-shield",
+  "name": "Hook: Your AI Phishing Shield",
+  "slug": "hook",
     "version": "1.0.0",
     "scheme": "aiphishingshield",
     "web": {

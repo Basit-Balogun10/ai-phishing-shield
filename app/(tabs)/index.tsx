@@ -12,6 +12,7 @@ import { useOnboardingGate } from '../../lib/hooks/useOnboardingGate';
 import { useModelManager } from '../../lib/modelManager';
 import { triggerMockDetectionNow } from '../../lib/services/backgroundDetection';
 import { trackTelemetryEvent } from '../../lib/services/telemetry';
+import { requestAllRequiredPermissions } from '../../lib/permissions';
 import type { DetectionResult } from '../../lib/detection/mockDetection';
 import { analyzeMessage, getMockMessages } from '../../lib/detection/mockDetection';
 import {
@@ -112,8 +113,10 @@ export default function DashboardScreen() {
     );
   }, [getTrustedSource, selectedDetection]);
   const [safePreview, setSafePreview] = useState<DetectionResult | null>(null);
+  const [manualPermissionsGranted, setManualPermissionsGranted] = useState(false);
   const displayedShieldPaused = optimisticShieldPaused ?? shieldPaused;
   const permissionsMissing = !checking && (!allowed || !permissionsSatisfied);
+  const effectivePermissionsSatisfied = permissionsSatisfied || manualPermissionsGranted;
   const heroStatusLabel = permissionsMissing
     ? t('dashboard.hero.permissions.missing')
     : displayedShieldPaused
@@ -204,6 +207,55 @@ export default function DashboardScreen() {
       console.warn('[dashboard] Failed to restore mock tools dismissal state', error);
     });
   }, []);
+
+  const handleRequestPermissions = useCallback(async () => {
+    // Re-request required permissions in-place and update the dashboard state if granted.
+    try {
+      // Ensure native bridge/init is available when present
+      try {
+        await NotificationListener.init();
+      } catch {
+        // ignore
+      }
+
+      const result = await requestAllRequiredPermissions();
+
+      if (result.notifications.granted) {
+        setManualPermissionsGranted(true);
+
+        // Try to start the listener if the shield is intended to be enabled
+        try {
+          const granted = await NotificationListener.isPermissionGranted();
+          if (!granted) {
+            await NotificationListener.requestPermission();
+          }
+          await NotificationListener.start();
+          NotificationListener.onNotification(async (payload) => {
+            try {
+              await processIncomingNotification(payload as Record<string, any>);
+            } catch {
+              // ignore
+            }
+          });
+        } catch (e) {
+          // ignore start errors
+        }
+
+        Alert.alert(t('dashboard.permissionsReminder.grantedTitle'), t('dashboard.permissionsReminder.grantedBody'));
+        trackTelemetryEvent('permissions.request_granted', {});
+      } else {
+        // If denied or blocked, inform user and offer to open settings
+        Alert.alert(
+          t('dashboard.permissionsReminder.deniedTitle'),
+          t('dashboard.permissionsReminder.deniedBody')
+        );
+        trackTelemetryEvent('permissions.request_denied', {});
+      }
+    } catch (error) {
+      console.warn('[dashboard] permission request failed', error);
+      Alert.alert(t('common.error'), t('dashboard.permissionsReminder.requestError'));
+    }
+  }, [t]);
 
   const handleHistoryPress = useCallback(() => {
     trackTelemetryEvent('dashboard.quick_action.alerts_opened', undefined);
@@ -543,15 +595,14 @@ export default function DashboardScreen() {
               <View className="gap-3">
                 <Text className="text-base font-semibold text-white">{heroMessage}</Text>
                 {permissionsMissing ? (
-                  <Link href="/settings" asChild>
-                    <TouchableOpacity
-                      activeOpacity={0.85}
-                      className="w-full rounded-full bg-white/15 px-4 py-2">
-                      <Text className="text-center text-sm font-semibold uppercase tracking-wide text-white">
-                        {t('dashboard.permissionsReminder.cta')}
-                      </Text>
-                    </TouchableOpacity>
-                  </Link>
+                  <TouchableOpacity
+                    activeOpacity={0.85}
+                    onPress={handleRequestPermissions}
+                    className="w-full rounded-full bg-white/15 px-4 py-2">
+                    <Text className="text-center text-sm font-semibold uppercase tracking-wide text-white">
+                      {t('dashboard.permissionsReminder.cta')}
+                    </Text>
+                  </TouchableOpacity>
                 ) : null}
               </View>
             </View>
