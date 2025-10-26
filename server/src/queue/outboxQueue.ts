@@ -15,7 +15,9 @@ export const initQueue = async (processor: (job: Job) => Promise<void>) => {
   // dynamic import to support optional redis and different ESM shapes
   const IORedisMod = await import('ioredis');
   const RedisCtor = (IORedisMod as any).default ?? (IORedisMod as any);
-  const connection = new RedisCtor(redisUrl);
+  // BullMQ requires ioredis option `maxRetriesPerRequest` to be null to avoid
+  // errors when the client is in a reconnect/backoff state. See BullMQ docs.
+  const connection = new RedisCtor(redisUrl, { maxRetriesPerRequest: null });
   queue = new Queue('outbox', { connection });
 
   worker = new Worker('outbox', async (job) => {
