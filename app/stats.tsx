@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View, FlatList, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
@@ -9,6 +9,7 @@ import { useStatsSummary, type StatsTimeframe } from '../lib/detection/stats';
 import { formatDetectionTimestamp } from '../lib/detection/formatters';
 import { useDetectionHistory } from '../lib/detection/detectionHistory';
 import { trackTelemetryEvent } from '../lib/services/telemetry';
+import Svg, { Polyline, Circle } from 'react-native-svg';
 
 const SECTION_WRAPPER =
   'rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900';
@@ -59,6 +60,54 @@ export default function StatsScreen() {
 
   const recentDetections = useMemo(() => detectionHistory.slice(0, 8), [detectionHistory]);
 
+  const windowedRecords = useMemo(() => {
+    // Build a simple list of numeric scores over time for the chosen timeframe
+    const now = Date.now();
+    const durationMap: Record<StatsTimeframe, number> = {
+      '24h': 24 * 60 * 60 * 1000,
+      '7d': 7 * 24 * 60 * 60 * 1000,
+      '30d': 30 * 24 * 60 * 60 * 1000,
+      all: 365 * 24 * 60 * 60 * 1000,
+    };
+    const windowMs = durationMap[timeframe];
+    return detectionHistory
+      .map((r) => ({ t: new Date(r.detectedAt).getTime(), s: r.result.score }))
+      .filter((r) => !Number.isNaN(r.t) && now - r.t <= windowMs)
+      .sort((a, b) => a.t - b.t);
+  }, [detectionHistory, timeframe]);
+
+  const Sparkline = ({ values }: { values: { t: number; s: number }[] }) => {
+    const w = Math.min(Dimensions.get('window').width - 96, 260);
+    const h = 48;
+    if (!values || values.length === 0) {
+      return (
+        <Svg width={w} height={h}>
+          <Polyline points={`0,${h / 2} ${w},${h / 2}`} fill="none" stroke="#cbd5e1" strokeWidth={1} />
+        </Svg>
+      );
+    }
+
+    const minS = Math.min(...values.map((v) => v.s), 0);
+    const maxS = Math.max(...values.map((v) => v.s), 1);
+
+    const points = values
+      .map((v, i) => {
+        const x = (i / (values.length - 1 || 1)) * w;
+        const y = h - ((v.s - minS) / (maxS - minS || 1)) * h;
+        return `${x},${y}`;
+      })
+      .join(' ');
+
+    const last = values[values.length - 1];
+
+    return (
+      <Svg width={w} height={h}>
+        <Polyline points={points} fill="none" stroke="#60a5fa" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+        <Circle cx={w - 6} cy={h - ((last.s - minS) / (maxS - minS || 1)) * h} r={3} fill="#2563eb" />
+      </Svg>
+    );
+  };
+
   const formatDetectedAt = useCallback(
     (value: string) => formatDetectionTimestamp(value, i18n.language),
     [i18n.language]
@@ -71,27 +120,24 @@ export default function StatsScreen() {
         label: t('dashboard.stats.messagesScanned'),
         value: numberFormatter.format(statsSummary.totals.scanned),
         icon: 'chart-line',
+        spark: windowedRecords,
       },
       {
         key: 'threats',
         label: t('dashboard.stats.threatsBlocked'),
         value: numberFormatter.format(statsSummary.totals.threats),
         icon: 'shield-alert',
+        spark: windowedRecords.filter((v) => v.s >= 0.6),
       },
       {
         key: 'safe',
         label: t('dashboard.stats.safeMessages'),
         value: numberFormatter.format(statsSummary.totals.safe),
         icon: 'shield-check-outline',
+        spark: windowedRecords.filter((v) => v.s < 0.6),
       },
     ],
-    [
-      numberFormatter,
-      statsSummary.totals.safe,
-      statsSummary.totals.scanned,
-      statsSummary.totals.threats,
-      t,
-    ]
+    [numberFormatter, statsSummary, t, windowedRecords]
   );
 
   return (
@@ -118,7 +164,8 @@ export default function StatsScreen() {
             <Text className="mt-2 text-sm text-slate-600 dark:text-slate-300">
               {t('dashboard.stats.since', { timeframe: timeframeLabel })}
             </Text>
-            <View className="mt-4 flex-row flex-wrap gap-2">
+
+            <View className="mt-4 flex-row items-center gap-3">
               {STATS_TIMEFRAME_OPTIONS.map((option) => {
                 const selected = option === timeframe;
                 return (
@@ -140,23 +187,31 @@ export default function StatsScreen() {
               })}
             </View>
 
-            <View className="mt-4 flex-row flex-wrap gap-3">
-              {cards.map((card) => (
-                <View
-                  key={card.key}
-                  className="min-w-[30%] flex-1 rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-800 dark:bg-slate-900/60">
-                  <View className="mb-3 h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-500/20">
-                    <MaterialCommunityIcons name={card.icon as any} size={20} color="#2563eb" />
+            <View className="mt-4">
+              <FlatList
+                data={cards}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                keyExtractor={(item) => item.key}
+                contentContainerStyle={{ paddingVertical: 4 }}
+                ItemSeparatorComponent={() => <View style={{ width: 12 }} />}
+                renderItem={({ item }) => (
+                  <View className="w-64 rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-800 dark:bg-slate-900/60">
+                    <View className="mb-3 h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-500/20">
+                      <MaterialCommunityIcons name={item.icon as any} size={20} color="#2563eb" />
+                    </View>
+                    <Text className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+                      {item.value}
+                    </Text>
+                    <Text className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                      {item.label}
+                    </Text>
+                    <View className="mt-3">{<Sparkline values={item.spark} />}</View>
                   </View>
-                  <Text className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
-                    {card.value}
-                  </Text>
-                  <Text className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                    {card.label}
-                  </Text>
-                </View>
-              ))}
+                )}
+              />
             </View>
+
             <Text className="mt-4 text-xs text-slate-500 dark:text-slate-400">{trendLabel}</Text>
           </View>
 

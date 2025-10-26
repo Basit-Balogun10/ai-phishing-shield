@@ -19,12 +19,25 @@ try {
 export const processIncomingNotification = async (payload: Record<string, any>) => {
   try {
     const id = `notif-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-    const sender = (payload.app as string) || (payload.title as string) || 'Unknown';
+    // Prefer package id first (if provided by native bridge) so we can map
+    // to a logical channel or a friendly app name. Then prefer the notification
+    // title as a sender display name and fallback to 'Unknown'.
+    const pkg = (payload.package as string) || (payload.app as string) || '';
+
+    const mapPackageToAppName = (p?: string) => {
+      if (!p) return undefined;
+      const lower = p.toLowerCase();
+      if (lower.includes('whatsapp')) return 'WhatsApp';
+      if (lower.includes('gmail') || lower.includes('mail') || lower.includes('outlook')) return 'Mail';
+      if (lower.includes('facebook') || lower.includes('messenger')) return 'Facebook';
+      if (lower.includes('mtn') || lower.includes('airtel') || lower.includes('vodafone') || lower.includes('glo') || lower.includes('mtndirect')) return 'Network Provider';
+      return undefined;
+    };
+
+    const sender = (payload.title as string) || mapPackageToAppName(pkg) || (payload.app as string) || 'Unknown';
     const body =
       (payload.bigText as string) || (payload.text as string) || (payload.summaryText as string) || (payload.title as string) || '';
     const receivedAt = new Date().toISOString();
-
-    const pkg = (payload.package as string) || (payload.app as string) || '';
 
     // Respect user ignore list: if the package is ignored, skip processing.
     try {
@@ -38,11 +51,25 @@ export const processIncomingNotification = async (payload: Record<string, any>) 
       // ignore errors from filter
     }
 
+    // Try to infer a logical channel from the Android package name so alerts
+    // display correctly (sms / whatsapp / email). Default to 'sms' to keep
+    // backward compatibility with earlier behaviour.
+    const getChannelFromPackage = (p?: string) => {
+      if (!p) return 'sms';
+      const lower = p.toLowerCase();
+      if (lower.includes('whatsapp')) return 'whatsapp';
+      if (lower.includes('mms') || lower.includes('messaging') || lower.includes('sms')) return 'sms';
+      if (lower.includes('gmail') || lower.includes('gm') || lower.includes('mail') || lower.includes('outlook') || lower.includes('yahoo')) return 'email';
+      if (lower.includes('messenger') || lower.includes('facebook')) return 'sms';
+      // fallback
+      return 'sms';
+    };
+
     const message: MockMessage = {
       id,
       sender,
       package: pkg,
-      channel: 'sms',
+      channel: getChannelFromPackage(pkg),
       body,
       receivedAt,
     };
