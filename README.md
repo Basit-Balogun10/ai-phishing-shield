@@ -114,32 +114,19 @@ Why not checked in: The TFLite artifacts are large and would blow up the repo; R
 
 - A parity / smoke harness (`model-inference/inference_wrapper/run_on_mock.py`) runs the wrapper (or a dummy wrapper) over embedded mock and benign messages to validate parity between the mobile wrapper and the Python wrapper. The CI workflow runs a lightweight parity smoke using this script (see `.github/workflows/parity-smoke.yml`). Detailed sweep commands, results and analysis are documented in `model-inference/inference_wrapper/REPORT.md`.
 
-Example parity result (representative): with `heuristic_weight = 0.7` (our chosen default), a typical parity run on the embedded mock set produced medium→high severity for the seven phishing mock messages and safe→low for the benign samples; full parity outputs are written by default to `phishing_detector_package/mock_parity.jsonl` or can be generated via the sweep commands in `REPORT.md`.
+Example parity result (representative): with `heuristic_weight = 0.7` (our chosen default), a typical parity run on the embedded mock set produced medium→high severity for the seven phishing mock messages and safe→low for the benign samples.
+
+For repository hygiene and to keep the README readable, the full parity JSONL outputs have been moved to an artifact file:
+
+- Full parity JSONL: `phishing_detector_package/mock_parity_0.7.jsonl` (contains mock-1..mock-7 and benign-1..benign-5 outputs)
+
+Representative single-line sample (from the artifact):
 
 ```json
-{"id":"mock-1","mock_score":0.7,"wrapper_score":0.99,"score_delta":0.29,"mock_matches":[{"label":"Urgency language","excerpt":"within 24 hours","weight":0.25},{"label":"Account verification request","excerpt":"Verify your account","weight":0.2}],"wrapper_matches":[{"label":"Urgency language","excerpt":"UBA Alert: Your account will be suspended within 24 hours. Verify your account now at http://uba-secure-check.com to avo","weight":1.0},{"label":"Link","excerpt":"http://uba-secure-check.com","weight":0.18},{"label":"Financial keyword","excerpt":"UBA Alert: Your account will be suspended within 24 hours. Verify your account n","weight":0.2},{"label":"Account action requested","excerpt":"UBA Alert: Your account will be suspended within 24 hours. Verify your account n","weight":0.2}],"raw_model_score":1.0,"heuristic_score":1.0,"combined_score_pre_clamp":1.0,"detection":{"score":0.99,"detectionId":"ca8c1c1d-33d9-4936-8d3e-24fb79c1e427","modelVersion":"v0.1.0","createdAt":"2025-10-24T02:09:42","latencyMs":187,"message":{"messageId":"mock-1","channel":"sms","sender":"UBA Secure","receivedAt":"2025-10-08T08:15:00Z"},"matches":[{"label":"Urgency language","excerpt":"UBA Alert: Your account will be suspended within 24 hours. Verify your account now at http://uba-secure-check.com to avo","weight":1.0},{"label":"Link","excerpt":"http://uba-secure-check.com","weight":0.18},{"label":"Financial keyword","excerpt":"UBA Alert: Your account will be suspended within 24 hours. Verify your account n","weight":0.2},{"label":"Account action requested","excerpt":"UBA Alert: Your account will be suspended within 24 hours. Verify your account n","weight":0.2}],"risk":{"score":0.99,"severity":"high","label":"Likely phishing","confidence":0.99,"factors":[{"label":"Urgency language","excerpt":"UBA Alert: Your account will be suspended within 24 hours. Verify your account now at http://uba-secure-check.com to avo","weight":1.0,"evidenceType":"keyword"},{"label":"Link","excerpt":"http://uba-secure-check.com","weight":0.18,"evidenceType":"url_reputation"},{"label":"Financial keyword","excerpt":"UBA Alert: Your account will be suspended within 24 hours. Verify your account n","weight":0.2,"evidenceType":"keyword"},{"label":"Account action requested","excerpt":"UBA Alert: Your account will be suspended within 24 hours. Verify your account n","weight":0.2,"evidenceType":"keyword"}]},"actions":{"recommended":"block_sender","rationale":"heuristic + model score","secondary":[]},"metadata":{"channelFeatures":{"links":[{"url":"http://uba-secure-check.com","domain":"uba-secure-check.com"}],"language":"en"},"explanations":["Result from model v0.1.0"],"heuristics":{"looksLikeOtpCapture":false,"urgencyScore":1.0}},"raw_model_score":1.0,"heuristic_score":1.0,"combined_score_pre_clamp":1.0}
+{"id":"mock-1","score":0.99,"severity":"high","modelVersion":"v0.1.0"}
+```
 
-{"id":"mock-2","mock_score":0.45,"wrapper_score":0.6,"score_delta":0.15,"mock_matches":[{"label":"Link-based call-to-action","excerpt":"Tap this link","weight":0.2}],"wrapper_matches":[{"label":"Suspicious link","excerpt":"https://bit.ly/rebatesafrica","weight":0.25},{"label":"Reward / lottery","excerpt":"Congratulations! You qualify for a special tax rebate. Tap this link to claim wi","weight":0.18}],"raw_model_score":1.0,"heuristic_score":0.43,"combined_score_pre_clamp":0.601,"detection":{"score":0.6,"detectionId":"76a9e09c-fcda-4a0b-a4e2-64674e977112","modelVersion":"v0.1.0","createdAt":"2025-10-24T02:09:42","latencyMs":208,"message":{"messageId":"mock-2","channel":"sms","sender":"Tax Grant","receivedAt":"2025-10-08T09:02:00Z"},"matches":[{"label":"Suspicious link","excerpt":"https://bit.ly/rebatesafrica","weight":0.25},{"label":"Reward / lottery","excerpt":"Congratulations! You qualify for a special tax rebate. Tap this link to claim wi","weight":0.18}],"risk":{"score":0.6,"severity":"medium","label":"Likely phishing","confidence":0.99,"factors":[{"label":"Suspicious link","excerpt":"https://bit.ly/rebatesafrica","weight":0.25,"evidenceType":"url_reputation"},{"label":"Reward / lottery","excerpt":"Congratulations! You qualify for a special tax rebate. Tap this link to claim wi","weight":0.18,"evidenceType":"keyword"}]},"actions":{"recommended":"report","rationale":"heuristic + model score","secondary":[]},"metadata":{"channelFeatures":{"links":[{"url":"https://bit.ly/rebatesafrica","domain":"bit.ly"}],"language":"en"},"explanations":["Result from model v0.1.0"],"heuristics":{"looksLikeOtpCapture":false,"urgencyScore":0.0}},"raw_model_score":1.0,"heuristic_score":0.43,"combined_score_pre_clamp":0.601}
-
-{"id":"mock-3","mock_score":0.65,"wrapper_score":0.99,"score_delta":0.34,"mock_matches":[{"label":"Urgency language","excerpt":"immediately","weight":0.25},{"label":"Credential or OTP request","excerpt":"OTP","weight":0.15}],"wrapper_matches":[{"label":"Urgency language","excerpt":"Dear customer, your SIM will be deactivated today. Confirm your NIN immediately via http://mtn-verify.ng and enter your ","weight":0.67},{"label":"Link","excerpt":"http://mtn-verify.ng","weight":0.18},{"label":"Account action requested","excerpt":"Dear customer, your SIM will be deactivated today. Confirm your NIN immediately ","weight":0.2}],"raw_model_score":0.9994,"heuristic_score":1.0,"combined_score_pre_clamp":0.9998,"detection":{"score":0.99,"detectionId":"6248aa9c-718c-44c3-864d-a6cb1799c0e7","modelVersion":"v0.1.0","createdAt":"2025-10-24T02:09:42","latencyMs":193,"message":{"messageId":"mock-3","channel":"sms","sender":"MTN Nigeria","receivedAt":"2025-10-08T09:45:00Z"},"matches":[{"label":"Urgency language","excerpt":"Dear customer, your SIM will be deactivated today. Confirm your NIN immediately via http://mtn-verify.ng and enter your ","weight":0.67},{"label":"Link","excerpt":"http://mtn-verify.ng","weight":0.18},{"label":"Account action requested","excerpt":"Dear customer, your SIM will be deactivated today. Confirm your NIN immediately ","weight":0.2}],"risk":{"score":0.99,"severity":"high","label":"Likely phishing","confidence":0.99,"factors":[{"label":"Urgency language","excerpt":"Dear customer, your SIM will be deactivated today. Confirm your NIN immediately via http://mtn-verify.ng and enter your ","weight":0.67,"evidenceType":"keyword"},{"label":"Link","excerpt":"http://mtn-verify.ng","weight":0.18,"evidenceType":"url_reputation"},{"label":"Account action requested","excerpt":"Dear customer, your SIM will be deactivated today. Confirm your NIN immediately ","weight":0.2,"evidenceType":"keyword"}]},"actions":{"recommended":"block_sender","rationale":"heuristic + model score","secondary":[]},"metadata":{"channelFeatures":{"links":[{"url":"http://mtn-verify.ng","domain":"mtn-verify.ng"}],"language":"en"},"explanations":["Result from model v0.1.0"],"heuristics":{"looksLikeOtpCapture":false,"urgencyScore":0.67}},"raw_model_score":0.9994,"heuristic_score":1.0,"combined_score_pre_clamp":0.9998}
-
-{"id":"mock-4","mock_score":0.6,"wrapper_score":0.81,"score_delta":0.21,"mock_matches":[{"label":"Link-based call-to-action","excerpt":"Click the link","weight":0.2},{"label":"Financial institution reference","excerpt":"bank","weight":0.1},{"label":"Credential or OTP request","excerpt":"PIN","weight":0.15}],"wrapper_matches":[{"label":"Urgency language","excerpt":"We need you to update your payroll information before salaries are processed. Click the link and input your banking PIN ","weight":0.33},{"label":"Financial keyword","excerpt":"We need you to update your payroll information before salaries are processed. Cl","weight":0.2},{"label":"Account action requested","excerpt":"We need you to update your payroll information before salaries are processed. Cl","weight":0.2}],"raw_model_score":0.999,"heuristic_score":0.73,"combined_score_pre_clamp":0.8107,"detection":{"score":0.81,"detectionId":"0b3512e4-aa64-474d-99cf-c2f65e780c81","modelVersion":"v0.1.0","createdAt":"2025-10-24T02:09:42","latencyMs":186,"message":{"messageId":"mock-4","channel":"email","sender":"HR Payroll","receivedAt":"2025-10-08T10:15:00Z"},"matches":[{"label":"Urgency language","excerpt":"We need you to update your payroll information before salaries are processed. Click the link and input your banking PIN ","weight":0.33},{"label":"Financial keyword","excerpt":"We need you to update your payroll information before salaries are processed. Cl","weight":0.2},{"label":"Account action requested","excerpt":"We need you to update your payroll information before salaries are processed. Cl","weight":0.2}],"risk":{"score":0.81,"severity":"high","label":"Likely phishing","confidence":0.99,"factors":[{"label":"Urgency language","excerpt":"We need you to update your payroll information before salaries are processed. Click the link and input your banking PIN ","weight":0.33,"evidenceType":"keyword"},{"label":"Financial keyword","excerpt":"We need you to update your payroll information before salaries are processed. Cl","weight":0.2,"evidenceType":"keyword"},{"label":"Account action requested","excerpt":"We need you to update your payroll information before salaries are processed. Cl","weight":0.2,"evidenceType":"keyword"}]},"actions":{"recommended":"block_sender","rationale":"heuristic + model score","secondary":[]},"metadata":{"channelFeatures":{"links":[],"language":"en"},"explanations":["Result from model v0.1.0"],"heuristics":{"looksLikeOtpCapture":false,"urgencyScore":0.33}},"raw_model_score":0.999,"heuristic_score":0.73,"combined_score_pre_clamp":0.8107}
-
-{"id":"mock-5","mock_score":0.68,"wrapper_score":0.78,"score_delta":0.1,"mock_matches":[{"label":"Urgency language","excerpt":"Act now","weight":0.25},{"label":"Unexpected reward","excerpt":"Reward","weight":0.18}],"wrapper_matches":[{"label":"Urgency language","excerpt":"You have been selected for an Airtel Rewards gift. Act now and claim your prize code: http://airtel-bonus.win","weight":0.33},{"label":"Link","excerpt":"http://airtel-bonus.win","weight":0.18},{"label":"Reward / lottery","excerpt":"You have been selected for an Airtel Rewards gift. Act now and claim your prize ","weight":0.18}],"raw_model_score":0.9982,"heuristic_score":0.69,"combined_score_pre_clamp":0.7825,"detection":{"score":0.78,"detectionId":"109ea7ac-96cf-4a33-9b5a-5e0905914cb7","modelVersion":"v0.1.0","createdAt":"2025-10-24T02:09:42","latencyMs":187,"message":{"messageId":"mock-5","channel":"sms","sender":"Airtel Rewards","receivedAt":"2025-10-08T11:00:00Z"},"matches":[{"label":"Urgency language","excerpt":"You have been selected for an Airtel Rewards gift. Act now and claim your prize code: http://airtel-bonus.win","weight":0.33},{"label":"Link","excerpt":"http://airtel-bonus.win","weight":0.18},{"label":"Reward / lottery","excerpt":"You have been selected for an Airtel Rewards gift. Act now and claim your prize ","weight":0.18}],"risk":{"score":0.78,"severity":"medium","label":"Likely phishing","confidence":0.99,"factors":[{"label":"Urgency language","excerpt":"You have been selected for an Airtel Rewards gift. Act now and claim your prize code: http://airtel-bonus.win","weight":0.33,"evidenceType":"keyword"},{"label":"Link","excerpt":"http://airtel-bonus.win","weight":0.18,"evidenceType":"url_reputation"},{"label":"Reward / lottery","excerpt":"You have been selected for an Airtel Rewards gift. Act now and claim your prize ","weight":0.18,"evidenceType":"keyword"}]},"actions":{"recommended":"report","rationale":"heuristic + model score","secondary":[]},"metadata":{"channelFeatures":{"links":[{"url":"http://airtel-bonus.win","domain":"airtel-bonus.win"}],"language":"en"},"explanations":["Result from model v0.1.0"],"heuristics":{"looksLikeOtpCapture":false,"urgencyScore":0.33}},"raw_model_score":0.9982,"heuristic_score":0.69,"combined_score_pre_clamp":0.7825}
-
-{"id":"mock-6","mock_score":0.55,"wrapper_score":0.58,"score_delta":0.03,"mock_matches":[{"label":"Account verification request","excerpt":"Confirm your account","weight":0.2},{"label":"Credential or OTP request","excerpt":"OTP","weight":0.15}],"wrapper_matches":[{"label":"Financial keyword","excerpt":"WhatsApp: Your chats will be deleted. Confirm your account using the OTP sent to","weight":0.2},{"label":"Account action requested","excerpt":"WhatsApp: Your chats will be deleted. Confirm your account using the OTP sent to","weight":0.2}],"raw_model_score":1.0,"heuristic_score":0.4,"combined_score_pre_clamp":0.58,"detection":{"score":0.58,"detectionId":"2d854d8a-57e1-46a4-b330-c91f27a2ef98","modelVersion":"v0.1.0","createdAt":"2025-10-24T02:09:42","latencyMs":186,"message":{"messageId":"mock-6","channel":"whatsapp","sender":"WhatsApp Support","receivedAt":"2025-10-08T11:30:00Z"},"matches":[{"label":"Financial keyword","excerpt":"WhatsApp: Your chats will be deleted. Confirm your account using the OTP sent to","weight":0.2},{"label":"Account action requested","excerpt":"WhatsApp: Your chats will be deleted. Confirm your account using the OTP sent to","weight":0.2}],"risk":{"score":0.58,"severity":"low","label":"Likely phishing","confidence":0.99,"factors":[{"label":"Financial keyword","excerpt":"WhatsApp: Your chats will be deleted. Confirm your account using the OTP sent to","weight":0.2,"evidenceType":"keyword"},{"label":"Account action requested","excerpt":"WhatsApp: Your chats will be deleted. Confirm your account using the OTP sent to","weight":0.2,"evidenceType":"keyword"}]},"actions":{"recommended":"report","rationale":"heuristic + model score","secondary":[]},"metadata":{"channelFeatures":{"links":[],"language":"en"},"explanations":["Result from model v0.1.0"],"heuristics":{"looksLikeOtpCapture":false,"urgencyScore":0.0}},"raw_model_score":1.0,"heuristic_score":0.4,"combined_score_pre_clamp":0.58}
-
-{"id":"mock-7","mock_score":0.5,"wrapper_score":0.94,"score_delta":0.44,"mock_matches":[{"label":"Urgency language","excerpt":"immediately","weight":0.25}],"wrapper_matches":[{"label":"Urgency language","excerpt":"Your Stanbic account has been flagged. Update your BVN immediately using this secure portal: http://stanbic-review.info","weight":0.33},{"label":"Link","excerpt":"http://stanbic-review.info","weight":0.18},{"label":"Financial keyword","excerpt":"Your Stanbic account has been flagged. Update your BVN immediately using this se","weight":0.2},{"label":"Account action requested","excerpt":"Your Stanbic account has been flagged. Update your BVN immediately using this se","weight":0.2}],"raw_model_score":0.999,"heuristic_score":0.91,"combined_score_pre_clamp":0.9367,"detection":{"score":0.94,"detectionId":"1bb47782-496f-4167-aae2-822daf8f6ee8","modelVersion":"v0.1.0","createdAt":"2025-10-24T02:09:43","latencyMs":190,"message":{"messageId":"mock-7","channel":"sms","sender":"Stanbic IBTC","receivedAt":"2025-10-08T12:00:00Z"},"matches":[{"label":"Urgency language","excerpt":"Your Stanbic account has been flagged. Update your BVN immediately using this secure portal: http://stanbic-review.info","weight":0.33},{"label":"Link","excerpt":"http://stanbic-review.info","weight":0.18},{"label":"Financial keyword","excerpt":"Your Stanbic account has been flagged. Update your BVN immediately using this se","weight":0.2},{"label":"Account action requested","excerpt":"Your Stanbic account has been flagged. Update your BVN immediately using this se","weight":0.2}],"risk":{"score":0.94,"severity":"high","label":"Likely phishing","confidence":0.99,"factors":[{"label":"Urgency language","excerpt":"Your Stanbic account has been flagged. Update your BVN immediately using this secure portal: http://stanbic-review.info","weight":0.33,"evidenceType":"keyword"},{"label":"Link","excerpt":"http://stanbic-review.info","weight":0.18,"evidenceType":"url_reputation"},{"label":"Financial keyword","excerpt":"Your Stanbic account has been flagged. Update your BVN immediately using this se","weight":0.2,"evidenceType":"keyword"},{"label":"Account action requested","excerpt":"Your Stanbic account has been flagged. Update your BVN immediately using this se","weight":0.2,"evidenceType":"keyword"}]},"actions":{"recommended":"block_sender","rationale":"heuristic + model score","secondary":[]},"metadata":{"channelFeatures":{"links":[{"url":"http://stanbic-review.info","domain":"stanbic-review.info"}],"language":"en"},"explanations":["Result from model v0.1.0"],"heuristics":{"looksLikeOtpCapture":false,"urgencyScore":0.33}},"raw_model_score":0.999,"heuristic_score":0.91,"combined_score_pre_clamp":0.9367}
-
-{"id":"benign-1","mock_score":0.25,"wrapper_score":0.0,"score_delta":-0.25,"mock_matches":[],"wrapper_matches":[],"raw_model_score":0.0,"heuristic_score":0.0,"combined_score_pre_clamp":0.0,"detection":{"score":0.0,"detectionId":"b2bd6e01-dd6f-41eb-bdf2-5d71c9b85a20","modelVersion":"v0.1.0","createdAt":"2025-10-24T02:09:43","latencyMs":204,"message":{"messageId":"benign-1","channel":"sms","sender":"Mom","receivedAt":"2025-10-08T13:00:00Z"},"matches":[],"risk":{"score":0.0,"severity":"safe","label":"Likely safe","confidence":0.99,"factors":[]},"actions":{"recommended":"report","rationale":"heuristic + model score","secondary":[]},"metadata":{"channelFeatures":{"links":[],"language":"en"},"explanations":["Result from model v0.1.0"],"heuristics":{"looksLikeOtpCapture":false,"urgencyScore":0.0}},"raw_model_score":0.0,"heuristic_score":0.0,"combined_score_pre_clamp":0.0}
-
-{"id":"benign-2","mock_score":0.15,"wrapper_score":0.51,"score_delta":0.36,"mock_matches":[],"wrapper_matches":[{"label":"Link","excerpt":"https://shopxyz.com/track/12345","weight":0.18},{"label":"OTP/Verification code","excerpt":"numeric code present","weight":0.12}],"raw_model_score":1.0,"heuristic_score":0.3,"combined_score_pre_clamp":0.51,"detection":{"score":0.51,"detectionId":"ddcaa7e1-8400-4edc-b642-8c82e173a231","modelVersion":"v0.1.0","createdAt":"2025-10-24T02:09:43","latencyMs":188,"message":{"messageId":"benign-2","channel":"email","sender":"ShopXYZ","receivedAt":"2025-10-08T14:00:00Z"},"matches":[{"label":"Link","excerpt":"https://shopxyz.com/track/12345","weight":0.18},{"label":"OTP/Verification code","excerpt":"numeric code present","weight":0.12}],"risk":{"score":0.51,"severity":"low","label":"Likely phishing","confidence":0.99,"factors":[{"label":"Link","excerpt":"https://shopxyz.com/track/12345","weight":0.18,"evidenceType":"url_reputation"},{"label":"OTP/Verification code","excerpt":"numeric code present","weight":0.12,"evidenceType":"otp"}]},"actions":{"recommended":"report","rationale":"heuristic + model score","secondary":[]},"metadata":{"channelFeatures":{"links":[{"url":"https://shopxyz.com/track/12345","domain":"shopxyz.com"}],"language":"en"},"explanations":["Result from model v0.1.0"],"heuristics":{"looksLikeOtpCapture":true,"urgencyScore":0.0}},"raw_model_score":1.0,"heuristic_score":0.3,"combined_score_pre_clamp":0.51}
-
-{"id":"benign-3","mock_score":0.25,"wrapper_score":0.52,"score_delta":0.27,"mock_matches":[],"wrapper_matches":[{"label":"OTP/Verification code","excerpt":"numeric code present","weight":0.12},{"label":"Financial keyword","excerpt":"Your account ending 4321 was credited with NGN 5,000.00 on 2025-10-08.","weight":0.2}],"raw_model_score":1.0,"heuristic_score":0.32,"combined_score_pre_clamp":0.524,"detection":{"score":0.52,"detectionId":"ff5be484-e439-4129-9ba5-6db11c37c00b","modelVersion":"v0.1.0","createdAt":"2025-10-24T02:09:43","latencyMs":186,"message":{"messageId":"benign-3","channel":"sms","sender":"Bank Alert","receivedAt":"2025-10-08T15:00:00Z"},"matches":[{"label":"OTP/Verification code","excerpt":"numeric code present","weight":0.12},{"label":"Financial keyword","excerpt":"Your account ending 4321 was credited with NGN 5,000.00 on 2025-10-08.","weight":0.2}],"risk":{"score":0.52,"severity":"low","label":"Likely phishing","confidence":0.99,"factors":[{"label":"OTP/Verification code","excerpt":"numeric code present","weight":0.12,"evidenceType":"otp"},{"label":"Financial keyword","excerpt":"Your account ending 4321 was credited with NGN 5,000.00 on 2025-10-08.","weight":0.2,"evidenceType":"keyword"}]},"actions":{"recommended":"report","rationale":"heuristic + model score","secondary":[]},"metadata":{"channelFeatures":{"links":[],"language":"en"},"explanations":["Result from model v0.1.0"],"heuristics":{"looksLikeOtpCapture":true,"urgencyScore":0.0}},"raw_model_score":1.0,"heuristic_score":0.32,"combined_score_pre_clamp":0.524}
-
-{"id":"benign-4","mock_score":0.2,"wrapper_score":0.3,"score_delta":0.1,"mock_matches":[],"wrapper_matches":[],"raw_model_score":0.9902,"heuristic_score":0.0,"combined_score_pre_clamp":0.2971,"detection":{"score":0.3,"detectionId":"485353d2-f802-479b-9ccf-216d860102ce","modelVersion":"v0.1.0","createdAt":"2025-10-24T02:09:43","latencyMs":186,"message":{"messageId":"benign-4","channel":"whatsapp","sender":"DeliveryCo","receivedAt":"2025-10-08T16:00:00Z"},"matches":[],"risk":{"score":0.3,"severity":"safe","label":"Likely safe","confidence":0.99,"factors":[]},"actions":{"recommended":"report","rationale":"heuristic + model score","secondary":[]},"metadata":{"channelFeatures":{"links":[],"language":"en"},"explanations":["Result from model v0.1.0"],"heuristics":{"looksLikeOtpCapture":false,"urgencyScore":0.0}},"raw_model_score":0.9902,"heuristic_score":0.0,"combined_score_pre_clamp":0.2971}
-
-{"id":"benign-5","mock_score":0.15,"wrapper_score":0.44,"score_delta":0.29,"mock_matches":[],"wrapper_matches":[{"label":"Financial keyword","excerpt":"Monthly newsletter: tips to keep your account secure.","weight":0.2}],"raw_model_score":0.9996,"heuristic_score":0.2,"combined_score_pre_clamp":0.4399,"detection":{"score":0.44,"detectionId":"df98cddf-8fa6-46a2-a4c8-9640fd6b0971","modelVersion":"v0.1.0","createdAt":"2025-10-24T02:09:44","latencyMs":188,"message":{"messageId":"benign-5","channel":"email","sender":"Newsletter","receivedAt":"2025-10-08T17:00:00Z"},"matches":[{"label":"Financial keyword","excerpt":"Monthly newsletter: tips to keep your account secure.","weight":0.2}],"risk":{"score":0.44,"severity":"low","label":"Likely safe","confidence":0.99,"factors":[{"label":"Financial keyword","excerpt":"Monthly newsletter: tips to keep your account secure.","weight":0.2,"evidenceType":"keyword"}]},"actions":{"recommended":"report","rationale":"heuristic + model score","secondary":[]},"metadata":{"channelFeatures":{"links":[],"language":"en"},"explanations":["Result from model v0.1.0"],"heuristics":{"looksLikeOtpCapture":false,"urgencyScore":0.0}},"raw_model_score":0.9996,"heuristic_score":0.2,"combined_score_pre_clamp":0.4399}
+See `model-inference/inference_wrapper/REPORT.md` for the sweep commands and the test harness used to generate these outputs.
 
 ## Monorepo integration and how pieces fit together
 
@@ -170,7 +157,6 @@ A non-exhaustive list (see `package.json` files for exact commands):
   - Notebooks under `notebooks/` include training and conversion steps
   - Python wrapper `mobile/inference_wrapper` has `requirements.txt` and smoke test scripts (use a virtual environment and `pip install -r requirements.txt`)
 
-
 ## Other READMEs and documentation
 
 We maintain several focused docs inside the repo — consult them for deep dives:
@@ -181,39 +167,37 @@ We maintain several focused docs inside the repo — consult them for deep dives
 - `mobile/inference_wrapper/README.md` — explains model packaging and the Python inference wrapper
 - `docs/security_and_worker.md` — (referenced by offline-first section) — contains details about security, worker design and queueing. If you need deeper security/worker design, start there.
 
-
 ## Offline-first design — end-to-end breakdown
 
 This is an executive summary and engineering-level flow for how we achieve offline-first behavior. See `docs/security_and_worker.md` for the security/worker reference.
 
 1. Local detection
 
-  - Each incoming message is first passed to an on-device TFLite model and then to heuristic rules for rapid classification.
-  - If malicious or suspicious, the app displays an inline warning immediately.
+- Each incoming message is first passed to an on-device TFLite model and then to heuristic rules for rapid classification.
+- If malicious or suspicious, the app displays an inline warning immediately.
 
 2. Durable local queue
 
-  - Messages that require server-side processing (for audit, triage, or model feedback) are placed in a durable local queue.
-  - The queue is persisted to local storage (secure storage/SQLite) so that app restarts or crashes do not lose items.
+- Messages that require server-side processing (for audit, triage, or model feedback) are placed in a durable local queue.
+- The queue is persisted to local storage (secure storage/SQLite) so that app restarts or crashes do not lose items.
 
 3. Background processing & retry
 
-  - A background worker attempts to flush the queue when the device has connectivity. Retries use exponential backoff and are capped.
-  - The worker uses small payloads and supports batching to reduce network overhead.
+- A background worker attempts to flush the queue when the device has connectivity. Retries use exponential backoff and are capped.
+- The worker uses small payloads and supports batching to reduce network overhead.
 
 4. Server-side ingestion & processing
 
-  - The server `outbox` endpoint persists incoming items to the database and enqueues a background job (BullMQ) if Redis is available.
-  - The server worker processes items (store audit, notify, or enrich) and can push updated model telemetry back to a model registry.
+- The server `outbox` endpoint persists incoming items to the database and enqueues a background job (BullMQ) if Redis is available.
+- The server worker processes items (store audit, notify, or enrich) and can push updated model telemetry back to a model registry.
 
 5. Synchronization & model updates
 
-  - Clients periodically check the configured `modelRegistryUrl` for newer models. When a new model is available and compatible, the client downloads it and replaces the local TFLite file.
+- Clients periodically check the configured `modelRegistryUrl` for newer models. When a new model is available and compatible, the client downloads it and replaces the local TFLite file.
 
 Security notes
 
 - All uploads are authenticated (token-based) and audited. Sensitive data is not logged in plain text. See `docs/security_and_worker.md` for details.
-
 
 ## Key features and highlights
 
@@ -225,7 +209,6 @@ Security notes
 - Export-ready artifacts: packaged TFLite model released on GitHub Releases
 - Fast API (Fastify) with simple endpoints: `/v1/outbox`, `/v1/health`, `/v1/config`, `/v1/tokens` etc.
 
-
 ## Run the backend (server) locally
 
 Quick start (development):
@@ -234,7 +217,7 @@ Quick start (development):
 
 ```bash
 pnpm install
-```
+````
 
 2. Configure local env (recommended):
 
@@ -261,7 +244,6 @@ Notes
 - If using Redis/BullMQ, set `REDIS_URL` in the env. The queue initialization is guarded so the server will start even if Redis is not present.
 - Ensure `prisma generate` is run before building in CI. Add `npx prisma generate` to your CI/build step or move `prisma` into `dependencies` so `postinstall` runs in production.
 
-
 ## Run the mobile app (Expo) locally
 
 1. From repo root:
@@ -277,7 +259,6 @@ npx expo start
 
 <!-- Screenshots & demo removed from this README. Add verified screenshots to `assets/` and update this file if/when you have stable images or videos to link. -->
 
-
 ## Contributing, testing and release notes
 
 - Please follow the monorepo conventions (pnpm workspace). Run `pnpm install` at the root.
@@ -291,7 +272,6 @@ Release checklist (recommended):
 - Build Android artifacts and ensure `preBuild` tasks copy model/rules into assets.
 - Publish release on GitHub and attach the `phishing_detector_package` (TFLite + tokenizer + metadata) and optional APK.
 
-
 ## Troubleshooting & FAQs
 
 - Q: Prisma fails with `P1012` complaining about URL protocol?
@@ -303,7 +283,6 @@ Release checklist (recommended):
 - Q: Model artifacts are missing during Android build?
   - A: Confirm `phishing_detector_package` is downloaded to the repo root or placed in a path expected by `android/app/build.gradle` before running `./gradlew assembleDebug`.
 
-
 ## Vision & next steps
 
 Our guiding goal is to make a verifiable, privacy-preserving phishing detection tool that works on resource-constrained devices and in intermittent networks. The README now only contains file-backed claims; below are pragmatic next steps we plan to execute and verify using repository artifacts:
@@ -314,6 +293,14 @@ Our guiding goal is to make a verifiable, privacy-preserving phishing detection 
 - Safe model updates on-device: implement atomic model swaps and metadata-driven compatibility checks (clients should read `model-metadata.json` before replacing local artifacts).
 - Backend stability: ensure `prisma generate` runs in CI, guard BullMQ/Redis startup behind `REDIS_URL`, and add integration tests that exercise key endpoints such as `/v1/outbox` and `/v1/health`.
 - Documentation & examples: add a short `server/README.md` focused on running the server locally and a small `examples/` folder with curl snippets for essential endpoints, all backed by the repo's server code.
+
+Additional high-level visions:
+
+- iOS notification/listener strategy: iOS currently restricts background notification-listening for third-party apps. We plan to design and prototype a compatible approach (for example: a small companion service, user opt-in accessibility flows, or server-assisted detection models) so that phishing detection can be delivered to iOS users without compromising platform policies or user privacy. This will require UX exploration and possibly platform-specific engineering (entitlements, background modes, or a companion cloud-assisted flow).
+
+- Reduce false positives and improve model intelligence: continue improving model robustness and calibration, expand evaluation on real-world, multilingual samples, run targeted adversarial and edge-case tests, and iterate on heuristics and label curation to reduce false positives while preserving recall.
+
+- Model artifact size & efficiency: continue shrinking final model artifacts and explore quantization and architecture changes. We've already reduced distribution size by favoring the dynamic-quantized TFLite variant over the float16 variant; the int8 variant was tried but didn't match dynamic's reference quality and ended up similar in size — we'll evaluate additional options (different quantization strategies, smaller transformer variants, pruning, or distillation) to produce a substantially lighter artifact suitable for low-end devices.
 
 If you'd like, I can now:
 
