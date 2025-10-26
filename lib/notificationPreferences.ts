@@ -12,6 +12,9 @@ const DEFAULT_NOTIFICATION_PREFERENCES: NotificationPreferences = {
   alertsEnabled: true,
   soundEnabled: true,
   vibrationEnabled: true,
+  quietHoursEnabled: false,
+  quietHoursStart: '22:00',
+  quietHoursEnd: '07:00',
 };
 
 type NotificationPreferencesSnapshot = {

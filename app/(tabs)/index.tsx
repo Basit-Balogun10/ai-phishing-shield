@@ -242,14 +242,14 @@ export default function DashboardScreen() {
         }
 
         Alert.alert(t('dashboard.permissionsReminder.grantedTitle'), t('dashboard.permissionsReminder.grantedBody'));
-        trackTelemetryEvent('permissions.request_granted', {});
+  trackTelemetryEvent('permissions.request_granted', undefined);
       } else {
         // If denied or blocked, inform user and offer to open settings
         Alert.alert(
           t('dashboard.permissionsReminder.deniedTitle'),
           t('dashboard.permissionsReminder.deniedBody')
         );
-        trackTelemetryEvent('permissions.request_denied', {});
+  trackTelemetryEvent('permissions.request_denied', undefined);
       }
     } catch (error) {
       console.warn('[dashboard] permission request failed', error);

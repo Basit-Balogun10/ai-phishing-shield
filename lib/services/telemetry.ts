@@ -121,6 +121,9 @@ export type TelemetryPayloads = {
   'dashboard.quick_action.alerts_opened': undefined;
   'dashboard.quick_action.stats_opened': undefined;
   'dashboard.quick_action.trusted_sources_opened': undefined;
+  // Backwards-compatible permission request events used in the dashboard
+  'permissions.request_granted': undefined;
+  'permissions.request_denied': undefined;
   'stats.timeframe_changed': {
     timeframe: '24h' | '7d' | '30d' | 'all';
   };

@@ -418,9 +418,23 @@ export default function ModelManagementScreen() {
               {activeTab === 'available' ? (
                 <View>
                   {availableOnly.length === 0 ? (
-                    <Text className="text-sm text-slate-500 dark:text-slate-300">
-                      {t('settings.model.availableEmpty')}
-                    </Text>
+                    <View className="py-12 items-center justify-center">
+                      <MaterialCommunityIcons name="download-off" size={48} color="#94a3b8" />
+                      <Text className="mt-4 text-base text-slate-500 dark:text-slate-400 text-center">
+                        {t('settings.model.availableEmpty')}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={handleSync}
+                        disabled={syncBusy}
+                        className={`mt-4 rounded-full px-4 py-2 ${
+                          syncBusy ? 'bg-slate-300 dark:bg-slate-700' : 'bg-blue-600 dark:bg-blue-500'
+                        }`}
+                        activeOpacity={0.85}>
+                        <Text className="text-xs font-semibold uppercase tracking-wide text-white">
+                          {syncBusy ? t('settings.model.syncing') : t('settings.model.syncButton')}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   ) : (
                     availableOnly.map((item) => renderVersionCard(item.version))
                   )}
@@ -430,9 +444,12 @@ export default function ModelManagementScreen() {
               {activeTab === 'installed' ? (
                 <View>
                   {installed.length === 0 ? (
-                    <Text className="text-sm text-slate-500 dark:text-slate-300">
-                      {t('settings.model.installedEmpty')}
-                    </Text>
+                    <View className="py-12 items-center justify-center">
+                      <MaterialCommunityIcons name="cloud-off-outline" size={48} color="#94a3b8" />
+                      <Text className="mt-4 text-base text-slate-500 dark:text-slate-400 text-center">
+                        {t('settings.model.installedEmpty')}
+                      </Text>
+                    </View>
                   ) : (
                     installed
                       .map((item) => item.version)

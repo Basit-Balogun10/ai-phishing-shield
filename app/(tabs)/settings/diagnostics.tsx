@@ -193,15 +193,7 @@ export default function DiagnosticsSettingsScreen() {
           }
         ],
       },
-      {
-        title: t('settings.diagnostics.sections.sms'),
-        rows: [
-          {
-            label: t('settings.diagnostics.fields.smsPermission'),
-            value: formatPermission(snapshot.sms.permission),
-          },
-        ],
-      },
+      // SMS section removed: app no longer requests SMS permission.
       {
         title: t('settings.diagnostics.sections.detections'),
         rows: [
