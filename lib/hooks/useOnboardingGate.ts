@@ -2,11 +2,7 @@ import { useCallback, useState } from 'react';
 import { useFocusEffect, useRouter } from 'expo-router';
 
 import { isOnboardingComplete } from '../storage';
-import {
-  checkNotificationPermission,
-  checkSmsPermission,
-  PermissionRequestResult,
-} from '../permissions';
+import { checkNotificationPermission, PermissionRequestResult } from '../permissions';
 
 export type OnboardingGateOptions = {
   redirectIfIncomplete?: string | null;
@@ -40,20 +36,15 @@ export function useOnboardingGate(options: OnboardingGateOptions = {}): Onboardi
       const check = async () => {
         setChecking(true);
         const completed = await isOnboardingComplete();
-        const [notificationStatus, smsStatus] = await Promise.all([
-          checkNotificationPermission(),
-          checkSmsPermission(),
-        ]);
+        const notificationStatus = await checkNotificationPermission();
 
         if (!isActive) {
           return;
         }
 
-        const smsRequired = !(smsStatus.unavailable ?? false);
-        const permissionsOk =
-          notificationStatus.granted && (smsRequired ? smsStatus.granted : true);
+        const permissionsOk = notificationStatus.granted;
 
-        setPermissions({ notifications: notificationStatus, sms: smsStatus });
+        setPermissions({ notifications: notificationStatus });
         setPermissionsSatisfied(permissionsOk);
 
         if (!isActive) {

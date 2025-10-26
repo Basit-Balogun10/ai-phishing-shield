@@ -204,7 +204,7 @@ export default function StatsScreen() {
             </View>
           </View>
 
-          <View className={SECTION_WRAPPER}>
+          {/* <View className={SECTION_WRAPPER}>
             <Text className={SECTION_TITLE}>{t('dashboard.alerts.title')}</Text>
             <View className="mt-4 space-y-3">
               {recentDetections.map((item) => (
@@ -244,7 +244,7 @@ export default function StatsScreen() {
                 </Text>
               ) : null}
             </View>
-          </View>
+          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>

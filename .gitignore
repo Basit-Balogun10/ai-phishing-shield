@@ -15,11 +15,6 @@ web-build/
 .env*.local
 .env
 
-
-
-ios
-android
-
 # macOS
 .DS_Store
 

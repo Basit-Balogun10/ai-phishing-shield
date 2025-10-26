@@ -10,7 +10,6 @@ export type PermissionStatus = {
 
 export type PermissionRequestResult = {
   notifications: PermissionStatus;
-  sms: PermissionStatus;
 };
 
 const isNotificationGranted = (status: Notifications.NotificationPermissionsStatus): boolean => {
@@ -56,56 +55,7 @@ export const requestNotificationPermission = async (): Promise<PermissionStatus>
 
 type AndroidPermissionResult = 'granted' | 'denied' | 'never_ask_again' | 'blocked';
 
-const mapSmsStatus = (result: AndroidPermissionResult): PermissionStatus => {
-  switch (result) {
-    case 'granted':
-      return { granted: true, canAskAgain: true, blocked: false };
-    case 'denied':
-      return { granted: false, canAskAgain: true, blocked: false };
-    case 'never_ask_again':
-      return { granted: false, canAskAgain: false, blocked: true };
-    default:
-      return { granted: false, canAskAgain: true, blocked: false };
-  }
-};
-
-export const checkSmsPermission = async (): Promise<PermissionStatus> => {
-  if (Platform.OS !== 'android') {
-    return { granted: true, canAskAgain: false, blocked: false, unavailable: true };
-  }
-
-  try {
-    const status = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_SMS);
-    if (status) {
-      return { granted: true, canAskAgain: true, blocked: false };
-    }
-    return { granted: false, canAskAgain: true, blocked: false };
-  } catch (error) {
-    console.warn('[permissions] Failed to request SMS permission', error);
-    return { granted: false, canAskAgain: true, blocked: false };
-  }
-};
-
-export const requestSmsPermission = async (): Promise<PermissionStatus> => {
-  if (Platform.OS !== 'android') {
-    return { granted: true, canAskAgain: false, blocked: false, unavailable: true };
-  }
-
-  try {
-    const result = (await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_SMS, {
-      title: 'Allow AI Phishing Shield to read SMS messages',
-      message: 'We analyze SMS content on-device to spot phishing attempts the moment they arrive.',
-      buttonPositive: 'Allow',
-      buttonNegative: 'Deny',
-      buttonNeutral: 'Ask me later',
-    })) as AndroidPermissionResult;
-
-    return mapSmsStatus(result);
-  } catch (error) {
-    console.warn('[permissions] Failed to request SMS permission', error);
-    return { granted: false, canAskAgain: true, blocked: false };
-  }
-};
+// SMS permission removed: this app no longer requests or checks SMS runtime permission.
 
 export const openSystemSettings = async (): Promise<void> => {
   try {
@@ -117,7 +67,6 @@ export const openSystemSettings = async (): Promise<void> => {
 
 export const requestAllRequiredPermissions = async (): Promise<PermissionRequestResult> => {
   const notifications = await requestNotificationPermission();
-  const sms = await requestSmsPermission();
 
-  return { notifications, sms };
+  return { notifications };
 };

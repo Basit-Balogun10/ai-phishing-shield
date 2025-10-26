@@ -340,7 +340,6 @@
     },
     "permissionNoteTitle": "Before we launch the shield",
     "permissionNoteBody": "You'll grant notification and SMS access right after this tour.",
-    "permissionStepsTitle": "You'll enable:",
     "permissions": {
       "title": "Keep the shield active",
       "subtitle": "Enable these permissions so we can scan messages the moment they arrive.",

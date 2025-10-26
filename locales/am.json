@@ -340,7 +340,6 @@
     },
     "permissionNoteTitle": "ከመጀመርዎ በፊት",
     "permissionNoteBody": "ይህን አጭር መመሪያ ከጨረሱ በኋላ የማንቂያና የSMS ፍቃድ ማብራሪያ ትቀበላላችሁ።",
-    "permissionStepsTitle": "የምታንቁዋቸው ፍቃዶች:",
     "permissions": {
       "title": "ጋሻውን በስራ ላይ ያድርጉ",
       "subtitle": "መልዕክቶች ሲደርሱ በዚያኑ ጊዜ እንድንመርመር እነዚህን ፍቃዶች ይክፈቱ።",

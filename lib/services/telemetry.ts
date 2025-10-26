@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import type { ThemePreference } from '../storage';
 import type { TrustedSource } from '../trustedSources';
 
-type PermissionKind = 'notifications' | 'sms';
+type PermissionKind = 'notifications';
 
 type PermissionStatusOutcome = 'granted' | 'denied' | 'blocked' | 'unavailable';
 
@@ -30,8 +30,6 @@ export type TelemetryPayloads = {
   };
   'onboarding.permission_step_viewed': {
     notificationsGranted: boolean;
-    smsGranted: boolean;
-    smsRequired: boolean;
   };
   'onboarding.permission_request_started': {
     permission: PermissionKind;
@@ -44,8 +42,6 @@ export type TelemetryPayloads = {
   'onboarding.skip_pressed': undefined;
   'onboarding.completed': {
     notificationsGranted: boolean;
-    smsGranted: boolean;
-    smsRequired: boolean;
   };
   'onboarding.system_settings_opened': {
     permission: PermissionKind;

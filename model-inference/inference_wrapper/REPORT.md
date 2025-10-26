@@ -11,7 +11,7 @@ This document records the decisions, tests, and implementation details for the o
 - Tune metadata (heuristic weight, severity thresholds) to minimize benign false positives while preserving true positives on our mock set.
 - Ensure heuristics are compatible across all supported languages.
 
-## Files changed / created
+## Files concerned
 
 - `mobile/inference_wrapper/infer.py` — inference wrapper implementing tokenization, TFLite execution, dequantization, model->prob mapping (sigmoid/softmax), heuristic detection, combination logic, debug fields, final clamping, and JSON output matching the app contract.
 - `mobile/inference_wrapper/run_on_mock.py` — parity harness and sweep tool. Uses embedded mock and benign messages. Now reads `low` threshold from metadata when computing TP/FP so parity metrics match UI alert visibility.

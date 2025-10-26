@@ -1,11 +1,7 @@
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 
-import {
-  checkNotificationPermission,
-  checkSmsPermission,
-  type PermissionStatus,
-} from '../permissions';
+import { checkNotificationPermission, type PermissionStatus } from '../permissions';
 import {
   getLanguagePreference,
   getThemePreference,
@@ -42,9 +38,7 @@ export type DiagnosticsSnapshot = {
     permission: PermissionStatus;
     preferences: NotificationPreferences;
   };
-  sms: {
-    permission: PermissionStatus;
-  };
+  // SMS section removed: app no longer requests SMS permission.
   detections: {
     historicalCount: number;
     simulatedCount: number;
@@ -80,14 +74,12 @@ export const buildDiagnosticsSnapshot = async (): Promise<DiagnosticsSnapshot> =
     storedLocale,
     themePreference,
     notificationPermission,
-    smsPermission,
     trustedSources,
     telemetrySnapshot,
   ] = await Promise.all([
     getLanguagePreference(),
     getThemePreference(),
     checkNotificationPermission(),
-    checkSmsPermission(),
     resolveTrustedSources(),
     getTelemetryBufferSnapshot(),
   ]);
@@ -111,9 +103,7 @@ export const buildDiagnosticsSnapshot = async (): Promise<DiagnosticsSnapshot> =
       permission: notificationPermission,
       preferences,
     },
-    sms: {
-      permission: smsPermission,
-    },
+    // SMS section removed
     detections: {
       historicalCount: detectionSnapshot.historical.length,
       simulatedCount: simulatedDetections.length,

@@ -7,7 +7,7 @@ import {
   ensureAlertNotificationChannelAsync,
   scheduleDetectionNotificationAsync,
 } from '../notifications';
-import { checkNotificationPermission, checkSmsPermission } from '../permissions';
+import { checkNotificationPermission } from '../permissions';
 import { trackTelemetryEvent } from './telemetry';
 
 const { BackgroundTaskResult, BackgroundTaskStatus } = BackgroundTask;
@@ -48,14 +48,9 @@ export const initializeMockBackgroundDetectionAsync = async () => {
   defineDetectionTask();
 
   try {
-    const [notificationStatus, smsStatus] = await Promise.all([
-      checkNotificationPermission(),
-      checkSmsPermission(),
-    ]);
+    const notificationStatus = await checkNotificationPermission();
 
-    const smsRequired = !(smsStatus.unavailable ?? false);
-    const permissionsGranted =
-      notificationStatus.granted && (smsRequired ? smsStatus.granted : true);
+    const permissionsGranted = notificationStatus.granted;
 
     if (!permissionsGranted) {
       console.warn(
