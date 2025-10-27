@@ -108,8 +108,8 @@ export const buildServer = async () => {
       registers: [registry],
     });
     // collect defaults optionally
-  const collectDefault = mod.collectDefaultMetrics;
-  if (collectDefault) collectDefault({ register: registry });
+    const collectDefault = mod.collectDefaultMetrics;
+    if (collectDefault) collectDefault({ register: registry });
   } catch {
     // leave placeholders as no-ops
   }
@@ -225,4 +225,4 @@ const start = async () => {
   }
 };
 
-void start()
+void start();

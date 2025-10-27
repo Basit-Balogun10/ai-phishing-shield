@@ -37,6 +37,13 @@ import java.util.Collections;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.security.MessageDigest;
+import java.security.DigestInputStream;
+import java.math.BigInteger;
 
 /**
  * Minimal TFLite inference module. Loads a model from assets (phishing_detector_dynamic.tflite)
@@ -635,4 +642,233 @@ public class InferenceModule extends ReactContextBaseJavaModule {
             return 0f;
         }
     }
+
+    @ReactMethod
+    public void activateModel(String modelPath, String tokenizerPath, String metadataPath, Promise promise) {
+        try {
+            // Close existing interpreter safely
+            try {
+                if (interpreter != null) {
+                    interpreter.close();
+                    interpreter = null;
+                }
+            } catch (Exception ignored) {}
+
+            if (modelPath == null || modelPath.length() == 0) {
+                promise.reject("no_model_path", "No model path provided");
+                return;
+            }
+
+            File modelFile = new File(modelPath);
+            if (!modelFile.exists() || !modelFile.isFile()) {
+                promise.reject("no_model_file", "Model file not found: " + modelPath);
+                return;
+            }
+
+            // If metadataPath provided and contains checksum, verify model file bytes (SHA-256)
+            try {
+                if (metadataPath != null && metadataPath.length() > 0) {
+                    File metaF = new File(metadataPath);
+                    if (metaF.exists() && metaF.isFile()) {
+                        StringBuilder sb = new StringBuilder();
+                        try (java.io.FileInputStream fis = new java.io.FileInputStream(metaF);
+                             java.io.InputStreamReader isr = new java.io.InputStreamReader(fis);
+                             java.io.BufferedReader br = new java.io.BufferedReader(isr)) {
+                            String line;
+                            while ((line = br.readLine()) != null) sb.append(line);
+                        }
+                        try {
+                            org.json.JSONObject meta = new org.json.JSONObject(sb.toString());
+                            if (meta.has("checksum")) {
+                                String expected = meta.optString("checksum", "");
+                                if (expected.startsWith("sha256-")) {
+                                    String expectedHex = expected.replaceFirst("^sha256-", "");
+                                    String actualHex = computeSha256Hex(modelFile);
+                                    if (!actualHex.equalsIgnoreCase(expectedHex)) {
+                                        promise.reject("checksum_mismatch", "Model checksum mismatch");
+                                        return;
+                                    }
+                                }
+                            }
+                        } catch (Exception je) {
+                            // ignore metadata parse errors
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                // non-fatal but surface in logs
+                Log.w(TAG, "metadata verification failed", e);
+            }
+
+            // Map model file and create interpreter
+            try (java.io.FileInputStream fis = new java.io.FileInputStream(modelFile)) {
+                java.nio.channels.FileChannel fc = fis.getChannel();
+                long declaredLength = modelFile.length();
+                MappedByteBuffer mbb = fc.map(java.nio.channels.FileChannel.MapMode.READ_ONLY, 0, declaredLength);
+                interpreter = new Interpreter(mbb);
+            }
+
+            // Reset tokenizer/vocab and metadata then attempt to load
+            vocab = null;
+            tokenizerConfig = null;
+            metadataJson = null;
+
+            // If tokenizerPath is a zip file, try to unzip to a sibling folder
+            try {
+                if (tokenizerPath != null && tokenizerPath.length() > 0) {
+                    File tok = new File(tokenizerPath);
+                    File tokenizerDir = tok;
+                    if (tok.exists() && tok.isFile() && tokenizerPath.toLowerCase().endsWith(".zip")) {
+                        File destDir = new File(tok.getParentFile(), tok.getName().replaceAll("\\\\.zip$", ""));
+                        unzipToDir(tok, destDir);
+                        tokenizerDir = destDir;
+                    }
+
+                    // Try to load vocab.txt
+                    File vocabFile = new File(tokenizerDir, "vocab.txt");
+                    if (vocabFile.exists()) {
+                        vocab = loadVocabFromFile(vocabFile);
+                    } else {
+                        // Try tokenizer/tokenizer.json
+                        File tjson = new File(tokenizerDir, "tokenizer.json");
+                        if (tjson.exists()) {
+                            StringBuilder sb = new StringBuilder();
+                            try (java.io.FileInputStream fis = new java.io.FileInputStream(tjson);
+                                 java.io.InputStreamReader isr = new java.io.InputStreamReader(fis);
+                                 java.io.BufferedReader br = new java.io.BufferedReader(isr)) {
+                                String line;
+                                while ((line = br.readLine()) != null) sb.append(line);
+                            }
+                            try {
+                                tokenizerConfig = new org.json.JSONObject(sb.toString());
+                            } catch (org.json.JSONException je) {
+                                // ignore
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.w(TAG, "tokenizer load/unzip failed", e);
+            }
+
+            // If metadataPath provided, parse and apply thresholds / config
+            try {
+                if (metadataPath != null && metadataPath.length() > 0) {
+                    File mf = new File(metadataPath);
+                    if (mf.exists() && mf.isFile()) {
+                        StringBuilder sb = new StringBuilder();
+                        try (java.io.FileInputStream fis = new java.io.FileInputStream(mf);
+                             java.io.InputStreamReader isr = new java.io.InputStreamReader(fis);
+                             java.io.BufferedReader br = new java.io.BufferedReader(isr)) {
+                            String line;
+                            while ((line = br.readLine()) != null) sb.append(line);
+                        }
+                        try {
+                            metadataJson = new org.json.JSONObject(sb.toString());
+                            if (metadataJson.has("max_length")) {
+                                maxLen = metadataJson.optInt("max_length", maxLen);
+                            }
+                            if (metadataJson.has("heuristic_weight")) {
+                                heuristicWeight = (float) metadataJson.optDouble("heuristic_weight", heuristicWeight);
+                            }
+                            if (metadataJson.has("severity_thresholds")) {
+                                org.json.JSONObject thr = metadataJson.optJSONObject("severity_thresholds");
+                                if (thr != null) {
+                                    thrLow = (float) thr.optDouble("low", thrLow);
+                                    thrMed = (float) thr.optDouble("medium", thrMed);
+                                    thrHigh = (float) thr.optDouble("high", thrHigh);
+                                }
+                            }
+                        } catch (org.json.JSONException je) {
+                            // ignore
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.w(TAG, "metadata load failed", e);
+            }
+
+            // Update pad/unk/cls/sep ids
+            if (vocab != null) {
+                if (vocab.containsKey("[PAD]")) padId = vocab.get("[PAD]");
+                if (vocab.containsKey("[UNK]")) unkId = vocab.get("[UNK]");
+                if (vocab.containsKey("[CLS]")) clsId = vocab.get("[CLS]");
+                if (vocab.containsKey("[SEP]")) sepId = vocab.get("[SEP]");
+            }
+
+            try {
+                interpreter.allocateTensors();
+            } catch (Exception ignored) {}
+
+            promise.resolve(true);
+        } catch (Exception e) {
+            Log.w(TAG, "activateModel failed", e);
+            promise.reject("activate_failed", e.getMessage());
+        }
+    }
+
+    private void unzipToDir(File zipFile, File destDir) throws IOException {
+        if (!destDir.exists()) {
+            destDir.mkdirs();
+        }
+        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile))) {
+            ZipEntry entry;
+            byte[] buffer = new byte[8192];
+            while ((entry = zis.getNextEntry()) != null) {
+                File newFile = new File(destDir, entry.getName());
+                if (entry.isDirectory()) {
+                    newFile.mkdirs();
+                } else {
+                    File parent = newFile.getParentFile();
+                    if (!parent.exists()) parent.mkdirs();
+                    try (FileOutputStream fos = new FileOutputStream(newFile)) {
+                        int len;
+                        while ((len = zis.read(buffer)) > 0) {
+                            fos.write(buffer, 0, len);
+                        }
+                    }
+                }
+                zis.closeEntry();
+            }
+        }
+    }
+
+    private String computeSha256Hex(File f) throws Exception {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        try (DigestInputStream dis = new DigestInputStream(new FileInputStream(f), md)) {
+            byte[] buffer = new byte[8192];
+            while (dis.read(buffer) != -1) {
+                // reading updates digest
+            }
+        }
+        byte[] digest = md.digest();
+        // convert to hex
+        BigInteger bi = new BigInteger(1, digest);
+        String hex = bi.toString(16);
+        // zero pad
+        while (hex.length() < 64) hex = "0" + hex;
+        return hex;
+    }
+
+    private Map<String, Integer> loadVocabFromFile(java.io.File vocabFile) {
+        Map<String, Integer> map = new HashMap<>();
+        try (java.io.FileInputStream fis = new java.io.FileInputStream(vocabFile);
+             java.io.InputStreamReader isr = new java.io.InputStreamReader(fis);
+             java.io.BufferedReader br = new java.io.BufferedReader(isr)) {
+            String line;
+            int idx = 0;
+            while ((line = br.readLine()) != null) {
+                String token = line.trim();
+                if (!token.isEmpty()) {
+                    map.put(token, idx);
+                    idx++;
+                }
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "Failed to load vocab from file", e);
+            return null;
+        }
+        return map;
+    }
 }
+

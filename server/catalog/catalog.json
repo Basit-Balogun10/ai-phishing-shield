@@ -5,6 +5,8 @@
     "sizeMB": 18.5,
     "checksum": "sha256-f32c9e12",
     "changelog": ["Introduced WhatsApp embeddings"],
-    "downloadUrl": "https://download.afrihackbox.dev/models/v0.3.0/phishing-detector.tflite"
+    "downloadUrl": "https://github.com/Basit-Balogun10/ai-phishing-shield/releases/download/v0.3.0/phishing_detector_dynamic_v0.3.0.tflite",
+    "tokenizerUrl": "https://github.com/Basit-Balogun10/ai-phishing-shield/releases/download/v0.3.0/tokenizer_v0.3.0.zip",
+    "metadataUrl": "https://github.com/Basit-Balogun10/ai-phishing-shield/releases/download/v0.3.0/model-metadata_v0.3.0.json"
   }
 ]

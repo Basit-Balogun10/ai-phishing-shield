@@ -7,10 +7,11 @@ process.env.AUTH_JWT_SECRET = process.env.AUTH_JWT_SECRET || 'testsecret';
 (async () => {
   try {
     const app = await buildServer();
+    const authTokens = process.env.AUTH_TOKENS ?? 'devtoken';
     const resCreate = await app.inject({
       method: 'POST',
       url: '/v1/admin/tokens',
-      headers: { authorization: `Bearer ${process.env.AUTH_TOKENS.split(',')[0]}` },
+      headers: { authorization: `Bearer ${authTokens.split(',')[0]}` },
       payload: { name: 'test' },
     });
     console.log('status', resCreate.statusCode);

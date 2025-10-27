@@ -11,8 +11,8 @@
       },
       "env": {
         "EXPO_PUBLIC_ENABLE_NOTIFICATION_LISTENER": "true",
-        "EXPO_PUBLIC_FEEDBACK_ENDPOINT": "https://ai-phishing-shield/v1/outbox",
-        "EXPO_PUBLIC_MODEL_CATALOG_URL": "https://ai-phishing-shield/models/catalog.json",
+        "EXPO_PUBLIC_FEEDBACK_ENDPOINT": "https://ai-phishing-shield.onrender.com/v1/outbox",
+        "EXPO_PUBLIC_MODEL_CATALOG_URL": "https://ai-phishing-shield.onrender.com/models/catalog.json",
         "EXPO_PUBLIC_ENABLE_MOCK_TOOLS": "false"
       }
     }

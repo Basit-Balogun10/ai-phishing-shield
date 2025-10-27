@@ -14,7 +14,10 @@ export const authPlugin: FastifyPluginAsync = async (server) => {
 
   server.addHook('onRequest', async (request, reply) => {
     // allow health and config to be read anonymously
-    if ((request as any).routerPath === '/v1/health' || (request as any).routerPath === '/v1/config') {
+    if (
+      (request as any).routerPath === '/v1/health' ||
+      (request as any).routerPath === '/v1/config'
+    ) {
       return;
     }
 

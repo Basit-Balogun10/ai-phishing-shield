@@ -1,6 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 import * as FileSystem from 'expo-file-system';
+import { NativeModules } from 'react-native';
+import * as modelNative from './services/modelNative';
+import * as Crypto from 'expo-crypto';
 import { useEffect, useMemo, useSyncExternalStore } from 'react';
 
 type ExpoFileSystemModule = typeof FileSystem & {
@@ -28,6 +31,9 @@ export type ModelVersionMetadata = {
   checksum: string;
   changelog: string[];
   downloadUrl: string;
+  // optional additional artifacts hosted alongside the model (recommended)
+  tokenizerUrl?: string;
+  metadataUrl?: string;
 };
 
 type InstalledModelRecord = ModelVersionMetadata & {
@@ -67,12 +73,28 @@ const FILESYSTEM_AVAILABLE =
 const MODEL_DIRECTORY = FILESYSTEM_AVAILABLE ? `${MODEL_DIRECTORY_ROOT}models` : null;
 const MEMORY_PLACEHOLDER_PREFIX = 'model_manager_memory_placeholder_v1_';
 
-const DEFAULT_REGISTRY_URL = 'https://download.afrihackbox.dev/models/catalog.json';
+const DEFAULT_REGISTRY_URL = 'https://ai-phishing-shield.onrender.com/models/catalog.json';
 
 const resolveRegistryUrl = () => {
-  const url = Constants.expoConfig?.extra?.modelRegistryUrl;
-  if (typeof url === 'string' && url.length > 0) {
-    return url;
+  // Prefer EAS / runtime env EXPO_PUBLIC_MODEL_CATALOG_URL, then check expo config extras
+  try {
+    // process.env may be populated in some build environments
+    if (typeof process !== 'undefined' && process.env && process.env.EXPO_PUBLIC_MODEL_CATALOG_URL) {
+      return String(process.env.EXPO_PUBLIC_MODEL_CATALOG_URL);
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  // Constants.expoConfig?.extra is commonly where extras land
+  const extras = (Constants as any).expoConfig?.extra || (Constants as any).manifest?.extra;
+  if (extras) {
+    if (typeof extras.EXPO_PUBLIC_MODEL_CATALOG_URL === 'string' && extras.EXPO_PUBLIC_MODEL_CATALOG_URL.length > 0) {
+      return extras.EXPO_PUBLIC_MODEL_CATALOG_URL;
+    }
+    if (typeof extras.modelRegistryUrl === 'string' && extras.modelRegistryUrl.length > 0) {
+      return extras.modelRegistryUrl;
+    }
   }
 
   return DEFAULT_REGISTRY_URL;
@@ -80,47 +102,13 @@ const resolveRegistryUrl = () => {
 
 const isMemoryPath = (path: string) => path.startsWith('memory://');
 
-const REMOTE_MODEL_REGISTRY: ModelVersionMetadata[] = [
-  {
-    version: 'v0.1.0',
-    releasedAt: '2025-09-12T10:00:00Z',
-    sizeMB: 14.2,
-    checksum: 'sha256-b2106b9f',
-    changelog: [
-      'Initial public preview trained on 20k multilingual SMS samples.',
-      'Optimized for latency on 1GB RAM devices.',
-    ],
-    downloadUrl: 'https://download.afrihackbox.dev/models/v0.1.0/phishing-detector.tflite',
-  },
-  {
-    version: 'v0.2.0',
-    releasedAt: '2025-09-28T09:30:00Z',
-    sizeMB: 16.8,
-    checksum: 'sha256-c88ab00e',
-    changelog: [
-      'Added Hausa, Pidgin, and Yoruba training corpora.',
-      'Improved phishing intent recall by 7%.',
-      'Reduced false positives for financial OTP messages.',
-    ],
-    downloadUrl: 'https://download.afrihackbox.dev/models/v0.2.0/phishing-detector.tflite',
-  },
-  {
-    version: 'v0.3.0',
-    releasedAt: '2025-10-06T07:45:00Z',
-    sizeMB: 18.5,
-    checksum: 'sha256-f32c9e12',
-    changelog: [
-      'Introduced WhatsApp notification embeddings.',
-      'Expanded dataset with 12k human-reported scam transcripts.',
-      'Lowered inference latency by 18% on Snapdragon 720G devices.',
-    ],
-    downloadUrl: 'https://download.afrihackbox.dev/models/v0.3.0/phishing-detector.tflite',
-  },
-];
+// NOTE: registry entries are served from the remote server (EXPO_PUBLIC_MODEL_CATALOG_URL).
+// We intentionally do not keep an embedded/dummy registry here — the app will show an
+// empty catalog when offline so the UI can render a clear placeholder.
 
 let snapshot: ModelManagerSnapshot = {
   ready: false,
-  available: REMOTE_MODEL_REGISTRY,
+  available: [],
   installed: [],
   current: null,
   lastSyncedAt: null,
@@ -395,15 +383,7 @@ const fetchRemoteCatalog = async (): Promise<ModelVersionMetadata[]> => {
   }
 };
 
-const ensureCatalog = async (mode: CatalogMode) => {
-  if (mode === 'dummy') {
-    updateSnapshot({
-      available: REMOTE_MODEL_REGISTRY.map((entry) => ({ ...entry })),
-      isOfflineFallback: false,
-    });
-    return true;
-  }
-
+const ensureCatalog = async (_mode: CatalogMode) => {
   try {
     const remoteCatalog = await fetchRemoteCatalog();
     updateSnapshot({
@@ -412,9 +392,10 @@ const ensureCatalog = async (mode: CatalogMode) => {
     });
     return true;
   } catch (error) {
-    console.warn('[modelManager] Failed to fetch remote catalog, falling back to dummy', error);
+    console.warn('[modelManager] Failed to fetch remote catalog, offline - showing placeholder', error);
+    // When offline, show an empty catalog so UI renders the placeholder copy
     updateSnapshot({
-      available: REMOTE_MODEL_REGISTRY.map((entry) => ({ ...entry })),
+      available: [],
       isOfflineFallback: true,
     });
     return false;
@@ -459,6 +440,30 @@ const downloadModelBinary = async (metadata: ModelVersionMetadata) => {
     const info = await getInfoAsync(filePath);
     const sizeBytes =
       'size' in info && typeof info.size === 'number' ? info.size : (result.totalBytesWritten ?? 0);
+
+    // Best-effort checksum verification (expects metadata.checksum like 'sha256-<hex>')
+    try {
+      if (metadata.checksum && metadata.checksum.startsWith('sha256-')) {
+        const expectedHex = metadata.checksum.replace(/^sha256-/, '');
+        try {
+          const base64 = await FileSystem.readAsStringAsync(filePath, { encoding: 'base64' });
+          // digestStringAsync will produce hex by default for SHA256
+          const actualHex = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, base64);
+          if (actualHex !== expectedHex) {
+            throw new Error(`checksum_mismatch actual=${actualHex} expected=${expectedHex}`);
+          }
+        } catch (hashErr) {
+          // If checksum verification fails, remove the file and surface an error
+          try {
+            await deleteAsync(filePath, { idempotent: true });
+          } catch {}
+          throw hashErr;
+        }
+      }
+    } catch (err) {
+      // rethrow so caller can handle. resetDownloadProgress handled below.
+      throw err;
+    }
 
     return {
       path: filePath,
@@ -554,6 +559,46 @@ const modelManagerStore = {
           ? await downloadModelBinary(metadata)
           : await writeModelPlaceholder(metadata);
 
+      // If tokenizerUrl is present, try to download and extract it to a versioned folder
+      let tokenizerLocalPath: string | null = null;
+      if (metadata.tokenizerUrl && MODEL_DIRECTORY) {
+        try {
+          const tokenizerZipPath = `${MODEL_DIRECTORY}/${metadata.version.replace(/\./g, '_')}_tokenizer.zip`;
+          const tokenizerDest = `${MODEL_DIRECTORY}/${metadata.version.replace(/\./g, '_')}_tokenizer`;
+          try {
+            // download tokenizer asset
+            await ensureModelDirectory();
+            const tokRes = await createDownloadResumable(
+              metadata.tokenizerUrl,
+              tokenizerZipPath,
+              {},
+              (progress) => {
+                // no-op: don't override downloadProgress; this is separate
+              }
+            ).downloadAsync();
+
+            // Try to unzip using optional native helper 'react-native-zip-archive' if available
+            try {
+              // eslint-disable-next-line @typescript-eslint/no-var-requires
+              const { unzip } = require('react-native-zip-archive');
+              await unzip(tokenizerZipPath, tokenizerDest);
+              tokenizerLocalPath = tokenizerDest;
+            } catch (e) {
+              // could not unzip (module missing) — fallback: leave zip as-is and log
+              console.warn('[modelManager] unzip not available or failed', e);
+              // as a fallback, keep the zip file path so native code could potentially handle it
+              tokenizerLocalPath = tokenizerZipPath;
+            }
+          } catch (tokErr) {
+            console.warn('[modelManager] Failed to download or extract tokenizer', tokErr);
+            tokenizerLocalPath = null;
+          }
+        } catch (e) {
+          // ignore tokenizer failures
+          tokenizerLocalPath = null;
+        }
+      }
+
       const updatedRecord: InstalledModelRecord = {
         ...metadata,
         installedAt: new Date().toISOString(),
@@ -572,6 +617,30 @@ const modelManagerStore = {
         activeOperation: null,
       });
       persistFromSnapshot();
+
+      // Attempt to notify native inference module (via wrapper) to activate the newly installed model
+      try {
+        const tokenizerArg = tokenizerLocalPath ?? null;
+        let metadataLocalPath: string | null = null;
+        if (metadata.metadataUrl && MODEL_DIRECTORY) {
+          // attempt to fetch metadata to a local file so native can read it
+          try {
+            const metaPath = `${MODEL_DIRECTORY}/${metadata.version.replace(/\./g, '_')}_metadata.json`;
+            await createDownloadResumable(metadata.metadataUrl, metaPath).downloadAsync();
+            metadataLocalPath = metaPath;
+          } catch (e) {
+            metadataLocalPath = null;
+          }
+        }
+
+        try {
+          await modelNative.activateModel(path, tokenizerArg, metadataLocalPath);
+        } catch (nativeErr) {
+          console.warn('[modelManager] native activateModel failed', nativeErr);
+        }
+      } catch (e) {
+        // ignore native activation errors
+      }
       return updatedRecord;
     } catch (error) {
       console.warn('[modelManager] Failed to install model version', error);

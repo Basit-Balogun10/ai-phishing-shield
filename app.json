@@ -1,7 +1,7 @@
 {
   "expo": {
-  "name": "Hook: Your AI Phishing Shield",
-  "slug": "hook",
+    "name": "Hook: Your AI Phishing Shield",
+    "slug": "hook",
     "version": "1.0.0",
     "scheme": "aiphishingshield",
     "web": {
@@ -33,15 +33,11 @@
         "backgroundColor": "#2563eb"
       }
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": [
-          "fetch"
-        ]
+        "UIBackgroundModes": ["fetch"]
       }
     },
     "android": {

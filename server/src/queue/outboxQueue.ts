@@ -20,12 +20,20 @@ export const initQueue = async (processor: (job: Job) => Promise<void>) => {
   const connection = new RedisCtor(redisUrl, { maxRetriesPerRequest: null });
   queue = new Queue('outbox', { connection });
 
-  worker = new Worker('outbox', async (job) => {
-    await processor(job);
-  }, { connection });
+  worker = new Worker(
+    'outbox',
+    async (job) => {
+      await processor(job);
+    },
+    { connection }
+  );
 
   // avoid unhandled errors from the Redis client
-  try { connection.on('error', (err: any) => { /* log at caller */ }); } catch {}
+  try {
+    connection.on('error', (err: any) => {
+      /* log at caller */
+    });
+  } catch {}
 
   worker.on('failed', (job, err) => {
     console.error('outbox job failed', job?.id, err);
@@ -40,6 +48,10 @@ export const enqueueOutbox = async (payload: any) => {
 };
 
 export const closeQueue = async () => {
-  try { await worker?.close(); } catch {}
-  try { await queue?.close(); } catch {}
+  try {
+    await worker?.close();
+  } catch {}
+  try {
+    await queue?.close();
+  } catch {}
 };
