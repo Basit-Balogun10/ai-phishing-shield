@@ -2,21 +2,21 @@
 
 Table of contents
 
-- Project overview (short)
-- Hackathon submission (detailed description)
-- How it works — high level architecture
-- Key directories (what's where)
-- Releases & large artifacts
-- Monorepo integration and how pieces fit together
-- Scripts you will use (developer shortcuts)
-- Other READMEs and documentation
-- Offline-first design — end-to-end breakdown
-- Key features and highlights
-- Run the backend (server) locally
-- Run the mobile app (Expo) locally
-- Contributing, testing and release notes
+- [Project overview](#project-overview)
+- [Detailed Description](#detailed-description)
+- [How it works — high level architecture](#how-it-works-high-level-architecture)
+- [Key directories (what's where)](#key-directories-whats-where)
+- [Releases & large artifacts](#releases-and-large-artifacts)
+- [Monorepo integration and how pieces fit together](#monorepo-integration-and-how-pieces-fit-together)
+- [Scripts you will use (developer shortcuts)](#scripts-you-will-use-developer-shortcuts)
+- [Other READMEs and documentation](#other-readmes-and-documentation)
+- [Offline-first design — end-to-end breakdown](#offline-first-design-end-to-end-breakdown)
+- [Key features and highlights](#key-features-and-highlights)
+- [Run the backend (server) locally](#run-the-backend-server-locally)
+- [Run the mobile app (Expo) locally](#run-the-mobile-app-expo-locally)
+- [Contributing, testing and release notes](#contributing-testing-and-release-notes)
 
-## Project overview (short)
+## Project overview
 
 Hook is an end-to-end monorepo that implements an AI-powered phishing detection system targeting mobile and near-device deployments where connectivity is intermittent. The project includes:
 
@@ -26,9 +26,7 @@ Hook is an end-to-end monorepo that implements an AI-powered phishing detection 
 - a dataset repository for multilingual phishing SMS & messages (real + synthetic)
 - utilities, docs and CI-friendly build scripts
 
-## Hackathon submission (detailed description)
-
-(Use this when you need to paste a concise but complete submission paragraph for a hackathon form field like: "Describe the problem you are solving, your solution, the technologies and the business case:")
+## Detailed Description
 
 Problem we are solving
 
