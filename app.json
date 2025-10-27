@@ -42,10 +42,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/ai-phishing-shield-logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.basitbalogun10.aiphishingshield"
+      "package": "com.basitbalogun10.hook"
     },
     "extra": {
       "modelRegistryUrl": "https://download.afrihackbox.dev/models/catalog.json",
