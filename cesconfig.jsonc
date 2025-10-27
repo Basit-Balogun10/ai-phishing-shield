@@ -2,7 +2,7 @@
 // It is safe to delete this file as it does not affect the functionality of your application.
 {
   "cesVersion": "2.20.0",
-  "projectName": "ai-phishing-shield",
+  "projectName": "hook",
   "packages": [
     {
       "name": "nativewind",
