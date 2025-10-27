@@ -131,10 +131,6 @@ android {
         ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~'
     }
 }
-    // Model copy tasks intentionally removed. We now manage necessary
-    // runtime artifacts directly under android/app/src/main/assets to avoid
-    // duplicate copying during Gradle prebuild. Place the dynamic TFLite and
-    // tokenizer files under that assets directory and commit them as needed.
 
 // Apply static values from `gradle.properties` to the `android.packagingOptions`
 // Accepts values in comma delimited lists, example:
@@ -187,3 +183,61 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-lite:2.11.0'
     implementation 'org.tensorflow:tensorflow-lite-select-tf-ops:2.11.0'
 }
+
+// Copy packaged model artifact into app assets at build time if present
+def phishingModelSrc = rootProject.file('phishing_detector_package')
+def phishingModelFile = 'phishing_detector_dynamic.tflite'
+def phishingModelDest = file('src/main/assets')
+
+// Only copy the single dynamic TFLite artifact. Using a broad include like
+// '**/*.tflite' can unintentionally copy other variants (int8/float16) into
+// the app assets. Instead we copy the specific filename if it exists and
+// otherwise skip with a log message.
+task copyPhishingModel(type: Copy) {
+    def srcDir = phishingModelSrc
+    def srcFile = new File(srcDir, phishingModelFile)
+
+    if (srcFile.exists()) {
+        from(srcDir) {
+            include phishingModelFile
+        }
+        into phishingModelDest
+    } else {
+        // Fail the build early: the dynamic TFLite artifact is required for
+        // the native app when this task is active.
+        doFirst {
+            throw new RuntimeException("[copyPhishingModel] Required model file '${phishingModelFile}' not found in ${srcDir}.\n" +
+                    "Place the model at ${srcDir}/${phishingModelFile} or provide a build property to skip model copying if intentional.")
+        }
+    }
+}
+
+// Also copy tokenizer directory and model metadata so native code can access them from assets
+def tokenizerSrc = rootProject.file('phishing_detector_package/tokenizer')
+def metadataSrc = rootProject.file('phishing_detector_package/model-metadata.json')
+
+// Copy language rule files used by the heuristics (from the Python wrapper)
+def rulesSrc = rootProject.file('model-inference/inference_wrapper/rules')
+
+task copyTokenizer(type: Copy) {
+    from tokenizerSrc
+    into phishingModelDest
+    include '**/*'
+}
+
+task copyModelMetadata(type: Copy) {
+    from metadataSrc
+    into phishingModelDest
+    include 'model-metadata.json'
+}
+
+task copyRules(type: Copy) {
+    from rulesSrc
+    into phishingModelDest
+    include '**/*.json'
+}
+
+preBuild.dependsOn(copyPhishingModel)
+preBuild.dependsOn(copyTokenizer)
+preBuild.dependsOn(copyModelMetadata)
+preBuild.dependsOn(copyRules)

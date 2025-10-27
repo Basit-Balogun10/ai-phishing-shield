@@ -299,10 +299,3 @@ Additional high-level visions:
 - Reduce false positives and improve model intelligence: continue improving model robustness and calibration, expand evaluation on real-world, multilingual samples, run targeted adversarial and edge-case tests, and iterate on heuristics and label curation to reduce false positives while preserving recall.
 
 - Model artifact size & efficiency: continue shrinking final model artifacts and explore quantization and architecture changes. We've already reduced distribution size by favoring the dynamic-quantized TFLite variant over the float16 variant; the int8 variant was tried but didn't match dynamic's reference quality and ended up similar in size — we'll evaluate additional options (different quantization strategies, smaller transformer variants, pruning, or distillation) to produce a substantially lighter artifact suitable for low-end devices.
-
-If you'd like, I can now:
-
-- add a one-line verified mock-run summary (referencing `model-inference/inference_wrapper/REPORT.md` and the run_on_mock parity harness) into this README, or
-- run a markdown lint pass and fix spacing/list heading issues across the README.
-
-Please tell me which follow-up you'd like and I'll proceed.

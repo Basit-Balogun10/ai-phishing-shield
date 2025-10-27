@@ -33,11 +33,15 @@
         "backgroundColor": "#2563eb"
       }
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": ["fetch"]
+        "UIBackgroundModes": [
+          "fetch"
+        ]
       }
     },
     "android": {
@@ -48,9 +52,10 @@
       "package": "com.basitbalogun10.hook"
     },
     "extra": {
-      "modelRegistryUrl": "https://download.afrihackbox.dev/models/catalog.json",
+      "modelRegistryUrl": "https://ai-phishing-shield.onrender.com/models/catalog.json",
       "router": {},
       "eas": {
+        "projectId": "186b2aae-b7e3-45ed-bd86-b6067144b8c2"
       }
     }
   }
