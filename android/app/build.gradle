@@ -185,13 +185,31 @@ dependencies {
 }
 
 // Copy packaged model artifact into app assets at build time if present
-def phishingModelSrc = rootProject.file('phishing_detector_package/phishing_detector_dynamic.tflite')
+def phishingModelSrc = rootProject.file('phishing_detector_package')
+def phishingModelFile = 'phishing_detector_dynamic.tflite'
 def phishingModelDest = file('src/main/assets')
 
+// Only copy the single dynamic TFLite artifact. Using a broad include like
+// '**/*.tflite' can unintentionally copy other variants (int8/float16) into
+// the app assets. Instead we copy the specific filename if it exists and
+// otherwise skip with a log message.
 task copyPhishingModel(type: Copy) {
-    from phishingModelSrc
-    into phishingModelDest
-    include '**/*.tflite'
+    def srcDir = phishingModelSrc
+    def srcFile = new File(srcDir, phishingModelFile)
+
+    if (srcFile.exists()) {
+        from(srcDir) {
+            include phishingModelFile
+        }
+        into phishingModelDest
+    } else {
+        // Fail the build early: the dynamic TFLite artifact is required for
+        // the native app when this task is active.
+        doFirst {
+            throw new RuntimeException("[copyPhishingModel] Required model file '${phishingModelFile}' not found in ${srcDir}.\n" +
+                    "Place the model at ${srcDir}/${phishingModelFile} or provide a build property to skip model copying if intentional.")
+        }
+    }
 }
 
 // Also copy tokenizer directory and model metadata so native code can access them from assets

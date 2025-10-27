@@ -23,3 +23,8 @@ web-build/
 
 # Trained model artifacts (large binaries) — keep out of repo
 phishing_detector_package/
+
+# Ignore runtime assets copied into Android to avoid committing large binaries
+android/app/src/main/assets/phishing_detector_dynamic.tflite
+android/app/src/main/assets/model-metadata.json
+android/app/src/main/assets/tokenizer/
